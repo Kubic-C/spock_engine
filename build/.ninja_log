@@ -1,0 +1,16 @@
+# ninja log v5
+3	1092	6773871174140070	source/CMakeFiles/space_game2d.dir/main.cpp.obj	d347832caa6a610d
+2	191	6773903735017981	build.ninja	bc665ff41c609646
+912	1431	6771104651791610	source/space_game2d.exe	8742d3fab605c78e
+1028	1249	6771103535920239	framework/spock_framework.lib	6bfbf13752af55af
+2	1731	6773869916604395	framework/CMakeFiles/spock_framework.dir/framework.cpp.obj	f131397b6c965db
+20	1743	6773869916694412	engine/CMakeFiles/spock_engine.dir/messages.cpp.obj	bf3318033813158d
+25	1733	6773869916724418	engine/CMakeFiles/spock_engine.dir/engine.cpp.obj	2fc91a256edc63dd
+351	622	6771103961221308	engine/spock_engine.lib	1cdd649cb44bccb8
+1746	1933	6773869917784498	C:/Users/sawye/Develop/Game/lib/spock_framework.lib	712ec120143c5365
+1933	2034	6773869919484632	C:/Users/sawye/Develop/Game/lib/spock_engine.lib	fa86689e21452809
+1093	1385	6773871176300227	C:/Users/sawye/Develop/Game/game/space_game2d.exe	e70b60b3775abf6a
+10	1744	6773869916814421	engine/CMakeFiles/spock_engine.dir/systems.cpp.obj	f7304a658a5d2718
+7	2496	6773239697890724	framework/CMakeFiles/spock_framework.dir/base.cpp.obj	3e7e1f4edce92645
+15	1745	6773869916884456	framework/CMakeFiles/spock_framework.dir/entity.cpp.obj	43cc3a6cab6e8022
+31	1740	6773869916714414	engine/CMakeFiles/spock_engine.dir/GUI.cpp.obj	d1602e99482f95e3

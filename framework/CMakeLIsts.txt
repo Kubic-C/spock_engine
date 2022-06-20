@@ -1,0 +1,16 @@
+
+add_library(spock_framework STATIC)
+
+target_include_directories(spock_framework INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/")
+
+target_link_libraries(spock_framework PUBLIC
+    glfw glad )
+
+target_sources(spock_framework PRIVATE
+    "framework.cpp"
+    "base.hpp" "base.cpp"
+    "entity.hpp" "entity.cpp"
+    "renderer.hpp" "renderer.cpp")
+
+target_sources(spock_framework PUBLIC
+    "framework.hpp")

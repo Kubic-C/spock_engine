@@ -1,0 +1,47 @@
+[
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foframework\\CMakeFiles\\spock_framework.dir\\framework.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\framework.cpp",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\framework\\framework.cpp"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foframework\\CMakeFiles\\spock_framework.dir\\base.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\base.cpp",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\framework\\base.cpp"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foframework\\CMakeFiles\\spock_framework.dir\\entity.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\entity.cpp",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\framework\\entity.cpp"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foframework\\CMakeFiles\\spock_framework.dir\\renderer.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\renderer.cpp",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\framework\\renderer.cpp"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\framework /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foengine\\CMakeFiles\\spock_engine.dir\\engine.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\engine\\engine.cpp",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\engine\\engine.cpp"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\framework /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foengine\\CMakeFiles\\spock_engine.dir\\messages.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\engine\\messages.cpp",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\engine\\messages.cpp"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\framework /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foengine\\CMakeFiles\\spock_engine.dir\\systems.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\engine\\systems.cpp",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\engine\\systems.cpp"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\framework /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foengine\\CMakeFiles\\spock_engine.dir\\GUI.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\engine\\GUI.cpp",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\engine\\GUI.cpp"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\source\\..\\depend -IC:\\Users\\sawye\\Develop\\Game\\engine -IC:\\Users\\sawye\\Develop\\Game\\framework /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Fosource\\CMakeFiles\\space_game2d.dir\\main.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\source\\main.cpp",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\source\\main.cpp"
+}
+]

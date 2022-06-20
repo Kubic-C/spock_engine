@@ -1,0 +1,11 @@
+C:/Users/sawye/Develop/Game/build/CMakeFiles/edit_cache.dir
+C:/Users/sawye/Develop/Game/build/CMakeFiles/rebuild_cache.dir
+C:/Users/sawye/Develop/Game/build/framework/CMakeFiles/spock_framework.dir
+C:/Users/sawye/Develop/Game/build/framework/CMakeFiles/edit_cache.dir
+C:/Users/sawye/Develop/Game/build/framework/CMakeFiles/rebuild_cache.dir
+C:/Users/sawye/Develop/Game/build/engine/CMakeFiles/spock_engine.dir
+C:/Users/sawye/Develop/Game/build/engine/CMakeFiles/edit_cache.dir
+C:/Users/sawye/Develop/Game/build/engine/CMakeFiles/rebuild_cache.dir
+C:/Users/sawye/Develop/Game/build/source/CMakeFiles/space_game2d.dir
+C:/Users/sawye/Develop/Game/build/source/CMakeFiles/edit_cache.dir
+C:/Users/sawye/Develop/Game/build/source/CMakeFiles/rebuild_cache.dir
