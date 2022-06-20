@@ -1,12 +1,12 @@
 The system is: Windows - 10.0.19044 - AMD64
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
-Compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.28.29910/bin/Hostx64/x86/cl.exe 
+Compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.28.29910/bin/Hostx86/x64/cl.exe 
 Build flags: 
 Id flags:  
 
 The output was:
 0
-Microsoft (R) C/C++ Optimizing Compiler Version 19.28.29914 for x86
+Microsoft (R) C/C++ Optimizing Compiler Version 19.28.29914 for x64
 Copyright (C) Microsoft Corporation.  All rights reserved.
 
 CMakeCCompilerId.c
@@ -24,13 +24,13 @@ Compilation of the C compiler identification source "CMakeCCompilerId.c" produce
 The C compiler identification is MSVC, found in "C:/Users/sawye/Develop/Game/build/CMakeFiles/3.24.0-rc1/CompilerIdC/CMakeCCompilerId.exe"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
-Compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.28.29910/bin/Hostx64/x86/cl.exe 
+Compiler: C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.28.29910/bin/Hostx86/x64/cl.exe 
 Build flags: 
 Id flags:  
 
 The output was:
 0
-Microsoft (R) C/C++ Optimizing Compiler Version 19.28.29914 for x86
+Microsoft (R) C/C++ Optimizing Compiler Version 19.28.29914 for x64
 Copyright (C) Microsoft Corporation.  All rights reserved.
 
 CMakeCXXCompilerId.cpp
@@ -50,16 +50,16 @@ The CXX compiler identification is MSVC, found in "C:/Users/sawye/Develop/Game/b
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: C:/Users/sawye/Develop/Game/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/PROGRA~2/MICROS~2/2019/COMMUN~1/Common7/IDE/COMMON~1/MICROS~1/CMake/Ninja/ninja.exe cmTC_76f0a && [1/2] Building C object CMakeFiles\cmTC_76f0a.dir\CMakeCCompilerABI.c.obj
-[2/2] Linking C executable cmTC_76f0a.exe
+Run Build Command(s):C:/PROGRA~1/Ninja/ninja.exe cmTC_14fbf && [1/2] Building C object CMakeFiles\cmTC_14fbf.dir\CMakeCCompilerABI.c.obj
+[2/2] Linking C executable cmTC_14fbf.exe
 
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: C:/Users/sawye/Develop/Game/build/CMakeFiles/CMakeTmp
 
-Run Build Command(s):C:/PROGRA~2/MICROS~2/2019/COMMUN~1/Common7/IDE/COMMON~1/MICROS~1/CMake/Ninja/ninja.exe cmTC_041cf && [1/2] Building CXX object CMakeFiles\cmTC_041cf.dir\CMakeCXXCompilerABI.cpp.obj
-[2/2] Linking CXX executable cmTC_041cf.exe
+Run Build Command(s):C:/PROGRA~1/Ninja/ninja.exe cmTC_48347 && [1/2] Building CXX object CMakeFiles\cmTC_48347.dir\CMakeCXXCompilerABI.cpp.obj
+[2/2] Linking CXX executable cmTC_48347.exe
 
 
 

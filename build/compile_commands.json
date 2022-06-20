@@ -1,47 +1,797 @@
 [
 {
   "directory": "C:/Users/sawye/Develop/Game/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foframework\\CMakeFiles\\spock_framework.dir\\framework.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\framework.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\app.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\app.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\app.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\coredoc.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\coredoc.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\coredoc.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\deprecated.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\deprecated.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\deprecated.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\doc.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\doc.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\doc.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\expr\\deserialize.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\expr\\deserialize.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\expr\\deserialize.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\expr\\serialize.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\expr\\serialize.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\expr\\serialize.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\expr\\strutil.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\expr\\strutil.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\expr\\strutil.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\flecs_cpp.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\flecs_cpp.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\flecs_cpp.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\http.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\http.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\http.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\json\\deserialize.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\deserialize.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\deserialize.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\json\\json.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\json.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\json.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\json\\serialize.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\serialize.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\serialize.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\json\\serialize_type_info.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\serialize_type_info.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\serialize_type_info.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\log.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\log.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\log.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\meta\\api.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\api.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\api.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\meta\\cursor.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\cursor.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\cursor.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\meta\\meta.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\meta.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\meta.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\meta\\serialized.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\serialized.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\serialized.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\meta_c.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta_c.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta_c.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\module.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\module.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\module.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\monitor.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\monitor.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\monitor.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\os_api_impl\\os_api_impl.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\os_api_impl\\os_api_impl.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\os_api_impl\\os_api_impl.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\parser.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\parser.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\parser.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\pipeline\\pipeline.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\pipeline\\pipeline.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\pipeline\\pipeline.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\pipeline\\worker.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\pipeline\\worker.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\pipeline\\worker.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\plecs.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\plecs.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\plecs.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\rest.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\rest.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\rest.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\rules.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\rules.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\rules.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\snapshot.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\snapshot.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\snapshot.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\stats.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\stats.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\stats.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\system\\system.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\system\\system.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\system\\system.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\timer.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\timer.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\timer.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\addons\\units.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\units.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\units.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\bootstrap.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\bootstrap.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\bootstrap.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\datastructures\\bitset.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\bitset.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\bitset.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\datastructures\\hash.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\hash.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\hash.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\datastructures\\hashmap.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\hashmap.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\hashmap.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\datastructures\\map.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\map.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\map.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\datastructures\\name_index.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\name_index.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\name_index.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\datastructures\\qsort.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\qsort.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\qsort.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\datastructures\\sparse.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\sparse.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\sparse.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\datastructures\\strbuf.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\strbuf.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\strbuf.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\datastructures\\switch_list.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\switch_list.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\switch_list.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\datastructures\\vector.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\vector.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\vector.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\entity.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\entity.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\entity.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\filter.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\filter.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\filter.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\hierarchy.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\hierarchy.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\hierarchy.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\id_record.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\id_record.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\id_record.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\iter.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\iter.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\iter.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\misc.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\misc.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\misc.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\observable.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\observable.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\observable.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\observer.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\observer.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\observer.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\os_api.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\os_api.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\os_api.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\poly.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\poly.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\poly.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\query.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\query.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\query.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\search.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\search.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\search.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\stage.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\stage.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\stage.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\storage.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\storage.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\storage.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\table.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\table.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\table.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\table_cache.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\table_cache.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\table_cache.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\table_graph.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\table_graph.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\table_graph.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\trigger.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\trigger.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\trigger.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_EXPORTS -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs.dir\\src\\world.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\world.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\world.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\app.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\app.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\app.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\coredoc.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\coredoc.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\coredoc.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\deprecated.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\deprecated.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\deprecated.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\doc.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\doc.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\doc.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\expr\\deserialize.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\expr\\deserialize.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\expr\\deserialize.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\expr\\serialize.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\expr\\serialize.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\expr\\serialize.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\expr\\strutil.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\expr\\strutil.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\expr\\strutil.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\flecs_cpp.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\flecs_cpp.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\flecs_cpp.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\http.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\http.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\http.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\json\\deserialize.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\deserialize.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\deserialize.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\json\\json.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\json.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\json.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\json\\serialize.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\serialize.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\serialize.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\json\\serialize_type_info.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\serialize_type_info.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\json\\serialize_type_info.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\log.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\log.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\log.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\meta\\api.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\api.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\api.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\meta\\cursor.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\cursor.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\cursor.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\meta\\meta.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\meta.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\meta.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\meta\\serialized.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\serialized.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta\\serialized.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\meta_c.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta_c.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\meta_c.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\module.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\module.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\module.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\monitor.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\monitor.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\monitor.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\os_api_impl\\os_api_impl.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\os_api_impl\\os_api_impl.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\os_api_impl\\os_api_impl.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\parser.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\parser.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\parser.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\pipeline\\pipeline.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\pipeline\\pipeline.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\pipeline\\pipeline.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\pipeline\\worker.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\pipeline\\worker.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\pipeline\\worker.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\plecs.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\plecs.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\plecs.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\rest.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\rest.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\rest.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\rules.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\rules.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\rules.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\snapshot.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\snapshot.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\snapshot.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\stats.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\stats.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\stats.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\system\\system.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\system\\system.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\system\\system.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\timer.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\timer.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\timer.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\addons\\units.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\units.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\addons\\units.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\bootstrap.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\bootstrap.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\bootstrap.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\datastructures\\bitset.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\bitset.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\bitset.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\datastructures\\hash.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\hash.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\hash.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\datastructures\\hashmap.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\hashmap.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\hashmap.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\datastructures\\map.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\map.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\map.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\datastructures\\name_index.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\name_index.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\name_index.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\datastructures\\qsort.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\qsort.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\qsort.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\datastructures\\sparse.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\sparse.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\sparse.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\datastructures\\strbuf.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\strbuf.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\strbuf.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\datastructures\\switch_list.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\switch_list.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\switch_list.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\datastructures\\vector.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\vector.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\datastructures\\vector.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\entity.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\entity.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\entity.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\filter.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\filter.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\filter.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\hierarchy.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\hierarchy.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\hierarchy.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\id_record.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\id_record.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\id_record.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\iter.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\iter.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\iter.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\misc.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\misc.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\misc.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\observable.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\observable.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\observable.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\observer.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\observer.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\observer.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\os_api.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\os_api.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\os_api.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\poly.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\poly.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\poly.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\query.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\query.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\query.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\search.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\search.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\search.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\stage.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\stage.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\stage.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\storage.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\storage.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\storage.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\table.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\table.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\table.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\table_cache.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\table_cache.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\table_cache.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\table_graph.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\table_graph.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\table_graph.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\trigger.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\trigger.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\trigger.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -Dflecs_STATIC -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\flecs\\CMakeFiles\\flecs_static.dir\\src\\world.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\world.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\src\\world.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\include /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fodep\\glad\\CMakeFiles\\glad.dir\\src\\glad.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\src\\glad.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\src\\glad.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\context.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\context.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\context.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\init.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\init.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\init.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\input.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\input.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\input.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\monitor.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\monitor.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\monitor.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\platform.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\platform.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\platform.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\vulkan.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\vulkan.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\vulkan.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\window.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\window.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\window.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\egl_context.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\egl_context.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\egl_context.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\osmesa_context.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\osmesa_context.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\osmesa_context.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\null_init.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\null_init.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\null_init.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\null_monitor.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\null_monitor.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\null_monitor.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\null_window.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\null_window.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\null_window.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\null_joystick.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\null_joystick.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\null_joystick.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_module.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_module.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_module.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_time.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_time.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_time.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_thread.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_thread.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_thread.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_init.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_init.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_init.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_joystick.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_joystick.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_joystick.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_monitor.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_monitor.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_monitor.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_window.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_window.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\win32_window.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glfw\\src /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3 /Fodep\\glfw\\src\\CMakeFiles\\glfw.dir\\wgl_context.c.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\wgl_context.c",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\src\\wgl_context.c"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glm /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Foframework\\CMakeFiles\\spock_framework.dir\\framework.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\framework.cpp",
   "file": "C:\\Users\\sawye\\Develop\\Game\\framework\\framework.cpp"
 },
 {
   "directory": "C:/Users/sawye/Develop/Game/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foframework\\CMakeFiles\\spock_framework.dir\\base.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\base.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glm /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Foframework\\CMakeFiles\\spock_framework.dir\\base.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\base.cpp",
   "file": "C:\\Users\\sawye\\Develop\\Game\\framework\\base.cpp"
 },
 {
   "directory": "C:/Users/sawye/Develop/Game/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foframework\\CMakeFiles\\spock_framework.dir\\entity.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\entity.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glm /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Foframework\\CMakeFiles\\spock_framework.dir\\entity.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\entity.cpp",
   "file": "C:\\Users\\sawye\\Develop\\Game\\framework\\entity.cpp"
 },
 {
   "directory": "C:/Users/sawye/Develop/Game/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foframework\\CMakeFiles\\spock_framework.dir\\renderer.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\renderer.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glm /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Foframework\\CMakeFiles\\spock_framework.dir\\renderer.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\renderer.cpp",
   "file": "C:\\Users\\sawye\\Develop\\Game\\framework\\renderer.cpp"
 },
 {
   "directory": "C:/Users/sawye/Develop/Game/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\framework /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foengine\\CMakeFiles\\spock_engine.dir\\engine.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\engine\\engine.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glm /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Foframework\\CMakeFiles\\spock_framework.dir\\window.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\window.cpp",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\framework\\window.cpp"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glm /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Foframework\\CMakeFiles\\spock_framework.dir\\debugger.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\framework\\debugger.cpp",
+  "file": "C:\\Users\\sawye\\Develop\\Game\\framework\\debugger.cpp"
+},
+{
+  "directory": "C:/Users/sawye/Develop/Game/build",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\framework -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glm /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Foengine\\CMakeFiles\\spock_engine.dir\\engine.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\engine\\engine.cpp",
   "file": "C:\\Users\\sawye\\Develop\\Game\\engine\\engine.cpp"
 },
 {
   "directory": "C:/Users/sawye/Develop/Game/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\framework /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foengine\\CMakeFiles\\spock_engine.dir\\messages.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\engine\\messages.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\framework -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glm /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Foengine\\CMakeFiles\\spock_engine.dir\\messages.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\engine\\messages.cpp",
   "file": "C:\\Users\\sawye\\Develop\\Game\\engine\\messages.cpp"
 },
 {
   "directory": "C:/Users/sawye/Develop/Game/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\framework /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foengine\\CMakeFiles\\spock_engine.dir\\systems.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\engine\\systems.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\framework -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glm /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Foengine\\CMakeFiles\\spock_engine.dir\\systems.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\engine\\systems.cpp",
   "file": "C:\\Users\\sawye\\Develop\\Game\\engine\\systems.cpp"
 },
 {
   "directory": "C:/Users/sawye/Develop/Game/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\framework /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Foengine\\CMakeFiles\\spock_engine.dir\\GUI.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\engine\\GUI.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\framework -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glm /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Foengine\\CMakeFiles\\spock_engine.dir\\GUI.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\engine\\GUI.cpp",
   "file": "C:\\Users\\sawye\\Develop\\Game\\engine\\GUI.cpp"
 },
 {
   "directory": "C:/Users/sawye/Develop/Game/build",
-  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx64\\x86\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\source\\..\\depend -IC:\\Users\\sawye\\Develop\\Game\\engine -IC:\\Users\\sawye\\Develop\\Game\\framework /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /Fosource\\CMakeFiles\\space_game2d.dir\\main.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\source\\main.cpp",
+  "command": "C:\\PROGRA~2\\MICROS~2\\2019\\COMMUN~1\\VC\\Tools\\MSVC\\1428~1.299\\bin\\Hostx86\\x64\\cl.exe  /nologo /TP -IC:\\Users\\sawye\\Develop\\Game\\source\\..\\depend -IC:\\Users\\sawye\\Develop\\Game\\engine -IC:\\Users\\sawye\\Develop\\Game\\framework -IC:\\Users\\sawye\\Develop\\Game\\dep\\glfw\\include -IC:\\Users\\sawye\\Develop\\Game\\build\\dep\\glad\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\flecs\\include -IC:\\Users\\sawye\\Develop\\Game\\dep\\glm /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /Fosource\\CMakeFiles\\space_game2d.dir\\main.cpp.obj /FdTARGET_COMPILE_PDB /FS -c C:\\Users\\sawye\\Develop\\Game\\source\\main.cpp",
   "file": "C:\\Users\\sawye\\Develop\\Game\\source\\main.cpp"
 }
 ]

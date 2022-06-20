@@ -3,7 +3,5 @@
 #include "engine.hpp"
 
 int main() {
-
-    
     return 0;
 }

@@ -64,6 +64,1939 @@ build CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
 
 build rebuild_cache: phony CMakeFiles\rebuild_cache.util
 
+
+#############################################
+# Utility command for list_install_components
+
+build list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build CMakeFiles\install.util: CUSTOM_COMMAND all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build && "C:\Program Files\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build install: phony CMakeFiles\install.util
+
+
+#############################################
+# Utility command for install/local
+
+build CMakeFiles\install\local.util: CUSTOM_COMMAND all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build && "C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build install\local: phony CMakeFiles\install\local.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# C:/Users/sawye/Develop/Game/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for edit_cache
+
+build dep\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep && "C:\Program Files\CMake\bin\cmake-gui.exe" -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build dep\edit_cache: phony dep\CMakeFiles\edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build dep\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep && "C:\Program Files\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build dep\rebuild_cache: phony dep\CMakeFiles\rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build dep\list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build dep\CMakeFiles\install.util: CUSTOM_COMMAND dep\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep && "C:\Program Files\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build dep\install: phony dep\CMakeFiles\install.util
+
+
+#############################################
+# Utility command for install/local
+
+build dep\CMakeFiles\install\local.util: CUSTOM_COMMAND dep\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep && "C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build dep\install\local: phony dep\CMakeFiles\install\local.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# C:/Users/sawye/Develop/Game/dep/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for SHARED_LIBRARY target flecs
+
+
+#############################################
+# Order-only phony target for flecs
+
+build cmake_object_order_depends_target_flecs: phony || dep\flecs\CMakeFiles\flecs.dir
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\app.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\app.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\coredoc.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\coredoc.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\deprecated.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\deprecated.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\doc.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\doc.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\expr\deserialize.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\expr\deserialize.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\expr
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\expr\serialize.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\expr\serialize.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\expr
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\expr\strutil.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\expr\strutil.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\expr
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\flecs_cpp.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\flecs_cpp.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\http.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\http.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\json\deserialize.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\json\deserialize.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\json
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\json\json.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\json\json.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\json
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\json\serialize.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\json\serialize.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\json
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\json\serialize_type_info.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\json\serialize_type_info.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\json
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\log.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\log.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\meta\api.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\meta\api.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\meta
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\meta\cursor.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\meta\cursor.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\meta
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\meta\meta.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\meta\meta.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\meta
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\meta\serialized.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\meta\serialized.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\meta
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\meta_c.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\meta_c.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\module.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\module.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\monitor.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\monitor.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\os_api_impl\os_api_impl.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\os_api_impl\os_api_impl.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\os_api_impl
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\parser.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\parser.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\pipeline\pipeline.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\pipeline\pipeline.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\pipeline
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\pipeline\worker.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\pipeline\worker.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\pipeline
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\plecs.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\plecs.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\rest.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\rest.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\rules.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\rules.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\snapshot.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\snapshot.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\stats.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\stats.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\system\system.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\system\system.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons\system
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\timer.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\timer.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\addons\units.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\units.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\bootstrap.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\bootstrap.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\datastructures\bitset.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\bitset.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\datastructures\hash.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\hash.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\datastructures\hashmap.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\hashmap.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\datastructures\map.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\map.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\datastructures\name_index.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\name_index.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\datastructures\qsort.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\qsort.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\datastructures\sparse.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\sparse.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\datastructures\strbuf.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\strbuf.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\datastructures\switch_list.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\switch_list.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\datastructures\vector.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\vector.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\entity.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\entity.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\filter.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\filter.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\hierarchy.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\hierarchy.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\id_record.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\id_record.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\iter.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\iter.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\misc.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\misc.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\observable.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\observable.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\observer.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\observer.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\os_api.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\os_api.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\poly.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\poly.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\query.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\query.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\search.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\search.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\stage.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\stage.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\storage.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\storage.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\table.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\table.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\table_cache.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\table_cache.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\table_graph.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\table_graph.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\trigger.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\trigger.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+build dep\flecs\CMakeFiles\flecs.dir\src\world.c.obj: C_COMPILER__flecs_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\world.c || cmake_object_order_depends_target_flecs
+  DEFINES = -Dflecs_EXPORTS
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+
+# =============================================================================
+# Link build statements for SHARED_LIBRARY target flecs
+
+
+#############################################
+# Link the shared library C:\Users\sawye\Develop\Game\game\flecs.dll
+
+build C$:\Users\sawye\Develop\Game\game\flecs.dll C$:\Users\sawye\Develop\Game\lib\flecs.lib: C_SHARED_LIBRARY_LINKER__flecs_Debug dep\flecs\CMakeFiles\flecs.dir\src\addons\app.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\coredoc.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\deprecated.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\doc.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\expr\deserialize.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\expr\serialize.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\expr\strutil.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\flecs_cpp.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\http.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\json\deserialize.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\json\json.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\json\serialize.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\json\serialize_type_info.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\log.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\meta\api.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\meta\cursor.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\meta\meta.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\meta\serialized.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\meta_c.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\module.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\monitor.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\os_api_impl\os_api_impl.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\parser.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\pipeline\pipeline.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\pipeline\worker.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\plecs.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\rest.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\rules.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\snapshot.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\stats.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\system\system.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\timer.c.obj dep\flecs\CMakeFiles\flecs.dir\src\addons\units.c.obj dep\flecs\CMakeFiles\flecs.dir\src\bootstrap.c.obj dep\flecs\CMakeFiles\flecs.dir\src\datastructures\bitset.c.obj dep\flecs\CMakeFiles\flecs.dir\src\datastructures\hash.c.obj dep\flecs\CMakeFiles\flecs.dir\src\datastructures\hashmap.c.obj dep\flecs\CMakeFiles\flecs.dir\src\datastructures\map.c.obj dep\flecs\CMakeFiles\flecs.dir\src\datastructures\name_index.c.obj dep\flecs\CMakeFiles\flecs.dir\src\datastructures\qsort.c.obj dep\flecs\CMakeFiles\flecs.dir\src\datastructures\sparse.c.obj dep\flecs\CMakeFiles\flecs.dir\src\datastructures\strbuf.c.obj dep\flecs\CMakeFiles\flecs.dir\src\datastructures\switch_list.c.obj dep\flecs\CMakeFiles\flecs.dir\src\datastructures\vector.c.obj dep\flecs\CMakeFiles\flecs.dir\src\entity.c.obj dep\flecs\CMakeFiles\flecs.dir\src\filter.c.obj dep\flecs\CMakeFiles\flecs.dir\src\hierarchy.c.obj dep\flecs\CMakeFiles\flecs.dir\src\id_record.c.obj dep\flecs\CMakeFiles\flecs.dir\src\iter.c.obj dep\flecs\CMakeFiles\flecs.dir\src\misc.c.obj dep\flecs\CMakeFiles\flecs.dir\src\observable.c.obj dep\flecs\CMakeFiles\flecs.dir\src\observer.c.obj dep\flecs\CMakeFiles\flecs.dir\src\os_api.c.obj dep\flecs\CMakeFiles\flecs.dir\src\poly.c.obj dep\flecs\CMakeFiles\flecs.dir\src\query.c.obj dep\flecs\CMakeFiles\flecs.dir\src\search.c.obj dep\flecs\CMakeFiles\flecs.dir\src\stage.c.obj dep\flecs\CMakeFiles\flecs.dir\src\storage.c.obj dep\flecs\CMakeFiles\flecs.dir\src\table.c.obj dep\flecs\CMakeFiles\flecs.dir\src\table_cache.c.obj dep\flecs\CMakeFiles\flecs.dir\src\table_graph.c.obj dep\flecs\CMakeFiles\flecs.dir\src\trigger.c.obj dep\flecs\CMakeFiles\flecs.dir\src\world.c.obj
+  LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd
+  LINK_FLAGS = /machine:x64 /debug /INCREMENTAL
+  LINK_LIBRARIES = wsock32.lib  ws2_32.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  RESTAT = 1
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs.dir\
+  TARGET_FILE = C:\Users\sawye\Develop\Game\game\flecs.dll
+  TARGET_IMPLIB = C:\Users\sawye\Develop\Game\lib\flecs.lib
+  TARGET_PDB = C:\Users\sawye\Develop\Game\game\flecs.pdb
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target flecs_static
+
+
+#############################################
+# Order-only phony target for flecs_static
+
+build cmake_object_order_depends_target_flecs_static: phony || dep\flecs\CMakeFiles\flecs_static.dir
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\app.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\app.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\coredoc.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\coredoc.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\deprecated.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\deprecated.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\doc.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\doc.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\expr\deserialize.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\expr\deserialize.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\expr
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\expr\serialize.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\expr\serialize.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\expr
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\expr\strutil.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\expr\strutil.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\expr
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\flecs_cpp.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\flecs_cpp.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\http.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\http.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\json\deserialize.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\json\deserialize.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\json
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\json\json.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\json\json.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\json
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\json\serialize.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\json\serialize.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\json
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\json\serialize_type_info.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\json\serialize_type_info.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\json
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\log.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\log.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta\api.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\meta\api.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta\cursor.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\meta\cursor.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta\meta.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\meta\meta.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta\serialized.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\meta\serialized.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta_c.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\meta_c.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\module.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\module.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\monitor.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\monitor.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\os_api_impl\os_api_impl.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\os_api_impl\os_api_impl.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\os_api_impl
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\parser.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\parser.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\pipeline\pipeline.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\pipeline\pipeline.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\pipeline
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\pipeline\worker.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\pipeline\worker.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\pipeline
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\plecs.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\plecs.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\rest.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\rest.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\rules.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\rules.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\snapshot.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\snapshot.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\stats.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\stats.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\system\system.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\system\system.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons\system
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\timer.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\timer.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\addons\units.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\addons\units.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\addons
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\bootstrap.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\bootstrap.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\bitset.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\bitset.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\hash.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\hash.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\hashmap.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\hashmap.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\map.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\map.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\name_index.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\name_index.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\qsort.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\qsort.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\sparse.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\sparse.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\strbuf.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\strbuf.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\switch_list.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\switch_list.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\vector.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\datastructures\vector.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\entity.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\entity.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\filter.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\filter.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\hierarchy.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\hierarchy.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\id_record.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\id_record.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\iter.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\iter.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\misc.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\misc.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\observable.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\observable.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\observer.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\observer.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\os_api.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\os_api.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\poly.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\poly.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\query.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\query.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\search.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\search.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\stage.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\stage.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\storage.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\storage.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\table.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\table.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\table_cache.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\table_cache.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\table_graph.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\table_graph.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\trigger.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\trigger.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+build dep\flecs\CMakeFiles\flecs_static.dir\src\world.c.obj: C_COMPILER__flecs_static_Debug C$:\Users\sawye\Develop\Game\dep\flecs\src\world.c || cmake_object_order_depends_target_flecs_static
+  DEFINES = -Dflecs_STATIC
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\flecs\include
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  OBJECT_FILE_DIR = dep\flecs\CMakeFiles\flecs_static.dir\src
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target flecs_static
+
+
+#############################################
+# Link the static library C:\Users\sawye\Develop\Game\lib\flecs_static.lib
+
+build C$:\Users\sawye\Develop\Game\lib\flecs_static.lib: C_STATIC_LIBRARY_LINKER__flecs_static_Debug dep\flecs\CMakeFiles\flecs_static.dir\src\addons\app.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\coredoc.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\deprecated.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\doc.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\expr\deserialize.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\expr\serialize.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\expr\strutil.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\flecs_cpp.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\http.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\json\deserialize.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\json\json.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\json\serialize.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\json\serialize_type_info.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\log.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta\api.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta\cursor.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta\meta.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta\serialized.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\meta_c.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\module.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\monitor.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\os_api_impl\os_api_impl.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\parser.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\pipeline\pipeline.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\pipeline\worker.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\plecs.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\rest.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\rules.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\snapshot.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\stats.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\system\system.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\timer.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\addons\units.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\bootstrap.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\bitset.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\hash.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\hashmap.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\map.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\name_index.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\qsort.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\sparse.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\strbuf.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\switch_list.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\datastructures\vector.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\entity.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\filter.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\hierarchy.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\id_record.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\iter.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\misc.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\observable.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\observer.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\os_api.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\poly.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\query.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\search.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\stage.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\storage.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\table.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\table_cache.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\table_graph.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\trigger.c.obj dep\flecs\CMakeFiles\flecs_static.dir\src\world.c.obj
+  LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd
+  LINK_FLAGS = /machine:x64
+  OBJECT_DIR = dep\flecs\CMakeFiles\flecs_static.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_COMPILE_PDB = dep\flecs\CMakeFiles\flecs_static.dir\flecs_static.pdb
+  TARGET_FILE = C:\Users\sawye\Develop\Game\lib\flecs_static.lib
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\flecs_static.pdb
+
+
+#############################################
+# Utility command for edit_cache
+
+build dep\flecs\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\flecs && "C:\Program Files\CMake\bin\cmake-gui.exe" -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build dep\flecs\edit_cache: phony dep\flecs\CMakeFiles\edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build dep\flecs\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\flecs && "C:\Program Files\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build dep\flecs\rebuild_cache: phony dep\flecs\CMakeFiles\rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build dep\flecs\list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build dep\flecs\CMakeFiles\install.util: CUSTOM_COMMAND dep\flecs\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\flecs && "C:\Program Files\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build dep\flecs\install: phony dep\flecs\CMakeFiles\install.util
+
+
+#############################################
+# Utility command for install/local
+
+build dep\flecs\CMakeFiles\install\local.util: CUSTOM_COMMAND dep\flecs\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\flecs && "C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build dep\flecs\install\local: phony dep\flecs\CMakeFiles\install\local.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# C:/Users/sawye/Develop/Game/dep/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for glad-generate-files
+
+build dep\glad\glad-generate-files: phony dep\glad\CMakeFiles\glad-generate-files dep\glad\include\glad\glad.h dep\glad\src\glad.c
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target glad
+
+
+#############################################
+# Order-only phony target for glad
+
+build cmake_object_order_depends_target_glad: phony || dep\glad\glad-generate-files dep\glad\include\glad\glad.h dep\glad\src\glad.c
+
+build dep\glad\CMakeFiles\glad.dir\src\glad.c.obj: C_COMPILER__glad_Debug C$:\Users\sawye\Develop\Game\build\dep\glad\src\glad.c || cmake_object_order_depends_target_glad
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\build\dep\glad\include
+  OBJECT_DIR = dep\glad\CMakeFiles\glad.dir
+  OBJECT_FILE_DIR = dep\glad\CMakeFiles\glad.dir\src
+  TARGET_COMPILE_PDB = dep\glad\CMakeFiles\glad.dir\glad.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glad.pdb
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target glad
+
+
+#############################################
+# Link the static library C:\Users\sawye\Develop\Game\lib\glad.lib
+
+build C$:\Users\sawye\Develop\Game\lib\glad.lib: C_STATIC_LIBRARY_LINKER__glad_Debug dep\glad\CMakeFiles\glad.dir\src\glad.c.obj || dep\glad\glad-generate-files
+  LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd
+  LINK_FLAGS = /machine:x64
+  OBJECT_DIR = dep\glad\CMakeFiles\glad.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_COMPILE_PDB = dep\glad\CMakeFiles\glad.dir\glad.pdb
+  TARGET_FILE = C:\Users\sawye\Develop\Game\lib\glad.lib
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glad.pdb
+
+
+#############################################
+# Utility command for edit_cache
+
+build dep\glad\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glad && "C:\Program Files\CMake\bin\cmake-gui.exe" -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build dep\glad\edit_cache: phony dep\glad\CMakeFiles\edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build dep\glad\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glad && "C:\Program Files\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build dep\glad\rebuild_cache: phony dep\glad\CMakeFiles\rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build dep\glad\list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build dep\glad\CMakeFiles\install.util: CUSTOM_COMMAND dep\glad\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glad && "C:\Program Files\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build dep\glad\install: phony dep\glad\CMakeFiles\install.util
+
+
+#############################################
+# Utility command for install/local
+
+build dep\glad\CMakeFiles\install\local.util: CUSTOM_COMMAND dep\glad\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glad && "C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build dep\glad\install\local: phony dep\glad\CMakeFiles\install\local.util
+
+
+#############################################
+# Phony custom command for dep\glad\CMakeFiles\glad-generate-files
+
+build dep\glad\CMakeFiles\glad-generate-files | ${cmake_ninja_workdir}dep\glad\CMakeFiles\glad-generate-files: phony dep\glad\include\glad\glad.h dep\glad\src\glad.c
+
+
+#############################################
+# Custom command for dep\glad\include\glad\glad.h
+
+build dep\glad\include\glad\glad.h dep\glad\src\glad.c | ${cmake_ninja_workdir}dep\glad\include\glad\glad.h ${cmake_ninja_workdir}dep\glad\src\glad.c: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\dep\glad && C:\msys64\mingw64\bin\python3.9.exe -m glad --profile=compatibility --out-path=C:/Users/sawye/Develop/Game/build/dep/glad --api= --generator=c --extensions= --spec=gl"
+  DESC = Generating GLAD
+  restat = 1
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# C:/Users/sawye/Develop/Game/dep/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for uninstall
+
+build dep\glfw\uninstall: phony dep\glfw\CMakeFiles\uninstall
+
+
+#############################################
+# Utility command for edit_cache
+
+build dep\glfw\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glfw && "C:\Program Files\CMake\bin\cmake-gui.exe" -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build dep\glfw\edit_cache: phony dep\glfw\CMakeFiles\edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build dep\glfw\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glfw && "C:\Program Files\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build dep\glfw\rebuild_cache: phony dep\glfw\CMakeFiles\rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build dep\glfw\list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build dep\glfw\CMakeFiles\install.util: CUSTOM_COMMAND dep\glfw\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glfw && "C:\Program Files\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build dep\glfw\install: phony dep\glfw\CMakeFiles\install.util
+
+
+#############################################
+# Utility command for install/local
+
+build dep\glfw\CMakeFiles\install\local.util: CUSTOM_COMMAND dep\glfw\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glfw && "C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build dep\glfw\install\local: phony dep\glfw\CMakeFiles\install\local.util
+
+
+#############################################
+# Custom command for dep\glfw\CMakeFiles\uninstall
+
+build dep\glfw\CMakeFiles\uninstall | ${cmake_ninja_workdir}dep\glfw\CMakeFiles\uninstall: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glfw && "C:\Program Files\CMake\bin\cmake.exe" -P C:/Users/sawye/Develop/Game/build/dep/glfw/cmake_uninstall.cmake"
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# C:/Users/sawye/Develop/Game/dep/glfw/CMakeLists.txt
+# =============================================================================
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target glfw
+
+
+#############################################
+# Order-only phony target for glfw
+
+build cmake_object_order_depends_target_glfw: phony || dep\glfw\src\CMakeFiles\glfw.dir
+
+build dep\glfw\src\CMakeFiles\glfw.dir\context.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\context.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\init.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\init.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\input.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\input.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\monitor.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\monitor.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\platform.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\platform.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\vulkan.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\vulkan.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\window.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\window.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\egl_context.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\egl_context.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\osmesa_context.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\osmesa_context.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\null_init.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\null_init.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\null_monitor.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\null_monitor.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\null_window.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\null_window.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\null_joystick.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\null_joystick.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\win32_module.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\win32_module.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\win32_time.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\win32_time.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\win32_thread.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\win32_thread.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\win32_init.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\win32_init.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\win32_joystick.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\win32_joystick.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\win32_monitor.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\win32_monitor.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\win32_window.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\win32_window.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+build dep\glfw\src\CMakeFiles\glfw.dir\wgl_context.c.obj: C_COMPILER__glfw_Debug C$:\Users\sawye\Develop\Game\dep\glfw\src\wgl_context.c || cmake_object_order_depends_target_glfw
+  DEFINES = -DUNICODE -D_CRT_SECURE_NO_WARNINGS -D_GLFW_WIN32 -D_UNICODE
+  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd /std:c++17 /W3
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\dep\glfw\src -IC:\Users\sawye\Develop\Game\build\dep\glfw\src
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  OBJECT_FILE_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target glfw
+
+
+#############################################
+# Link the static library C:\Users\sawye\Develop\Game\lib\glfw3.lib
+
+build C$:\Users\sawye\Develop\Game\lib\glfw3.lib: C_STATIC_LIBRARY_LINKER__glfw_Debug dep\glfw\src\CMakeFiles\glfw.dir\context.c.obj dep\glfw\src\CMakeFiles\glfw.dir\init.c.obj dep\glfw\src\CMakeFiles\glfw.dir\input.c.obj dep\glfw\src\CMakeFiles\glfw.dir\monitor.c.obj dep\glfw\src\CMakeFiles\glfw.dir\platform.c.obj dep\glfw\src\CMakeFiles\glfw.dir\vulkan.c.obj dep\glfw\src\CMakeFiles\glfw.dir\window.c.obj dep\glfw\src\CMakeFiles\glfw.dir\egl_context.c.obj dep\glfw\src\CMakeFiles\glfw.dir\osmesa_context.c.obj dep\glfw\src\CMakeFiles\glfw.dir\null_init.c.obj dep\glfw\src\CMakeFiles\glfw.dir\null_monitor.c.obj dep\glfw\src\CMakeFiles\glfw.dir\null_window.c.obj dep\glfw\src\CMakeFiles\glfw.dir\null_joystick.c.obj dep\glfw\src\CMakeFiles\glfw.dir\win32_module.c.obj dep\glfw\src\CMakeFiles\glfw.dir\win32_time.c.obj dep\glfw\src\CMakeFiles\glfw.dir\win32_thread.c.obj dep\glfw\src\CMakeFiles\glfw.dir\win32_init.c.obj dep\glfw\src\CMakeFiles\glfw.dir\win32_joystick.c.obj dep\glfw\src\CMakeFiles\glfw.dir\win32_monitor.c.obj dep\glfw\src\CMakeFiles\glfw.dir\win32_window.c.obj dep\glfw\src\CMakeFiles\glfw.dir\wgl_context.c.obj
+  LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd
+  LINK_FLAGS = /machine:x64
+  OBJECT_DIR = dep\glfw\src\CMakeFiles\glfw.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_COMPILE_PDB = dep\glfw\src\CMakeFiles\glfw.dir\glfw.pdb
+  TARGET_FILE = C:\Users\sawye\Develop\Game\lib\glfw3.lib
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\glfw3.pdb
+
+
+#############################################
+# Utility command for update_mappings
+
+build dep\glfw\src\update_mappings: phony dep\glfw\src\CMakeFiles\update_mappings
+
+
+#############################################
+# Utility command for edit_cache
+
+build dep\glfw\src\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glfw\src && "C:\Program Files\CMake\bin\cmake-gui.exe" -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build dep\glfw\src\edit_cache: phony dep\glfw\src\CMakeFiles\edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build dep\glfw\src\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glfw\src && "C:\Program Files\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build dep\glfw\src\rebuild_cache: phony dep\glfw\src\CMakeFiles\rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build dep\glfw\src\list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build dep\glfw\src\CMakeFiles\install.util: CUSTOM_COMMAND dep\glfw\src\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glfw\src && "C:\Program Files\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build dep\glfw\src\install: phony dep\glfw\src\CMakeFiles\install.util
+
+
+#############################################
+# Utility command for install/local
+
+build dep\glfw\src\CMakeFiles\install\local.util: CUSTOM_COMMAND dep\glfw\src\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glfw\src && "C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build dep\glfw\src\install\local: phony dep\glfw\src\CMakeFiles\install\local.util
+
+
+#############################################
+# Custom command for dep\glfw\src\CMakeFiles\update_mappings
+
+build dep\glfw\src\CMakeFiles\update_mappings | ${cmake_ninja_workdir}dep\glfw\src\CMakeFiles\update_mappings: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\dep\glfw\src && "C:\Program Files\CMake\bin\cmake.exe" -P C:/Users/sawye/Develop/Game/dep/glfw/CMake/GenerateMappings.cmake mappings.h.in mappings.h"
+  DESC = Updating gamepad mappings from upstream repository
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# C:/Users/sawye/Develop/Game/dep/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for edit_cache
+
+build dep\glm\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glm && "C:\Program Files\CMake\bin\cmake-gui.exe" -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build dep\glm\edit_cache: phony dep\glm\CMakeFiles\edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build dep\glm\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glm && "C:\Program Files\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build dep\glm\rebuild_cache: phony dep\glm\CMakeFiles\rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build dep\glm\list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build dep\glm\CMakeFiles\install.util: CUSTOM_COMMAND dep\glm\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glm && "C:\Program Files\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build dep\glm\install: phony dep\glm\CMakeFiles\install.util
+
+
+#############################################
+# Utility command for install/local
+
+build dep\glm\CMakeFiles\install\local.util: CUSTOM_COMMAND dep\glm\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glm && "C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build dep\glm\install\local: phony dep\glm\CMakeFiles\install\local.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# C:/Users/sawye/Develop/Game/dep/glm/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for edit_cache
+
+build dep\glm\glm\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glm\glm && "C:\Program Files\CMake\bin\cmake-gui.exe" -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake cache editor...
+  pool = console
+  restat = 1
+
+build dep\glm\glm\edit_cache: phony dep\glm\glm\CMakeFiles\edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build dep\glm\glm\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glm\glm && "C:\Program Files\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\sawye\Develop\Game -BC:\Users\sawye\Develop\Game\build"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build dep\glm\glm\rebuild_cache: phony dep\glm\glm\CMakeFiles\rebuild_cache.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build dep\glm\glm\list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build dep\glm\glm\CMakeFiles\install.util: CUSTOM_COMMAND dep\glm\glm\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glm\glm && "C:\Program Files\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build dep\glm\glm\install: phony dep\glm\glm\CMakeFiles\install.util
+
+
+#############################################
+# Utility command for install/local
+
+build dep\glm\glm\CMakeFiles\install\local.util: CUSTOM_COMMAND dep\glm\glm\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\dep\glm\glm && "C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build dep\glm\glm\install\local: phony dep\glm\glm\CMakeFiles\install\local.util
+
 # =============================================================================
 # Write statements declared in CMakeLists.txt:
 # C:/Users/sawye/Develop/Game/CMakeLists.txt
@@ -76,31 +2009,51 @@ build rebuild_cache: phony CMakeFiles\rebuild_cache.util
 #############################################
 # Order-only phony target for spock_framework
 
-build cmake_object_order_depends_target_spock_framework: phony || framework\CMakeFiles\spock_framework.dir
+build cmake_object_order_depends_target_spock_framework: phony || cmake_object_order_depends_target_flecs cmake_object_order_depends_target_glad cmake_object_order_depends_target_glfw
 
 build framework\CMakeFiles\spock_framework.dir\framework.cpp.obj: CXX_COMPILER__spock_framework_Debug C$:\Users\sawye\Develop\Game\framework\framework.cpp || cmake_object_order_depends_target_spock_framework
-  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\build\dep\glad\include -IC:\Users\sawye\Develop\Game\dep\flecs\include -IC:\Users\sawye\Develop\Game\dep\glm
   OBJECT_DIR = framework\CMakeFiles\spock_framework.dir
   OBJECT_FILE_DIR = framework\CMakeFiles\spock_framework.dir
   TARGET_COMPILE_PDB = framework\CMakeFiles\spock_framework.dir\spock_framework.pdb
   TARGET_PDB = C:\Users\sawye\Develop\Game\lib\spock_framework.pdb
 
 build framework\CMakeFiles\spock_framework.dir\base.cpp.obj: CXX_COMPILER__spock_framework_Debug C$:\Users\sawye\Develop\Game\framework\base.cpp || cmake_object_order_depends_target_spock_framework
-  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\build\dep\glad\include -IC:\Users\sawye\Develop\Game\dep\flecs\include -IC:\Users\sawye\Develop\Game\dep\glm
   OBJECT_DIR = framework\CMakeFiles\spock_framework.dir
   OBJECT_FILE_DIR = framework\CMakeFiles\spock_framework.dir
   TARGET_COMPILE_PDB = framework\CMakeFiles\spock_framework.dir\spock_framework.pdb
   TARGET_PDB = C:\Users\sawye\Develop\Game\lib\spock_framework.pdb
 
 build framework\CMakeFiles\spock_framework.dir\entity.cpp.obj: CXX_COMPILER__spock_framework_Debug C$:\Users\sawye\Develop\Game\framework\entity.cpp || cmake_object_order_depends_target_spock_framework
-  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\build\dep\glad\include -IC:\Users\sawye\Develop\Game\dep\flecs\include -IC:\Users\sawye\Develop\Game\dep\glm
   OBJECT_DIR = framework\CMakeFiles\spock_framework.dir
   OBJECT_FILE_DIR = framework\CMakeFiles\spock_framework.dir
   TARGET_COMPILE_PDB = framework\CMakeFiles\spock_framework.dir\spock_framework.pdb
   TARGET_PDB = C:\Users\sawye\Develop\Game\lib\spock_framework.pdb
 
 build framework\CMakeFiles\spock_framework.dir\renderer.cpp.obj: CXX_COMPILER__spock_framework_Debug C$:\Users\sawye\Develop\Game\framework\renderer.cpp || cmake_object_order_depends_target_spock_framework
-  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\build\dep\glad\include -IC:\Users\sawye\Develop\Game\dep\flecs\include -IC:\Users\sawye\Develop\Game\dep\glm
+  OBJECT_DIR = framework\CMakeFiles\spock_framework.dir
+  OBJECT_FILE_DIR = framework\CMakeFiles\spock_framework.dir
+  TARGET_COMPILE_PDB = framework\CMakeFiles\spock_framework.dir\spock_framework.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\spock_framework.pdb
+
+build framework\CMakeFiles\spock_framework.dir\window.cpp.obj: CXX_COMPILER__spock_framework_Debug C$:\Users\sawye\Develop\Game\framework\window.cpp || cmake_object_order_depends_target_spock_framework
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\build\dep\glad\include -IC:\Users\sawye\Develop\Game\dep\flecs\include -IC:\Users\sawye\Develop\Game\dep\glm
+  OBJECT_DIR = framework\CMakeFiles\spock_framework.dir
+  OBJECT_FILE_DIR = framework\CMakeFiles\spock_framework.dir
+  TARGET_COMPILE_PDB = framework\CMakeFiles\spock_framework.dir\spock_framework.pdb
+  TARGET_PDB = C:\Users\sawye\Develop\Game\lib\spock_framework.pdb
+
+build framework\CMakeFiles\spock_framework.dir\debugger.cpp.obj: CXX_COMPILER__spock_framework_Debug C$:\Users\sawye\Develop\Game\framework\debugger.cpp || cmake_object_order_depends_target_spock_framework
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\build\dep\glad\include -IC:\Users\sawye\Develop\Game\dep\flecs\include -IC:\Users\sawye\Develop\Game\dep\glm
   OBJECT_DIR = framework\CMakeFiles\spock_framework.dir
   OBJECT_FILE_DIR = framework\CMakeFiles\spock_framework.dir
   TARGET_COMPILE_PDB = framework\CMakeFiles\spock_framework.dir\spock_framework.pdb
@@ -114,9 +2067,9 @@ build framework\CMakeFiles\spock_framework.dir\renderer.cpp.obj: CXX_COMPILER__s
 #############################################
 # Link the static library C:\Users\sawye\Develop\Game\lib\spock_framework.lib
 
-build C$:\Users\sawye\Develop\Game\lib\spock_framework.lib: CXX_STATIC_LIBRARY_LINKER__spock_framework_Debug framework\CMakeFiles\spock_framework.dir\framework.cpp.obj framework\CMakeFiles\spock_framework.dir\base.cpp.obj framework\CMakeFiles\spock_framework.dir\entity.cpp.obj framework\CMakeFiles\spock_framework.dir\renderer.cpp.obj
+build C$:\Users\sawye\Develop\Game\lib\spock_framework.lib: CXX_STATIC_LIBRARY_LINKER__spock_framework_Debug framework\CMakeFiles\spock_framework.dir\framework.cpp.obj framework\CMakeFiles\spock_framework.dir\base.cpp.obj framework\CMakeFiles\spock_framework.dir\entity.cpp.obj framework\CMakeFiles\spock_framework.dir\renderer.cpp.obj framework\CMakeFiles\spock_framework.dir\window.cpp.obj framework\CMakeFiles\spock_framework.dir\debugger.cpp.obj || C$:\Users\sawye\Develop\Game\game\flecs.dll C$:\Users\sawye\Develop\Game\lib\glad.lib C$:\Users\sawye\Develop\Game\lib\glfw3.lib
   LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  LINK_FLAGS = /machine:X86
+  LINK_FLAGS = /machine:x64
   OBJECT_DIR = framework\CMakeFiles\spock_framework.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -148,6 +2101,36 @@ build framework\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
 
 build framework\rebuild_cache: phony framework\CMakeFiles\rebuild_cache.util
 
+
+#############################################
+# Utility command for list_install_components
+
+build framework\list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build framework\CMakeFiles\install.util: CUSTOM_COMMAND framework\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\framework && "C:\Program Files\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build framework\install: phony framework\CMakeFiles\install.util
+
+
+#############################################
+# Utility command for install/local
+
+build framework\CMakeFiles\install\local.util: CUSTOM_COMMAND framework\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\framework && "C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build framework\install\local: phony framework\CMakeFiles\install\local.util
+
 # =============================================================================
 # Write statements declared in CMakeLists.txt:
 # C:/Users/sawye/Develop/Game/CMakeLists.txt
@@ -160,35 +2143,35 @@ build framework\rebuild_cache: phony framework\CMakeFiles\rebuild_cache.util
 #############################################
 # Order-only phony target for spock_engine
 
-build cmake_object_order_depends_target_spock_engine: phony || cmake_object_order_depends_target_spock_framework
+build cmake_object_order_depends_target_spock_engine: phony || cmake_object_order_depends_target_flecs cmake_object_order_depends_target_glad cmake_object_order_depends_target_glfw cmake_object_order_depends_target_spock_framework
 
 build engine\CMakeFiles\spock_engine.dir\engine.cpp.obj: CXX_COMPILER__spock_engine_Debug C$:\Users\sawye\Develop\Game\engine\engine.cpp || cmake_object_order_depends_target_spock_engine
-  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -IC:\Users\sawye\Develop\Game\framework
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\framework -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\build\dep\glad\include -IC:\Users\sawye\Develop\Game\dep\flecs\include -IC:\Users\sawye\Develop\Game\dep\glm
   OBJECT_DIR = engine\CMakeFiles\spock_engine.dir
   OBJECT_FILE_DIR = engine\CMakeFiles\spock_engine.dir
   TARGET_COMPILE_PDB = engine\CMakeFiles\spock_engine.dir\spock_engine.pdb
   TARGET_PDB = C:\Users\sawye\Develop\Game\lib\spock_engine.pdb
 
 build engine\CMakeFiles\spock_engine.dir\messages.cpp.obj: CXX_COMPILER__spock_engine_Debug C$:\Users\sawye\Develop\Game\engine\messages.cpp || cmake_object_order_depends_target_spock_engine
-  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -IC:\Users\sawye\Develop\Game\framework
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\framework -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\build\dep\glad\include -IC:\Users\sawye\Develop\Game\dep\flecs\include -IC:\Users\sawye\Develop\Game\dep\glm
   OBJECT_DIR = engine\CMakeFiles\spock_engine.dir
   OBJECT_FILE_DIR = engine\CMakeFiles\spock_engine.dir
   TARGET_COMPILE_PDB = engine\CMakeFiles\spock_engine.dir\spock_engine.pdb
   TARGET_PDB = C:\Users\sawye\Develop\Game\lib\spock_engine.pdb
 
 build engine\CMakeFiles\spock_engine.dir\systems.cpp.obj: CXX_COMPILER__spock_engine_Debug C$:\Users\sawye\Develop\Game\engine\systems.cpp || cmake_object_order_depends_target_spock_engine
-  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -IC:\Users\sawye\Develop\Game\framework
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\framework -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\build\dep\glad\include -IC:\Users\sawye\Develop\Game\dep\flecs\include -IC:\Users\sawye\Develop\Game\dep\glm
   OBJECT_DIR = engine\CMakeFiles\spock_engine.dir
   OBJECT_FILE_DIR = engine\CMakeFiles\spock_engine.dir
   TARGET_COMPILE_PDB = engine\CMakeFiles\spock_engine.dir\spock_engine.pdb
   TARGET_PDB = C:\Users\sawye\Develop\Game\lib\spock_engine.pdb
 
 build engine\CMakeFiles\spock_engine.dir\GUI.cpp.obj: CXX_COMPILER__spock_engine_Debug C$:\Users\sawye\Develop\Game\engine\GUI.cpp || cmake_object_order_depends_target_spock_engine
-  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -IC:\Users\sawye\Develop\Game\framework
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\framework -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\build\dep\glad\include -IC:\Users\sawye\Develop\Game\dep\flecs\include -IC:\Users\sawye\Develop\Game\dep\glm
   OBJECT_DIR = engine\CMakeFiles\spock_engine.dir
   OBJECT_FILE_DIR = engine\CMakeFiles\spock_engine.dir
   TARGET_COMPILE_PDB = engine\CMakeFiles\spock_engine.dir\spock_engine.pdb
@@ -202,9 +2185,9 @@ build engine\CMakeFiles\spock_engine.dir\GUI.cpp.obj: CXX_COMPILER__spock_engine
 #############################################
 # Link the static library C:\Users\sawye\Develop\Game\lib\spock_engine.lib
 
-build C$:\Users\sawye\Develop\Game\lib\spock_engine.lib: CXX_STATIC_LIBRARY_LINKER__spock_engine_Debug engine\CMakeFiles\spock_engine.dir\engine.cpp.obj engine\CMakeFiles\spock_engine.dir\messages.cpp.obj engine\CMakeFiles\spock_engine.dir\systems.cpp.obj engine\CMakeFiles\spock_engine.dir\GUI.cpp.obj || C$:\Users\sawye\Develop\Game\lib\spock_framework.lib
+build C$:\Users\sawye\Develop\Game\lib\spock_engine.lib: CXX_STATIC_LIBRARY_LINKER__spock_engine_Debug engine\CMakeFiles\spock_engine.dir\engine.cpp.obj engine\CMakeFiles\spock_engine.dir\messages.cpp.obj engine\CMakeFiles\spock_engine.dir\systems.cpp.obj engine\CMakeFiles\spock_engine.dir\GUI.cpp.obj || C$:\Users\sawye\Develop\Game\game\flecs.dll C$:\Users\sawye\Develop\Game\lib\glad.lib C$:\Users\sawye\Develop\Game\lib\glfw3.lib C$:\Users\sawye\Develop\Game\lib\spock_framework.lib
   LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  LINK_FLAGS = /machine:X86
+  LINK_FLAGS = /machine:x64
   OBJECT_DIR = engine\CMakeFiles\spock_engine.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -236,6 +2219,36 @@ build engine\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
 
 build engine\rebuild_cache: phony engine\CMakeFiles\rebuild_cache.util
 
+
+#############################################
+# Utility command for list_install_components
+
+build engine\list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build engine\CMakeFiles\install.util: CUSTOM_COMMAND engine\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\engine && "C:\Program Files\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build engine\install: phony engine\CMakeFiles\install.util
+
+
+#############################################
+# Utility command for install/local
+
+build engine\CMakeFiles\install\local.util: CUSTOM_COMMAND engine\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\engine && "C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build engine\install\local: phony engine\CMakeFiles\install\local.util
+
 # =============================================================================
 # Write statements declared in CMakeLists.txt:
 # C:/Users/sawye/Develop/Game/CMakeLists.txt
@@ -248,11 +2261,11 @@ build engine\rebuild_cache: phony engine\CMakeFiles\rebuild_cache.util
 #############################################
 # Order-only phony target for space_game2d
 
-build cmake_object_order_depends_target_space_game2d: phony || cmake_object_order_depends_target_spock_engine cmake_object_order_depends_target_spock_framework
+build cmake_object_order_depends_target_space_game2d: phony || cmake_object_order_depends_target_flecs cmake_object_order_depends_target_glad cmake_object_order_depends_target_glfw cmake_object_order_depends_target_spock_engine cmake_object_order_depends_target_spock_framework
 
 build source\CMakeFiles\space_game2d.dir\main.cpp.obj: CXX_COMPILER__space_game2d_Debug C$:\Users\sawye\Develop\Game\source\main.cpp || cmake_object_order_depends_target_space_game2d
-  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -IC:\Users\sawye\Develop\Game\source\..\depend -IC:\Users\sawye\Develop\Game\engine -IC:\Users\sawye\Develop\Game\framework
+  FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd /std:c++17
+  INCLUDES = -IC:\Users\sawye\Develop\Game\source\..\depend -IC:\Users\sawye\Develop\Game\engine -IC:\Users\sawye\Develop\Game\framework -IC:\Users\sawye\Develop\Game\dep\glfw\include -IC:\Users\sawye\Develop\Game\build\dep\glad\include -IC:\Users\sawye\Develop\Game\dep\flecs\include -IC:\Users\sawye\Develop\Game\dep\glm
   OBJECT_DIR = source\CMakeFiles\space_game2d.dir
   OBJECT_FILE_DIR = source\CMakeFiles\space_game2d.dir
   TARGET_COMPILE_PDB = source\CMakeFiles\space_game2d.dir\
@@ -266,10 +2279,10 @@ build source\CMakeFiles\space_game2d.dir\main.cpp.obj: CXX_COMPILER__space_game2
 #############################################
 # Link the executable C:\Users\sawye\Develop\Game\game\space_game2d.exe
 
-build C$:\Users\sawye\Develop\Game\game\space_game2d.exe: CXX_EXECUTABLE_LINKER__space_game2d_Debug source\CMakeFiles\space_game2d.dir\main.cpp.obj | C$:\Users\sawye\Develop\Game\lib\spock_engine.lib C$:\Users\sawye\Develop\Game\lib\spock_framework.lib || C$:\Users\sawye\Develop\Game\lib\spock_engine.lib C$:\Users\sawye\Develop\Game\lib\spock_framework.lib
+build C$:\Users\sawye\Develop\Game\game\space_game2d.exe: CXX_EXECUTABLE_LINKER__space_game2d_Debug source\CMakeFiles\space_game2d.dir\main.cpp.obj | C$:\Users\sawye\Develop\Game\lib\spock_engine.lib C$:\Users\sawye\Develop\Game\lib\spock_framework.lib C$:\Users\sawye\Develop\Game\lib\glfw3.lib C$:\Users\sawye\Develop\Game\lib\glad.lib C$:\Users\sawye\Develop\Game\lib\flecs.lib || C$:\Users\sawye\Develop\Game\game\flecs.dll C$:\Users\sawye\Develop\Game\lib\glad.lib C$:\Users\sawye\Develop\Game\lib\glfw3.lib C$:\Users\sawye\Develop\Game\lib\spock_engine.lib C$:\Users\sawye\Develop\Game\lib\spock_framework.lib
   FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  LINK_FLAGS = /machine:X86 /debug /INCREMENTAL /subsystem:console
-  LINK_LIBRARIES = C:\Users\sawye\Develop\Game\lib\spock_engine.lib  C:\Users\sawye\Develop\Game\lib\spock_framework.lib  glfw.lib  glad.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
+  LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
+  LINK_LIBRARIES = C:\Users\sawye\Develop\Game\lib\spock_engine.lib  C:\Users\sawye\Develop\Game\lib\spock_framework.lib  C:\Users\sawye\Develop\Game\lib\glfw3.lib  C:\Users\sawye\Develop\Game\lib\glad.lib  C:\Users\sawye\Develop\Game\lib\flecs.lib  wsock32.lib  ws2_32.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
   OBJECT_DIR = source\CMakeFiles\space_game2d.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -302,8 +2315,56 @@ build source\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
 
 build source\rebuild_cache: phony source\CMakeFiles\rebuild_cache.util
 
+
+#############################################
+# Utility command for list_install_components
+
+build source\list_install_components: phony
+
+
+#############################################
+# Utility command for install
+
+build source\CMakeFiles\install.util: CUSTOM_COMMAND source\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\source && "C:\Program Files\CMake\bin\cmake.exe" -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build source\install: phony source\CMakeFiles\install.util
+
+
+#############################################
+# Utility command for install/local
+
+build source\CMakeFiles\install\local.util: CUSTOM_COMMAND source\all
+  COMMAND = cmd.exe /C "cd /D C:\Users\sawye\Develop\Game\build\source && "C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build source\install\local: phony source\CMakeFiles\install\local.util
+
 # =============================================================================
 # Target aliases.
+
+build flecs: phony C$:\Users\sawye\Develop\Game\game\flecs.dll
+
+build flecs.dll: phony C$:\Users\sawye\Develop\Game\game\flecs.dll
+
+build flecs_static: phony C$:\Users\sawye\Develop\Game\lib\flecs_static.lib
+
+build flecs_static.lib: phony C$:\Users\sawye\Develop\Game\lib\flecs_static.lib
+
+build glad: phony C$:\Users\sawye\Develop\Game\lib\glad.lib
+
+build glad-generate-files: phony dep\glad\glad-generate-files
+
+build glad.lib: phony C$:\Users\sawye\Develop\Game\lib\glad.lib
+
+build glfw: phony C$:\Users\sawye\Develop\Game\lib\glfw3.lib
+
+build glfw3.lib: phony C$:\Users\sawye\Develop\Game\lib\glfw3.lib
 
 build space_game2d: phony C$:\Users\sawye\Develop\Game\game\space_game2d.exe
 
@@ -317,6 +2378,10 @@ build spock_framework: phony C$:\Users\sawye\Develop\Game\lib\spock_framework.li
 
 build spock_framework.lib: phony C$:\Users\sawye\Develop\Game\lib\spock_framework.lib
 
+build uninstall: phony dep\glfw\uninstall
+
+build update_mappings: phony dep\glfw\src\update_mappings
+
 # =============================================================================
 # Folder targets.
 
@@ -325,7 +2390,56 @@ build spock_framework.lib: phony C$:\Users\sawye\Develop\Game\lib\spock_framewor
 #############################################
 # Folder: C:/Users/sawye/Develop/Game/build
 
-build all: phony framework\all engine\all source\all
+build all: phony dep\all framework\all engine\all source\all
+
+# =============================================================================
+
+#############################################
+# Folder: C:/Users/sawye/Develop/Game/build/dep
+
+build dep\all: phony dep\flecs\all dep\glad\all dep\glfw\all dep\glm\all
+
+# =============================================================================
+
+#############################################
+# Folder: C:/Users/sawye/Develop/Game/build/dep/flecs
+
+build dep\flecs\all: phony C$:\Users\sawye\Develop\Game\game\flecs.dll C$:\Users\sawye\Develop\Game\lib\flecs_static.lib
+
+# =============================================================================
+
+#############################################
+# Folder: C:/Users/sawye/Develop/Game/build/dep/glad
+
+build dep\glad\all: phony C$:\Users\sawye\Develop\Game\lib\glad.lib
+
+# =============================================================================
+
+#############################################
+# Folder: C:/Users/sawye/Develop/Game/build/dep/glfw
+
+build dep\glfw\all: phony dep\glfw\src\all
+
+# =============================================================================
+
+#############################################
+# Folder: C:/Users/sawye/Develop/Game/build/dep/glfw/src
+
+build dep\glfw\src\all: phony C$:\Users\sawye\Develop\Game\lib\glfw3.lib
+
+# =============================================================================
+
+#############################################
+# Folder: C:/Users/sawye/Develop/Game/build/dep/glm
+
+build dep\glm\all: phony dep\glm\glm\all
+
+# =============================================================================
+
+#############################################
+# Folder: C:/Users/sawye/Develop/Game/build/dep/glm/glm
+
+build dep\glm\glm\all: phony
 
 # =============================================================================
 
@@ -355,14 +2469,14 @@ build source\all: phony C$:\Users\sawye\Develop\Game\game\space_game2d.exe
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeCInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeCXXInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeCommonLanguageInclude.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeGenericSystem.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeInitializeConfigs.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeLanguageInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeRCInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInitialize.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\CMakeCommonCompilerMacros.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\MSVC-C.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\MSVC-CXX.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\MSVC.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows-MSVC-C.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows-MSVC-CXX.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows-MSVC.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\WindowsPaths.cmake C$:\Users\sawye\Develop\Game\CMakeLists.txt C$:\Users\sawye\Develop\Game\engine\CMakeLists.txt C$:\Users\sawye\Develop\Game\framework\CMakeLists.txt C$:\Users\sawye\Develop\Game\source\CMakeLists.txt CMakeCache.txt CMakeFiles\3.24.0-rc1\CMakeCCompiler.cmake CMakeFiles\3.24.0-rc1\CMakeCXXCompiler.cmake CMakeFiles\3.24.0-rc1\CMakeRCCompiler.cmake CMakeFiles\3.24.0-rc1\CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | C$:\Program$ Files\CMake\share\cmake-3.24\Modules\BasicConfigVersion-SameMajorVersion.cmake.in C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeCInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeCXXInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeCommonLanguageInclude.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeDependentOption.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeGenericSystem.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeInitializeConfigs.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeLanguageInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakePackageConfigHelpers.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeRCInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInitialize.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CheckCSourceCompiles.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CheckIncludeFile.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CheckLibraryExists.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\CMakeCommonCompilerMacros.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\MSVC-C.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\MSVC-CXX.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\MSVC.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\FindDoxygen.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\FindPackageHandleStandardArgs.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\FindPackageMessage.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\FindPython.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\FindPython\Support.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\FindThreads.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\GNUInstallDirs.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Internal\CheckSourceCompiles.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows-MSVC-C.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows-MSVC-CXX.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows-MSVC.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\WindowsPaths.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\WriteBasicConfigVersionFile.cmake C$:\Users\sawye\Develop\Game\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\flecs\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\flecs\cmake\target_default_compile_options.cmake C$:\Users\sawye\Develop\Game\dep\flecs\cmake\target_default_compile_warnings.cmake C$:\Users\sawye\Develop\Game\dep\glad\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\glfw\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\glfw\CMake\cmake_uninstall.cmake.in C$:\Users\sawye\Develop\Game\dep\glfw\CMake\glfw3.pc.in C$:\Users\sawye\Develop\Game\dep\glfw\CMake\glfw3Config.cmake.in C$:\Users\sawye\Develop\Game\dep\glfw\src\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\glm\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\glm\glm\CMakeLists.txt C$:\Users\sawye\Develop\Game\engine\CMakeLists.txt C$:\Users\sawye\Develop\Game\framework\CMakeLists.txt C$:\Users\sawye\Develop\Game\source\CMakeLists.txt CMakeCache.txt CMakeFiles\3.24.0-rc1\CMakeCCompiler.cmake CMakeFiles\3.24.0-rc1\CMakeCXXCompiler.cmake CMakeFiles\3.24.0-rc1\CMakeRCCompiler.cmake CMakeFiles\3.24.0-rc1\CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeCInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeCXXInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeCommonLanguageInclude.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeGenericSystem.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeInitializeConfigs.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeLanguageInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeRCInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInitialize.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\CMakeCommonCompilerMacros.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\MSVC-C.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\MSVC-CXX.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\MSVC.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows-MSVC-C.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows-MSVC-CXX.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows-MSVC.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\WindowsPaths.cmake C$:\Users\sawye\Develop\Game\CMakeLists.txt C$:\Users\sawye\Develop\Game\engine\CMakeLists.txt C$:\Users\sawye\Develop\Game\framework\CMakeLists.txt C$:\Users\sawye\Develop\Game\source\CMakeLists.txt CMakeCache.txt CMakeFiles\3.24.0-rc1\CMakeCCompiler.cmake CMakeFiles\3.24.0-rc1\CMakeCXXCompiler.cmake CMakeFiles\3.24.0-rc1\CMakeRCCompiler.cmake CMakeFiles\3.24.0-rc1\CMakeSystem.cmake: phony
+build C$:\Program$ Files\CMake\share\cmake-3.24\Modules\BasicConfigVersion-SameMajorVersion.cmake.in C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeCInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeCXXInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeCommonLanguageInclude.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeDependentOption.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeGenericSystem.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeInitializeConfigs.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeLanguageInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakePackageConfigHelpers.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeRCInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInformation.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CMakeSystemSpecificInitialize.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CheckCSourceCompiles.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CheckIncludeFile.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\CheckLibraryExists.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\CMakeCommonCompilerMacros.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\MSVC-C.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\MSVC-CXX.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Compiler\MSVC.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\FindDoxygen.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\FindPackageHandleStandardArgs.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\FindPackageMessage.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\FindPython.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\FindPython\Support.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\FindThreads.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\GNUInstallDirs.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Internal\CheckSourceCompiles.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows-MSVC-C.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows-MSVC-CXX.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows-MSVC.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\Windows.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\Platform\WindowsPaths.cmake C$:\Program$ Files\CMake\share\cmake-3.24\Modules\WriteBasicConfigVersionFile.cmake C$:\Users\sawye\Develop\Game\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\flecs\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\flecs\cmake\target_default_compile_options.cmake C$:\Users\sawye\Develop\Game\dep\flecs\cmake\target_default_compile_warnings.cmake C$:\Users\sawye\Develop\Game\dep\glad\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\glfw\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\glfw\CMake\cmake_uninstall.cmake.in C$:\Users\sawye\Develop\Game\dep\glfw\CMake\glfw3.pc.in C$:\Users\sawye\Develop\Game\dep\glfw\CMake\glfw3Config.cmake.in C$:\Users\sawye\Develop\Game\dep\glfw\src\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\glm\CMakeLists.txt C$:\Users\sawye\Develop\Game\dep\glm\glm\CMakeLists.txt C$:\Users\sawye\Develop\Game\engine\CMakeLists.txt C$:\Users\sawye\Develop\Game\framework\CMakeLists.txt C$:\Users\sawye\Develop\Game\source\CMakeLists.txt CMakeCache.txt CMakeFiles\3.24.0-rc1\CMakeCCompiler.cmake CMakeFiles\3.24.0-rc1\CMakeCXXCompiler.cmake CMakeFiles\3.24.0-rc1\CMakeRCCompiler.cmake CMakeFiles\3.24.0-rc1\CMakeSystem.cmake: phony
 
 
 #############################################
