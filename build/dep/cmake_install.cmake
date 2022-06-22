@@ -34,12 +34,12 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/sawye/Develop/Game/build/dep/flecs/cmake_install.cmake")
+  include("C:/Users/sawye/Develop/Game/build/dep/bgfx.cmake/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/Users/sawye/Develop/Game/build/dep/glad/cmake_install.cmake")
+  include("C:/Users/sawye/Develop/Game/build/dep/flecs/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)

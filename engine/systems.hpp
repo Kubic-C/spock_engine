@@ -1,47 +1,34 @@
 #pragma once
-#include "messages.hpp"
+#include "framework.hpp"
 
 namespace spk {
-    class system {
-    protected:
-        std::string name;
-        message_bus* bus;
-
-    public:
-        virtual void handle_message() {
-            assert(!("The use of the base system class is not allowed!"));
-        }
-
-        inline void set_bus(message_bus* bus) {
-            this->bus = bus;
-        }
+    struct message_tt {
+        uint32_t code; // message code
+        std::string str; // may be empty
     };
 
-    class console : public system  {
-    public:
-        void handle_message();
-        
-        void user_prompt();
+    struct system_tt {
+        std::string name;
+        std::queue<message_tt>* bus;
+
+        // called by system manager (part of game engine)
+        virtual void handle_message(message_tt& message) {};
+        virtual void init(void* data) {};
+        virtual void update() {};
+        virtual void tick() {};
+        virtual void free() {};
     };
 
     /* handles updating and keeping track of the active systems*/
-    class system_manager {
-    protected:
-        std::vector<system*> systems;
-        message_bus* bus;
+    struct system_manager_tt {
+        std::vector<system_tt*> systems;
+        std::queue<message_tt> messages;
 
-        void free_systems();
-    public:
-        void push_system(system* system);
+        void push_system(system_tt* system);
 
+        void msg_update();
         void update();
-
-        inline void set_buses(message_bus* bus) {
-            for(int i = 0; i < systems.size(); i++) {
-                systems[i]->set_bus(bus);
-            }
-
-            this->bus = bus;
-        }
+        void tick();
+        void free();
     };
 }

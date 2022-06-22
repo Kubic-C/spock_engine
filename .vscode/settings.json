@@ -66,6 +66,11 @@
         "ratio": "cpp",
         "sstream": "cpp",
         "stop_token": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "list": "cpp",
+        "xhash": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp",
+        "*.rh": "cpp"
     }
 }

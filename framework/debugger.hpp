@@ -15,19 +15,19 @@ namespace sfk {
         LOG_TYPE_ERROR
     };
 
-    class deubg_logger {
+    class debug_logger {
     public:
         struct log {
             std::string what;
             log_type type;
         };
 
-        template<typename ... Args>
-        void add_log(log_type type, Args&& ... _args) {
+        template<typename ... params>
+        void add_log(log_type type, const params& ... args) {
             std::stringstream sstream;
 
             sstream << "[" << type << ", SPOCK" << ", time(" << time(0) << ")]: ";
-            ((sstream << _args), ...);
+            ((sstream << args), ...);
 
             std::cout << sstream.str() << std::endl;
 
