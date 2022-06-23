@@ -14,8 +14,8 @@ namespace spk {
         // called by system manager (part of game engine)
         virtual void handle_message(message_tt& message) {};
         virtual void init(void* data) {};
-        virtual void update() {};
-        virtual void tick() {};
+        virtual void update(flecs::world& world) {};
+        virtual void tick(flecs::world& world) {};
         virtual void free() {};
     };
 
@@ -27,8 +27,8 @@ namespace spk {
         void push_system(system_tt* system);
 
         void msg_update();
-        void update();
-        void tick();
+        void update(flecs::world& world);
+        void tick(flecs::world& world);
         void free();
     };
 }

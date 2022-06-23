@@ -18,15 +18,15 @@ namespace spk {
         messages.pop();        
     }
 
-    void system_manager_tt::update() {
+    void system_manager_tt::update(flecs::world& world) {
         for(system_tt* sys : systems) {
-            sys->update();
+            sys->update(world);
         }
     }
 
-    void system_manager_tt::tick() {
+    void system_manager_tt::tick(flecs::world& world) {
         for(system_tt* sys : systems) {
-            sys->tick();
+            sys->tick(world);
         }
     }
 

@@ -1,6 +1,7 @@
 {
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "files.associations": {
+        "*.txt": "cmake",
         "array": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
@@ -71,6 +72,19 @@
         "xhash": "cpp",
         "set": "cpp",
         "unordered_set": "cpp",
-        "*.rh": "cpp"
+        "*.rh": "cpp",
+        "any": "cpp",
+        "bitset": "cpp",
+        "condition_variable": "cpp",
+        "optional": "cpp",
+        "regex": "cpp",
+        "future": "cpp",
+        "iomanip": "cpp",
+        "mutex": "cpp",
+        "semaphore": "cpp",
+        "cfenv": "cpp",
+        "cinttypes": "cpp",
+        "variant": "cpp",
+        "*.sh": "cpp"
     }
 }

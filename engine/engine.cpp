@@ -1,6 +1,15 @@
 #include "engine.hpp"
 
 namespace spk {
+    struct cool {
+        int x = 0;
+
+        cool()
+            : x(15)  {
+
+        }
+    };
+
     engine::engine() {
         sfk::zero<engine::time_tt>(&this->time);
     }
@@ -12,6 +21,9 @@ namespace spk {
     void engine::init(int w, int h, std::string title) {
         set_tick_speed(60);
 
+        flecs::entity e = world.entity().add<cool>();
+        flecs::entity_t entity = e.id();
+
         framework.init();
         window.init(w, h, title);
 
@@ -19,6 +31,7 @@ namespace spk {
         renderer_init.window = &window;
         renderer_init.logger = &framework.get_logger();
         renderer.init(&renderer_init);
+        renderer.name = "renderer2D";
 
         system_manager.push_system(&renderer);
     }
@@ -45,13 +58,13 @@ namespace spk {
             while(time.ticks_to_do >= 1.0f) {
                 time.ticks_to_do--;
 
-                system_manager.tick();
+                system_manager.tick(world);
                 time.ticks++;
             }
 
             {
                 update();
-                system_manager.update();
+                system_manager.update(world);
                 system_manager.msg_update();
                 time.frames++;
             }

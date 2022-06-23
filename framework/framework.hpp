@@ -30,7 +30,7 @@ namespace sfk {
 
         template<typename ... args>
         void log(log_type type, args&& ... _args) {
-            logger.add_log(type, _args);
+            logger.add_log(type, _args...);
         }
 
         debug_logger& get_logger() {

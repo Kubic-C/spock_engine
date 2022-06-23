@@ -19,11 +19,13 @@ namespace spk {
         void loop();
 
     private:
-        system_manager_tt system_manager;
         sfk::sfk framework;
         renderer2D_tt renderer;
         sfk::window window;
         
+        system_manager_tt system_manager;
+        flecs::world world;
+
         struct time_tt {
             int ticks, frames;
             int ticks_per_second;

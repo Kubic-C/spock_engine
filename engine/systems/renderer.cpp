@@ -1,4 +1,5 @@
 #include "renderer.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 
 static spk::renderer2D_tt::vertex s_cubeVertices[] =
 {
@@ -26,17 +27,16 @@ namespace spk {
         window->set_platform_data(&pd);
         window->get_size(&width, &height);
 
+        bgfx::renderFrame();
+
         bgfx::Init bgfx_init;
         bgfx_init.type = bgfx::RendererType::OpenGL;
-        bgfx_init.debug = true;
         bgfx_init.resolution.width = width;   
         bgfx_init.resolution.height = height;
         bgfx_init.resolution.reset = BGFX_RESET_VSYNC;
         bgfx::init(bgfx_init);
 
-        bgfx::setDebug(BGFX_DEBUG_TEXT);
-
-        bgfx::setViewClear(0, BGFX_CLEAR_COLOR, 0x443355FF, 1.0f, 0);
+        bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF, 1.0f, 0);
         bgfx::setViewRect(0, 0, 0, width, height);
 
         // weee woooo ///
@@ -47,34 +47,52 @@ namespace spk {
 
         triangle_buffer = bgfx::createVertexBuffer(bgfx::makeRef(s_cubeVertices, sizeof(s_cubeVertices)), triangle.layout);
         index_buffer = bgfx::createIndexBuffer(bgfx::makeRef(s_cubeTriList, sizeof(s_cubeTriList)));
-    
+
         bgfx::ShaderHandle vsh = sfk::load_custom_shader(*init_info->logger, "vs_cube.bin");
+        assert(vsh.idx != bgfx::kInvalidHandle);
         bgfx::ShaderHandle fsh = sfk::load_custom_shader(*init_info->logger, "fs_cube.bin");
+        assert(fsh.idx != bgfx::kInvalidHandle);
         triangle.program = bgfx::createProgram(vsh, fsh, true);
+        assert(triangle.program.idx != bgfx::kInvalidHandle);
     }
 
     void renderer2D_tt::render() { 
-        float mtx[16];
-        bx::mtxRotateY(mtx, 0.0f);
-        
-        // position x,y,z
-        mtx[12] = 0.0f;
-        mtx[13] = 0.0f;
-        mtx[14] = 0.0f;
-        
-        // Set model matrix for rendering.
-        bgfx::setTransform(mtx);
+        glm::mat4 model;
 
+        set_window_state();
+
+        model = glm::identity<glm::mat4>();
+        model = glm::translate(model, glm::vec3(100.0f + cos(glfwGetTime()), 100.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(50.0f));
+        model = glm::rotate(model, sinf((float)glfwGetTime()), glm::vec3(0.0f, 0.0f, 1.0f));
+        bgfx::setTransform(&model[0][0]);
+
+        bgfx::setState((0 | BGFX_STATE_WRITE_RGB | BGFX_STATE_WRITE_A | BGFX_STATE_WRITE_Z));
         bgfx::setVertexBuffer(0, triangle_buffer);
         bgfx::setIndexBuffer(index_buffer);
 
-        bgfx::setState(BGFX_STATE_DEFAULT);
-        
         bgfx::submit(0, triangle.program);
         bgfx::frame();
     }
 
-    void renderer2D_tt::update() {
+    void renderer2D_tt::set_window_state() {
+        glm::mat4 proj;
+        glm::mat4 view;
+        int width, height;
+
+        window->get_size(&width, &height);        
+        view = glm::identity<glm::mat4>();
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, 0.0f));
+        proj = glm::ortho(0.0f, 500.0f, 500.0f, 0.0f);
+
+        bgfx::setViewTransform(0, &view[0][0], &proj[0][0]);
+
+        bgfx::setViewRect(0, 0, 0, width, height);
+        bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF, 1.0f, 0);
+    }
+
+    void renderer2D_tt::update(flecs::world& world) {
+
         render();
     }
     

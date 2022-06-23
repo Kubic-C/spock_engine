@@ -13,10 +13,13 @@ namespace spk {
         renderer2D_tt();
 
         void init(void* data);
-        void update();
+        void update(flecs::world& world);
+        void tick(flecs::world& world) {}
         void free();
 
         void render();
+
+        void set_window_state();
 
         struct vertex {
             float x, y, z;

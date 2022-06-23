@@ -4,7 +4,7 @@
 
 int main() {
     spk::engine engine;
-    engine.init(1600, 900, "Cool 2D space game");
+    engine.init(500, 500, "Cool 2D space game");
 
     engine.loop();
 

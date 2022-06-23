@@ -1,7 +1,16 @@
 #include "window.hpp"
 
+#ifdef __linux__
+#define GLFW_EXPOSE_NATIVE_X11
+#define _getNativeWindow(c_window) glfwGetX11Window(c_window)
+#define _getNativeDisplay(c_window) glfwGetX11Display()
+#elif _WIN32
 #define GLFW_EXPOSE_NATIVE_WIN32
+#define _getNativeWindow(c_window) glfwGetWin32Window(c_window)
+#endif // X11
+
 #include "GLFW/glfw3native.h"
+
 
 namespace sfk {
     void _framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -21,11 +30,12 @@ namespace sfk {
     }
 
     void window::free() {
-        glfwDestroyWindow(c_window);
+        glfwDestroyWindow(c_window); 
     }
 
     void window::set_platform_data(bgfx::PlatformData* pd) {
-        pd->nwh = glfwGetWin32Window(c_window);
+        pd->nwh = (void*)(uintptr_t)_getNativeWindow(c_window);
+        pd->ndt = (void*)(uintptr_t)_getNativeDisplay(c_window);
         bgfx::setPlatformData(*pd);
     }
 }
