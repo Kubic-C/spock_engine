@@ -37,4 +37,6 @@ namespace sfk {
     private:
         std::queue<log> logs;
     };
+
+    inline debug_logger logger;
 }

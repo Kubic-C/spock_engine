@@ -1,45 +1,8 @@
 #include "render.hpp"
+#include "external/stb_image.h"
 
 namespace sfk {
-    bgfx::ShaderHandle load_shader(debug_logger& logger, const std::string& file_name) {
-        std::string file_path = "[NOT_LOADED]";
-        std::string file_data = "";
-        std::string line;
-        bgfx::ShaderHandle shader_handle = {};
-        const bgfx::Memory* mem; 
-
-        switch(bgfx::getRendererType())  {
-            case bgfx::RendererType::Noop:
-            case bgfx::RendererType::Direct3D9:  file_path = "shaders/dx9/";   break;
-            case bgfx::RendererType::Direct3D11:
-            case bgfx::RendererType::Direct3D12: file_path = "shaders/dx11/";  break;
-            case bgfx::RendererType::Gnm:        file_path = "shaders/pssl/";  break;
-            case bgfx::RendererType::Metal:      file_path = "shaders/metal/"; break;
-            case bgfx::RendererType::OpenGL:     file_path = "shaders/glsl/";  break;
-            case bgfx::RendererType::OpenGLES:   file_path = "shaders/essl/";  break;
-            case bgfx::RendererType::Vulkan:     file_path = "shaders/spirv/"; break;
-        } 
-        
-        file_path.append(file_name);
-
-        std::ifstream file(file_path, std::ios::binary);
-        if(file.bad() || !file.is_open()) {
-            logger.add_log(LOG_TYPE_WARNING, "could not load shader");
-            return shader_handle;
-        }
-
-        while(std::getline(file, line)) {
-            file_data += line + '\n';
-        }
-        file.close();
-
-        mem = bgfx::copy(file_data.data(), file_data.size() + 1);
-        shader_handle = bgfx::createShader(mem);
-
-        return shader_handle;
-    }
-
-    bgfx::ShaderHandle load_custom_shader(debug_logger& logger, const std::string& file_name) {
+    bgfx::ShaderHandle load_shader(const std::string& file_name) {
         char* data = new char[2048];
         std::ifstream file;
         size_t fileSize;
@@ -62,5 +25,32 @@ namespace sfk {
         bgfx::ShaderHandle handle = bgfx::createShader(mem);
 
         return handle;
+    }
+
+    bgfx::ProgramHandle load_program(const std::string& vs, const std::string& fs) {
+        bgfx::ShaderHandle vs_handle, fs_handle;
+        vs_handle = load_shader(vs);
+        assert(BGFX_HANDLE_VALID(vs_handle));
+        fs_handle = load_shader(fs);
+        assert(BGFX_HANDLE_VALID(fs_handle));
+
+        return bgfx::createProgram(vs_handle, fs_handle, true);
+    }
+
+    bool load_texture2D(const std::string& file_path, bgfx::TextureHandle& hdl) {
+        int x, y, channels;
+        void* data = stbi_load(file_path.c_str(), &x, &y, &channels, STBI_rgb_alpha);
+        const bgfx::Memory* tex_mem;
+
+        if(null) {
+            logger.add_log(LOG_TYPE_WARNING, "could not load texture: ", file_path);
+            return false;
+        }
+
+        tex_mem = bgfx::copy(data, x * y * channels);
+        hdl = bgfx::createTexture2D(x, y, false, 1, bgfx::TextureFormat::RGBA8, BGFX_SAMPLER_UVW_BORDER, tex_mem);
+        stbi_image_free(data);
+
+        return true;
     }
 }

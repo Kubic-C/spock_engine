@@ -4,22 +4,14 @@
 #include "debugger.hpp"
 #include <bx/math.h>
 
+#define BGFX_HANDLE_VALID(handle) (handle.idx != bgfx::kInvalidHandle)
+
 // utility render shit
 
 namespace sfk {
-    bgfx::ShaderHandle load_shader(debug_logger& logger, const std::string& file_name);
-    bgfx::ShaderHandle load_custom_shader(debug_logger& logger, const std::string& file_path);
+    bgfx::ShaderHandle load_shader(const std::string& file_path);
 
-    class matrix4x4 {
-        inline matrix4x4() {
-            identity();
-        }
+    bgfx::ProgramHandle load_program(const std::string& vs, const std::string& fs);
 
-        inline void identity() {
-            bx::mtxIdentity(mtx);
-        }
-
-
-        float mtx[16];
-    };
+    bool load_texture2D(const std::string& file_path, bgfx::TextureHandle& hdl);
 }

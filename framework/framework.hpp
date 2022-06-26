@@ -33,11 +33,6 @@ namespace sfk {
             logger.add_log(type, _args...);
         }
 
-        debug_logger& get_logger() {
-            return logger;
-        }
-
     private:
-        debug_logger logger;
     };
 }

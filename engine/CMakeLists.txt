@@ -10,7 +10,7 @@ target_sources(spock_engine PRIVATE
 
 target_sources(spock_engine PRIVATE
     "systems/renderer.hpp" "systems/renderer.cpp"
-    "systems/tile_manager.hpp" "systems/tile_manager.cpp")
+    "systems/tiles.hpp" "systems/tiles.cpp")
 
 target_sources(spock_engine PUBLIC
     "engine.hpp")

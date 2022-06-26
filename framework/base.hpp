@@ -3,9 +3,10 @@
 // dependencies 
 #include <flecs.h>
 #include <glm/glm.hpp>
+#include <GLFW/glfw3.h>
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
-#include <GLFW/glfw3.h>
+#include <bimg/bimg.h>
 
 // extra
 #include <cassert>

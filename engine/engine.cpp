@@ -1,15 +1,6 @@
 #include "engine.hpp"
 
 namespace spk {
-    struct cool {
-        int x = 0;
-
-        cool()
-            : x(15)  {
-
-        }
-    };
-
     engine::engine() {
         sfk::zero<engine::time_tt>(&this->time);
     }
@@ -21,15 +12,13 @@ namespace spk {
     void engine::init(int w, int h, std::string title) {
         set_tick_speed(60);
 
-        flecs::entity e = world.entity().add<cool>();
-        flecs::entity_t entity = e.id();
+        flecs::entity e = world.entity();
 
         framework.init();
         window.init(w, h, title);
 
         renderer2D_tt::init_data renderer_init;
         renderer_init.window = &window;
-        renderer_init.logger = &framework.get_logger();
         renderer.init(&renderer_init);
         renderer.name = "renderer2D";
 

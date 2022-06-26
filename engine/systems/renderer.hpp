@@ -1,5 +1,5 @@
 #pragma once
-#include "../systems.hpp"
+#include "tiles.hpp"
 #include "bx/math.h"
 
 namespace spk {
@@ -7,7 +7,6 @@ namespace spk {
     public:
         struct init_data {
             sfk::window* window;
-            sfk::debug_logger* logger;
         };
 
         renderer2D_tt();
@@ -17,23 +16,20 @@ namespace spk {
         void tick(flecs::world& world) {}
         void free();
 
-        void render();
-
         void set_window_state();
 
         struct vertex {
             float x, y, z;
             uint32_t agbr;
         };
+
     private:
         sfk::window* window;
-        bgfx::VertexBufferHandle triangle_buffer; 
-        bgfx::IndexBufferHandle index_buffer;
 
-        struct {
-
-            bgfx::VertexLayout layout;
-            bgfx::ProgramHandle program;
-        } triangle;
+        render_system_manager_tt renderer_manager;
+    
+        // need a place to access each render system's
+        // non-base-class methods
+        tile_renderer_tt tile_renderer;
     };
 }

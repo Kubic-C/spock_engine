@@ -7,6 +7,3 @@
 [submodule "dep/flecs"]
 	path = dep/flecs
 	url = https://github.com/SanderMertens/flecs
-[submodule "dep/bgfx.cmake"]
-	path = dep/bgfx.cmake
-	url = https://github.com/bkaradzic/bgfx.cmake

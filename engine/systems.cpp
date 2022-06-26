@@ -35,4 +35,15 @@ namespace spk {
             sys->free();
         }        
     }
+
+
+    void render_system_manager_tt::push_system(render_system_tt* system) {
+        systems.push_back(system);
+    }
+    
+    void render_system_manager_tt::free() {
+        for(render_system_tt* sys : systems) {
+            sys->free();
+        } 
+    }
 }

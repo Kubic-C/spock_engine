@@ -15,4 +15,7 @@ target_sources(spock_framework PRIVATE
     "debugger.hpp" "debugger.cpp")
 
 target_sources(spock_framework PUBLIC
+    "external/stb_image.h" "external/stb_image.c")
+
+target_sources(spock_framework PUBLIC
     "framework.hpp")
