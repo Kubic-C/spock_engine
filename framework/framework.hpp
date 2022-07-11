@@ -1,8 +1,9 @@
 #pragma once
 
 #include "entity.hpp"
-#include "render.hpp"
+#include "opengl.hpp"
 #include "window.hpp"
+#include "memory.hpp"
 
 // spock framework //
 namespace sfk {

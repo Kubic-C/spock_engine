@@ -1,19 +1,19 @@
 #pragma once
-#include "tiles.hpp"
-#include "bx/math.h"
+#include "quad.hpp"
 
 namespace spk {
+    struct render_scene_tt {
+        quad_scene_tt quad_batch;
+    };
+
     class renderer2D_tt : public system_tt {
     public:
-        struct init_data {
-            sfk::window* window;
-        };
-
         renderer2D_tt();
 
-        void init(void* data);
-        void update(flecs::world& world);
-        void tick(flecs::world& world) {}
+        void init(scene_tt& scene, void* data);
+        void update(scene_tt& scene, float deltatime);
+        void tick(scene_tt& scene, float deltatime) {}
+        static void resize(void* self, int width, int height);
         void free();
 
         void set_window_state();
@@ -23,13 +23,13 @@ namespace spk {
             uint32_t agbr;
         };
 
-    private:
-        sfk::window* window;
-
         render_system_manager_tt renderer_manager;
-    
+
+    private:
+        sfk::window_tt* window;
+
         // need a place to access each render system's
         // non-base-class methods
-        tile_renderer_tt tile_renderer;
+        quad_renderer_tt quad_renderer;
     };
 }

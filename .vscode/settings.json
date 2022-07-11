@@ -86,6 +86,7 @@
         "cinttypes": "cpp",
         "variant": "cpp",
         "*.sh": "cpp",
-        "stb_image.h": "c"
+        "stb_image.h": "c",
+        "*.def": "cpp"
     }
 }

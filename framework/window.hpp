@@ -4,9 +4,18 @@
 #include "debugger.hpp"
 
 namespace sfk {
-    struct window {
-        window();
-        ~window();
+    typedef void(*resize_callback_tt)(void* data, int width, int height);
+    typedef void(*char_callback_tt)(void* data, uint32_t codepoint);
+
+    template<typename T>
+    struct window_callback_tt {
+        T fp_callback;
+        void* data;
+    };
+
+    struct window_tt {
+        window_tt();
+        ~window_tt();
 
         void init(int w, int h, std::string title);
         void free();
@@ -31,17 +40,32 @@ namespace sfk {
             glfwGetWindowSize(c_window, x, y);
         }
 
+        inline int get_key(int key) {
+            return glfwGetKey(c_window, key);
+        }
+
         inline bool closed() {
             return glfwWindowShouldClose(c_window);
         }
 
-        void set_platform_data(bgfx::PlatformData* pd);
+        // gl related functions
 
-        /* window buffer related handling */
+        inline void swap_buffers() {
+            glfwSwapBuffers(c_window);
+        }
 
-        void set_view_clear();
-        void set_view_rect();
+        inline void make_context_current() {
+            glfwMakeContextCurrent(c_window);
+        }
 
-        GLFWwindow* c_window;
+        inline void gl_version(int major, int minor) {
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);
+            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        }
+
+        GLFWwindow* c_window;   
+        window_callback_tt<resize_callback_tt> resize_callback;
+        window_callback_tt<char_callback_tt> char_callback;
     };  
 }

@@ -13,29 +13,34 @@
 
 
 namespace sfk {
-    void _framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-        bgfx::setViewRect(0, 0, 0, width, height);
-        bgfx::reset(width, height);
-        std::cout << "RESIZE\n";
+    void _framebuffer_size_callback(GLFWwindow* window_, int width, int height) {
+        window_tt* window = (window_tt*)glfwGetWindowUserPointer(window_);
+
+        if(window->resize_callback.fp_callback)
+            window->resize_callback.fp_callback(window->resize_callback.data, width, height);
     }
 
-    window::window() {}
+    void key_callback(GLFWwindow* window_, int key, int scancode, int action, int mods) {
+        window_tt* window = (window_tt*)glfwGetWindowUserPointer(window_);
 
-    window::~window() {}
+        if(window->char_callback.fp_callback) 
+            window->char_callback.fp_callback(window->resize_callback.data, key);        
+    }
 
-    void window::init(int w, int h, std::string title) {
+    window_tt::window_tt() {}
+
+    window_tt::~window_tt() {}
+
+    void window_tt::init(int w, int h, std::string title) {
         c_window = glfwCreateWindow(w, h, title.c_str(), null, null);
-        glfwSetFramebufferSizeCallback(c_window, _framebuffer_size_callback);
         assert(c_window);
+        glfwSetFramebufferSizeCallback(c_window, _framebuffer_size_callback);
+        glfwSetKeyCallback(c_window, key_callback);
+        glfwSetWindowUserPointer(c_window, this);
+        glfwSetInputMode(c_window, GLFW_STICKY_KEYS, GLFW_TRUE);
     }
 
-    void window::free() {
+    void window_tt::free() {
         glfwDestroyWindow(c_window); 
-    }
-
-    void window::set_platform_data(bgfx::PlatformData* pd) {
-        pd->nwh = (void*)(uintptr_t)_getNativeWindow(c_window);
-        pd->ndt = (void*)(uintptr_t)_getNativeDisplay(c_window);
-        bgfx::setPlatformData(*pd);
     }
 }
