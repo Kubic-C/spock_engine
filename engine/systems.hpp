@@ -9,13 +9,6 @@
 #define DEFAULT_SORTING_ORDER 5U
 
 namespace spk {
-    struct transform_tt {
-        bool freeze;
-        glm::vec3 position;
-        glm::vec3 rotation;
-        glm::vec3 scale;
-    };
-
     struct message_tt {
         uint32_t code; // message code
         std::string str; // may be empty

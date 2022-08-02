@@ -16,8 +16,6 @@ namespace spk {
         static void resize(void* self, int width, int height);
         void free();
 
-        void set_window_state();
-
         struct vertex {
             float x, y, z;
             uint32_t agbr;
@@ -26,8 +24,6 @@ namespace spk {
         render_system_manager_tt renderer_manager;
 
     private:
-        sfk::window_tt* window;
-
         // need a place to access each render system's
         // non-base-class methods
         quad_renderer_tt quad_renderer;

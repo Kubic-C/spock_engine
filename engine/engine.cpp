@@ -17,12 +17,13 @@ namespace spk {
         window.init(w, h, title);
 
         scene = new scene_tt;
+        scene->window = &window;
+        scene->world.component<transform_tt>();
         scene->render_scene = new render_scene_tt;
         scene->physics_scene = new physics_scene_tt;
-        scene->world.component<transform_tt>();
         
         {
-            renderer.init(*scene, &window);
+            renderer.init(*scene, nullptr);
             renderer.name = "renderer2D";
             renderer.sorting_order = DEFAULT_SORTING_ORDER;
 

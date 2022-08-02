@@ -5,6 +5,14 @@
 #include "window.hpp"
 #include "memory.hpp"
 
+namespace spk {
+    struct transform_tt { // used by a large majority of components, so it would make some sense to put it here
+        glm::vec3 position;
+        glm::vec3 rotation;
+        glm::vec3 scale;
+    };
+}
+
 // spock framework //
 namespace sfk {
     template<typename T>

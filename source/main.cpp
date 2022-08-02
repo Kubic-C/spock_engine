@@ -2,6 +2,14 @@
 #include <string>
 #include "engine.hpp"
 
+void ball_collision_callback(flecs::entity e, spk::collision_info_tt& ci) {
+
+    e.add<spk::rigidbody2D_tt>().set([](spk::rigidbody2D_tt& rigidbody){
+
+        rigidbody.velocity.x = -(rigidbody.velocity.x * 5.0f);
+    });
+}
+
 class game_tt : public spk::system_tt {
 public:
     void init(spk::scene_tt& scene, void* data) {
@@ -9,50 +17,69 @@ public:
         flecs::world* world = &p_engine->scene->world;
         p_window = &p_engine->window;
 
-        {
-            auto e = world->entity();
-            e = world->entity();
-            e.add<spk::transform_tt>().set(
-                spk::transform_tt{
-                    .position = glm::vec3(200.0f, -250.0f, 0.0f),
-                    .scale = glm::vec3(25.0f)
-            });
+        srand(time(0));
 
-            e.add<spk::rigidbody2D_tt>();
-            e.add<spk::quad_render_tt>();
-            e.add<spk::aabb_tt>();
+        {
+            left_paddle = world->entity();
+            left_paddle.add<spk::transform_tt>().set([](spk::transform_tt& transform){
+                transform.position = {20.0f, 0.0f, 0.0f};
+                transform.scale = {15.0f, 50.0f, 0.0f};
+            });
+            left_paddle.add<spk::aabb_tt>();
+            left_paddle.add<spk::quad_render_tt>();
+        }
+            
+        {
+            right_paddle = world->entity();
+            right_paddle.add<spk::transform_tt>().set([](spk::transform_tt& transform){
+                transform.position = {600.0f, 0.0f, 0.0f};
+                transform.scale = {15.0f, 50.0f, 0.0f};
+            });
+            right_paddle.add<spk::aabb_tt>();
+            right_paddle.add<spk::quad_render_tt>();
         }
 
         {
-            player = world->entity();
-            player.add<spk::transform_tt>().set(
-                spk::transform_tt{
-                    .position = glm::vec3(200.0f, 0.0f, 0.0f),
-                    .scale = glm::vec3(30.0f)
+            ball = world->entity(1000UL);
+            ball.add<spk::transform_tt>().set([](spk::transform_tt& transform){
+                transform.position = {300.0f, 0.0f, 0.0f};
+                transform.scale = {5.0f, 5.0f, 0.0f};
             });
-            
-            player.add<spk::rigidbody2D_tt>().set([](spk::rigidbody2D_tt& rigidbody) {
-                rigidbody.kinematic = false;
-                rigidbody.gravity = 1.0f;
+            ball.add<spk::aabb_tt>();
+            ball.add<spk::quad_render_tt>();
+            ball.add<spk::rigidbody2D_tt>().set([](spk::rigidbody2D_tt& rigidbody){
+                rigidbody.velocity = { -50.0f, 0.0f };
+                rigidbody.collision_callback = &ball_collision_callback;
             });
-
-            player.add<spk::quad_render_tt>(); 
-            player.add<spk::aabb_tt>();
         }
 
         name = "Game";
     }
 
     void update(spk::scene_tt& scene, float deltatime) {
+        float speed = 100.0f;
+
+        left_paddle.set([&](spk::transform_tt& transform){ 
+            if(scene.window->get_key(GLFW_KEY_W) & GLFW_PRESS) {
+                transform.position.y += speed * deltatime;
+            }
+            if(scene.window->get_key(GLFW_KEY_S) & GLFW_PRESS) {
+                transform.position.y -= speed * deltatime;
+            }
+        });
+
+        right_paddle.set([&](spk::transform_tt& transform){ 
+            if(scene.window->get_key(GLFW_KEY_UP) & GLFW_PRESS) {
+                transform.position.y += speed * deltatime;
+            }
+            if(scene.window->get_key(GLFW_KEY_DOWN) & GLFW_PRESS) {
+                transform.position.y -= speed * deltatime;
+            }
+        });
     }
 
     void tick(spk::scene_tt& scene, float deltatime) {
-        player.set([&](spk::transform_tt& transform) {
-            if(p_window->get_key(GLFW_KEY_A))
-                transform.position.x -= 100.0f * deltatime;
-            if(p_window->get_key(GLFW_KEY_D))
-                transform.position.x += 100.0f * deltatime;
-        });
+        
     }
    
     void free() {
@@ -62,15 +89,20 @@ public:
     }
 
 private:
-    flecs::entity player;
     sfk::window_tt* p_window;
+
+    flecs::entity left_paddle;
+    flecs::entity right_paddle;
+    flecs::entity ball;
 };
 
 int main() {
     spk::engine_tt engine;
     game_tt game;
 
-    engine.init(425, 800, "Game");
+    enum values { min = 0, max = 1 };
+
+    engine.init(620, 800, "Game");
     engine.push_system(&game);
 
     engine.loop();
