@@ -1,19 +1,19 @@
 #include "physics.hpp"
 
 namespace spk {
-    bool aabb_vs_aabb(transform_tt& transform1, aabb_tt& aabb1, transform_tt& transform2, aabb_tt& aabb2, rect_tt rect[2]) {
+    bool aabb_vs_aabb(collision_info_tt* colliders, rect_tt rect[2]) {
         const rect_tt b1 = {
-            { transform1.position.x - aabb1.half_width  * transform1.scale.x,
-              transform1.position.y - aabb1.half_height * transform1.scale.y },
-            { transform1.position.x + aabb1.half_width  * transform1.scale.x,
-              transform1.position.y + aabb1.half_height * transform1.scale.y }
+            { colliders->one.transform->position.x - colliders->one.aabb->half_width  * colliders->one.transform->scale.x,
+              colliders->one.transform->position.y - colliders->one.aabb->half_height * colliders->one.transform->scale.y },
+            { colliders->one.transform->position.x + colliders->one.aabb->half_width  * colliders->one.transform->scale.x,
+              colliders->one.transform->position.y + colliders->one.aabb->half_height * colliders->one.transform->scale.y }
         };
 
         const rect_tt b2 = {
-            { transform2.position.x - aabb2.half_width  * transform2.scale.x,
-              transform2.position.y - aabb2.half_height * transform2.scale.y },
-            { transform2.position.x + aabb2.half_width  * transform2.scale.x,
-              transform2.position.y + aabb2.half_height * transform2.scale.y }
+            { colliders->two.transform->position.x - colliders->two.aabb->half_width  * colliders->two.transform->scale.x,
+              colliders->two.transform->position.y - colliders->two.aabb->half_height * colliders->two.transform->scale.y },
+            { colliders->two.transform->position.x + colliders->two.aabb->half_width  * colliders->two.transform->scale.x,
+              colliders->two.transform->position.y + colliders->two.aabb->half_height * colliders->two.transform->scale.y }
         };
 
         if(rect != null) {
@@ -25,26 +25,37 @@ namespace spk {
            b1[max][0] >= b2[min][0] &&
            b1[min][1] <= b2[max][1] &&
            b1[max][1] >= b2[min][1]) {
+
+            ray_vs_aabb(colliders->one.transform->position, 
+                        colliders->one.transform->position - colliders->two.transform->position, rect[0], 
+                        colliders->ct, colliders->cp, colliders->cn);
+
+            colliders->collision = true;
             return true;
         } else {
+            colliders->collision = false;
             return false;
         }
     }
 
-    void collision_resolution(transform_tt& transform1, transform_tt& transform2, rect_tt rect[2], collision_info_tt& ci) {
-        glm::vec2 cp; // not used
-        glm::vec2 cn;
-        float ct;
-        
-        ray_vs_aabb(transform1.position, transform1.position - transform2.position, rect[0], ct, cp, cn);
-        
-        glm::vec2 offsethalf = (cn * (1.0f - ct)) / 2.0f;
-        transform1.position += glm::vec3(-offsethalf, 0.0f);
-        transform2.position += glm::vec3(offsethalf, 0.0f);
+    void collision_resolution(collision_info_tt* colliders, rect_tt rect[2], float deltatime) {
+        glm::vec2 offsethalf = (colliders->cn * (1.0f - colliders->ct)) / 2.0f;
+        glm::vec2 _cn = colliders->cn;
 
-        ci.cn = cn; // youll need to negate this for _2 target (the other collider) 
-        ci.cp = cp; 
-        ci.ct = ct; 
+        float e = std::min(colliders->one.body->restitution, colliders->two.body->restitution);
+
+        glm::vec2 relative_velocity = colliders->one.body->velocity - colliders->two.body->velocity;
+        float mag = (-(1 + e) * glm::dot(relative_velocity, colliders->cn)) 
+            / ((1 / colliders->one.body->mass) + (1 / colliders->two.body->mass));
+
+
+        glm::vec2 impulse = mag * colliders->cn;
+
+        colliders->one.body->velocity += impulse;
+        colliders->two.body->velocity += -impulse;
+
+        colliders->one.transform->position += glm::vec3(colliders->one.body->velocity, 0.0f) * deltatime;
+        colliders->two.transform->position += glm::vec3(colliders->two.body->velocity, 0.0f) * deltatime;
     }
 
     bool ray_vs_aabb(const glm::vec2& org, const glm::vec2& dir, const rect_tt& rect, float& t_hit_near, 

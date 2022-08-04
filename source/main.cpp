@@ -4,7 +4,7 @@
 
 void ball_collision_callback(flecs::entity e, spk::collision_info_tt& ci) {
 
-    e.add<spk::rigidbody2D_tt>().set([](spk::rigidbody2D_tt& rigidbody){
+    e.add<spk::body2D_tt>().set([](spk::body2D_tt& rigidbody){
 
         rigidbody.velocity.x = -(rigidbody.velocity.x * 5.0f);
     });
@@ -27,6 +27,10 @@ public:
             });
             left_paddle.add<spk::aabb_tt>();
             left_paddle.add<spk::quad_render_tt>();
+            left_paddle.add<spk::body2D_tt>().set([](spk::body2D_tt& rigidbody){
+                rigidbody.velocity = { 0.0f, 0.0f };
+                rigidbody.mass = 1000000.0f;
+            });
         }
             
         {
@@ -37,6 +41,9 @@ public:
             });
             right_paddle.add<spk::aabb_tt>();
             right_paddle.add<spk::quad_render_tt>();
+            right_paddle.add<spk::body2D_tt>().set([](spk::body2D_tt& rigidbody){
+                rigidbody.velocity = { 0.0f, 0.0f };
+            });
         }
 
         {
@@ -47,11 +54,36 @@ public:
             });
             ball.add<spk::aabb_tt>();
             ball.add<spk::quad_render_tt>();
-            ball.add<spk::rigidbody2D_tt>().set([](spk::rigidbody2D_tt& rigidbody){
-                rigidbody.velocity = { -50.0f, 0.0f };
+            ball.add<spk::body2D_tt>().set([](spk::body2D_tt& rigidbody){
+                rigidbody.velocity = { -50.0f, 1.0f };
                 rigidbody.collision_callback = &ball_collision_callback;
             });
         }
+
+        flecs::entity e = world->entity();
+        e.add<spk::transform_tt>().set([&](spk::transform_tt& transform){
+            transform.position = {0.0f, 0.0, 0.0f};
+            transform.scale = {20.0f, 20.0f, 0.0f};
+        });
+        e.add<spk::aabb_tt>();
+        e.add<spk::quad_render_tt>();
+        e.add<spk::body2D_tt>().set([](spk::body2D_tt& rigidbody){
+            rigidbody.velocity = { 10.0f, 0.0f };
+        });
+
+        for(uint32_t i = 0; i < 100; i++) {
+            flecs::entity e = world->entity();
+            e.add<spk::transform_tt>().set([&](spk::transform_tt& transform){
+                transform.position = {5.0f + ((float)i * 5.0f), 0.0, 0.0f};
+                transform.scale = {5.0f, 5.0f, 0.0f};
+            });
+            e.add<spk::aabb_tt>();
+            e.add<spk::quad_render_tt>();
+            e.add<spk::body2D_tt>().set([](spk::body2D_tt& rigidbody){
+                rigidbody.velocity = { 6.0f, 0.0f };
+            });
+        }
+
 
         name = "Game";
     }
@@ -59,21 +91,21 @@ public:
     void update(spk::scene_tt& scene, float deltatime) {
         float speed = 100.0f;
 
-        left_paddle.set([&](spk::transform_tt& transform){ 
+        left_paddle.set([&](spk::body2D_tt& transform){ 
             if(scene.window->get_key(GLFW_KEY_W) & GLFW_PRESS) {
-                transform.position.y += speed * deltatime;
+                transform.velocity.y += speed * deltatime;
             }
             if(scene.window->get_key(GLFW_KEY_S) & GLFW_PRESS) {
-                transform.position.y -= speed * deltatime;
+                transform.velocity.y -= speed * deltatime;
             }
         });
 
-        right_paddle.set([&](spk::transform_tt& transform){ 
+        right_paddle.set([&](spk::body2D_tt& transform){ 
             if(scene.window->get_key(GLFW_KEY_UP) & GLFW_PRESS) {
-                transform.position.y += speed * deltatime;
+                transform.velocity.y += speed * deltatime;
             }
             if(scene.window->get_key(GLFW_KEY_DOWN) & GLFW_PRESS) {
-                transform.position.y -= speed * deltatime;
+                transform.velocity.y -= speed * deltatime;
             }
         });
     }

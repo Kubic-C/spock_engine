@@ -3,26 +3,9 @@
 #include "../utility/physics.hpp"
 
 namespace spk {
-    struct rigidbody2D_tt;
-
-    typedef void(*collision_callback_tt)(flecs::entity e, collision_info_tt& ci);
 
     struct physics_scene_tt {
 
-    };
-
-    struct rigidbody2D_tt {
-        glm::vec2 velocity;
-        bool kinematic; // not affected by gravity
-        float gravity;        
-        collision_callback_tt collision_callback; // collision callback
-
-        rigidbody2D_tt() {
-            sfk::zero(this);
-            kinematic = true;
-            gravity = 0.01f;
-            velocity = {};
-        }
     };
 
     class physics2D_tt : public system_tt {
