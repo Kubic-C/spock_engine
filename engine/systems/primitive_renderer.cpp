@@ -1,0 +1,127 @@
+#include "primitive_renderer.hpp"
+#include "../utility/physics.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+ 
+uint32_t index_a[] = {
+   0, 1, 2,
+   1, 2, 3
+};
+ 
+namespace spk {
+    void primitive_renderer_tt::init(sfk::window_tt& window, flecs::world& world, void* pscene) {
+
+        { // vertex data
+            vertex_array.init();
+            vertex_array.bind();
+    
+            vertex_buffer.init(GL_ARRAY_BUFFER);
+            vertex_buffer.buffer_data(sizeof(float) * 2 * 3 * 6, nullptr, GL_DYNAMIC_DRAW);
+            vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0, vertex_buffer);
+            vertex_layout.add(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, sizeof(float) * 2, vertex_buffer);
+            vertex_array.bind_layout(vertex_layout);
+
+            index_buffer.init(GL_ELEMENT_ARRAY_BUFFER);
+            index_buffer.generate_quad_indexes(4);
+        }
+    
+        { // shaders
+            uint32_t vsh, fsh;
+    
+            vsh = sfk::create_shader(GL_VERTEX_SHADER, "./shaders/vs_tiles.glsl");
+            fsh = sfk::create_shader(GL_FRAGMENT_SHADER, "./shaders/fs_tiles.glsl");
+    
+            if(fsh == UINT32_MAX || vsh == UINT32_MAX) {
+                abort();
+            }
+    
+            program = glCreateProgram();
+            glAttachShader(program, vsh);
+            glAttachShader(program, fsh);
+            glLinkProgram(program);
+            glDeleteShader(vsh);
+            glDeleteShader(fsh);
+    
+            {
+                int success;
+                char info_log[512];
+                glGetProgramiv(program, GL_LINK_STATUS, &success);
+                if(!success) {
+                    glGetShaderInfoLog(program, 512, NULL, info_log);
+                    sfk::logger.add_log(sfk::LOG_TYPE_ERROR, "program linking failed: %s\n", info_log);
+                    abort();
+                }
+            }
+        }
+    
+        {
+            int width, height;
+    
+            window.get_size(&width, &height);
+            resize(width, height);
+        }
+
+        mesh.resize(24);
+    }
+    
+    void primitive_renderer_tt::render(scene_tt& scene) {
+        flecs::world& world = scene.world;
+        auto q = world.query<comp_b2Body, primitive_render_tt>();
+    
+        q.iter([&](flecs::iter& it, comp_b2Body* c_bodies, primitive_render_tt* c_primitives) {
+            for(auto i : it) {
+                primitive_render_tt* primitive = &c_primitives[i];
+                b2Body* body = c_bodies[i].body;
+                b2Fixture* fixture = body->GetFixtureList();
+
+                assert(body);
+
+                for(; fixture; fixture = fixture->GetNext()) {
+                    b2Shape* shape = fixture->GetShape();
+                    b2PolygonShape* polygon = nullptr;
+                    b2Shape::Type type = shape->GetType();
+                    int32_t count = 0;
+
+                    if(type != b2Shape::Type::e_polygon) 
+                        abort(); // silly goofy app killing
+                    else
+                        polygon = (b2PolygonShape*)shape;
+
+
+                    count = (polygon->m_count / 2) * 3; // special case: 3 works because of integer division black magic
+
+                    for(int32 j = 0; j < polygon->m_count; j++)  {
+                        mesh[j].x = body->GetWorldPoint(polygon->m_vertices[j]).x;
+                        mesh[j].y = body->GetWorldPoint(polygon->m_vertices[j]).y;
+                        mesh[j].r = primitive->color.r;
+                        mesh[j].g = primitive->color.g;
+                        mesh[j].b = primitive->color.b;
+                    }
+
+                    vertex_buffer.buffer_sub_data(0, polygon->m_count * sizeof(vertex_tt), mesh.data());
+                    vertex_array.bind();
+
+                    index_buffer.bind();
+                    glUseProgram(program);
+                    glUniformMatrix4fv(glGetUniformLocation(program, "u_vp"), 1, false, &vp[0][0]);
+                    glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+                }
+            }
+        });
+    }
+ 
+    void primitive_renderer_tt::resize(int width, int height) {
+        float half_width  = (float)width / 2;
+        float half_height = (float)height / 2;
+    
+        view = glm::identity<glm::mat4>();
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
+        proj = glm::ortho(-(float)half_width / sfk::ppm, (float)half_width / sfk::ppm, -half_height / sfk::ppm, half_height / sfk::ppm);
+        vp   = proj * view;
+    }
+ 
+    void primitive_renderer_tt::free() {
+        vertex_array.free();
+        vertex_buffer.free();
+        glDeleteProgram(program);
+    }
+}

@@ -10,3 +10,6 @@
 [submodule "dep/glad"]
 	path = dep/glad
 	url = https://github.com/Dav1dde/glad
+[submodule "dep/box2d"]
+	path = dep/box2d
+	url = https://github.com/erincatto/box2d

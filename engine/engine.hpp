@@ -1,5 +1,4 @@
 #pragma once
-#include "framework.hpp"
 #include "systems/renderer.hpp"
 #include "systems/physics.hpp" 
 #include "systems/input.hpp"
@@ -20,8 +19,11 @@ namespace spk {
         void push_system(system_tt* system);
 
         void set_tick_speed(int tick_speed);
+        float get_tick_speed() const { return time.fps_limiter; }
         void update();
         void loop();
+
+        float get_elapsed_time();
 
     private:
         sfk::sfk framework;

@@ -1,5 +1,5 @@
 #pragma once
-#include "quad.hpp"
+#include "primitive_renderer.hpp"
 
 namespace spk {
     struct render_scene_tt {
@@ -14,7 +14,7 @@ namespace spk {
         void update(scene_tt& scene, float deltatime);
         void tick(scene_tt& scene, float deltatime) {}
         static void resize(void* self, int width, int height);
-        void free();
+        void free(scene_tt& scene);
 
         struct vertex {
             float x, y, z;
@@ -26,6 +26,6 @@ namespace spk {
     private:
         // need a place to access each render system's
         // non-base-class methods
-        quad_renderer_tt quad_renderer;
+        primitive_renderer_tt quad_renderer;
     };
 }

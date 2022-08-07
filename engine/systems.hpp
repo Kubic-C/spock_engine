@@ -27,7 +27,7 @@ namespace spk {
         virtual void init(scene_tt& scene, void* data) {}
         virtual void update(scene_tt& scene, float deltatime) {}
         virtual void tick(scene_tt& scene, float deltatime) {}
-        virtual void free() {}
+        virtual void free(scene_tt& scene) {}
     };
 
     /* handles updating and keeping track of the active systems*/
@@ -40,8 +40,8 @@ namespace spk {
         void msg_update(scene_tt& scene, float deltatime);
         void update(scene_tt& scene, float deltatime); 
         void tick(scene_tt& scene, float deltatime);
-        void free();
-        void free_user_systems();
+        void free(scene_tt& scene);
+        void free_user_systems(spk::scene_tt& scene);
     };
 
     struct render_system_tt {

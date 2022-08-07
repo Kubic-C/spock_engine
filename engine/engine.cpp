@@ -17,6 +17,7 @@ namespace spk {
         window.init(w, h, title);
 
         scene = new scene_tt;
+        scene->engine = this;
         scene->window = &window;
         scene->world.component<transform_tt>();
         scene->render_scene = new render_scene_tt;
@@ -49,18 +50,19 @@ namespace spk {
     }
 
     void engine_tt::free() {
-        system_manager.free_user_systems();
-        
+        system_manager.free_user_systems(*scene);
+    
         // we want the user to have access to entities when
         // it is time to free. setting world.m_owned to false prevents
         // the wrapper from deconstructing the world AGAIN
         ecs_fini(scene->world.get_world());
         scene->world.m_owned = false; 
+        
+        system_manager.free(*scene);
+
         delete scene->physics_scene;
         delete scene->render_scene;
         delete scene;
-
-        system_manager.free();
 
         window.free();
         framework.free();
@@ -109,5 +111,9 @@ namespace spk {
     void engine_tt::update() {
         glfwPollEvents();
         scene->world.progress(time.delta);
+    }
+
+    float engine_tt::get_elapsed_time() {
+        return time.last_frame - framework.get_time();
     }
 }

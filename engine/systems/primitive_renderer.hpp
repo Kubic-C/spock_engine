@@ -7,13 +7,17 @@ namespace spk {
     struct quad_scene_tt {
     };
 
-    struct quad_render_tt {
-        quad_render_tt() {
+    struct primitive_render_tt {
+        glm::vec3 color;
+
+        primitive_render_tt() {
             sfk::zero(this);
+
+            color = (glm::vec3){1.0f, 0.0f, 0.0f};
         }
     };
 
-    class quad_renderer_tt : public render_system_tt {
+    class primitive_renderer_tt : public render_system_tt {
     public:
 
         void init(sfk::window_tt& window, flecs::world& world, void* scene);
@@ -22,12 +26,13 @@ namespace spk {
         void free();
 
     private:    
-        struct vertex {
+        struct vertex_tt {
             float x, y; // position
-            float u, v; // tex_coord
+            float r, g, b; // color
         };
 
         sfk::vertex_buffer_tt vertex_buffer;
+        sfk::static_index_buffer_tt index_buffer;
         sfk::vertex_layout_tt vertex_layout;
         sfk::vertex_array_tt  vertex_array;
         uint32_t texture;
@@ -37,7 +42,7 @@ namespace spk {
         glm::mat4 proj;
         glm::mat4 view;
 
-        std::vector<vertex> mesh;
+        std::vector<vertex_tt> mesh;
         uint32_t vertices; // of vertex vvv
     };
 }

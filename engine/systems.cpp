@@ -35,20 +35,20 @@ namespace spk {
         }
     }
 
-    void system_manager_tt::free() {
+    void system_manager_tt::free(scene_tt& scene) {
         for(system_tt* sys : systems) {
-            sys->free();
+            sys->free(scene);
         }        
     }
 
-    void system_manager_tt::free_user_systems() {
+    void system_manager_tt::free_user_systems(spk::scene_tt& scene) {
         int32_t i = -1;
 
         for(system_tt* sys : systems) {
             if(sys->sorting_order > USER_SORTING_ORDER4) {
                 break;
             } else {
-                sys->free();
+                sys->free(scene);
                 i++;
             }
         }    

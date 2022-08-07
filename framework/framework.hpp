@@ -6,6 +6,7 @@
 #include "memory.hpp"
 
 namespace spk {
+
     struct transform_tt { // used by a large majority of components, so it would make some sense to put it here
         glm::vec3 position;
         glm::vec3 rotation;
@@ -44,4 +45,6 @@ namespace sfk {
 
     private:
     };
+
+    constexpr float ppm = 8.0f;
 }

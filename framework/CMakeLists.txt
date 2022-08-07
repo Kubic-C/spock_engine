@@ -4,7 +4,7 @@ add_library(spock_framework STATIC)
 target_include_directories(spock_framework INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/")
 
 target_link_libraries(spock_framework PUBLIC
-    glfw glad flecs_static glm)
+    glfw glad flecs_static glm box2d)
 
 target_sources(spock_framework PRIVATE
     "framework.cpp"

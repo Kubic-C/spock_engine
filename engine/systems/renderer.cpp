@@ -42,7 +42,7 @@ namespace spk {
         }
     }
 
-    void renderer2D_tt::free() {
+    void renderer2D_tt::free(scene_tt& scene) {
         renderer_manager.free();
     }
 }

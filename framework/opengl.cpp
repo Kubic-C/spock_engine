@@ -131,9 +131,9 @@ namespace sfk {
 			indexes[i + 1] = 1 + offset;
 			indexes[i + 2] = 2 + offset;
 			
-			indexes[i + 3] = 1 + offset;
-			indexes[i + 4] = 2 + offset;
-			indexes[i + 5] = 3 + offset;   
+			indexes[i + 3] = 0 + offset;
+			indexes[i + 4] = 3 + offset;
+			indexes[i + 5] = 2 + offset;   
             offset += 4;
         }
 

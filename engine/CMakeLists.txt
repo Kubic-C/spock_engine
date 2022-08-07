@@ -11,7 +11,7 @@ target_sources(spock_engine PRIVATE
 
 target_sources(spock_engine PRIVATE
     "systems/renderer.hpp" "systems/renderer.cpp"
-    "systems/quad.hpp" "systems/quad.cpp"
+    "systems/primitive_renderer.hpp" "systems/primitive_renderer.cpp"
     "systems/physics.hpp" "systems/physics.cpp"
     "systems/input.hpp" "systems/input.cpp")
 
