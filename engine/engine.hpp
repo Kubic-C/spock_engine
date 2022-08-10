@@ -1,7 +1,7 @@
 #pragma once
 #include "systems/renderer.hpp"
 #include "systems/physics.hpp" 
-#include "systems/input.hpp"
+#include "systems/ui.hpp"
 
 namespace spk {
     void print_name2();
@@ -24,12 +24,15 @@ namespace spk {
         void loop();
 
         float get_elapsed_time();
+        float get_time() { return framework.get_time(); };
+
+        resource_manager_tt resource_manager;
 
     private:
         sfk::sfk framework;
         renderer2D_tt renderer;
         physics2D_tt physics;
-        input_tt input;
+        ui_tt ui;
 
         system_manager_tt system_manager;
 

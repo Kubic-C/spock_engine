@@ -8,19 +8,6 @@ namespace spk {
     void system_manager_tt::push_system(system_tt* system) {
         systems.push_back(system);
         std::sort(systems.begin(), systems.end(), &systems_ascending);
-        system->bus = &messages;;
-    }
-
-    void system_manager_tt::msg_update(scene_tt& scene, float deltatime) {
-        if(messages.empty())
-            return; 
-
-        message_tt& msg = messages.front();
-        for(system_tt* sys : systems) {
-            sys->handle_message(scene, deltatime, msg);
-        }
-
-        messages.pop();        
     }
 
     void system_manager_tt::update(scene_tt& scene, float deltatime) {

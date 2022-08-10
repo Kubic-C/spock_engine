@@ -4,8 +4,11 @@
 #include "debugger.hpp"
 
 namespace sfk {
-    typedef void(*resize_callback_tt)(void* data, int width, int height);
-    typedef void(*char_callback_tt)(void* data, uint32_t codepoint);
+    struct window_tt;
+
+    typedef void(*resize_callback_tt)(window_tt* window, void* data, int width, int height);
+    typedef void(*char_callback_tt)(window_tt* window, void* data, uint32_t codepoint);
+    typedef void(*mouse_button_callback_tt)(window_tt* window,void* data, int button, int action, int mods);
 
     template<typename T>
     struct window_callback_tt {
@@ -67,5 +70,6 @@ namespace sfk {
         GLFWwindow* c_window;   
         window_callback_tt<resize_callback_tt> resize_callback;
         window_callback_tt<char_callback_tt> char_callback;
+        window_callback_tt<mouse_button_callback_tt> mouse_callback;
     };  
 }

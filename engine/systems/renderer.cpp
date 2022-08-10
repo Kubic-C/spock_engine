@@ -13,14 +13,20 @@ namespace spk {
             if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
                 sfk::logger.add_log(sfk::LOG_TYPE_ERROR, "could not load OpenGL with GLAD");
                 abort();
-            }
+            }            
         }
 
         /* renderer systems */
         {
-            quad_renderer.init(*scene.window, scene.world, &scene.render_scene->quad_batch);
-            renderer_manager.push_system(&quad_renderer);
+            primitive_renderer.init(scene);
+            ui_renderer.init(scene);
+
+            renderer_manager.push_system(&primitive_renderer);
+            renderer_manager.push_system(&ui_renderer);
         }
+
+        scene.window->get_size(&width, &height);
+        resize(scene.window, (void*)this, width, height);
     }
 
     void renderer2D_tt::update(scene_tt& scene, float deltatime) {
@@ -31,9 +37,10 @@ namespace spk {
         }
 
         scene.window->swap_buffers();
+
     }   
     
-    void renderer2D_tt::resize(void* void_self, int width, int height) {
+    void renderer2D_tt::resize(sfk::window_tt* window, void* void_self, int width, int height) {
         renderer2D_tt* self = (renderer2D_tt*)void_self;
 
         for(auto sys : self->renderer_manager.systems) {

@@ -2,7 +2,6 @@
 #include <string>
 #include "engine.hpp"
 
-
 class game_tt : public spk::system_tt {
 public:
     void init(spk::scene_tt& scene, void* data) {
@@ -10,6 +9,9 @@ public:
         flecs::world& world = p_engine->scene->world;
         b2World* phy_world = scene.physics_scene->world; 
         p_window = &p_engine->window;
+
+
+        scene.canvas.font = 0;
 
         srand(time(0));
 
@@ -33,7 +35,7 @@ public:
             fix_def.shape = &shape;
             fix_def.density = 1.0f;
             fix_def.friction = 0.90f;
-            fix_def.restitution = 0.6f;
+            fix_def.restitution = 0.0f;
             body->CreateFixture(&fix_def); 
             fix_def.density = .1f;
             shape.SetAsBox(10.0f, 10.0f, b2Vec2(50.0f, 0.0f), 0.0f);
@@ -61,21 +63,34 @@ public:
                 b2Vec2 list[] = {
                     {-1.0f, -1.0f },
                     { 1.0f, -1.0f },
-                    { 0.0f,  60.0f }
+                    { 0.0f,  1.0f }
                 };
 
                 shape.Set(list, 3);
 
                 fix_def.shape = &shape;
                 fix_def.density = 1.0f;
-                fix_def.friction = 0.90f;
-                fix_def.restitution = 0.6f;
+                fix_def.friction = 1.0f;
+                fix_def.restitution = 0.0f;
                 body->CreateFixture(&fix_def);
             });
         }
-        
 
         srand(time(0));
+
+        {
+            const char* font_path = "./generic.otf";
+            spk::font_manager_tt fmanager;
+            if(!fmanager.init()) {
+                printf("failed to init fmanager\n");
+                abort();
+            }
+
+            if(!fmanager.load_ascii_font(32, 0, font_path)) {
+                printf("failed to load font: %s\n", font_path);
+                abort();
+            }
+        }
 
         name = "Game";
     }
@@ -85,19 +100,17 @@ public:
     }
 
     void tick(spk::scene_tt& scene, float deltatime) {
-        box.set([](spk::comp_b2Body& comp) { // F(n) = m(kg) * a (m/s)
-            b2PolygonShape* shape = (b2PolygonShape*)comp.body->GetFixtureList()->GetNext()->GetShape();
-            comp.body->ApplyForce((comp.body->GetMass() * 10) * comp.body->GetWorldPoint(shape->m_normals[2]), b2Vec2(50.0f, 0), true);
-        });
+
     }
    
     void free(spk::scene_tt& scene) {
     }
 
-    void handle_message(spk::scene_tt& scene, float deltatime, spk::message_tt& msg) {
+    void handle_message(spk::scene_tt& scene, float deltatime) {
     }
 
 private:
+    uint32_t text_box = 1;
     sfk::window_tt* p_window;
     flecs::entity box;
 };
@@ -106,10 +119,13 @@ int main() {
     spk::engine_tt engine;
     game_tt game;
 
-    enum values { min = 0, max = 1 };
-
     engine.init(1000, 800, "Game");
     engine.push_system(&game);
+
+    if(!engine.resource_manager.load_ascii_font("generic.otf", 0, 32)) {
+        engine.free();
+        return -1; 
+    }
 
     engine.loop();
 

@@ -1,5 +1,7 @@
 #pragma once
+
 #include "primitive_renderer.hpp"
+#include "ui_renderer.hpp"
 
 namespace spk {
     struct render_scene_tt {
@@ -13,19 +15,15 @@ namespace spk {
         void init(scene_tt& scene, void* data);
         void update(scene_tt& scene, float deltatime);
         void tick(scene_tt& scene, float deltatime) {}
-        static void resize(void* self, int width, int height);
+        static void resize(sfk::window_tt* window, void* self, int width, int height);
         void free(scene_tt& scene);
-
-        struct vertex {
-            float x, y, z;
-            uint32_t agbr;
-        };
 
         render_system_manager_tt renderer_manager;
 
     private:
         // need a place to access each render system's
         // non-base-class methods
-        primitive_renderer_tt quad_renderer;
+        primitive_renderer_tt primitive_renderer;
+        ui_renderer_tt ui_renderer;
     };
 }

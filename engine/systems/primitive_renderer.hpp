@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../systems.hpp"
-#include "../utility/batching.hpp"
 
 namespace spk {
     struct quad_scene_tt {
@@ -20,7 +19,7 @@ namespace spk {
     class primitive_renderer_tt : public render_system_tt {
     public:
 
-        void init(sfk::window_tt& window, flecs::world& world, void* scene);
+        void init(scene_tt& scene);
         void render(scene_tt& scene);
         void resize(int width, int height);
         void free();
@@ -36,7 +35,7 @@ namespace spk {
         sfk::vertex_layout_tt vertex_layout;
         sfk::vertex_array_tt  vertex_array;
         uint32_t texture;
-        uint32_t program;
+        sfk::program_tt program;
 
         glm::mat4 vp;
         glm::mat4 proj;

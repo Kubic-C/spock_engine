@@ -9,21 +9,11 @@
 #define DEFAULT_SORTING_ORDER 5U
 
 namespace spk {
-    struct message_tt {
-        uint32_t code; // message code
-        std::string str; // may be empty
-
-        message_tt(const uint32_t& code, const std::string& str) 
-            : code(code), str(str) {}
-    };
-
     struct system_tt {
         uint32_t sorting_order = USER_SORTING_ORDER0;
         std::string name;
-        std::queue<message_tt>* bus;
 
         // called by system manager (part of game engine)
-        virtual void handle_message(scene_tt& scene, float deltatime, message_tt& message) {}
         virtual void init(scene_tt& scene, void* data) {}
         virtual void update(scene_tt& scene, float deltatime) {}
         virtual void tick(scene_tt& scene, float deltatime) {}
@@ -33,11 +23,9 @@ namespace spk {
     /* handles updating and keeping track of the active systems*/
     struct system_manager_tt {
         std::vector<system_tt*> systems;
-        std::queue<message_tt> messages;
 
         void push_system(system_tt* system);
 
-        void msg_update(scene_tt& scene, float deltatime);
         void update(scene_tt& scene, float deltatime); 
         void tick(scene_tt& scene, float deltatime);
         void free(scene_tt& scene);
@@ -45,7 +33,7 @@ namespace spk {
     };
 
     struct render_system_tt {
-        virtual void init(sfk::window_tt& window, flecs::world& world, void* scene) {}
+        virtual void init(scene_tt& scene) {}
         virtual void render(scene_tt& scene) {}
         virtual void resize(int width, int height) {}
         virtual void free() {}

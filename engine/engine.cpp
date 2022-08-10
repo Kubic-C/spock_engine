@@ -23,6 +23,9 @@ namespace spk {
         scene->render_scene = new render_scene_tt;
         scene->physics_scene = new physics_scene_tt;
         
+        DEBUG_VALUE(bool, ret =) resource_manager.init();
+        assert(ret);
+        
         {
             renderer.init(*scene, nullptr);
             renderer.name = "renderer2D";
@@ -39,14 +42,17 @@ namespace spk {
         }
 
         {
-            input.init(*scene, &window);
-            input.name = "input";
-            input.sorting_order = DEFAULT_SORTING_ORDER;
+            ui.init(*scene, nullptr);
+            ui.name = "user interface";
+            ui.sorting_order = DEFAULT_SORTING_ORDER;
+
+            window.mouse_callback.data = &ui;
+            window.mouse_callback.fp_callback = ui.mouse_button_callback;
         }
 
         system_manager.push_system(&renderer);
         system_manager.push_system(&physics);
-        system_manager.push_system(&input);
+        system_manager.push_system(&ui);
     }
 
     void engine_tt::free() {
@@ -64,6 +70,7 @@ namespace spk {
         delete scene->render_scene;
         delete scene;
 
+        resource_manager.free();
         window.free();
         framework.free();
     }
@@ -95,13 +102,12 @@ namespace spk {
             {
                 update();
                 system_manager.update(*scene, time.delta);
-                system_manager.msg_update(*scene, time.delta);
                 time.frames++;
             }
         
             if(framework.get_time() - time.second_timer > 1.0) {
                 time.second_timer++;
-                printf("FPS: %4u | UPS: %3u | DELTA: %1.8f | RUNTIME: %5.3f\n", time.frames, time.ticks, time.delta, scene->world.time());
+                printf("FPS: %4u | UPS: %3u | DELTA: %1.8f | RUNTIME: %5f\n", time.frames, time.ticks, time.delta, scene->world.time());
                 time.frames = 0, time.ticks = 0;
                 std::cout.flush();
             }

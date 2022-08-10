@@ -1,5 +1,5 @@
 #include "primitive_renderer.hpp"
-#include "../utility/physics.hpp"
+#include "../utility/physics_.hpp"
 #include <glm/gtc/matrix_transform.hpp>
  
 uint32_t index_a[] = {
@@ -8,7 +8,7 @@ uint32_t index_a[] = {
 };
  
 namespace spk {
-    void primitive_renderer_tt::init(sfk::window_tt& window, flecs::world& world, void* pscene) {
+    void primitive_renderer_tt::init(scene_tt& scene) {
 
         { // vertex data
             vertex_array.init();
@@ -24,49 +24,19 @@ namespace spk {
             index_buffer.generate_quad_indexes(4);
         }
     
-        { // shaders
-            uint32_t vsh, fsh;
-    
-            vsh = sfk::create_shader(GL_VERTEX_SHADER, "./shaders/vs_tiles.glsl");
-            fsh = sfk::create_shader(GL_FRAGMENT_SHADER, "./shaders/fs_tiles.glsl");
-    
-            if(fsh == UINT32_MAX || vsh == UINT32_MAX) {
-                abort();
-            }
-    
-            program = glCreateProgram();
-            glAttachShader(program, vsh);
-            glAttachShader(program, fsh);
-            glLinkProgram(program);
-            glDeleteShader(vsh);
-            glDeleteShader(fsh);
-    
-            {
-                int success;
-                char info_log[512];
-                glGetProgramiv(program, GL_LINK_STATUS, &success);
-                if(!success) {
-                    glGetShaderInfoLog(program, 512, NULL, info_log);
-                    sfk::logger.add_log(sfk::LOG_TYPE_ERROR, "program linking failed: %s\n", info_log);
-                    abort();
-                }
-            }
+        program.init();
+        if(!program.load_shader_files("./shaders/vs_tiles.glsl", "./shaders/fs_tiles.glsl")) {
+            printf("couldn't load primitve shaders\n");
+            abort();
         }
     
-        {
-            int width, height;
-    
-            window.get_size(&width, &height);
-            resize(width, height);
-        }
-
         mesh.resize(24);
     }
     
     void primitive_renderer_tt::render(scene_tt& scene) {
         flecs::world& world = scene.world;
         auto q = world.query<comp_b2Body, primitive_render_tt>();
-    
+        
         q.iter([&](flecs::iter& it, comp_b2Body* c_bodies, primitive_render_tt* c_primitives) {
             for(auto i : it) {
                 primitive_render_tt* primitive = &c_primitives[i];
@@ -101,12 +71,13 @@ namespace spk {
                     vertex_array.bind();
 
                     index_buffer.bind();
-                    glUseProgram(program);
-                    glUniformMatrix4fv(glGetUniformLocation(program, "u_vp"), 1, false, &vp[0][0]);
+                    program.use();
+                    program.set_mat4("u_vp", vp);
                     glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
                 }
             }
         });
+
     }
  
     void primitive_renderer_tt::resize(int width, int height) {
@@ -122,6 +93,6 @@ namespace spk {
     void primitive_renderer_tt::free() {
         vertex_array.free();
         vertex_buffer.free();
-        glDeleteProgram(program);
+        program.free();
     }
 }

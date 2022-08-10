@@ -6,6 +6,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <box2d/box2d.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 // extra
 #include <cassert>

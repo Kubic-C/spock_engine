@@ -1,6 +1,7 @@
 #pragma once
 
 #include "framework.hpp"
+#include "utility/ui_.hpp"
 
 namespace spk {
     class engine_tt;
@@ -23,5 +24,6 @@ namespace spk {
         flecs::world world;
         render_scene_tt* render_scene;
         physics_scene_tt* physics_scene;
+        ui_canvas_tt canvas;
     };
 }

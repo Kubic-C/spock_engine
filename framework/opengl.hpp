@@ -9,7 +9,13 @@
 
 #define SFK_MAX_VERTEX_LAYOUT_ATTRIBUTES 8
 
+/* i dont *really* know how to abstract OpenGL and id rather not try
+   because its not really fully necessary for this engine, maybe in the future
+   ill try to develop a better framework that has some more better abstractions
+   but the main focus is the game engine, not specifaclly rendering */
+
 namespace sfk {
+    uint32_t create_shader_from_src(uint32_t shader_type, const char* src, int* size);
     uint32_t create_shader(uint32_t shader_type, const char* file_path);
 
     struct vertex_attribute_tt {
@@ -76,5 +82,91 @@ namespace sfk {
         // cap is the maximum amount of quads that the index buffer can 
         // generate for
         void generate_quad_indexes(uint32_t cap);
+    };
+
+    class texture2D_tt {
+    public:
+        bool init();
+        void allocate(uint32_t type, uint32_t internal_format, uint32_t format, int width, int height, void* pixels);
+        void subdata(uint32_t type, uint32_t xoffset, uint32_t yoffset, uint32_t format, int width, int height, void* pixels);
+        bool load_image(const char* path, int desired_channels);
+        void active_texture(uint32_t slot);
+        void bind();
+        void free();
+
+    private:
+        uint32_t id;
+    };
+
+    class program_tt {
+    public:
+        bool init();
+        bool load_shader_files(const char* vsh, const char* fsh);
+        bool load_shader_modules(uint32_t vsh, uint32_t fsh, bool delete_shaders = true);
+        void use();
+        void free();
+
+        void set_bool(const std::string &name, bool value) const
+        {         
+            glUniform1i(glGetUniformLocation(id, name.c_str()), (int)value); 
+        }
+
+        void set_int(const std::string &name, int value) const
+        { 
+            glUniform1i(glGetUniformLocation(id, name.c_str()), value); 
+        }
+
+        void set_float(const std::string &name, float value) const
+        { 
+            glUniform1f(glGetUniformLocation(id, name.c_str()), value); 
+        }
+
+        void set_vec2(const std::string &name, const glm::vec2 &value) const
+        { 
+            glUniform2fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]); 
+        }
+
+        void set_vec2(const std::string &name, float x, float y) const
+        { 
+            glUniform2f(glGetUniformLocation(id, name.c_str()), x, y); 
+        }
+
+        void set_vec3(const std::string &name, const glm::vec3 &value) const
+        { 
+            glUniform3fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]); 
+        }
+
+        void set_vec3(const std::string &name, float x, float y, float z) const
+        { 
+            glUniform3f(glGetUniformLocation(id, name.c_str()), x, y, z); 
+        }
+
+        void set_vec4(const std::string &name, const glm::vec4 &value) const
+        { 
+            glUniform4fv(glGetUniformLocation(id, name.c_str()), 1, &value[0]); 
+        }
+
+        void set_vec4(const std::string &name, float x, float y, float z, float w) const
+        { 
+            glUniform4f(glGetUniformLocation(id, name.c_str()), x, y, z, w); 
+        }
+
+        void set_mat2(const std::string &name, const glm::mat2 &mat) const
+        {
+            glUniformMatrix2fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+        }
+
+        void set_mat3(const std::string &name, const glm::mat3 &mat) const
+        {
+            glUniformMatrix3fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+        }
+
+        void set_mat4(const std::string &name, const glm::mat4 &mat) const
+        {
+            glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+        }
+
+    private:
+        uint32_t id;
     };
 }

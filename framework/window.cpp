@@ -17,14 +17,22 @@ namespace sfk {
         window_tt* window = (window_tt*)glfwGetWindowUserPointer(window_);
 
         if(window->resize_callback.fp_callback)
-            window->resize_callback.fp_callback(window->resize_callback.data, width, height);
+            window->resize_callback.fp_callback(window, window->resize_callback.data, width, height);
     }
 
     void key_callback(GLFWwindow* window_, int key, int scancode, int action, int mods) {
         window_tt* window = (window_tt*)glfwGetWindowUserPointer(window_);
 
         if(window->char_callback.fp_callback) 
-            window->char_callback.fp_callback(window->resize_callback.data, key);        
+            window->char_callback.fp_callback(window, window->char_callback.data, key);        
+    }
+
+    void mouse_button_callback(GLFWwindow* window_, int button, int action, int mods) {
+        window_tt* window = (window_tt*)glfwGetWindowUserPointer(window_);
+
+        if(window->mouse_callback.fp_callback)
+            window->mouse_callback.fp_callback(window, window->mouse_callback.data, button, action, mods); 
+
     }
 
     window_tt::window_tt() {}
@@ -38,6 +46,7 @@ namespace sfk {
         glfwSetKeyCallback(c_window, key_callback);
         glfwSetWindowUserPointer(c_window, this);
         glfwSetInputMode(c_window, GLFW_STICKY_KEYS, GLFW_TRUE);
+        glfwSetMouseButtonCallback(c_window, mouse_button_callback);
     }
 
     void window_tt::free() {

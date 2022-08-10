@@ -7,19 +7,21 @@ target_include_directories(spock_engine INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/"
 target_sources(spock_engine PRIVATE
     "engine.cpp"
     "systems.hpp" "systems.cpp"
+    "input.hpp" "input.cpp"
     "scene.hpp" "scene.cpp")
 
 target_sources(spock_engine PRIVATE
     "systems/renderer.hpp" "systems/renderer.cpp"
     "systems/primitive_renderer.hpp" "systems/primitive_renderer.cpp"
-    "systems/physics.hpp" "systems/physics.cpp"
-    "systems/input.hpp" "systems/input.cpp")
+    "systems/ui_renderer.hpp" "systems/ui_renderer.cpp"
+    "systems/ui.hpp" "systems/ui.cpp" 
+    "systems/physics.hpp" "systems/physics.cpp")
 
 target_sources(spock_engine PRIVATE
-    "utility/physics.hpp" "utility/physics.cpp"
-    "utility/aabb.hpp" "utility/aabb.cpp"
-    "utility/batching.hpp" "utility/batching.cpp"
-    "utility/callback.hpp" "utility/callback.cpp")
+    "utility/physics_.hpp" "utility/physics_.cpp"
+    "utility/ui_.hpp" "utility/ui_.cpp"
+    "utility/callback.hpp" "utility/callback.cpp"
+    "utility/resource_manager.hpp" "utility/resource_manager.cpp")
 
 target_sources(spock_engine PUBLIC
     "engine.hpp")

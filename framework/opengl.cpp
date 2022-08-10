@@ -2,10 +2,31 @@
 #include "external/stb_image.h"
 
 namespace sfk {
+    uint32_t create_shader_from_src(uint32_t shader_type, const char* src, int* size) {
+        uint32_t shaderid;
+
+        shaderid = glCreateShader(shader_type);
+        glShaderSource(shaderid, 1, &src, size);
+        glCompileShader(shaderid);
+
+        {
+            int success;
+            char info_log[512];
+            glGetShaderiv(shaderid, GL_COMPILE_STATUS, &success);
+            if(!success) {
+                glGetShaderInfoLog(shaderid, 512, NULL, info_log);
+                printf("shader compilation failed: %s\n", info_log);
+                glDeleteShader(shaderid);
+                return -1;
+            }
+        }
+
+        return shaderid;
+    }
+
     uint32_t create_shader(uint32_t shader_type, const char* file_path) {
         int file_size;
         char* file_data;
-        uint32_t shaderid;
 
         {
             FILE* file;
@@ -24,23 +45,7 @@ namespace sfk {
 
         }
 
-        shaderid = glCreateShader(shader_type);
-        glShaderSource(shaderid, 1, &file_data, &file_size);
-        glCompileShader(shaderid);
-
-        {
-            int success;
-            char info_log[512];
-            glGetShaderiv(shaderid, GL_COMPILE_STATUS, &success);
-            if(!success) {
-                glGetShaderInfoLog(shaderid, 512, NULL, info_log);
-                printf("shader compilation failed: %s\n", info_log);
-                glDeleteShader(shaderid);
-                return -1;
-            }
-        }
-
-        return shaderid;
+        return create_shader_from_src(shader_type, file_data, &file_size);;
     }
 
     vertex_layout_tt& vertex_layout_tt::add(size_t index, size_t size, size_t type, 
@@ -128,8 +133,8 @@ namespace sfk {
         uint32_t offset = 0;
         for(uint32_t i = 0; i < cap * 6; i += 6) {
 			indexes[i + 0] = 0 + offset;
-			indexes[i + 1] = 1 + offset;
-			indexes[i + 2] = 2 + offset;
+			indexes[i + 1] = 2 + offset;
+			indexes[i + 2] = 1 + offset;
 			
 			indexes[i + 3] = 0 + offset;
 			indexes[i + 4] = 3 + offset;
@@ -138,5 +143,121 @@ namespace sfk {
         }
 
         buffer_data(indexes.size() * sizeof(uint32_t), indexes.data(), GL_STATIC_DRAW);
+    }
+
+    bool texture2D_tt::init() {
+        glGenTextures(1, &id);
+    
+        return true;
+    }
+
+    void texture2D_tt::allocate(uint32_t type, uint32_t internal_format, uint32_t format, int width, int height, void* pixels) {
+        bind();
+        glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, format, type, pixels);
+    }
+
+    void texture2D_tt::subdata(uint32_t type, uint32_t xoffset, uint32_t yoffset, uint32_t format, int width, int height, void* pixels) {
+        bind();
+        glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset, yoffset, width, height, format, type, pixels);
+    }
+
+    bool texture2D_tt::load_image(const char* path, int desired_channels) {
+        u_char* pixels;
+        int width;
+        int height;
+        int channels;
+
+        pixels = stbi_load(path, &width, &height, &channels, desired_channels);
+        if(!pixels)
+            return false;
+
+        bind();
+        allocate(GL_TEXTURE_2D, GL_RGB, GL_RGB, width, height, pixels); 
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        return true;
+    }
+
+    void texture2D_tt::active_texture(uint32_t slot) {
+        glActiveTexture(slot);
+        bind();
+    }
+
+    void texture2D_tt::bind() {
+        glBindTexture(GL_TEXTURE_2D, id);
+    }
+
+    void texture2D_tt::free() {
+        glDeleteTextures(1, &id);
+    }
+
+    bool program_tt::init() {
+        id = glCreateProgram();
+
+        return true;
+    }
+
+    bool program_tt::load_shader_files(const char* vsh_path, const char* fsh_path) {
+        uint32_t vsh, fsh;
+        bool vsh_invalid, fsh_invalid, leave;
+    
+        vsh = sfk::create_shader(GL_VERTEX_SHADER, vsh_path);
+        fsh = sfk::create_shader(GL_FRAGMENT_SHADER, fsh_path);
+
+        vsh_invalid = vsh == UINT32_MAX;
+        fsh_invalid = fsh == UINT32_MAX;
+        leave       = vsh_invalid || fsh_invalid;
+
+        if(fsh_invalid) {
+            glDeleteShader(vsh);
+        }
+
+        if(vsh_invalid) {
+            glDeleteShader(fsh);
+        }
+
+        if(leave) {
+            return false;
+        }
+
+        if(!load_shader_modules(vsh, fsh, true)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    bool program_tt::load_shader_modules(uint32_t vsh, uint32_t fsh, bool delete_shaders) {    
+        bool ret = true;
+        
+        glAttachShader(id, vsh);
+        glAttachShader(id, fsh);
+        glLinkProgram(id);
+            
+        {
+            int success;
+            char info_log[512];
+            glGetProgramiv(id, GL_LINK_STATUS, &success);
+            if(!success) {
+                glGetShaderInfoLog(id, 512, NULL, info_log);
+                sfk::logger.add_log(sfk::LOG_TYPE_ERROR, "program linking failed: %s\n", info_log);
+                ret = false;
+            }
+        }
+
+        if(delete_shaders) {
+            glDeleteShader(vsh);
+            glDeleteShader(fsh);
+        }
+
+        return ret;
+    }
+
+    void program_tt::use() {
+        glUseProgram(id);    
+    }
+
+    void program_tt::free() {
+        glDeleteProgram(id);
     }
 }
