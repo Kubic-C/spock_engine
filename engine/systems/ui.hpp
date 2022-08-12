@@ -13,7 +13,7 @@ namespace spk {
 
         static void mouse_button_callback(sfk::window_tt* window, void* self, int button, int action, int mods);
 
-        ui_canvas_tt* canvas;
+        scene_tt* scene;
     private:
         uint32_t text_key = 0;
         uint32_t button_key = 0;

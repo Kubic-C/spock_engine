@@ -137,12 +137,24 @@ namespace spk {
     }
 
     void font_render_tt::add_ui_text(vertex_tt* vtx, font_tt* font, ui_text_tt* text) {
-        float x = text->position.x; // x cursor
-        float y = text->position.y;
+        float x = text->axises.position.x; // x cursor
+        float y = text->axises.position.y;
+        float xreset = 0.0f;
+        float xwrap = 1000000000000000000000000000000000.0f; // unreasoably high number
 
-        if(text->button) {
-            x += text->button->position.x;
-            y += text->button->position.y + font->one_fourth_tallest_glyph;
+        if(text->parent) {
+            x = (text->parent->position.x + text->parent->half_width);
+            y = (text->parent->position.y + text->parent->half_height);
+
+            // on the first frame, _render.width will be 0
+            x -= (text->_render.width / 2.0f);
+            y -= (text->_render.height / 2.0f);
+
+            xwrap = text->parent->position.x + text->parent->size.x;
+            xreset = x;
+
+            text->_render.width = 0.0f;
+            text->_render.height = 0.0f;
         }
 
         for(u_char c : text->str) {
@@ -160,6 +172,9 @@ namespace spk {
             vtx += 4;
 
             x += (float)ch->advance;
+
+            text->_render.width += (float)ch->advance;
+            text->_render.height = std::max(text->_render.height, h);
         } 
     }
 
@@ -236,19 +251,19 @@ namespace spk {
         color = btn->color - offset;
 
         // bl
-        vtx[0] = {.x = btn->position.x,                 .y = btn->position.y, 
+        vtx[0] = {.x = btn->axises.position.x,                 .y = btn->axises.position.y, 
                     .r = color.r, .g = color.g, .b = color.b};
 
         // tr
-        vtx[2] = {.x = btn->position.x + btn->size.x,   .y = btn->position.y + btn->size.y, 
+        vtx[2] = {.x = btn->axises.position.x + btn->axises.size.x,   .y = btn->axises.position.y + btn->axises.size.y, 
                     .r = color.r, .g = color.g, .b = color.b};
 
         // br
-        vtx[1] = {.x = btn->position.x + btn->size.x,   .y = btn->position.y, 
+        vtx[1] = {.x = btn->axises.position.x + btn->axises.size.x,   .y = btn->axises.position.y, 
                     .r = color.r, .g = color.g, .b = color.b};
 
         // tl
-        vtx[3] = {.x = btn->position.x,                 .y = btn->position.y + btn->size.y, 
+        vtx[3] = {.x = btn->axises.position.x,   .y = btn->axises.position.y + btn->axises.size.y, 
                     .r = color.r, .g = color.g, .b = color.b};
     } 
 
