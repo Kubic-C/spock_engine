@@ -51,8 +51,7 @@ namespace spk {
         return btn;
     }
 
-    ui_text_tt* ui_canvas_tt::init_text(sfk::key_tt key, ui_axises_tt axises, glm::vec3 color, const char* str,
-            ui_axises_tt* parent) {
+    ui_text_tt* ui_canvas_tt::init_text(sfk::key_tt key, ui_axises_tt axises, glm::vec3 color, const char* str, ui_axises_tt* parent) {
         ui_text_tt* txt;
 
         if(!texts.register_key(key))

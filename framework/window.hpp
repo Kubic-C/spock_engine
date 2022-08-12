@@ -12,8 +12,8 @@ namespace sfk {
 
     template<typename T>
     struct window_callback_tt {
-        T fp_callback;
-        void* data;
+        T fp_callback = null;
+        void* data = null;
     };
 
     struct window_tt {

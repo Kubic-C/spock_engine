@@ -17,13 +17,6 @@ namespace spk {
 
         scene.canvas.init();
         this->scene = &scene;
-
-        ui_button_tt* btn = this->scene->canvas.init_button(0, (ui_axises_tt){.position = { 10.0f, 10.0f }, .size = { 200.0f, 30.0f}}, 
-            (glm::vec3){ 1.0f, 1.0f, 1.0f }, func);
-        btn->axises.set({10.0f, 10.0f}, { 400.0f, 100.0f });
-    
-        this->scene->canvas.init_text(0, (ui_axises_tt){.position = { 0.0f, 0.0f }}, (glm::vec3){0.0f, 0.0f, 0.0f}, 
-            "width relavance is cool!", &btn->axises);
     }
 
     void ui_tt::update(scene_tt& scene, float deltatime) {

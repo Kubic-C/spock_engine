@@ -160,10 +160,10 @@ namespace spk {
         for(u_char c : text->str) {
             character_tt* ch = &font->char_map[c];
 
-            float x2 = x + ch->bearing.x;
-            float y2 = y - (ch->size.y - ch->bearing.y);
-            float w = ch->size.x;
-            float h = ch->size.y;    
+            float x2 = x + ch->bearing.x * text->axises.size.x;
+            float y2 = y - (ch->size.y - ch->bearing.y) * text->axises.size.y;
+            float w = ch->size.x * text->axises.size.x;
+            float h = ch->size.y * text->axises.size.y;    
 
             vtx[0] = { .x = x2,     .y = y2,     .u = ch->tex_indices[0].x, .v = ch->tex_indices[0].y, .r = text->color.r, .g = text->color.g, .b = text->color.b} ;
             vtx[1] = { .x = x2 + w, .y = y2,     .u = ch->tex_indices[1].x, .v = ch->tex_indices[1].y, .r = text->color.r, .g = text->color.g, .b = text->color.b} ;
@@ -171,10 +171,10 @@ namespace spk {
             vtx[3] = { .x = x2,     .y = y2 + h, .u = ch->tex_indices[3].x, .v = ch->tex_indices[3].y, .r = text->color.r, .g = text->color.g, .b = text->color.b} ;
             vtx += 4;
 
-            x += (float)ch->advance;
+            x += (float)ch->advance * text->axises.size.x;
 
-            text->_render.width += (float)ch->advance;
-            text->_render.height = std::max(text->_render.height, h);
+            text->_render.width += (float)ch->advance * text->axises.size.x;
+            text->_render.height = std::max(text->_render.height, h * text->axises.size.y);
         } 
     }
 

@@ -18,7 +18,7 @@ namespace spk {
 
     struct ui_axises_tt {
         glm::vec2 position;
-        glm::vec2 size;
+        glm::vec2 size = { 1.0f, 1.0f }; // size in text is a scalar
 
         float half_width;
         float half_height;
@@ -55,7 +55,7 @@ namespace spk {
 
         ui_button_tt* init_button(sfk::key_tt key, ui_axises_tt axises, glm::vec3 color, 
             button_callback_tt clbk, ui_axises_tt* parent = nullptr);
-        ui_text_tt* init_text(sfk::key_tt key, ui_axises_tt axises, glm::vec3 color, const char* str,
+        ui_text_tt* init_text(sfk::key_tt key, ui_axises_tt axises, glm::vec3 color, const char* str, 
             ui_axises_tt* parent = nullptr);
 
         glm::mat4 vp;
