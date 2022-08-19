@@ -100,7 +100,7 @@ namespace spk {
         texts_found = canvas->texts.get_all_data(ui_text, 24);
         vertex_tt* section = &buffer[0];
         for(uint32_t j = 0; j < texts_found; j++) {
-            add_ui_text(section, font, ui_text[j]);
+            add_ui_text(section, font, ui_text[j], canvas->width, canvas->height);
             indexes += indexes_per_letter * ui_text[j]->str.size();
             vertices += vertices_per_letter * ui_text[j]->str.size();
             section += indexes_per_letter * ui_text[j]->str.size();
@@ -136,11 +136,9 @@ namespace spk {
         vao.free();
     }
 
-    void font_render_tt::add_ui_text(vertex_tt* vtx, font_tt* font, ui_text_tt* text) {
-        float x = text->axises.position.x; // x cursor
-        float y = text->axises.position.y;
-        float xreset = 0.0f;
-        float xwrap = 1000000000000000000000000000000000.0f; // unreasoably high number
+    void font_render_tt::add_ui_text(vertex_tt* vtx, font_tt* font, ui_text_tt* text, float xmax, float ymax) {
+        float x = RELATIVE_COORD(text->axises.position.x, xmax); // x cursor
+        float y = RELATIVE_COORD(text->axises.position.y, ymax);
 
         if(text->parent) {
             x = (text->parent->position.x + text->parent->half_width);
@@ -149,9 +147,6 @@ namespace spk {
             // on the first frame, _render.width will be 0
             x -= (text->_render.width / 2.0f);
             y -= (text->_render.height / 2.0f);
-
-            xwrap = text->parent->position.x + text->parent->size.x;
-            xreset = x;
 
             text->_render.width = 0.0f;
             text->_render.height = 0.0f;
@@ -210,7 +205,7 @@ namespace spk {
         buttons_found = canvas->buttons.get_all_data(ui_buttons, 24);
         vertex_tt* section = &buffer[0];
         for(uint32_t i = 0; i < buttons_found; i++) {
-            add_ui_button(section, ui_buttons[i]);
+            add_ui_button(section, ui_buttons[i], canvas->width, canvas->height);
             indexes += indexes_per_button;
             vertices += vertices_per_button;
             section += indexes_per_button;
@@ -240,7 +235,11 @@ namespace spk {
         program.free();
     }
         
-    void button_render_tt::add_ui_button(vertex_tt* vtx, ui_button_tt* btn) {
+    void button_render_tt::add_ui_button(vertex_tt* vtx, ui_button_tt* btn, float xmax, float ymax) {
+        const float x = RELATIVE_COORD(btn->axises.position.x, xmax);
+        const float y = RELATIVE_COORD(btn->axises.position.y, ymax);
+        const float w = RELATIVE_COORD(btn->axises.size.x, xmax);
+        const float h = RELATIVE_COORD(btn->axises.size.y, ymax);
         glm::vec3 offset = {0.0f, 0.0f, 0.0f};
         glm::vec3 color;
 
@@ -249,21 +248,21 @@ namespace spk {
         }
 
         color = btn->color - offset;
-
+ 
         // bl
-        vtx[0] = {.x = btn->axises.position.x,                 .y = btn->axises.position.y, 
+        vtx[0] = {.x = x, .y = y, 
                     .r = color.r, .g = color.g, .b = color.b};
 
         // tr
-        vtx[2] = {.x = btn->axises.position.x + btn->axises.size.x,   .y = btn->axises.position.y + btn->axises.size.y, 
+        vtx[2] = {.x = x + w,   .y = y + h, 
                     .r = color.r, .g = color.g, .b = color.b};
 
         // br
-        vtx[1] = {.x = btn->axises.position.x + btn->axises.size.x,   .y = btn->axises.position.y, 
+        vtx[1] = {.x = x + w,   .y = y, 
                     .r = color.r, .g = color.g, .b = color.b};
 
         // tl
-        vtx[3] = {.x = btn->axises.position.x,   .y = btn->axises.position.y + btn->axises.size.y, 
+        vtx[3] = {.x = x,   .y = y + h, 
                     .r = color.r, .g = color.g, .b = color.b};
     } 
 

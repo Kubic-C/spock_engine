@@ -1,7 +1,7 @@
 # VSCODE IS DUMB
 
 you may see that some files are appended with '_'
-now why you may be asking yourself??
+now why you may not be asking yourself??
 
 because vscode's C++ debugger (sometype of GDB intergration)
 will try and guess which file it should show when debugging in project that

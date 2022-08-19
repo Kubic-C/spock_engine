@@ -18,6 +18,7 @@ namespace spk {
 
         void push_system(system_tt* system);
 
+        void set_time_exit(int ticks_till_end) { time.exit = ticks_till_end; };
         void set_tick_speed(int tick_speed);
         float get_tick_speed() const { return time.fps_limiter; }
         void update();
@@ -37,6 +38,7 @@ namespace spk {
         system_manager_tt system_manager;
 
         struct time_tt {
+            int exit = INT_MAX;
             int ticks, frames;
             int ticks_per_second;
             double fps_limiter;

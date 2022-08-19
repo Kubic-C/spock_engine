@@ -2,6 +2,8 @@
 
 #include "../systems.hpp"
 
+#define RELATIVE_COORD(x, max) ((max * (x + 1)) / 2)
+
 namespace spk {
     struct font_render_tt {
         struct vertex_tt {
@@ -27,7 +29,7 @@ namespace spk {
         void render(sfk::static_index_buffer_tt& ibo, font_tt* font, ui_canvas_tt* canvas);
         void free();
 
-        void add_ui_text(vertex_tt* vtx, font_tt* font, ui_text_tt* text);
+        void add_ui_text(vertex_tt* vtx, font_tt* font, ui_text_tt* text, float xmax, float ymax);
     };
 
     struct button_render_tt {
@@ -53,7 +55,7 @@ namespace spk {
         void render(sfk::static_index_buffer_tt& ibo, ui_canvas_tt* canvas);
         void free();
 
-        void add_ui_button(vertex_tt* vtx, ui_button_tt* button);
+        void add_ui_button(vertex_tt* vtx, ui_button_tt* button, float xmax, float ymax);
     };
 
     class ui_renderer_tt : public render_system_tt {

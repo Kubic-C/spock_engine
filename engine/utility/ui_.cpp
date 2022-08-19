@@ -28,6 +28,9 @@ namespace spk {
         proj = glm::ortho(0.0f, (float)width, 0.0f, (float)height, 0.01f, 100.0f);
 
         vp = proj * view;
+
+        this->width = (float)width;
+        this->height = (float)height;
     }
 
     void ui_canvas_tt::free() {

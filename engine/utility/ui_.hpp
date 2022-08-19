@@ -5,18 +5,19 @@
 namespace spk {
     struct ui_button_tt;
     struct scene_tt;
+    typedef glm::vec2 rel_coords_tt;
     typedef void(*button_callback_tt)(scene_tt& scene, ui_button_tt* btn);
 
-    /* all origons start in the bottom left corner*/
+    /* all origins start in the bottom left corner*/
 
-    enum ui_relative_positions_e {
-        BOTTOM_LEFT = 0,
-        BOTTOM_RIGHT = 1,
-        TOP_LEFT = 2,
-        TOP_RIGHT = 3,
+    enum coord_type_e: char {
+        UI_RELATIVE_COORD,
+        UI_ABSOLUTE_COORD
     };
 
+    // all positions are RELATIVE, 
     struct ui_axises_tt {
+        coord_type_e type;
         glm::vec2 position;
         glm::vec2 size = { 1.0f, 1.0f }; // size in text is a scalar
 
@@ -62,6 +63,7 @@ namespace spk {
 
         uint32_t font;
 
+        float width, height;
         sfk::hashmap_tt<ui_text_tt, 24, 2, 0> texts;
         sfk::hashmap_tt<ui_button_tt, 12, 2, 0> buttons;
     };

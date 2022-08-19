@@ -16,6 +16,7 @@ namespace spk {
         }
     };
 
+    // quick and dirty rendering
     class primitive_renderer_tt : public render_system_tt {
     public:
 
@@ -23,6 +24,9 @@ namespace spk {
         void render(scene_tt& scene);
         void resize(int width, int height);
         void free();
+
+        void render_polygon(primitive_render_tt* primitive, b2Body* body, b2PolygonShape* polygon);
+        void render_circle(primitive_render_tt* primitve, b2Body* body, b2CircleShape* circle);
 
     private:    
         struct vertex_tt {

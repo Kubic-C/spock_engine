@@ -95,6 +95,13 @@ namespace spk {
             while(time.ticks_to_do >= 1.0f) {
                 time.ticks_to_do--;
 
+                if(time.exit != INT_MAX) {
+                    time.exit--;
+
+                    if(time.exit == 0)
+                        window.close();
+                }
+
                 system_manager.tick(*scene, time.delta);
                 time.ticks++;
             }

@@ -51,6 +51,10 @@ namespace sfk {
             return glfwWindowShouldClose(c_window);
         }
 
+        inline void close() {
+            glfwSetWindowShouldClose(c_window, true);
+        }
+
         // gl related functions
 
         inline void swap_buffers() {
