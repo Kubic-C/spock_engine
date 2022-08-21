@@ -12,6 +12,10 @@ struct wall_tt {
     flecs::entity e;
 };
 
+void exit_btn_callback(spk::scene_tt& scene, spk::ui_button_tt* btn) {
+    scene.engine->set_time_exit(0);
+}
+
 class contact_listener : public b2ContactListener {
     void BeginContact(b2Contact* contact) {
         flecs::entity* ball = nullptr;
@@ -121,7 +125,7 @@ public:
             b2FixtureDef fixture_def;
             fixture_def.shape = &shape_def;
             fixture_def.density = 1.0f;
-            fixture_def.restitution = 1.0f;
+            fixture_def.restitution = 1.2f;
             body->CreateFixture(&fixture_def);
         });
 
@@ -211,16 +215,24 @@ public:
         scene.canvas.add_child((spk::ui_element_tt*)ltext);
 
         rtext = scene.canvas.texts.malloc();
-        rtext->flags = spk::UI_ELEMENT_FLAGS_PARENT_RELATIVE | spk::UI_ELEMENT_FLAGS_ENABLED;
+        rtext->flags = spk::UI_ELEMENT_FLAGS_RELATIVE | spk::UI_ELEMENT_FLAGS_ENABLED;
         rtext->text = "0";
         rtext->pos = {0.7f, 0.7f};
         scene.canvas.add_child((spk::ui_element_tt*)rtext);
 
         spk::ui_button_tt* btn = scene.canvas.btns.malloc();
         btn->flags = spk::UI_ELEMENT_FLAGS_RELATIVE | spk::UI_ELEMENT_FLAGS_ENABLED;
-        btn->pos = {0.0f, 0.0f};
-        btn->size = {-0.1f, -0.1f};
+        btn->pos = {-0.9f, -0.9f};
+        btn->size = {-0.9f, -0.9f};
+        btn->callback = exit_btn_callback;
         scene.canvas.add_child((spk::ui_element_tt*)btn);
+
+        spk::ui_text_tt* txt = scene.canvas.texts.malloc();
+        txt->flags = spk::UI_ELEMENT_FLAGS_PARENT_RELATIVE | spk::UI_ELEMENT_FLAGS_ENABLED;
+        txt->text.color = {0.0f, 0.0f, 0.0f};
+        txt->text = "exit";
+        txt->pos = {0.0f, 0.0f};
+        btn->add_child((spk::ui_element_tt*)txt);
     }
 
     void update(spk::scene_tt& scene, float deltatime) {

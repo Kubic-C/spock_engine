@@ -221,7 +221,7 @@ namespace spk {
         glm::vec3 color;
 
         if(btn->time_when_clicked + 0.1f > glfwGetTime()) {
-            offset = {0.1f, 0.1f, 0.1f};
+            offset = {0.5f, 0.5f, 0.5f};
         }
 
         color = btn->color - offset;

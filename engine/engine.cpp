@@ -2,7 +2,6 @@
 
 namespace spk {
     engine_tt::engine_tt() {
-        sfk::zero<engine_tt::time_tt>(&this->time);
     }
 
     void print_name2() {
@@ -98,7 +97,7 @@ namespace spk {
                 if(time.exit != INT_MAX) {
                     time.exit--;
 
-                    if(time.exit == 0)
+                    if(time.exit <= 0)
                         window.close();
                 }
 

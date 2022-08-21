@@ -37,15 +37,15 @@ namespace spk {
 
         system_manager_tt system_manager;
 
-        struct time_tt {
+        struct {
             int exit = INT_MAX;
-            int ticks, frames;
-            int ticks_per_second;
-            double fps_limiter;
-            double delta;
-            double ticks_to_do;
-            double last_frame;
-            double second_timer;
+            int ticks = 0, frames = 0;
+            int ticks_per_second  = 0;
+            double fps_limiter    = 0.0; 
+            double delta          = 0.0;
+            double ticks_to_do    = 0.0; 
+            double last_frame     = 0.0;
+            double second_timer   = 0.0; 
         } time;
     };
 
