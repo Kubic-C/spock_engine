@@ -1,7 +1,7 @@
 
-add_executable(space_game2d)
+add_executable(test_field)
 
-target_link_libraries(space_game2d PUBLIC spock_engine)
-target_include_directories(space_game2d PUBLIC "../depend")
+target_link_libraries(test_field PUBLIC spock_engine)
+target_include_directories(test_field PUBLIC "../depend")
 
-target_sources(space_game2d PUBLIC main.cpp)
+target_sources(test_field PUBLIC main.cpp)
