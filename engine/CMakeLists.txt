@@ -21,6 +21,7 @@ target_sources(spock_engine PRIVATE
     "utility/physics_.hpp" "utility/physics_.cpp"
     "utility/ui_.hpp" "utility/ui_.cpp"
     "utility/callback.hpp" "utility/callback.cpp"
+    "utility/text.hpp" "utility/text.cpp"
     "utility/resource_manager.hpp" "utility/resource_manager.cpp")
 
 target_sources(spock_engine PUBLIC

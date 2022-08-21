@@ -15,7 +15,5 @@ namespace spk {
 
         scene_tt* scene;
     private:
-        uint32_t text_key = 0;
-        uint32_t button_key = 0;
     };
 }

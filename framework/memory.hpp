@@ -66,11 +66,13 @@ namespace sfk {
     template<typename T, uint32_t size, size_t alignment, size_t padding = 0>
     class memory_pool_tt {
     public:
+        using data_callback_tt = std::function<bool(T&)>;
+
         bool init();
         void free();
 
         T* malloc();
-        uint32_t get_valid_blocks(T** ptrs, uint32_t count);
+        uint32_t get_valid_blocks(T** ptrs, uint32_t count, data_callback_tt clbk = nullptr);
         void letgo(T* ptr);
 
         uint32_t get_allocated() { return currently_allocated; }
@@ -196,13 +198,20 @@ namespace sfk {
     }
 
     template<typename T, uint32_t size, size_t alignment, size_t padding>
-    uint32_t memory_pool_tt<T, size, alignment, padding>::get_valid_blocks(T** ptrs, uint32_t count) {
+    uint32_t memory_pool_tt<T, size, alignment, padding>::get_valid_blocks(T** ptrs, uint32_t count, data_callback_tt clbk) {
         uint32_t ptr_it = 0;
 
         for(uint32_t n = 0; n < size && ptr_it < count; n++) {
-            if( !(block_flags[n] & BLOCK_FLAGS_FREE)) {
-                ptrs[ptr_it] = aligned_ptr + n;
-                ptr_it++;
+            if(!(block_flags[n] & BLOCK_FLAGS_FREE)) {
+                if(clbk) {
+                    if(clbk(aligned_ptr[n]))
+                        return n;
+                }
+
+                if(ptrs) {
+                    ptrs[ptr_it] = aligned_ptr + n;
+                    ptr_it++;
+                }
             }
         }
 

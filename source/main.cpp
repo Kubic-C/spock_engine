@@ -52,7 +52,6 @@ public:
         flecs::world& world = p_engine->scene->world;
         b2World* phy_world = scene.physics_scene->world; 
 
-        scene.canvas.font = 0;
         srand(time(0));
         name = "Game";
 
@@ -205,8 +204,23 @@ public:
             body->CreateFixture(&fixture_def);
         });
 
-        ltext = scene.canvas.init_text(0, {.position = {-0.5f, -1.0f}}, {0.0f, 1.0f, 0.0f}, "0");
-        rtext = scene.canvas.init_text(1, {.position = {0.5f, -1.0f}}, {0.0f, 1.0f, 0.0f}, "0");
+        ltext = scene.canvas.texts.malloc();
+        ltext->flags = spk::UI_ELEMENT_FLAGS_RELATIVE | spk::UI_ELEMENT_FLAGS_ENABLED;
+        ltext->text = "0";
+        ltext->pos = {-0.7f, 0.7f};
+        scene.canvas.add_child((spk::ui_element_tt*)ltext);
+
+        rtext = scene.canvas.texts.malloc();
+        rtext->flags = spk::UI_ELEMENT_FLAGS_PARENT_RELATIVE | spk::UI_ELEMENT_FLAGS_ENABLED;
+        rtext->text = "0";
+        rtext->pos = {0.7f, 0.7f};
+        scene.canvas.add_child((spk::ui_element_tt*)rtext);
+
+        spk::ui_button_tt* btn = scene.canvas.btns.malloc();
+        btn->flags = spk::UI_ELEMENT_FLAGS_RELATIVE | spk::UI_ELEMENT_FLAGS_ENABLED;
+        btn->pos = {0.0f, 0.0f};
+        btn->size = {-0.1f, -0.1f};
+        scene.canvas.add_child((spk::ui_element_tt*)btn);
     }
 
     void update(spk::scene_tt& scene, float deltatime) {
@@ -228,19 +242,19 @@ public:
             return;
 
         if(lscore >= SCORE_MAX) {
-            ltext->str.insert(0, "left paddle won: ");
-            ltext->axises.position = {0.0f, 0.0f};
+            ltext->text.str.insert(0, "left paddle won: ");
+            ltext->pos = {0.0f, 0.1f};
             scene.engine->set_time_exit(240); // exit in four seconds
-            rtext->str = "";
+            rtext->text = "";
             game_end = true;
             return;
         }
 
         if(rscore >= SCORE_MAX) {
-            rtext->str.insert(0, "right paddle won: ");
-            rtext->axises.position = {0.0f, 0.0f};
+            rtext->text.str.insert(0, "right paddle won: ");
+            rtext->pos = {0.0f, 0.1f};
             scene.engine->set_time_exit(240); // exit in four seconds
-            ltext->str = "";
+            ltext->text = "";
             game_end = true;
             return;
         }
@@ -278,14 +292,14 @@ public:
         if(left.won) {
             reset();
             rscore++;
-            rtext->str = std::to_string(rscore);
+            rtext->text = std::to_string(rscore);
             left.won = false;
         }
 
         if(right.won) {
             reset();
             lscore++;
-            ltext->str = std::to_string(lscore);
+            ltext->text = std::to_string(lscore);
             right.won = false;
         }
     }
@@ -326,13 +340,15 @@ int main() {
     spk::engine_tt engine;
     game_tt game;
 
-    engine.init(400, 400, "pong game");
-    engine.push_system(&game);
+    engine.init(800, 800, "pong game");
 
-    if(!engine.resource_manager.load_ascii_font("generic.otf", 0, 32)) {
+    spk::font_tt* font = engine.resource_manager.load_ascii_font("generic.otf", 0, 32);
+    if(!font) {
         engine.free();
         return -1; 
     }
+
+    engine.push_system(&game);
 
     engine.loop();
 

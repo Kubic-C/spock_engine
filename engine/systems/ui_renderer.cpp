@@ -88,27 +88,12 @@ namespace spk {
         assert(ret);
 
         buffer.resize(indexes_per_letter * MAX_LETTERS);
+
+        indexes = 0;
+        vertices = 0;
     }
 
     void font_render_tt::render(sfk::static_index_buffer_tt& ibo, font_tt* font, ui_canvas_tt* canvas) {
-        ui_text_tt* ui_text[24];
-        uint32_t texts_found;
-
-        if(!font)
-            return;
-
-        texts_found = canvas->texts.get_all_data(ui_text, 24);
-        vertex_tt* section = &buffer[0];
-        for(uint32_t j = 0; j < texts_found; j++) {
-            add_ui_text(section, font, ui_text[j], canvas->width, canvas->height);
-            indexes += indexes_per_letter * ui_text[j]->str.size();
-            vertices += vertices_per_letter * ui_text[j]->str.size();
-            section += indexes_per_letter * ui_text[j]->str.size();
-        }
-        
-        if(texts_found == 0)
-            return;
-
         // update
         vbo.buffer_sub_data(0, indexes * sizeof(vertex_tt), buffer.data());
 
@@ -136,41 +121,45 @@ namespace spk {
         vao.free();
     }
 
-    void font_render_tt::add_ui_text(vertex_tt* vtx, font_tt* font, ui_text_tt* text, float xmax, float ymax) {
-        float x = RELATIVE_COORD(text->axises.position.x, xmax); // x cursor
-        float y = RELATIVE_COORD(text->axises.position.y, ymax);
+    void font_render_tt::add_ui_text(font_tt* font, ui_text_tt* text) {
+        vertex_tt* vtx = buffer.data() + indexes;
+        const float scalar = text->text.scalar;
+        float xoffset = 0.0f;
+        float yoffset = 0.0f;
+        float x = text->abs_pos.x; // x cursor
+        float y = text->abs_pos.y;
 
-        if(text->parent) {
-            x = (text->parent->position.x + text->parent->half_width);
-            y = (text->parent->position.y + text->parent->half_height);
-
-            // on the first frame, _render.width will be 0
-            x -= (text->_render.width / 2.0f);
-            y -= (text->_render.height / 2.0f);
-
-            text->_render.width = 0.0f;
-            text->_render.height = 0.0f;
-        }
-
-        for(u_char c : text->str) {
+        for(uint8_t c : text->text.str) {
             character_tt* ch = &font->char_map[c];
 
-            float x2 = x + ch->bearing.x * text->axises.size.x;
-            float y2 = y - (ch->size.y - ch->bearing.y) * text->axises.size.y;
-            float w = ch->size.x * text->axises.size.x;
-            float h = ch->size.y * text->axises.size.y;    
+            xoffset += ch->advance * scalar;
+            yoffset = std::max(yoffset, ch->size.y * scalar);
+        }
 
-            vtx[0] = { .x = x2,     .y = y2,     .u = ch->tex_indices[0].x, .v = ch->tex_indices[0].y, .r = text->color.r, .g = text->color.g, .b = text->color.b} ;
-            vtx[1] = { .x = x2 + w, .y = y2,     .u = ch->tex_indices[1].x, .v = ch->tex_indices[1].y, .r = text->color.r, .g = text->color.g, .b = text->color.b} ;
-            vtx[2] = { .x = x2 + w, .y = y2 + h, .u = ch->tex_indices[2].x, .v = ch->tex_indices[2].y, .r = text->color.r, .g = text->color.g, .b = text->color.b} ;
-            vtx[3] = { .x = x2,     .y = y2 + h, .u = ch->tex_indices[3].x, .v = ch->tex_indices[3].y, .r = text->color.r, .g = text->color.g, .b = text->color.b} ;
-            vtx += 4;
+        xoffset /= 2.0f;
+        yoffset /= 2.0f;
+        text->abs_size.x = xoffset;
+        text->abs_size.y = yoffset;
 
-            x += (float)ch->advance * text->axises.size.x;
+        for(uint8_t c : text->text.str) {
+            character_tt* ch = &font->char_map[c];
 
-            text->_render.width += (float)ch->advance * text->axises.size.x;
-            text->_render.height = std::max(text->_render.height, h * text->axises.size.y);
-        } 
+            float x2 = x + ch->bearing.x * scalar;
+            float y2 = y - (ch->size.y - ch->bearing.y) * scalar;
+            float w = ch->size.x * scalar;
+            float h = ch->size.y * scalar;    
+
+            vtx[0] = { .x = (x2    ) - xoffset, .y = (y2    ) - yoffset, .uv = ch->tex_indices[0], .rgb = text->text.color} ;
+            vtx[1] = { .x = (x2 + w) - xoffset, .y = (y2    ) - yoffset, .uv = ch->tex_indices[1], .rgb = text->text.color} ;
+            vtx[2] = { .x = (x2 + w) - xoffset, .y = (y2 + h) - yoffset, .uv = ch->tex_indices[2], .rgb = text->text.color} ;
+            vtx[3] = { .x = (x2    ) - xoffset, .y = (y2 + h) - yoffset, .uv = ch->tex_indices[3], .rgb = text->text.color} ;
+            vtx += indexes_per_letter;
+
+            x += (float)ch->advance * scalar;
+        }
+
+        indexes += indexes_per_letter * text->text.ssize();
+        vertices += vertices_per_letter * text->text.ssize();
     }
 
     void button_render_tt::init() {
@@ -195,25 +184,11 @@ namespace spk {
 
         buffer.resize(vertices_per_button * MAX_LETTERS);
 
+        indexes = 0;
         vertices = 0;
     }
 
     void button_render_tt::render(sfk::static_index_buffer_tt& ibo, ui_canvas_tt* canvas) {
-        ui_button_tt* ui_buttons[24];
-        uint32_t buttons_found;
-
-        buttons_found = canvas->buttons.get_all_data(ui_buttons, 24);
-        vertex_tt* section = &buffer[0];
-        for(uint32_t i = 0; i < buttons_found; i++) {
-            add_ui_button(section, ui_buttons[i], canvas->width, canvas->height);
-            indexes += indexes_per_button;
-            vertices += vertices_per_button;
-            section += indexes_per_button;
-        }
-
-        if(buttons_found == 0)
-            return;
-
         // update
         vbo.buffer_sub_data(0, vertices * sizeof(vertex_tt), buffer.data());
 
@@ -227,6 +202,7 @@ namespace spk {
         glDrawElements(GL_TRIANGLES, vertices, GL_UNSIGNED_INT, nullptr);
 
         vertices = 0;
+        indexes = 0;
     }
 
     void button_render_tt::free() {
@@ -235,11 +211,12 @@ namespace spk {
         program.free();
     }
         
-    void button_render_tt::add_ui_button(vertex_tt* vtx, ui_button_tt* btn, float xmax, float ymax) {
-        const float x = RELATIVE_COORD(btn->axises.position.x, xmax);
-        const float y = RELATIVE_COORD(btn->axises.position.y, ymax);
-        const float w = RELATIVE_COORD(btn->axises.size.x, xmax);
-        const float h = RELATIVE_COORD(btn->axises.size.y, ymax);
+    void button_render_tt::add_ui_button(ui_button_tt* btn) {
+        vertex_tt* vtx = buffer.data() + indexes;
+        const float x = btn->abs_pos.x;
+        const float y = btn->abs_pos.y;
+        const float hw = btn->abs_size.x;
+        const float hh = btn->abs_size.y;
         glm::vec3 offset = {0.0f, 0.0f, 0.0f};
         glm::vec3 color;
 
@@ -250,20 +227,23 @@ namespace spk {
         color = btn->color - offset;
  
         // bl
-        vtx[0] = {.x = x, .y = y, 
+        vtx[0] = {.x = x - hw, .y = y - hh, 
                     .r = color.r, .g = color.g, .b = color.b};
 
         // tr
-        vtx[2] = {.x = x + w,   .y = y + h, 
+        vtx[2] = {.x = x + hw,   .y = y + hh, 
                     .r = color.r, .g = color.g, .b = color.b};
 
         // br
-        vtx[1] = {.x = x + w,   .y = y, 
+        vtx[1] = {.x = x + hw,   .y = y - hh, 
                     .r = color.r, .g = color.g, .b = color.b};
 
         // tl
-        vtx[3] = {.x = x,   .y = y + h, 
+        vtx[3] = {.x = x - hw,   .y = y + hh, 
                     .r = color.r, .g = color.g, .b = color.b};
+
+        indexes += indexes_per_button;
+        vertices += vertices_per_button;
     } 
 
     void ui_renderer_tt::init(scene_tt& scene) {
@@ -277,9 +257,73 @@ namespace spk {
     }
 
     void ui_renderer_tt::render(scene_tt& scene) {
+        ui_canvas_tt& canvas = scene.canvas;
+        font_tt* font = canvas.font;
+        float xmax = canvas.abs_size.x;
+        float ymax = canvas.abs_size.y;
+
+        if(!(canvas.flags & UI_ELEMENT_FLAGS_ENABLED))
+            return;
+
+        if(canvas.in_use.any()) {
+            if(!font) {
+                font = scene.engine->resource_manager.get_first_font();
+                assert(font && "when using canvas you must load a font!");
+            }
+        }
+
+        canvas.iter_children([&](ui_element_tt& ele) -> bool {
+            if(!(ele.flags & UI_ELEMENT_FLAGS_ENABLED) || ele.flags & UI_ELEMENT_FLAGS_ROOT) {
+                return false;
+            }
+
+            ui_element_tt* parent = ele.parent;
+
+            if(ele.flags & UI_ELEMENT_FLAGS_RELATIVE || 
+               (parent->flags & UI_ELEMENT_FLAGS_ROOT && ele.flags & UI_ELEMENT_FLAGS_PARENT_RELATIVE)) {
+                ele.gen_abs({-1.0f, 1.0f}, {0, xmax},
+                            {-1.0f, 1.0f}, {0, ymax});
+            } else if(ele.flags & UI_ELEMENT_FLAGS_PARENT_RELATIVE) {
+                glm::vec2 _1abs_pos = {
+                    map_value(ele.pos.x, {-1.0f, 1.0f}, {-parent->abs_size.x, parent->abs_size.x}),
+                    map_value(ele.pos.y, {-1.0f, 1.0f}, {-parent->abs_size.y, parent->abs_size.y})
+                }; 
+
+                ele.abs_pos = _1abs_pos + ele.parent->abs_pos;
+                
+                if(ele.type() != UI_ELEMENT_TYPE_TEXT) {
+                    ele.abs_size = {
+                        map_value(ele.size.x, {-1.0f, 1.0f}, {0, xmax}),
+                        map_value(ele.size.y, {-1.0f, 1.0f}, {0, ymax})
+                    };
+                }
+            } 
+
+            switch(ele.type()) {
+            case UI_ELEMENT_TYPE_ELEMENT:
+                break;
+
+            case UI_ELEMENT_TYPE_TEXT:
+                font_render.add_ui_text(font, (ui_text_tt*)&ele);
+                break;
+
+            case UI_ELEMENT_TYPE_BUTTON:
+                button_render.add_ui_button((ui_button_tt*)&ele);
+                break;
+
+            case UI_ELEMENT_TYPE_CANVAS:
+                assert(!"yo dawg how this shit happen, this is not accessible");
+                break;
+
+            default:
+                break;
+            }
+
+            return false;
+        });
 
         button_render.render(ibo, &scene.canvas);
-        font_render.render(ibo, scene.engine->resource_manager.get_font(scene.canvas.font), &scene.canvas);
+        font_render.render(ibo, font, &scene.canvas);
     }
 
     void ui_renderer_tt::resize(int width, int height) {

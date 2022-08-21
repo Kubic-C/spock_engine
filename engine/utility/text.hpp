@@ -1,0 +1,80 @@
+#pragma once
+
+#include "framework.hpp"
+
+/*
+
+text utilities:
+- rendering
+- font loading and managing
+- ui text
+
+*/
+
+namespace spk {
+    struct character_tt {
+        glm::vec2 tex_indices[4];
+        glm::ivec2 size;
+        glm::ivec2 bearing;
+        uint32_t advance;
+
+        struct {
+            glm::vec2 size; // the size in meters
+            glm::vec2 bearing;
+            float advance;
+        } ppm;
+    };
+
+    class font_tt {
+    public:
+        bool init(); 
+        bool load_ascii_font(FT_Library lib, int f_width, int f_height, const char* file_path);
+        void free();
+
+    public:
+        std::string name;
+
+        uint32_t widest_glyph;
+        uint32_t tallest_glyph;
+        float one_fourth_tallest_glyph;
+        uint32_t width, height;
+        sfk::texture2D_tt texture;
+
+        FT_Face face; 
+
+        sfk::hashmap_tt<character_tt, UCHAR_MAX, 2, 0, u_char> char_map;
+    };
+
+    class font_manager_tt {
+    public:
+        bool init();
+        font_tt* load_ascii_font(int f_width, int f_height, const char* file_path);
+        void free();
+
+        sfk::memory_pool_tt<font_tt, 8, 4> font_pool;
+        FT_Library ft_lib; 
+    };
+
+    struct text_tt {
+        std::string str;
+        float scalar = 1.0f;
+        glm::vec3 color = { 1.0f, 0.0f, 0.0f };
+
+        void set(const char* _s, float scalar, glm::vec3 color, font_tt* font = nullptr) {
+            str = _s;
+            this->scalar = scalar;
+            this->color = color;
+        
+        }
+
+        void operator=(const char* _s) {
+            str = _s;
+        }
+
+        void operator=(const std::string& _s) {
+            str = _s;
+        }
+
+        size_t ssize() { return str.size(); }
+    };
+}

@@ -2,22 +2,56 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk {
-    void ui_axises_tt::set(glm::vec2 position, glm::vec2 size) {
-        this->position = position;
-        this->size = size;
+    void ui_element_tt::_init_members() {
+        sfk::zero(&pos);
+        sfk::zero(&size);
+        sfk::zero(&flags);
 
-        half_width = this->size.x / 2.0f;
-        half_height = this->size.y / 2.0f;
+        in_use.reset();
+        elements.fill(nullptr);
+        parent = nullptr;   
+        abs_pos  = { 0.0f, 0.0f };
+    }
+
+    void ui_element_tt::init() {
+        _init_members();
+    }
+
+    bool ui_element_tt::iter_children(children_callback_tt callback) {
+        for(auto ele : elements) {
+            if(ele) {
+                if(callback(*ele)) {
+                    return true;
+                } 
+
+                if(ele->iter_children(callback)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    void ui_element_tt::free() {
+
     }
 
     void ui_canvas_tt::init() {
-        DEBUG_VALUE(bool, ret =) texts.init(sfk::xor_int_hash<sfk::key_tt>);
+        _init_members();
+
+        DEBUG_VALUE(bool, ret =) texts.init();
         assert(ret);
-        DEBUG_EXPR(ret =) buttons.init(sfk::xor_int_hash<sfk::key_tt>);
+        DEBUG_EXPR(ret =) btns.init();
         assert(ret);
 
-        font = UINT32_MAX;
-        // vp = glm::identity<glm::mat4>(); this will be set in a resize
+        font = nullptr;
+
+        flags |= spk::UI_ELEMENT_FLAGS_ROOT |
+                 spk::UI_ELEMENT_FLAGS_ENABLED;
+
+        size = { std::nanf("nan"), std::nanf("nan") };
+        pos = { std::nanf("nan"), std::nanf("nan") };
     }
 
     void ui_canvas_tt::resize(int width, int height) {
@@ -28,45 +62,12 @@ namespace spk {
         proj = glm::ortho(0.0f, (float)width, 0.0f, (float)height, 0.01f, 100.0f);
 
         vp = proj * view;
-
-        this->width = (float)width;
-        this->height = (float)height;
+ 
+        abs_size = { (float)width, (float)height };
     }
 
     void ui_canvas_tt::free() {
         texts.free();
-    }
-
-    ui_button_tt* ui_canvas_tt::init_button(sfk::key_tt key, ui_axises_tt axises, glm::vec3 color, 
-            button_callback_tt clbk, ui_axises_tt* parent) {
-        ui_button_tt* btn;
-
-        if(!buttons.register_key(key))
-            return nullptr;
-
-        btn = &buttons[key];
-        btn->color = color;
-        btn->axises = axises;
-        btn->parent = parent;
-        btn->time_when_clicked = 0.0f;
-        btn->callback = clbk;
-
-        return btn;
-    }
-
-    ui_text_tt* ui_canvas_tt::init_text(sfk::key_tt key, ui_axises_tt axises, glm::vec3 color, const char* str, ui_axises_tt* parent) {
-        ui_text_tt* txt;
-
-        if(!texts.register_key(key))
-            return nullptr;
-
-        txt = &texts[key];
-        txt->color = color;
-        txt->axises = axises;
-        txt->parent = parent;
-        txt->color = color;
-        txt->str = str;
-
-        return txt;
+        btns.free();
     }
 }

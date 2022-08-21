@@ -4,12 +4,6 @@
 namespace spk {
     inline GLFWwindow* window;
 
-    void func(scene_tt& scene, ui_button_tt* btn) {
-        glfwSetWindowShouldClose(window, true);
-
-        printf("they are??? %p \n", btn);
-    }
-
     void ui_tt::init(scene_tt& scene, void* data) {
         glm::mat4 view, proj;
 
@@ -40,25 +34,26 @@ namespace spk {
         y = height - y; // GLFW XY -> CANVAS XY
 
         if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-            ui_button_tt* ui_buttons[24];
-            uint32_t size;
+            auto check_button = [&](ui_button_tt& btn) {
+                glm::vec2 corners[2] = {
+                    btn.abs_pos - btn.abs_size,
+                    btn.abs_pos + btn.abs_size
+                };
 
-            size = self->scene->canvas.buttons.get_all_data(ui_buttons, 24);
-
-            // not very optimized menu Cursor Button checking but it doesnt need such a big optimization
-            for(uint32_t i = 0; i < size; i++) {
-                ui_button_tt* button = ui_buttons[i];
-
-                if(button->axises.position.x < x && x < button->axises.position.x + button->axises.size.x &&
-                   button->axises.position.y < y && y < button->axises.position.y + button->axises.size.y) {
+                if(corners[0].x < x && x < corners[1].x &&
+                   corners[0].y < y && y < corners[1].y) {
                     
-                    button->time_when_clicked = glfwGetTime();
-                    
-                    if(button->callback) {
-                        button->callback(*self->scene, button);
+                    if(btn.callback) {
+                        btn.callback(*self->scene, &btn);
                     }
+
+                    return true;
                 }
-            }
+
+                return false;
+            };
+
+            self->scene->canvas.btns.get_valid_blocks(nullptr, UINT32_MAX, check_button);
         }
     }
 }
