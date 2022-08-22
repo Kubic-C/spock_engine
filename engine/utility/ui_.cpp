@@ -2,7 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk {
-    void ui_element_tt::_init_members() {
+    void ui_element_t::_init_members() {
         sfk::zero(&pos);
         sfk::zero(&size);
         sfk::zero(&flags);
@@ -13,11 +13,11 @@ namespace spk {
         abs_pos  = { 0.0f, 0.0f };
     }
 
-    void ui_element_tt::init() {
+    void ui_element_t::init() {
         _init_members();
     }
 
-    bool ui_element_tt::iter_children(children_callback_tt callback) {
+    bool ui_element_t::iter_children(children_callback_t callback) {
         for(auto ele : elements) {
             if(ele) {
                 if(callback(*ele)) {
@@ -33,11 +33,11 @@ namespace spk {
         return false;
     }
 
-    void ui_element_tt::free() {
+    void ui_element_t::free() {
 
     }
 
-    void ui_canvas_tt::init() {
+    void ui_canvas_t::init() {
         _init_members();
 
         DEBUG_VALUE(bool, ret =) texts.init();
@@ -54,7 +54,7 @@ namespace spk {
         pos = { std::nanf("nan"), std::nanf("nan") };
     }
 
-    void ui_canvas_tt::resize(int width, int height) {
+    void ui_canvas_t::resize(int width, int height) {
         glm::mat4 view, proj;
 
         view = glm::identity<glm::mat4>();
@@ -66,7 +66,7 @@ namespace spk {
         abs_size = { (float)width, (float)height };
     }
 
-    void ui_canvas_tt::free() {
+    void ui_canvas_t::free() {
         texts.free();
         btns.free();
     }

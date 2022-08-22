@@ -3,13 +3,13 @@
 #include "../systems.hpp"
 
 namespace spk {
-    struct quad_scene_tt {
+    struct quad_scene_t {
     };
 
-    struct primitive_render_tt {
+    struct primitive_render_t {
         glm::vec3 color;
 
-        primitive_render_tt() {
+        primitive_render_t() {
             sfk::zero(this);
 
             color = (glm::vec3){1.0f, 0.0f, 0.0f};
@@ -17,35 +17,35 @@ namespace spk {
     };
 
     // quick and dirty rendering
-    class primitive_renderer_tt : public render_system_tt {
+    class primitive_renderer_t : public render_system_t {
     public:
 
-        void init(scene_tt& scene);
-        void render(scene_tt& scene);
+        void init(scene_t& scene);
+        void render(scene_t& scene);
         void resize(int width, int height);
         void free();
 
-        void render_polygon(primitive_render_tt* primitive, b2Body* body, b2PolygonShape* polygon);
-        void render_circle(primitive_render_tt* primitve, b2Body* body, b2CircleShape* circle);
+        void render_polygon(primitive_render_t* primitive, b2Body* body, b2PolygonShape* polygon);
+        void render_circle(primitive_render_t* primitve, b2Body* body, b2CircleShape* circle);
 
     private:    
-        struct vertex_tt {
+        struct vertex_t {
             float x, y; // position
             float r, g, b; // color
         };
 
-        sfk::vertex_buffer_tt vertex_buffer;
-        sfk::static_index_buffer_tt index_buffer;
-        sfk::vertex_layout_tt vertex_layout;
-        sfk::vertex_array_tt  vertex_array;
+        sfk::vertex_buffer_t vertex_buffer;
+        sfk::static_index_buffer_t index_buffer;
+        sfk::vertex_layout_t vertex_layout;
+        sfk::vertex_array_t  vertex_array;
         uint32_t texture;
-        sfk::program_tt program;
+        sfk::program_t program;
 
         glm::mat4 vp;
         glm::mat4 proj;
         glm::mat4 view;
 
-        std::vector<vertex_tt> mesh;
+        std::vector<vertex_t> mesh;
         uint32_t vertices; // of vertex vvv
     };
 }

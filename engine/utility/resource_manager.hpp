@@ -6,14 +6,14 @@
 // E.G. fonts, shaders, textures
 
 namespace spk {
-    class resource_manager_tt {
+    class resource_manager_t {
     public:
         bool init();
         void free();
 
-        font_tt* load_ascii_font(const char* file_path, int f_width = 0, int f_height = 32);
-        font_tt* get_first_font();
+        font_t* load_ascii_font(const char* file_path, int f_width = 0, int f_height = 32);
+        font_t* get_first_font();
     private:
-        font_manager_tt font_manager;
+        font_manager_t font_manager;
     };
 }

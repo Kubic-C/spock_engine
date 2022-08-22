@@ -5,28 +5,28 @@ enum wall_direction_e {
     RIGHT = 1
 };
 
-struct wall_tt {
+struct wall_t {
     bool won = false;
     flecs::entity e;
 };
 
-void exit_btn_callback(spk::scene_tt& scene, spk::ui_button_tt* btn) {
+void exit_btn_callback(spk::scene_t& scene, spk::ui_button_t* btn) {
     scene.engine->set_time_exit(0);
 }
 
 class contact_listener : public b2ContactListener {
     void BeginContact(b2Contact* contact) {
         flecs::entity* ball = nullptr;
-        wall_tt* wall = nullptr;
+        wall_t* wall = nullptr;
 
         if(contact->GetFixtureA()->IsSensor()) {
-            wall = (wall_tt*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
+            wall = (wall_t*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
         } else {
             ball = (flecs::entity*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
         }
 
         if(contact->GetFixtureB()->IsSensor()) {
-            wall = (wall_tt*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
+            wall = (wall_t*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
         } else {
             ball = (flecs::entity*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
         }
@@ -45,12 +45,12 @@ class contact_listener : public b2ContactListener {
 
 #define LEFT_PADDLE_X -15.0f
 #define RIGHT_PADDLE_X 15.0f
-#define SCORE_MAX 4
+#define SCORE_MAX 5
 
-class game_tt : public spk::system_tt {
+class game_t : public spk::system_t {
 public:
-    void init(spk::scene_tt& scene, void* data) {
-        spk::engine_tt* p_engine = (spk::engine_tt*)data;
+    void init(spk::scene_t& scene, void* data) {
+        spk::engine_t* p_engine = (spk::engine_t*)data;
         flecs::world& world = p_engine->scene->world;
         b2World* phy_world = scene.physics_scene->world; 
 
@@ -61,7 +61,7 @@ public:
         phy_world->SetContactListener(&cl);
 
         left_paddle = world.entity();
-        left_paddle.add<spk::primitive_render_tt>();
+        left_paddle.add<spk::primitive_render_t>();
         left_paddle.add<spk::comp_b2Body>().set([&](spk::comp_b2Body& comp){
             b2Body*& body = comp.body;
 
@@ -74,15 +74,11 @@ public:
             b2PolygonShape shape_def;
             shape_def.SetAsBox(0.5f, 5.0f);
 
-            b2FixtureDef fixture_def;
-            fixture_def.shape = &shape_def;
-            fixture_def.density = 1.0f;
-            fixture_def.restitution = 1.0f;
-            body->CreateFixture(&fixture_def);
+            spk::add_body_fixture(&comp, &shape_def, 0.2f, 1.0f, 1.0f, 1.0f);
         });
 
         right_paddle = world.entity();
-        right_paddle.add<spk::primitive_render_tt>();
+        right_paddle.add<spk::primitive_render_t>();
         right_paddle.add<spk::comp_b2Body>().set([&](spk::comp_b2Body& comp){
             b2Body*& body = comp.body;
 
@@ -95,15 +91,11 @@ public:
             b2PolygonShape shape_def;
             shape_def.SetAsBox(0.5f, 5.0f);
 
-            b2FixtureDef fixture_def;
-            fixture_def.shape = &shape_def;
-            fixture_def.density = 1.0f;
-            fixture_def.restitution = 1.0f;
-            body->CreateFixture(&fixture_def);
+            spk::add_body_fixture(&comp, &shape_def, 0.2f, 1.0f, 1.0f, 1.0f);
         });
 
         ball = world.entity();
-        ball.add<spk::primitive_render_tt>();
+        ball.add<spk::primitive_render_t>();
         ball.add<spk::comp_b2Body>().set([&](spk::comp_b2Body& comp){
             b2Body*& body = comp.body;
 
@@ -120,11 +112,7 @@ public:
             shape_def.m_radius = 0.5f;
             shape_def.m_p = (b2Vec2){0.0f, 0.0f};
 
-            b2FixtureDef fixture_def;
-            fixture_def.shape = &shape_def;
-            fixture_def.density = 1.0f;
-            fixture_def.restitution = 1.2f;
-            body->CreateFixture(&fixture_def);
+            spk::add_body_fixture(&comp, &shape_def, 0.2f, 1.2f, 1.0f, 1.0f);
         });
 
         /* invisible bounds */
@@ -144,10 +132,8 @@ public:
             b2PolygonShape shape_def;
             shape_def.SetAsBox(50.0f, 0.5f);
 
-            b2FixtureDef fixture_def;
-            fixture_def.shape = &shape_def;
-            fixture_def.density = 1.0f;
-            body->CreateFixture(&fixture_def);
+            spk::add_body_fixture(&comp, &shape_def, 0.2f, 0.0f, 1.0f, 1.0f);
+
         });
     
         down.add<spk::comp_b2Body>().set([&](spk::comp_b2Body& comp){
@@ -161,10 +147,7 @@ public:
             b2PolygonShape shape_def;
             shape_def.SetAsBox(50.0f, 0.5f);
 
-            b2FixtureDef fixture_def;
-            fixture_def.shape = &shape_def;
-            fixture_def.density = 1.0f;
-            body->CreateFixture(&fixture_def);
+            spk::add_body_fixture(&comp, &shape_def, 0.2f, 0.0f, 1.0f, 1.0f);
         });
 
 
@@ -180,11 +163,7 @@ public:
             b2PolygonShape shape_def;
             shape_def.SetAsBox(0.5f, 24.0f);
 
-            b2FixtureDef fixture_def;
-            fixture_def.shape = &shape_def;
-            fixture_def.density = 1.0f;
-            fixture_def.isSensor = true;
-            body->CreateFixture(&fixture_def);
+            spk::add_body_fixture(&comp, &shape_def, 0.2f, 0.0f, 1.0f, 1.0f, true);
         });
 
         right.e.add<spk::comp_b2Body>().set([&](spk::comp_b2Body& comp){
@@ -199,41 +178,37 @@ public:
             b2PolygonShape shape_def;
             shape_def.SetAsBox(0.5f, 24.0f);
 
-            b2FixtureDef fixture_def;
-            fixture_def.shape = &shape_def;
-            fixture_def.density = 1.0f;
-            fixture_def.isSensor = true;
-            body->CreateFixture(&fixture_def);
+            spk::add_body_fixture(&comp, &shape_def, 0.2f, 0.0f, 1.0f, 1.0f, true);
         });
 
         ltext = scene.canvas.texts.malloc();
         ltext->flags = spk::UI_ELEMENT_FLAGS_RELATIVE | spk::UI_ELEMENT_FLAGS_ENABLED;
         ltext->text = "0";
         ltext->pos = {-0.7f, 0.7f};
-        scene.canvas.add_child((spk::ui_element_tt*)ltext);
+        scene.canvas.add_child((spk::ui_element_t*)ltext);
 
         rtext = scene.canvas.texts.malloc();
         rtext->flags = spk::UI_ELEMENT_FLAGS_RELATIVE | spk::UI_ELEMENT_FLAGS_ENABLED;
         rtext->text = "0";
         rtext->pos = {0.7f, 0.7f};
-        scene.canvas.add_child((spk::ui_element_tt*)rtext);
+        scene.canvas.add_child((spk::ui_element_t*)rtext);
 
-        spk::ui_button_tt* btn = scene.canvas.btns.malloc();
+        spk::ui_button_t* btn = scene.canvas.btns.malloc();
         btn->flags = spk::UI_ELEMENT_FLAGS_RELATIVE | spk::UI_ELEMENT_FLAGS_ENABLED;
         btn->pos = {-0.9f, -0.9f};
         btn->size = {-0.9f, -0.9f};
         btn->callback = exit_btn_callback;
-        scene.canvas.add_child((spk::ui_element_tt*)btn);
+        scene.canvas.add_child((spk::ui_element_t*)btn);
 
-        spk::ui_text_tt* txt = scene.canvas.texts.malloc();
+        spk::ui_text_t* txt = scene.canvas.texts.malloc();
         txt->flags = spk::UI_ELEMENT_FLAGS_PARENT_RELATIVE | spk::UI_ELEMENT_FLAGS_ENABLED;
         txt->text.color = {0.0f, 0.0f, 0.0f};
         txt->text = "exit";
         txt->pos = {0.0f, 0.0f};
-        btn->add_child((spk::ui_element_tt*)txt);
+        btn->add_child((spk::ui_element_t*)txt);
     }
 
-    void update(spk::scene_tt& scene, float deltatime) {
+    void update(spk::scene_t& scene, float deltatime) {
         left_paddle.set([&](spk::comp_b2Body& comp){ 
             comp.body->SetTransform(b2Vec2(LEFT_PADDLE_X, comp.body->GetPosition().y), 0.0f);
             comp.body->SetLinearVelocity(b2Vec2(0.0f, 0.0f)); 
@@ -244,12 +219,27 @@ public:
         });
     }
 
-    void tick(spk::scene_tt& scene, float deltatime) {
-        sfk::window_tt* window = scene.window;
+    void tick(spk::scene_t& scene, float deltatime) {
+        sfk::window_t* window = scene.window;
         float speed = 1000.0f;
+        b2Vec2 bpos;
 
         if(game_end)
             return;
+
+        ball.set([&](spk::comp_b2Body& comp){
+            bpos = comp.body->GetPosition();
+        }); 
+
+        right_paddle.set([&](spk::comp_b2Body& comp){
+            b2Body*& body = comp.body;
+            b2Vec2 pos = body->GetPosition();
+            b2Vec2 vel = body->GetLinearVelocity();
+
+            float offset = (bpos.y - pos.y) * 1.5f; // increasing the coefficient will increase diffucilty 
+
+            body->SetLinearVelocity(b2Vec2(0.0f, offset) + vel);
+        });
 
         if(lscore >= SCORE_MAX) {
             ltext->text.str.insert(0, "left paddle won: ");
@@ -284,21 +274,6 @@ public:
             });
         }
 
-        if(window->get_key(GLFW_KEY_UP) == GLFW_PRESS) {
-            right_paddle.set([&](spk::comp_b2Body& comp){
-                b2Body*& body = comp.body;
-
-                body->SetLinearVelocity(b2Vec2(0.0f, speed * deltatime));
-            });
-        }
-        if(window->get_key(GLFW_KEY_DOWN) == GLFW_PRESS) {
-            right_paddle.set([&](spk::comp_b2Body& comp){
-                b2Body*& body = comp.body;
-
-                body->SetLinearVelocity(b2Vec2(0.0f, -speed * deltatime));
-            });
-        }
-
         if(left.won) {
             reset();
             rscore++;
@@ -314,10 +289,10 @@ public:
         }
     }
 
-    void free(spk::scene_tt& scene) {
+    void free(spk::scene_t& scene) {
     }
 
-    void handle_message(spk::scene_tt& scene, float deltatime) {
+    void handle_message(spk::scene_t& scene, float deltatime) {
     }
 
     void reset() {
@@ -339,20 +314,20 @@ private:
     contact_listener cl;
     flecs::entity left_paddle, right_paddle;
     flecs::entity top, down;
-    wall_tt left, right;
+    wall_t left, right;
     flecs::entity ball;
-    spk::ui_text_tt* ltext, *rtext;
+    spk::ui_text_t* ltext, *rtext;
     int lscore = 0, rscore = 0;
     bool game_end = false;
 };
 
 int main() {
-    spk::engine_tt engine;
-    game_tt game;
+    spk::engine_t engine;
+    game_t game;
 
     engine.init(800, 800, "pong game");
 
-    spk::font_tt* font = engine.resource_manager.load_ascii_font("generic.otf", 0, 32);
+    spk::font_t* font = engine.resource_manager.load_ascii_font("generic.otf", 0, 32);
     if(!font) {
         engine.free();
         return -1; 

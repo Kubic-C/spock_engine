@@ -48,14 +48,14 @@ namespace sfk {
         return create_shader_from_src(shader_type, file_data, &file_size);;
     }
 
-    vertex_layout_tt& vertex_layout_tt::add(size_t index, size_t size, size_t type, 
+    vertex_layout_t& vertex_layout_t::add(size_t index, size_t size, size_t type, 
         bool normalized, size_t stride, size_t offset, uint32_t buffer) {
         assert(!attributes_active[index]);
         
         attributes_active[index].flip();
 
         {
-            vertex_attribute_tt* pva = attributes + index;
+            vertex_attribute_t* pva = attributes + index;
             
             pva->index = index;
             pva->size = size;
@@ -70,30 +70,30 @@ namespace sfk {
         return *this;    
     }
 
-    void vertex_layout_tt::set_buffer(uint32_t index, uint32_t buffer) {
+    void vertex_layout_t::set_buffer(uint32_t index, uint32_t buffer) {
         assert(attributes_active[index]);
 
         attributes[index].buffer = buffer;
     }
 
-    void vertex_array_tt::init() {
+    void vertex_array_t::init() {
         glGenVertexArrays(1, &id);
     }
 
-    void vertex_array_tt::free() {
+    void vertex_array_t::free() {
         glDeleteVertexArrays(1, &id);
     }
     
-    void vertex_array_tt::bind() {
+    void vertex_array_t::bind() {
         glBindVertexArray(id);
     }
 
-    void vertex_array_tt::bind_layout(vertex_layout_tt& layout) {
+    void vertex_array_t::bind_layout(vertex_layout_t& layout) {
         bind();
 
         for(uint32_t i = 0; i < SFK_MAX_VERTEX_LAYOUT_ATTRIBUTES; i++) {
             if(layout.attributes_active[i]) {
-                vertex_attribute_tt* pva = &layout.attributes[i];
+                vertex_attribute_t* pva = &layout.attributes[i];
 
                 glBindBuffer(GL_ARRAY_BUFFER, pva->buffer);
                 glVertexAttribPointer(pva->index, pva->size, pva->type, pva->normalized, pva->stride, (void*)pva->offset);
@@ -102,31 +102,31 @@ namespace sfk {
         }
     }
 
-    void vertex_buffer_tt::init(uint32_t type) {
+    void vertex_buffer_t::init(uint32_t type) {
         this->type = type;
 
         glGenBuffers(1, &id);
     }
 
-    void vertex_buffer_tt::buffer_data(size_t size, void* data, size_t usage) {
+    void vertex_buffer_t::buffer_data(size_t size, void* data, size_t usage) {
         bind();
         glBufferData(type, size, data, usage);
     }
 
-    void vertex_buffer_tt::buffer_sub_data(size_t offset, size_t size, void* data) {
+    void vertex_buffer_t::buffer_sub_data(size_t offset, size_t size, void* data) {
         bind();
         glBufferSubData(type, offset, size, data);
     }
 
-    void vertex_buffer_tt::free() {
+    void vertex_buffer_t::free() {
         glDeleteBuffers(1, &id);
     }
     
-    void vertex_buffer_tt::bind() {
+    void vertex_buffer_t::bind() {
         glBindBuffer(type, id);
     }
 
-    void static_index_buffer_tt::generate_quad_indexes(uint32_t cap) {
+    void static_index_buffer_t::generate_quad_indexes(uint32_t cap) {
         std::vector<uint32_t> indexes;
         indexes.resize(cap * 6);
 
@@ -145,23 +145,23 @@ namespace sfk {
         buffer_data(indexes.size() * sizeof(uint32_t), indexes.data(), GL_STATIC_DRAW);
     }
 
-    bool texture2D_tt::init() {
+    bool texture2D_t::init() {
         glGenTextures(1, &id);
     
         return true;
     }
 
-    void texture2D_tt::allocate(uint32_t type, uint32_t internal_format, uint32_t format, int width, int height, void* pixels) {
+    void texture2D_t::allocate(uint32_t type, uint32_t internal_format, uint32_t format, int width, int height, void* pixels) {
         bind();
         glTexImage2D(GL_TEXTURE_2D, 0, internal_format, width, height, 0, format, type, pixels);
     }
 
-    void texture2D_tt::subdata(uint32_t type, uint32_t xoffset, uint32_t yoffset, uint32_t format, int width, int height, void* pixels) {
+    void texture2D_t::subdata(uint32_t type, uint32_t xoffset, uint32_t yoffset, uint32_t format, int width, int height, void* pixels) {
         bind();
         glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset, yoffset, width, height, format, type, pixels);
     }
 
-    bool texture2D_tt::load_image(const char* path, int desired_channels) {
+    bool texture2D_t::load_image(const char* path, int desired_channels) {
         u_char* pixels;
         int width;
         int height;
@@ -178,26 +178,26 @@ namespace sfk {
         return true;
     }
 
-    void texture2D_tt::active_texture(uint32_t slot) {
+    void texture2D_t::active_texture(uint32_t slot) {
         glActiveTexture(slot);
         bind();
     }
 
-    void texture2D_tt::bind() {
+    void texture2D_t::bind() {
         glBindTexture(GL_TEXTURE_2D, id);
     }
 
-    void texture2D_tt::free() {
+    void texture2D_t::free() {
         glDeleteTextures(1, &id);
     }
 
-    bool program_tt::init() {
+    bool program_t::init() {
         id = glCreateProgram();
 
         return true;
     }
 
-    bool program_tt::load_shader_files(const char* vsh_path, const char* fsh_path) {
+    bool program_t::load_shader_files(const char* vsh_path, const char* fsh_path) {
         uint32_t vsh, fsh;
         bool vsh_invalid, fsh_invalid, leave;
     
@@ -227,7 +227,7 @@ namespace sfk {
         return true;
     }
 
-    bool program_tt::load_shader_modules(uint32_t vsh, uint32_t fsh, bool delete_shaders) {    
+    bool program_t::load_shader_modules(uint32_t vsh, uint32_t fsh, bool delete_shaders) {    
         bool ret = true;
         
         glAttachShader(id, vsh);
@@ -253,11 +253,11 @@ namespace sfk {
         return ret;
     }
 
-    void program_tt::use() {
+    void program_t::use() {
         glUseProgram(id);    
     }
 
-    void program_tt::free() {
+    void program_t::free() {
         glDeleteProgram(id);
     }
 }

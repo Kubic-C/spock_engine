@@ -12,7 +12,7 @@ text utilities:
 */
 
 namespace spk {
-    struct character_tt {
+    struct character_t {
         glm::vec2 tex_indices[4];
         glm::ivec2 size;
         glm::ivec2 bearing;
@@ -25,7 +25,7 @@ namespace spk {
         } ppm;
     };
 
-    class font_tt {
+    class font_t {
     public:
         bool init(); 
         bool load_ascii_font(FT_Library lib, int f_width, int f_height, const char* file_path);
@@ -38,29 +38,29 @@ namespace spk {
         uint32_t tallest_glyph;
         float one_fourth_tallest_glyph;
         uint32_t width, height;
-        sfk::texture2D_tt texture;
+        sfk::texture2D_t texture;
 
         FT_Face face; 
 
-        sfk::hashmap_tt<character_tt, UCHAR_MAX, 2, 0, u_char> char_map;
+        sfk::hashmap_t<character_t, UCHAR_MAX, 2, 0, u_char> char_map;
     };
 
-    class font_manager_tt {
+    class font_manager_t {
     public:
         bool init();
-        font_tt* load_ascii_font(int f_width, int f_height, const char* file_path);
+        font_t* load_ascii_font(int f_width, int f_height, const char* file_path);
         void free();
 
-        sfk::memory_pool_tt<font_tt, 8, 4> font_pool;
+        sfk::memory_pool_t<font_t, 8, 4> font_pool;
         FT_Library ft_lib; 
     };
 
-    struct text_tt {
+    struct text_t {
         std::string str;
         float scalar = 1.0f;
         glm::vec3 color = { 1.0f, 0.0f, 0.0f };
 
-        void set(const char* _s, float scalar, glm::vec3 color, font_tt* font = nullptr) {
+        void set(const char* _s, float scalar, glm::vec3 color, font_t* font = nullptr) {
             str = _s;
             this->scalar = scalar;
             this->color = color;

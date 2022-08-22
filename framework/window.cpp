@@ -14,32 +14,32 @@
 
 namespace sfk {
     void _framebuffer_size_callback(GLFWwindow* window_, int width, int height) {
-        window_tt* window = (window_tt*)glfwGetWindowUserPointer(window_);
+        window_t* window = (window_t*)glfwGetWindowUserPointer(window_);
 
         if(window->resize_callback.fp_callback)
             window->resize_callback.fp_callback(window, window->resize_callback.data, width, height);
     }
 
     void key_callback(GLFWwindow* window_, int key, int scancode, int action, int mods) {
-        window_tt* window = (window_tt*)glfwGetWindowUserPointer(window_);
+        window_t* window = (window_t*)glfwGetWindowUserPointer(window_);
 
         if(window->char_callback.fp_callback) 
             window->char_callback.fp_callback(window, window->char_callback.data, key);        
     }
 
     void mouse_button_callback(GLFWwindow* window_, int button, int action, int mods) {
-        window_tt* window = (window_tt*)glfwGetWindowUserPointer(window_);
+        window_t* window = (window_t*)glfwGetWindowUserPointer(window_);
 
         if(window->mouse_callback.fp_callback)
             window->mouse_callback.fp_callback(window, window->mouse_callback.data, button, action, mods); 
 
     }
 
-    window_tt::window_tt() {}
+    window_t::window_t() {}
 
-    window_tt::~window_tt() {}
+    window_t::~window_t() {}
 
-    void window_tt::init(int w, int h, std::string title) {
+    void window_t::init(int w, int h, std::string title) {
         c_window = glfwCreateWindow(w, h, title.c_str(), null, null);
         assert(c_window);
         glfwSetFramebufferSizeCallback(c_window, _framebuffer_size_callback);
@@ -49,7 +49,7 @@ namespace sfk {
         glfwSetMouseButtonCallback(c_window, mouse_button_callback);
     }
 
-    void window_tt::free() {
+    void window_t::free() {
         glfwDestroyWindow(c_window); 
     }
 }

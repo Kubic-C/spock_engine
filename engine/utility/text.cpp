@@ -1,7 +1,7 @@
 #include "text.hpp"
 
 namespace spk {
-        bool font_tt::init() {
+        bool font_t::init() {
         if(!char_map.init(sfk::xor_int_hash<u_char>))
             return false;
 
@@ -13,7 +13,7 @@ namespace spk {
         return true;
     }
 
-    bool font_tt::load_ascii_font(FT_Library lib, int f_width, int f_height, const char* file_path) {
+    bool font_t::load_ascii_font(FT_Library lib, int f_width, int f_height, const char* file_path) {
         /* introducing bullshit by bullshit dev */
         uint32_t x = 0; // cursor within this->texture's data, used for writing
         tallest_glyph = 0;
@@ -28,7 +28,7 @@ namespace spk {
         FT_Set_Pixel_Sizes(face, f_width, f_height);
 
         for(u_char c = 0; c < UCHAR_MAX; c++) {
-            character_tt* c_data = nullptr;
+            character_t* c_data = nullptr;
 
             DEBUG_VALUE(bool, ret =) char_map.register_key(c); 
             /* this should never happen */
@@ -59,7 +59,7 @@ namespace spk {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         for(u_char c = 0; c < UCHAR_MAX; c++) {
-            character_tt* c_data = nullptr;
+            character_t* c_data = nullptr;
             float gx, gwidth, gheight; // g for glyph
             
             if(FT_Load_Char(face, c, FT_LOAD_RENDER)) {
@@ -93,12 +93,12 @@ namespace spk {
         return true;
     }
 
-    void font_tt::free() {
+    void font_t::free() {
         char_map.free();
         texture.free();
     }
 
-    bool font_manager_tt::init() {
+    bool font_manager_t::init() {
         if(!font_pool.init())
             return false;
 
@@ -109,8 +109,8 @@ namespace spk {
         }
     }
 
-    font_tt* font_manager_tt::load_ascii_font(int f_width, int f_height, const char* file_path) {
-        font_tt* font = font_pool.malloc();
+    font_t* font_manager_t::load_ascii_font(int f_width, int f_height, const char* file_path) {
+        font_t* font = font_pool.malloc();
         if(!font)
             return nullptr;
 
@@ -131,7 +131,7 @@ namespace spk {
         return font;
     }
 
-    void font_manager_tt::free() {
+    void font_manager_t::free() {
         FT_Done_FreeType(ft_lib);
         font_pool.free();
     }

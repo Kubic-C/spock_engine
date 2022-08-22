@@ -5,7 +5,7 @@
 namespace spk {
     typedef void(*mouse_callback)(int button, int action, int mods);
 
-    class input_tt {
+    class input_t {
     public:
         void init(GLFWwindow* window);
         void free();

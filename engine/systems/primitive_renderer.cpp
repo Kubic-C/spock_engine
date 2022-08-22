@@ -9,7 +9,7 @@ uint32_t index_a[] = {
 };
  
 namespace spk {
-    void primitive_renderer_tt::init(scene_tt& scene) {
+    void primitive_renderer_t::init(scene_t& scene) {
 
         { // vertex data
             vertex_array.init();
@@ -34,13 +34,13 @@ namespace spk {
         mesh.resize(100 * 3);
     }
     
-    void primitive_renderer_tt::render(scene_tt& scene) {
+    void primitive_renderer_t::render(scene_t& scene) {
         flecs::world& world = scene.world;
-        auto q = world.query<comp_b2Body, primitive_render_tt>();
+        auto q = world.query<comp_b2Body, primitive_render_t>();
         
-        q.iter([&](flecs::iter& it, comp_b2Body* c_bodies, primitive_render_tt* c_primitives) {
+        q.iter([&](flecs::iter& it, comp_b2Body* c_bodies, primitive_render_t* c_primitives) {
             for(auto i : it) {
-                primitive_render_tt* primitive = &c_primitives[i];
+                primitive_render_t* primitive = &c_primitives[i];
                 b2Body* body = c_bodies[i].body;
                 b2Fixture* fixture = body->GetFixtureList();
 
@@ -69,7 +69,7 @@ namespace spk {
 
     }
     
-    void primitive_renderer_tt::render_polygon(primitive_render_tt* primitive, b2Body* body, b2PolygonShape* polygon) {
+    void primitive_renderer_t::render_polygon(primitive_render_t* primitive, b2Body* body, b2PolygonShape* polygon) {
         int32_t count = (polygon->m_count / 2) * 3; // special case: 3 works because of integer division black magic
 
         for(int32 j = 0; j < polygon->m_count; j++)  {
@@ -80,7 +80,7 @@ namespace spk {
             mesh[j].b = primitive->color.b;
         }
 
-        vertex_buffer.buffer_sub_data(0, polygon->m_count * sizeof(vertex_tt), mesh.data());
+        vertex_buffer.buffer_sub_data(0, polygon->m_count * sizeof(vertex_t), mesh.data());
         vertex_array.bind();
 
         index_buffer.bind();
@@ -89,7 +89,7 @@ namespace spk {
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);   
     }
 
-    void primitive_renderer_tt::render_circle(primitive_render_tt* primitve, b2Body* body, b2CircleShape* circle) {
+    void primitive_renderer_t::render_circle(primitive_render_t* primitve, b2Body* body, b2CircleShape* circle) {
         const glm::vec2 position = sfk::to_box_vec2(body->GetPosition());
         const uint32_t steps = 6;
         const float r = circle->m_radius;
@@ -105,7 +105,7 @@ namespace spk {
 
         uint32_t vertices = steps * 3; // steps is the amount of triangles, each TRIangle has three vertices
 
-        vertex_tt* section = mesh.data();
+        vertex_t* section = mesh.data();
         for(uint32_t i = 0; i < steps; i++) {
             glm::vec2 next = (glm::vec2){ (cos(angle) * r), (sin(angle) * r) };
 
@@ -121,7 +121,7 @@ namespace spk {
             section += 3;
         }
 
-        vertex_buffer.buffer_sub_data(0, vertices * sizeof(vertex_tt), mesh.data());
+        vertex_buffer.buffer_sub_data(0, vertices * sizeof(vertex_t), mesh.data());
         vertex_array.bind();
 
         program.use();
@@ -129,7 +129,7 @@ namespace spk {
         glDrawArrays(GL_TRIANGLES, 0, vertices);
     }
  
-    void primitive_renderer_tt::resize(int width, int height) {
+    void primitive_renderer_t::resize(int width, int height) {
         float half_width  = (float)width / 4;
         float half_height = (float)height / 4;
     
@@ -139,7 +139,7 @@ namespace spk {
         vp   = proj * view;
     }
  
-    void primitive_renderer_tt::free() {
+    void primitive_renderer_t::free() {
         vertex_array.free();
         vertex_buffer.free();
         program.free();

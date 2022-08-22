@@ -4,21 +4,21 @@
 #include "debugger.hpp"
 
 namespace sfk {
-    struct window_tt;
+    struct window_t;
 
-    typedef void(*resize_callback_tt)(window_tt* window, void* data, int width, int height);
-    typedef void(*char_callback_tt)(window_tt* window, void* data, uint32_t codepoint);
-    typedef void(*mouse_button_callback_tt)(window_tt* window,void* data, int button, int action, int mods);
+    typedef void(*resize_callback_t)(window_t* window, void* data, int width, int height);
+    typedef void(*char_callback_t)(window_t* window, void* data, uint32_t codepoint);
+    typedef void(*mouse_button_callback_t)(window_t* window,void* data, int button, int action, int mods);
 
     template<typename T>
-    struct window_callback_tt {
+    struct window_callback_t {
         T fp_callback = null;
         void* data = null;
     };
 
-    struct window_tt {
-        window_tt();
-        ~window_tt();
+    struct window_t {
+        window_t();
+        ~window_t();
 
         void init(int w, int h, std::string title);
         void free();
@@ -72,8 +72,8 @@ namespace sfk {
         }
 
         GLFWwindow* c_window;   
-        window_callback_tt<resize_callback_tt> resize_callback;
-        window_callback_tt<char_callback_tt> char_callback;
-        window_callback_tt<mouse_button_callback_tt> mouse_callback;
+        window_callback_t<resize_callback_t> resize_callback;
+        window_callback_t<char_callback_t> char_callback;
+        window_callback_t<mouse_button_callback_t> mouse_callback;
     };  
 }

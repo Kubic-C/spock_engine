@@ -66,9 +66,9 @@ void main()
 )###"; 
 
 namespace spk {
-    void font_render_tt::init() {
+    void font_render_t::init() {
         vbo.init(GL_ARRAY_BUFFER);
-        vbo.buffer_data(sizeof(vertex_tt) * indexes_per_letter * MAX_LETTERS, nullptr, GL_DYNAMIC_DRAW);
+        vbo.buffer_data(sizeof(vertex_t) * indexes_per_letter * MAX_LETTERS, nullptr, GL_DYNAMIC_DRAW);
 
         layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), 0, vbo);
         layout.add(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), sizeof(float) * 2, vbo);
@@ -93,9 +93,9 @@ namespace spk {
         vertices = 0;
     }
 
-    void font_render_tt::render(sfk::static_index_buffer_tt& ibo, font_tt* font, ui_canvas_tt* canvas) {
+    void font_render_t::render(sfk::static_index_buffer_t& ibo, font_t* font, ui_canvas_t* canvas) {
         // update
-        vbo.buffer_sub_data(0, indexes * sizeof(vertex_tt), buffer.data());
+        vbo.buffer_sub_data(0, indexes * sizeof(vertex_t), buffer.data());
 
         // bind
         vao.bind();
@@ -115,14 +115,14 @@ namespace spk {
         vertices = 0;
     }
 
-    void font_render_tt::free() {
+    void font_render_t::free() {
         program.free();
         vbo.free();
         vao.free();
     }
 
-    void font_render_tt::add_ui_text(font_tt* font, ui_text_tt* text) {
-        vertex_tt* vtx = buffer.data() + indexes;
+    void font_render_t::add_ui_text(font_t* font, ui_text_t* text) {
+        vertex_t* vtx = buffer.data() + indexes;
         const float scalar = text->text.scalar;
         float xoffset = 0.0f;
         float yoffset = 0.0f;
@@ -130,7 +130,7 @@ namespace spk {
         float y = text->abs_pos.y;
 
         for(uint8_t c : text->text.str) {
-            character_tt* ch = &font->char_map[c];
+            character_t* ch = &font->char_map[c];
 
             xoffset += ch->advance * scalar;
             yoffset = std::max(yoffset, ch->size.y * scalar);
@@ -142,7 +142,7 @@ namespace spk {
         text->abs_size.y = yoffset;
 
         for(uint8_t c : text->text.str) {
-            character_tt* ch = &font->char_map[c];
+            character_t* ch = &font->char_map[c];
 
             float x2 = x + ch->bearing.x * scalar;
             float y2 = y - (ch->size.y - ch->bearing.y) * scalar;
@@ -162,9 +162,9 @@ namespace spk {
         vertices += vertices_per_letter * text->text.ssize();
     }
 
-    void button_render_tt::init() {
+    void button_render_t::init() {
         vbo.init(GL_ARRAY_BUFFER);
-        vbo.buffer_data(sizeof(vertex_tt) * vertices_per_button * MAX_LETTERS, nullptr, GL_DYNAMIC_DRAW);
+        vbo.buffer_data(sizeof(vertex_t) * vertices_per_button * MAX_LETTERS, nullptr, GL_DYNAMIC_DRAW);
 
         layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 3), 0, vbo);
         layout.add(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 3), sizeof(float) * 2, vbo);
@@ -188,9 +188,9 @@ namespace spk {
         vertices = 0;
     }
 
-    void button_render_tt::render(sfk::static_index_buffer_tt& ibo, ui_canvas_tt* canvas) {
+    void button_render_t::render(sfk::static_index_buffer_t& ibo, ui_canvas_t* canvas) {
         // update
-        vbo.buffer_sub_data(0, vertices * sizeof(vertex_tt), buffer.data());
+        vbo.buffer_sub_data(0, vertices * sizeof(vertex_t), buffer.data());
 
         // bind
         vao.bind();
@@ -205,14 +205,14 @@ namespace spk {
         indexes = 0;
     }
 
-    void button_render_tt::free() {
+    void button_render_t::free() {
         vao.free();
         vbo.free();
         program.free();
     }
         
-    void button_render_tt::add_ui_button(ui_button_tt* btn) {
-        vertex_tt* vtx = buffer.data() + indexes;
+    void button_render_t::add_ui_button(ui_button_t* btn) {
+        vertex_t* vtx = buffer.data() + indexes;
         const float x = btn->abs_pos.x;
         const float y = btn->abs_pos.y;
         const float hw = btn->abs_size.x;
@@ -246,7 +246,7 @@ namespace spk {
         vertices += vertices_per_button;
     } 
 
-    void ui_renderer_tt::init(scene_tt& scene) {
+    void ui_renderer_t::init(scene_t& scene) {
         font_render.init();
         button_render.init();
 
@@ -256,9 +256,9 @@ namespace spk {
         canvas = &scene.canvas;
     }
 
-    void ui_renderer_tt::render(scene_tt& scene) {
-        ui_canvas_tt& canvas = scene.canvas;
-        font_tt* font = canvas.font;
+    void ui_renderer_t::render(scene_t& scene) {
+        ui_canvas_t& canvas = scene.canvas;
+        font_t* font = canvas.font;
         float xmax = canvas.abs_size.x;
         float ymax = canvas.abs_size.y;
 
@@ -272,12 +272,12 @@ namespace spk {
             }
         }
 
-        canvas.iter_children([&](ui_element_tt& ele) -> bool {
+        canvas.iter_children([&](ui_element_t& ele) -> bool {
             if(!(ele.flags & UI_ELEMENT_FLAGS_ENABLED) || ele.flags & UI_ELEMENT_FLAGS_ROOT) {
                 return false;
             }
 
-            ui_element_tt* parent = ele.parent;
+            ui_element_t* parent = ele.parent;
 
             if(ele.flags & UI_ELEMENT_FLAGS_RELATIVE || 
                (parent->flags & UI_ELEMENT_FLAGS_ROOT && ele.flags & UI_ELEMENT_FLAGS_PARENT_RELATIVE)) {
@@ -304,11 +304,11 @@ namespace spk {
                 break;
 
             case UI_ELEMENT_TYPE_TEXT:
-                font_render.add_ui_text(font, (ui_text_tt*)&ele);
+                font_render.add_ui_text(font, (ui_text_t*)&ele);
                 break;
 
             case UI_ELEMENT_TYPE_BUTTON:
-                button_render.add_ui_button((ui_button_tt*)&ele);
+                button_render.add_ui_button((ui_button_t*)&ele);
                 break;
 
             case UI_ELEMENT_TYPE_CANVAS:
@@ -326,11 +326,11 @@ namespace spk {
         font_render.render(ibo, font, &scene.canvas);
     }
 
-    void ui_renderer_tt::resize(int width, int height) {
+    void ui_renderer_t::resize(int width, int height) {
         canvas->resize(width, height);
     }
 
-    void ui_renderer_tt::free() {
+    void ui_renderer_t::free() {
         ibo.free();
         button_render.free();
         font_render.free();

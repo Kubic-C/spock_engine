@@ -6,17 +6,17 @@
 namespace spk {
     void print_name2();
 
-    class engine_tt {
+    class engine_t {
     public:
-        scene_tt* scene;
-        sfk::window_tt window;
+        scene_t* scene;
+        sfk::window_t window;
 
-        engine_tt();
+        engine_t();
 
         void init(int w, int h, std::string title);
         void free();
 
-        void push_system(system_tt* system);
+        void push_system(system_t* system);
 
         void set_time_exit(int ticks_till_end) { time.exit = ticks_till_end; };
         void set_tick_speed(int tick_speed);
@@ -27,15 +27,15 @@ namespace spk {
         float get_elapsed_time();
         float get_time() { return framework.get_time(); };
 
-        resource_manager_tt resource_manager;
+        resource_manager_t resource_manager;
 
     private:
         sfk::sfk framework;
-        renderer2D_tt renderer;
-        physics2D_tt physics;
-        ui_tt ui;
+        renderer2D_t renderer;
+        physics2D_t physics;
+        ui_t ui;
 
-        system_manager_tt system_manager;
+        system_manager_t system_manager;
 
         struct {
             int exit = INT_MAX;

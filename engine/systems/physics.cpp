@@ -2,11 +2,11 @@
 #include "../engine.hpp"
 
 namespace spk {
-    physics2D_tt::physics2D_tt() {
+    physics2D_t::physics2D_t() {
 
     }
 
-    void physics2D_tt::init(scene_tt& scene, void* data) {
+    void physics2D_t::init(scene_t& scene, void* data) {
         flecs::world& world = scene.world;
         b2World* physics_world = new b2World(b2Vec2(0.0f, -9.81f));
         physics_world->SetAllowSleeping(false);
@@ -16,13 +16,13 @@ namespace spk {
         add_box2d_components(world, physics_world);
     }
     
-    void physics2D_tt::tick(scene_tt& scene, float deltatime) {
+    void physics2D_t::tick(scene_t& scene, float deltatime) {
         flecs::world& world = scene.world;
 
         scene.physics_scene->world->Step(scene.engine->get_tick_speed(), 8, 3);        
     }
 
-    void physics2D_tt::free(scene_tt& scene) {
+    void physics2D_t::free(scene_t& scene) {
         delete scene.physics_scene->world;
     }
 }

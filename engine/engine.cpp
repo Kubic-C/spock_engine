@@ -1,26 +1,26 @@
 #include "engine.hpp"
 
 namespace spk {
-    engine_tt::engine_tt() {
+    engine_t::engine_t() {
     }
 
     void print_name2() {
         sfk::print_name();
     }
 
-    void engine_tt::init(int w, int h, std::string title) {
+    void engine_t::init(int w, int h, std::string title) {
         set_tick_speed(60);
 
         framework.init();
         window.gl_version(3, 3);
         window.init(w, h, title);
 
-        scene = new scene_tt;
+        scene = new scene_t;
         scene->engine = this;
         scene->window = &window;
-        scene->world.component<transform_tt>();
-        scene->render_scene = new render_scene_tt;
-        scene->physics_scene = new physics_scene_tt;
+        scene->world.component<transform_t>();
+        scene->render_scene = new render_scene_t;
+        scene->physics_scene = new physics_scene_t;
         
         DEBUG_VALUE(bool, ret =) resource_manager.init();
         assert(ret);
@@ -54,7 +54,7 @@ namespace spk {
         system_manager.push_system(&ui);
     }
 
-    void engine_tt::free() {
+    void engine_t::free() {
         system_manager.free_user_systems(*scene);
     
         // we want the user to have access to entities when
@@ -74,17 +74,17 @@ namespace spk {
         framework.free();
     }
 
-    void engine_tt::push_system(system_tt* system) {
+    void engine_t::push_system(system_t* system) {
         system_manager.push_system(system);
         system->init(*scene, (void*)this);
     }
 
-    void engine_tt::set_tick_speed(int tick_speed) {
+    void engine_t::set_tick_speed(int tick_speed) {
         time.ticks_per_second = tick_speed;
         time.fps_limiter = 1.0f / tick_speed;
     }
 
-    void engine_tt::loop() {
+    void engine_t::loop() {
         while(!window.closed()) {
             float current_frame = framework.get_time();
             time.delta = (current_frame - time.last_frame);
@@ -120,12 +120,12 @@ namespace spk {
         }
     }
 
-    void engine_tt::update() {
+    void engine_t::update() {
         glfwPollEvents();
         scene->world.progress(time.delta);
     }
 
-    float engine_tt::get_elapsed_time() {
+    float engine_t::get_elapsed_time() {
         return time.last_frame - framework.get_time();
     }
 }

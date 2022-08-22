@@ -9,4 +9,17 @@ namespace spk {
                 phy_world->DestroyBody(comp.body);
         });
     }
+
+    b2Fixture* add_body_fixture(comp_b2Body* body, b2Shape* shape, float friction, float restitution,
+		float restitutionThreshold, float density, bool isSensor) {
+
+        b2FixtureDef def;
+        def.shape = shape;
+        def.friction = friction;
+        def.restitution = restitution;
+        def.restitutionThreshold = restitutionThreshold;
+        def.density = density;
+        def.isSensor = isSensor;
+        return body->body->CreateFixture(&def);
+    }
 } 

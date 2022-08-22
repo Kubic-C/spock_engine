@@ -9,40 +9,40 @@
 #define DEFAULT_SORTING_ORDER 5U
 
 namespace spk {
-    struct system_tt {
+    struct system_t {
         uint32_t sorting_order = USER_SORTING_ORDER0;
         std::string name;
 
         // called by system manager (part of game engine)
-        virtual void init(scene_tt& scene, void* data) {}
-        virtual void update(scene_tt& scene, float deltatime) {}
-        virtual void tick(scene_tt& scene, float deltatime) {}
-        virtual void free(scene_tt& scene) {}
+        virtual void init(scene_t& scene, void* data) {}
+        virtual void update(scene_t& scene, float deltatime) {}
+        virtual void tick(scene_t& scene, float deltatime) {}
+        virtual void free(scene_t& scene) {}
     };
 
     /* handles updating and keeping track of the active systems*/
-    struct system_manager_tt {
-        std::vector<system_tt*> systems;
+    struct system_manager_t {
+        std::vector<system_t*> systems;
 
-        void push_system(system_tt* system);
+        void push_system(system_t* system);
 
-        void update(scene_tt& scene, float deltatime); 
-        void tick(scene_tt& scene, float deltatime);
-        void free(scene_tt& scene);
-        void free_user_systems(spk::scene_tt& scene);
+        void update(scene_t& scene, float deltatime); 
+        void tick(scene_t& scene, float deltatime);
+        void free(scene_t& scene);
+        void free_user_systems(spk::scene_t& scene);
     };
 
-    struct render_system_tt {
-        virtual void init(scene_tt& scene) {}
-        virtual void render(scene_tt& scene) {}
+    struct render_system_t {
+        virtual void init(scene_t& scene) {}
+        virtual void render(scene_t& scene) {}
         virtual void resize(int width, int height) {}
         virtual void free() {}
     };
 
-    struct render_system_manager_tt {
-        std::vector<render_system_tt*> systems;
+    struct render_system_manager_t {
+        std::vector<render_system_t*> systems;
 
-        void push_system(render_system_tt* system);
+        void push_system(render_system_t* system);
         void free();
     };
 }
