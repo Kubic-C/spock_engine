@@ -22,7 +22,8 @@ target_sources(spock_engine PRIVATE
     "utility/ui_.hpp" "utility/ui_.cpp"
     "utility/callback.hpp" "utility/callback.cpp"
     "utility/text.hpp" "utility/text.cpp"
-    "utility/resource_manager.hpp" "utility/resource_manager.cpp")
+    "utility/resource_manager.hpp" "utility/resource_manager.cpp"
+    "utility/model.hpp" "utility/model.cpp")
 
 target_sources(spock_engine PUBLIC
     "engine.hpp")

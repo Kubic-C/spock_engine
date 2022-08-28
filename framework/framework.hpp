@@ -19,18 +19,13 @@ namespace sfk {
     void print_name();
 
     /* handling all external and internal library state */
-    class sfk {
+    class sfk_t {
     public:
         void init();
         void free();
 
         inline float get_time() {
-            return glfwGetTime();
-        }
-
-        template<typename ... args>
-        void log(log_type type, args&& ... _args) {
-            logger.add_log(type, _args...);
+            return time.get_time();
         }
 
     private:

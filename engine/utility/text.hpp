@@ -36,7 +36,6 @@ namespace spk {
 
         uint32_t widest_glyph;
         uint32_t tallest_glyph;
-        float one_fourth_tallest_glyph;
         uint32_t width, height;
         sfk::texture2D_t texture;
 

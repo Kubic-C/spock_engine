@@ -48,13 +48,13 @@ namespace spk {
         std::array<ui_element_t*, max_child_size> elements;
         ui_element_t* parent;
 
-        void _init_members();
+        ui_element_t();
         virtual void init();
         virtual void free();
 
         // iterates through all children
         using children_callback_t = std::function<bool(ui_element_t&)>;
-        bool iter_children(children_callback_t callback);
+        void iter_children(children_callback_t callback);
 
         void gen_abs(glm::vec2 xinput_range, glm::vec2 xoutput_range,
                      glm::vec2 yinput_range, glm::vec2 youtput_range) {
@@ -70,7 +70,7 @@ namespace spk {
         }
 
         uint32_t add_child(ui_element_t* child) {
-            assert(child);
+            sfk_assert(child);
             
             if(in_use.count() >= max_child_size)
                 return UINT32_MAX;
@@ -85,7 +85,7 @@ namespace spk {
         }
 
         uint32_t set_child(uint32_t index, ui_element_t* child) {
-            assert(index < max_child_size && child != null && !in_use.test(index)); 
+            sfk_assert(index < max_child_size && child != null && !in_use.test(index)); 
 
             in_use.set(index, true);
 
@@ -96,7 +96,7 @@ namespace spk {
         }
 
         ui_element_t* remove_child(uint32_t index) {
-            assert(index < max_child_size && in_use.test(index)); 
+            sfk_assert(index < max_child_size && in_use.test(index)); 
             
             ui_element_t* element;
 

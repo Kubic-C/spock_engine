@@ -87,6 +87,7 @@
         "variant": "cpp",
         "*.sh": "cpp",
         "stb_image.h": "c",
-        "*.def": "cpp"
+        "*.def": "cpp",
+        "cassert": "cpp"
     }
 }

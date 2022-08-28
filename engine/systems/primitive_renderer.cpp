@@ -27,8 +27,7 @@ namespace spk {
     
         program.init();
         if(!program.load_shader_files("./shaders/vs_tiles.glsl", "./shaders/fs_tiles.glsl")) {
-            printf("couldn't load primitve shaders\n");
-            abort();
+            sfk::log.log(sfk::LOG_TYPE_ERROR, "could not loud primitive shaders");
         }
     
         mesh.resize(100 * 3);
@@ -44,7 +43,7 @@ namespace spk {
                 b2Body* body = c_bodies[i].body;
                 b2Fixture* fixture = body->GetFixtureList();
 
-                assert(body);
+                sfk_assert(body);
 
                 for(; fixture; fixture = fixture->GetNext()) {
                     b2Shape* shape = fixture->GetShape();
@@ -103,7 +102,7 @@ namespace spk {
         glm::vec2 prev = (glm::vec2){ r, 0.0f };
         prev = glm::rotate(prev, body_angle) + position;
 
-        uint32_t vertices = steps * 3; // steps is the amount of triangles, each TRIangle has three vertices
+        uint32_t vertices = steps * 3; // steps is the amount of triangles, each TRI-angle has three vertices
 
         vertex_t* section = mesh.data();
         for(uint32_t i = 0; i < steps; i++) {

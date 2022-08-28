@@ -41,7 +41,7 @@ namespace sfk {
 
     void window_t::init(int w, int h, std::string title) {
         c_window = glfwCreateWindow(w, h, title.c_str(), null, null);
-        assert(c_window);
+        sfk_assert(c_window);
         glfwSetFramebufferSizeCallback(c_window, _framebuffer_size_callback);
         glfwSetKeyCallback(c_window, key_callback);
         glfwSetWindowUserPointer(c_window, this);

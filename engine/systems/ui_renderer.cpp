@@ -80,12 +80,12 @@ namespace spk {
         uint32_t vs_shader = sfk::create_shader_from_src(GL_VERTEX_SHADER, vs_font, nullptr);
         uint32_t fs_shader = sfk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_font, nullptr);
         
-        assert(vs_shader != UINT32_MAX);
-        assert(fs_shader != UINT32_MAX);
+        sfk_assert(vs_shader != UINT32_MAX);
+        sfk_assert(fs_shader != UINT32_MAX);
         
         program.init();
         DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
-        assert(ret);
+        sfk_assert(ret);
 
         buffer.resize(indexes_per_letter * MAX_LETTERS);
 
@@ -175,12 +175,12 @@ namespace spk {
         uint32_t vs_shader = sfk::create_shader_from_src(GL_VERTEX_SHADER, vs_button, nullptr);
         uint32_t fs_shader = sfk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_button, nullptr);
         
-        assert(vs_shader != UINT32_MAX);
-        assert(fs_shader != UINT32_MAX);
+        sfk_assert(vs_shader != UINT32_MAX);
+        sfk_assert(fs_shader != UINT32_MAX);
         
         program.init();
         DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
-        assert(ret);
+        sfk_assert(ret);
 
         buffer.resize(vertices_per_button * MAX_LETTERS);
 
@@ -220,7 +220,7 @@ namespace spk {
         glm::vec3 offset = {0.0f, 0.0f, 0.0f};
         glm::vec3 color;
 
-        if(btn->time_when_clicked + 0.1f > glfwGetTime()) {
+        if(btn->time_when_clicked + 0.1f > sfk::time.get_time()) {
             offset = {0.5f, 0.5f, 0.5f};
         }
 
@@ -262,19 +262,17 @@ namespace spk {
         float xmax = canvas.abs_size.x;
         float ymax = canvas.abs_size.y;
 
-        if(!(canvas.flags & UI_ELEMENT_FLAGS_ENABLED))
+        if(!(canvas.flags & UI_ELEMENT_FLAGS_ENABLED) || !canvas.in_use.any())
             return;
 
-        if(canvas.in_use.any()) {
-            if(!font) {
-                font = scene.engine->resource_manager.get_first_font();
-                assert(font && "when using canvas you must load a font!");
-            }
+        if(!font) { // if font is null, the first font will be the default
+            font = scene.engine->resource_manager.get_first_font();
+            sfk_assert(font && "when using canvas you must load a font!");
         }
 
         canvas.iter_children([&](ui_element_t& ele) -> bool {
             if(!(ele.flags & UI_ELEMENT_FLAGS_ENABLED) || ele.flags & UI_ELEMENT_FLAGS_ROOT) {
-                return false;
+                return true;
             }
 
             ui_element_t* parent = ele.parent;
@@ -312,7 +310,7 @@ namespace spk {
                 break;
 
             case UI_ELEMENT_TYPE_CANVAS:
-                assert(!"yo dawg how this shit happen, this is not accessible");
+                sfk_assert(!"yo dawg how this shit happen, this is not accessible");
                 break;
 
             default:

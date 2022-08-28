@@ -12,6 +12,8 @@
 // extra
 #include <cassert>
 #include <stdint.h>
+#include <stdarg.h>
+#include <chrono>
 
 // streams
 #include <iostream>
@@ -34,6 +36,28 @@
 namespace sfk {
     inline b2Vec2 to_glm_vec2(glm::vec2 vec2) { return (b2Vec2){vec2.x, vec2.y}; }
     inline glm::vec2 to_box_vec2(b2Vec2 vec2) { return (glm::vec2){vec2.x, vec2.y}; }
+
+    struct time_t {
+        std::chrono::time_point<std::chrono::steady_clock> tp;
+
+        time_t() {
+            tp = std::chrono::steady_clock::now();
+        }
+
+        ~time_t() {
+
+        }
+
+        float get_time() {
+            auto ep = std::chrono::steady_clock::now();
+
+            std::chrono::duration<float> duration = ep - tp;
+
+            return (duration).count();
+        }
+    };
+
+    inline time_t time;
 }
 
 #define null NULL

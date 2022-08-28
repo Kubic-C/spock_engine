@@ -15,7 +15,7 @@ namespace spk {
 
     bool font_t::load_ascii_font(FT_Library lib, int f_width, int f_height, const char* file_path) {
         /* introducing bullshit by bullshit dev */
-        uint32_t x = 0; // cursor within this->texture's data, used for writing
+        float x = 0; // cursor within this->texture's data, used for writing
         tallest_glyph = 0;
         widest_glyph = 0;
         width = 0;
@@ -32,7 +32,7 @@ namespace spk {
 
             DEBUG_VALUE(bool, ret =) char_map.register_key(c); 
             /* this should never happen */
-            assert(ret);
+            sfk_assert(ret);
         
             if(FT_Load_Char(face, c, FT_LOAD_RENDER)) {
                 continue;
@@ -71,9 +71,11 @@ namespace spk {
 
             c_data = &char_map[c];
 
-            gx = (float)x / width;
-            gwidth = (float)c_data->size.x / width;
-            gheight = (float)c_data->size.y / height;
+            // 0.2f is added to x to prevent the letter before it to be added to it when rendered, as the letters
+            // are stored right next to eachother in memory
+            gx = (x + 0.2f) / (float)width;
+            gwidth = (float)c_data->size.x / (float)width;
+            gheight = (float)c_data->size.y / (float)height;
 
             // ccw indexing, keep that in mind
             c_data->tex_indices[0] = { gx         , gheight };
@@ -81,14 +83,12 @@ namespace spk {
             c_data->tex_indices[2] = { gx + gwidth, 0       };
             c_data->tex_indices[3] = { gx         , 0       };
 
-            x += c_data->size.x;
+            x += (float)c_data->size.x;
         }
 
         // texture still bound
         glGenerateMipmap(GL_TEXTURE_2D);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // restore previous alignment
-
-        one_fourth_tallest_glyph = (float)tallest_glyph / 4;
 
         return true;
     }

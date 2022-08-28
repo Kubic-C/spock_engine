@@ -50,7 +50,7 @@ namespace sfk {
 
     vertex_layout_t& vertex_layout_t::add(size_t index, size_t size, size_t type, 
         bool normalized, size_t stride, size_t offset, uint32_t buffer) {
-        assert(!attributes_active[index]);
+        sfk_assert(!attributes_active[index]);
         
         attributes_active[index].flip();
 
@@ -71,7 +71,7 @@ namespace sfk {
     }
 
     void vertex_layout_t::set_buffer(uint32_t index, uint32_t buffer) {
-        assert(attributes_active[index]);
+        sfk_assert(attributes_active[index]);
 
         attributes[index].buffer = buffer;
     }
@@ -240,7 +240,7 @@ namespace sfk {
             glGetProgramiv(id, GL_LINK_STATUS, &success);
             if(!success) {
                 glGetShaderInfoLog(id, 512, NULL, info_log);
-                sfk::logger.add_log(sfk::LOG_TYPE_ERROR, "program linking failed: %s\n", info_log);
+# 123124124
                 ret = false;
             }
         }

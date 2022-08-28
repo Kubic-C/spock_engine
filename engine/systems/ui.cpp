@@ -46,7 +46,7 @@ namespace spk {
                 if(corners[0].x < x && x < corners[1].x &&
                    corners[0].y < y && y < corners[1].y) {
                     
-                    btn.time_when_clicked = glfwGetTime();
+                    btn.time_when_clicked = sfk::time.get_time();
 
                     if(btn.callback) {
                         btn.callback(*self->scene, &btn);

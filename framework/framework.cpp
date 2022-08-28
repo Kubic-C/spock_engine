@@ -6,11 +6,11 @@ namespace sfk {
         std::cout << "Sawyer Porter\n";
     }
 
-    void sfk::init() {
+    void sfk_t::init() {
         glfwInit();
     }
 
-    void sfk::free() {
+    void sfk_t::free() {
         glfwTerminate();
     }
 }

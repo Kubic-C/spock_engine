@@ -11,8 +11,6 @@ namespace spk {
         {
             scene.window->make_context_current();
             if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-                sfk::logger.add_log(sfk::LOG_TYPE_ERROR, "could not load OpenGL with GLAD");
-                abort();
             }            
         }
 

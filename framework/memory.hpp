@@ -187,7 +187,7 @@ namespace sfk {
             }
         }
 
-        assert(ptr != null && "memory_pool out of space");
+        sfk_assert(ptr != null && "memory_pool out of space");
     
         if(ptr) {
             currently_allocated++;
@@ -220,7 +220,7 @@ namespace sfk {
 
     template<typename T, uint32_t size, size_t alignment, size_t padding>
     void memory_pool_t<T, size, alignment, padding>::letgo(T* ptr) {
-        assert(aligned_ptr <= ptr && (aligned_ptr + size) > ptr);
+        sfk_assert(aligned_ptr <= ptr && (aligned_ptr + size) > ptr);
 
         /* note to future devs reading this code:
           i HAD to cast everything to size_t when doing pointer arithmetic,
@@ -236,7 +236,7 @@ namespace sfk {
         // TODO: make this faster
         size_t n = n_ptr / sizeof(T); // division is slow so there could be a better way to do this  
     
-        assert( ! (block_flags[n] & BLOCK_FLAGS_FREE));
+        sfk_assert( ! (block_flags[n] & BLOCK_FLAGS_FREE));
 
         block_flags[n] |= 0b00000001;
 

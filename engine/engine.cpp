@@ -23,7 +23,7 @@ namespace spk {
         scene->physics_scene = new physics_scene_t;
         
         DEBUG_VALUE(bool, ret =) resource_manager.init();
-        assert(ret);
+        sfk_assert(ret);
         
         {
             renderer.init(*scene, nullptr);
@@ -86,7 +86,7 @@ namespace spk {
 
     void engine_t::loop() {
         while(!window.closed()) {
-            float current_frame = framework.get_time();
+            float current_frame = sfk::time.get_time();
             time.delta = (current_frame - time.last_frame);
             time.ticks_to_do += time.delta / time.fps_limiter;
             time.last_frame = current_frame;
@@ -111,11 +111,10 @@ namespace spk {
                 time.frames++;
             }
         
-            if(framework.get_time() - time.second_timer > 1.0) {
+            if(sfk::time.get_time() - time.second_timer > 1.0) {
                 time.second_timer++;
                 printf("FPS: %4u | UPS: %3u | DELTA: %1.8f | RUNTIME: %5f\n", time.frames, time.ticks, time.delta, scene->world.time());
                 time.frames = 0, time.ticks = 0;
-                std::cout.flush();
             }
         }
     }
@@ -126,6 +125,6 @@ namespace spk {
     }
 
     float engine_t::get_elapsed_time() {
-        return time.last_frame - framework.get_time();
+        return time.last_frame - sfk::time.get_time();
     }
 }

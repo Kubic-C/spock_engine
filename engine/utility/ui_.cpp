@@ -2,7 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk {
-    void ui_element_t::_init_members() {
+    ui_element_t::ui_element_t() {
         sfk::zero(&pos);
         sfk::zero(&size);
         sfk::zero(&flags);
@@ -14,23 +14,18 @@ namespace spk {
     }
 
     void ui_element_t::init() {
-        _init_members();
     }
 
-    bool ui_element_t::iter_children(children_callback_t callback) {
+    void ui_element_t::iter_children(children_callback_t callback) {
         for(auto ele : elements) {
             if(ele) {
                 if(callback(*ele)) {
-                    return true;
-                } 
-
-                if(ele->iter_children(callback)) {
-                    return true;
+                    continue;
+                } else {
+                   ele->iter_children(callback);
                 }
             }
         }
-
-        return false;
     }
 
     void ui_element_t::free() {
@@ -38,12 +33,11 @@ namespace spk {
     }
 
     void ui_canvas_t::init() {
-        _init_members();
 
         DEBUG_VALUE(bool, ret =) texts.init();
-        assert(ret);
+        sfk_assert(ret);
         DEBUG_EXPR(ret =) btns.init();
-        assert(ret);
+        sfk_assert(ret);
 
         font = nullptr;
 

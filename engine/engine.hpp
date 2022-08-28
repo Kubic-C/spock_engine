@@ -25,12 +25,12 @@ namespace spk {
         void loop();
 
         float get_elapsed_time();
-        float get_time() { return framework.get_time(); };
+        float get_time() { return sfk::time.get_time(); };
 
         resource_manager_t resource_manager;
 
     private:
-        sfk::sfk framework;
+        sfk::sfk_t framework;
         renderer2D_t renderer;
         physics2D_t physics;
         ui_t ui;

@@ -16,7 +16,7 @@ namespace spk {
         }
     };
 
-    // quick and dirty rendering
+    // quick and dirty rendering, should be used for debugging
     class primitive_renderer_t : public render_system_t {
     public:
 
