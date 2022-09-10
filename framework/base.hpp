@@ -34,8 +34,8 @@
 #include <algorithm> 
 
 namespace sfk {
-    inline b2Vec2 to_glm_vec2(glm::vec2 vec2) { return (b2Vec2){vec2.x, vec2.y}; }
-    inline glm::vec2 to_box_vec2(b2Vec2 vec2) { return (glm::vec2){vec2.x, vec2.y}; }
+    inline glm::vec2 to_glm_vec2(b2Vec2 vec2) { return (glm::vec2){vec2.x, vec2.y}; }
+    inline b2Vec2 to_box_vec2(glm::vec2 vec2) { return (b2Vec2){vec2.x, vec2.y}; }
 
     struct time_t {
         std::chrono::time_point<std::chrono::steady_clock> tp;

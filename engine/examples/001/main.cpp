@@ -63,7 +63,7 @@ public:
         phy_world->SetContactListener(&cl);
 
         left_paddle = world.entity();
-        left_paddle.add<spk::primitive_render_t>();
+        left_paddle.add<spk::collider_render_t>();
         left_paddle.add<spk::comp_b2Body>().set([&](spk::comp_b2Body& comp){
             b2Body*& body = comp.body;
 
@@ -84,7 +84,7 @@ public:
         });
 
         right_paddle = world.entity();
-        right_paddle.add<spk::primitive_render_t>();
+        right_paddle.add<spk::collider_render_t>();
         right_paddle.add<spk::comp_b2Body>().set([&](spk::comp_b2Body& comp){
             b2Body*& body = comp.body;
 
@@ -105,7 +105,7 @@ public:
         });
 
         ball = world.entity();
-        ball.add<spk::primitive_render_t>();
+        ball.add<spk::collider_render_t>();
         ball.add<spk::comp_b2Body>().set([&](spk::comp_b2Body& comp){
             b2Body*& body = comp.body;
 

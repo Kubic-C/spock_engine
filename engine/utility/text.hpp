@@ -17,12 +17,6 @@ namespace spk {
         glm::ivec2 size;
         glm::ivec2 bearing;
         uint32_t advance;
-
-        struct {
-            glm::vec2 size; // the size in meters
-            glm::vec2 bearing;
-            float advance;
-        } ppm;
     };
 
     class font_t {

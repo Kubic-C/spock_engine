@@ -328,7 +328,7 @@ namespace spk {
         canvas->resize(width, height);
     }
 
-    void ui_renderer_t::free() {
+    void ui_renderer_t::free(scene_t& scene) {
         ibo.free();
         button_render.free();
         font_render.free();

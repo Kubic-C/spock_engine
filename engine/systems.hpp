@@ -36,14 +36,14 @@ namespace spk {
         virtual void init(scene_t& scene) {}
         virtual void render(scene_t& scene) {}
         virtual void resize(int width, int height) {}
-        virtual void free() {}
+        virtual void free(scene_t& scene) {}
     };
 
     struct render_system_manager_t {
         std::vector<render_system_t*> systems;
 
         void push_system(render_system_t* system);
-        void free();
+        void free(scene_t& scene);
     };
 }
 

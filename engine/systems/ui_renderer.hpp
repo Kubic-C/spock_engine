@@ -63,7 +63,7 @@ namespace spk {
         void init(scene_t& scene);
         void render(scene_t& scene);
         void resize(int width, int height);
-        void free();
+        void free(scene_t& scene);
 
     private:    
 

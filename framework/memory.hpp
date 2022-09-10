@@ -24,6 +24,7 @@ namespace sfk {
     typedef uint32_t key_t;
 
     constexpr key_t NULL_KEY = 0U;
+    constexpr key_t MAX_KEY = UINT32_MAX;
 
     template<class ret, typename ... params>
     using function = ret(*)(params...);
@@ -101,7 +102,7 @@ namespace sfk {
         friend class memory_pool_t<T, size, alignment, padding>;
     public: 
 
-        bool init(::sfk::function<uint32_t, keyT> func);
+        bool init(::sfk::function<uint32_t, keyT> func = sfk::xor_int_hash<keyT>);
         void free();
 
         bool register_key(keyT key);
@@ -163,6 +164,8 @@ namespace sfk {
         aligned_ptr = (T*)((char*)real_ptr + offset);
 
         currently_allocated = 0;
+
+        sfk_assert(real_ptr);
 
         return true;
     } 

@@ -16,6 +16,8 @@ namespace spk {
     struct physics_scene_t;
     struct render_scene_t;
     
+    struct tile_dictionary_t;
+
     /* a data structure given to all systems, it simply contains data that controls
        what the game "looks" like, or how it "behaves" */
     struct scene_t {
@@ -26,5 +28,6 @@ namespace spk {
         physics_scene_t* physics_scene;
         ui_canvas_t canvas;
         user_game_state_t user_game_state;
+        tile_dictionary_t* tile_dict;
     };
 }

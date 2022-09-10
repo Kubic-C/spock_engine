@@ -12,7 +12,7 @@ namespace spk {
         set_tick_speed(60);
 
         framework.init();
-        window.gl_version(3, 3);
+        window.gl_version(4, 3);
         window.init(w, h, title);
 
         scene = new scene_t;

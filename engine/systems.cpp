@@ -48,9 +48,9 @@ namespace spk {
         systems.push_back(system);
     }
     
-    void render_system_manager_t::free() {
+    void render_system_manager_t::free(scene_t& scene) {
         for(render_system_t* sys : systems) {
-            sys->free();
+            sys->free(scene);
         } 
     }
 }

@@ -167,13 +167,16 @@ namespace sfk {
         int height;
         int channels;
 
+        stbi_set_flip_vertically_on_load(true);
         pixels = stbi_load(path, &width, &height, &channels, desired_channels);
         if(!pixels)
             return false;
 
         bind();
-        allocate(GL_TEXTURE_2D, GL_RGB, GL_RGB, width, height, pixels); 
+        allocate(GL_UNSIGNED_BYTE, GL_RGB, GL_RGB, width, height, pixels); 
         glGenerateMipmap(GL_TEXTURE_2D);
+        
+        stbi_image_free(pixels);
 
         return true;
     }
@@ -240,7 +243,7 @@ namespace sfk {
             glGetProgramiv(id, GL_LINK_STATUS, &success);
             if(!success) {
                 glGetShaderInfoLog(id, 512, NULL, info_log);
-# 123124124
+                log.log(sfk::LOG_TYPE_INFO, "program failure to compile %s", info_log);
                 ret = false;
             }
         }

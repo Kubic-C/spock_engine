@@ -1,6 +1,5 @@
-#include "primitive_renderer.hpp"
-#include "../utility/physics_.hpp"
-#include <glm/gtc/matrix_transform.hpp>
+#include "collider_renderer.hpp"
+#include "renderer.hpp"
 #include <glm/gtx/rotate_vector.hpp> 
  
 uint32_t index_a[] = {
@@ -9,7 +8,7 @@ uint32_t index_a[] = {
 };
  
 namespace spk {
-    void primitive_renderer_t::init(scene_t& scene) {
+    void collider_renderer_t::init(scene_t& scene) {
 
         { // vertex data
             vertex_array.init();
@@ -33,13 +32,15 @@ namespace spk {
         mesh.resize(100 * 3);
     }
     
-    void primitive_renderer_t::render(scene_t& scene) {
+    void collider_renderer_t::render(scene_t& scene) {
         flecs::world& world = scene.world;
-        auto q = world.query<comp_b2Body, primitive_render_t>();
-        
-        q.iter([&](flecs::iter& it, comp_b2Body* c_bodies, primitive_render_t* c_primitives) {
+        q = world.query<comp_b2Body, collider_render_t>();
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+        q.iter([&](flecs::iter& it, comp_b2Body* c_bodies, collider_render_t* c_primitives) {
             for(auto i : it) {
-                primitive_render_t* primitive = &c_primitives[i];
+                collider_render_t* primitive = &c_primitives[i];
                 b2Body* body = c_bodies[i].body;
                 b2Fixture* fixture = body->GetFixtureList();
 
@@ -48,27 +49,27 @@ namespace spk {
                 for(; fixture; fixture = fixture->GetNext()) {
                     b2Shape* shape = fixture->GetShape();
                     b2Shape::Type type = shape->GetType();
-                    int32_t count = 0;
 
                     switch(type) {
                     case b2Shape::Type::e_polygon:
-                        render_polygon(primitive, body, (b2PolygonShape*)shape);
+                        render_polygon(scene.render_scene->vp, primitive, body, (b2PolygonShape*)shape);
                         break;
 
                     case b2Shape::Type::e_circle:
-                        render_circle(primitive, body, (b2CircleShape*)shape);
+                        render_circle(scene.render_scene->vp, primitive, body, (b2CircleShape*)shape);
                         break;
 
                     default:
-                        abort();
+                        sfk::log.log(sfk::LOG_TYPE_INFO, "unsupported collider type for primitive renderer");
                     };
                 }
             }
         });
 
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
     
-    void primitive_renderer_t::render_polygon(primitive_render_t* primitive, b2Body* body, b2PolygonShape* polygon) {
+    void collider_renderer_t::render_polygon(glm::mat4& vp, collider_render_t* primitive, b2Body* body, b2PolygonShape* polygon) {
         int32_t count = (polygon->m_count / 2) * 3; // special case: 3 works because of integer division black magic
 
         for(int32 j = 0; j < polygon->m_count; j++)  {
@@ -88,9 +89,9 @@ namespace spk {
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);   
     }
 
-    void primitive_renderer_t::render_circle(primitive_render_t* primitve, b2Body* body, b2CircleShape* circle) {
-        const glm::vec2 position = sfk::to_box_vec2(body->GetPosition());
-        const uint32_t steps = 6;
+    void collider_renderer_t::render_circle(glm::mat4& vp, collider_render_t* primitve, b2Body* body, b2CircleShape* circle) {
+        const glm::vec2 position = sfk::to_glm_vec2(body->GetPosition());
+        const uint32_t steps = 8;
         const float r = circle->m_radius;
         const float c = 2.0f * r * b2_pi;
         const float c_sect = (2.0f * b2_pi) / steps; // returns in radians how much we should rotate
@@ -128,17 +129,10 @@ namespace spk {
         glDrawArrays(GL_TRIANGLES, 0, vertices);
     }
  
-    void primitive_renderer_t::resize(int width, int height) {
-        float half_width  = (float)width / 4;
-        float half_height = (float)height / 4;
-    
-        view = glm::identity<glm::mat4>();
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
-        proj = glm::ortho(-(float)half_width / sfk::ppm, (float)half_width / sfk::ppm, -half_height / sfk::ppm, half_height / sfk::ppm);
-        vp   = proj * view;
+    void collider_renderer_t::resize(int width, int height) {
     }
  
-    void primitive_renderer_t::free() {
+    void collider_renderer_t::free(scene_t& scene) {
         vertex_array.free();
         vertex_buffer.free();
         program.free();

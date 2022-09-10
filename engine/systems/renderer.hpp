@@ -1,11 +1,14 @@
 #pragma once
 
-#include "primitive_renderer.hpp"
+#include "collider_renderer.hpp"
 #include "ui_renderer.hpp"
+#include "tile_renderer.hpp"
 
 namespace spk {
     struct render_scene_t {
-        quad_scene_t quad_batch;
+        tile_render_scene_t tile_scene;
+
+        glm::mat4 vp;
     };
 
     class renderer2D_t : public system_t {
@@ -19,11 +22,13 @@ namespace spk {
         void free(scene_t& scene);
 
         render_system_manager_t renderer_manager;
+        scene_t* scene;
 
     private:
         // need a place to access each render system's
         // non-base-class methods
-        primitive_renderer_t primitive_renderer;
+        collider_renderer_t primitive_renderer;
         ui_renderer_t ui_renderer;
+        tile_renderer_t tile_renderer;
     };
 }

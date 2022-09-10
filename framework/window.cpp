@@ -35,13 +35,21 @@ namespace sfk {
 
     }
 
+    void error_callback(int error_code, const char* message) {
+        log.log(sfk::LOG_TYPE_ERROR, "error code(%i), msg: %s", error_code, message);
+    }
+
     window_t::window_t() {}
 
     window_t::~window_t() {}
 
     void window_t::init(int w, int h, std::string title) {
+        glfwSetErrorCallback(error_callback);
+        
         c_window = glfwCreateWindow(w, h, title.c_str(), null, null);
         sfk_assert(c_window);
+
+
         glfwSetFramebufferSizeCallback(c_window, _framebuffer_size_callback);
         glfwSetKeyCallback(c_window, key_callback);
         glfwSetWindowUserPointer(c_window, this);
