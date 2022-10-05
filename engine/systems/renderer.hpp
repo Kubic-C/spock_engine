@@ -25,7 +25,7 @@ namespace spk {
     private:
         // need a place to access each render system's
         // non-base-class methods
-        collider_renderer_t primitive_renderer;
+        collider_renderer_t collider_renderer;
         ui_renderer_t ui_renderer;
     };
 }

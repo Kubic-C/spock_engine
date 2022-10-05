@@ -2,10 +2,30 @@
 #include "renderer.hpp"
 #include <glm/gtx/rotate_vector.hpp> 
  
-uint32_t index_a[] = {
-   0, 1, 2,
-   1, 2, 3
-};
+const char* vs_colliders = R"###(
+#version 330 core
+layout(location = 0) in vec2 a_pos;
+layout(location = 1) in vec3 a_color;
+
+out vec3 v_color;
+
+uniform mat4 u_vp;
+
+void main() {
+    gl_Position = u_vp * vec4(a_pos, 0.0, 1.0);
+    v_color = a_color;
+})###";
+
+const char* fs_colliders = R"###(
+#version 330 core
+in vec3 v_color;
+
+out vec4 fragment_color;
+
+void main() {
+    fragment_color = vec4(v_color.xyz, 1.0);
+}
+})###";
  
 namespace spk {
     void collider_renderer_t::init(scene_t& scene) {
@@ -24,10 +44,15 @@ namespace spk {
             index_buffer.generate_quad_indexes(4);
         }
     
+        uint32_t vs_shader = sfk::create_shader_from_src(GL_VERTEX_SHADER, vs_colliders, nullptr);
+        uint32_t fs_shader = sfk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_colliders, nullptr);
+        
+        sfk_assert(vs_shader != UINT32_MAX);
+        sfk_assert(fs_shader != UINT32_MAX);
+        
         program.init();
-        if(!program.load_shader_files("./shaders/vs_tiles.glsl", "./shaders/fs_tiles.glsl")) {
-            sfk::log.log(sfk::LOG_TYPE_ERROR, "could not loud primitive shaders");
-        }
+        DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
+        sfk_assert(ret);
     
         mesh.resize(100 * 3);
     }
