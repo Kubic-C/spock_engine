@@ -21,6 +21,10 @@ namespace sfk {
         return ikey ^ UINT32_MAX;
     }
 
+    inline uint32_t xor_u32vec2_hash(glm::u32vec2 vkey) {
+        return vkey.x & vkey.y ^ UINT32_MAX;
+    }
+
     typedef uint32_t key_t;
 
     constexpr key_t NULL_KEY = 0U;
@@ -75,6 +79,7 @@ namespace sfk {
         T* malloc();
         uint32_t get_valid_blocks(T** ptrs, uint32_t count, data_callback_t clbk = nullptr);
         void letgo(T* ptr);
+        void clear(); // free all blocks
 
         uint32_t get_allocated() { return currently_allocated; }
 
@@ -108,6 +113,7 @@ namespace sfk {
         bool register_key(keyT key);
         T* get_value(keyT key);
         uint32_t get_all_data(T** ptrs, uint32_t count);
+        void clear();
         void letgo(keyT key);
 
         T& operator[](keyT key) {
@@ -248,6 +254,12 @@ namespace sfk {
         ptr->~T();
     }
 
+    template<typename T, uint32_t size, size_t alignment, size_t padding>
+    void memory_pool_t<T, size, alignment, padding>::clear() {
+        currently_allocated = 0;
+        block_flags.fill(BLOCK_FLAGS_FREE);
+    }
+
     template<typename T,  uint32_t size, size_t alignment, size_t padding, typename keyT>
     bool hashmap_t<T, size, alignment, padding, keyT>::init(::sfk::function<uint32_t, keyT> hash_func) {
         translation_table.fill(std::pair<keyT, T*>(null_obj, nullptr));
@@ -309,6 +321,12 @@ namespace sfk {
     template<typename T,  uint32_t size, size_t alignment, size_t padding, typename keyT>
     uint32_t hashmap_t<T, size, alignment, padding, keyT>::get_all_data(T** ptrs, uint32_t count) {
         return pool.get_valid_blocks(ptrs, count);
+    }
+
+    template<typename T,  uint32_t size, size_t alignment, size_t padding, typename keyT>
+    void hashmap_t<T, size, alignment, padding, keyT>::clear() {
+        pool.clear();
+        translation_table.fill(std::pair<keyT, T*>(null_obj, nullptr));
     }
 
     template<typename T,  uint32_t size, size_t alignment, size_t padding, typename keyT>

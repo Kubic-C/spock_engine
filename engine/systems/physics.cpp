@@ -14,7 +14,6 @@ namespace spk {
         scene.physics_scene->world = physics_world;
     
         add_box2d_components(world, physics_world);
-        add_tile_body_components(scene);
     }
     
     void physics2D_t::tick(scene_t& scene, float deltatime) {

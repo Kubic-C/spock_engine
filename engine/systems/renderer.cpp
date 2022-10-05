@@ -40,11 +40,12 @@ namespace spk {
         {
             primitive_renderer.init(scene);
             ui_renderer.init(scene);
-            tile_renderer.init(scene);
+
+            primitive_renderer.rendering_layer = 0U;
+            ui_renderer.rendering_layer = 100U; // we want this to always be on top
 
             renderer_manager.push_system(&primitive_renderer);
             renderer_manager.push_system(&ui_renderer);
-            renderer_manager.push_system(&tile_renderer);
         }
 
         this->scene = &scene;

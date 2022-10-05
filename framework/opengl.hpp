@@ -89,7 +89,7 @@ namespace sfk {
         bool init();
         void allocate(uint32_t type, uint32_t internal_format, uint32_t format, int width, int height, void* pixels);
         void subdata(uint32_t type, uint32_t xoffset, uint32_t yoffset, uint32_t format, int width, int height, void* pixels);
-        bool load_image(const char* path, int desired_channels);
+        bool load_image(const char* path, int desired_channels, bool flip);
         void active_texture(uint32_t slot);
         void bind();
         void free();

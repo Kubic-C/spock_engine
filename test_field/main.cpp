@@ -73,31 +73,39 @@ public:
             b2BodyDef body_def;
             body_def.angle = 0.0f;
             body_def.enabled = true;
-            body_def.position = b2Vec2(0.0f, 5.0f);
+            body_def.position = b2Vec2(-5.0f, 5.0f);
             body_def.type = b2BodyType::b2_dynamicBody;
             body.body = world->CreateBody(&body_def);
 
             b2CircleShape circle;
             circle.m_radius = 1.0f;
 
-            spk::add_body_fixture(&body, &circle, 0.2f, 0.0f, 1.0f, 1.0f);
+            spk::add_body_fixture(&body, &circle, 0.2f, 1000.0f, 1.0f, 1.0f);
         });
 
-        test_e = scene.world.entity();
-        test_e.add<spk::tile_render_t>();
-        test_e.add<spk::tile_body_t>().set([&](spk::tile_body_t& body){
-            body.init(world, b2_dynamicBody, &this->tile_dict);
+        bottom = scene.world.entity();
+        bottom.add<spk::collider_render_t>();
+        bottom.add<spk::comp_b2Body>().set([&](spk::comp_b2Body& body){
+            b2BodyDef body_def;
+            body_def.angle = 0.0f;
+            body_def.enabled = true;
+            body_def.position = b2Vec2(0.0f, -20.0f);
+            body_def.type = b2BodyType::b2_staticBody;
+            body.body = world->CreateBody(&body_def);
 
-            body.create_tile(0, 0, 0);
-            body.create_tile(1, 0, 0);
-            body.create_tile(2, 0, 0);
-            body.create_tile(3, 0, 0);
+            b2PolygonShape shape;
+            shape.SetAsBox(100.0f, 5.0f);
+
+            spk::add_body_fixture(&body, &shape, 0.2f, 0.0f, 1.0f, 1.0f);
         });
+
+        sfk::log.log(sfk::LOG_TYPE_INFO, "starting sim");
     }
 
     void end(spk::scene_t& scene) {
         ball.destruct();
         test_e.destruct();
+        bottom.destruct();
     }
 
     void init(spk::scene_t& scene, void* extradata) {
@@ -108,22 +116,6 @@ public:
         scene.user_game_state = STATE_MENU;
         
         scene.physics_scene->world->SetGravity(b2Vec2(0.0f, -9.81f));
-        scene.tile_dict = &tile_dict;
-
-        tile_dict.init();
-        tile_dict.init_tile(0);
-        tile_dict.render[0].tex_coords[0] = {0.0f, 0.0f};
-        tile_dict.render[0].tex_coords[1] = {1.0f, 0.0f};
-        tile_dict.render[0].tex_coords[2] = {1.0f, 1.0f};
-        tile_dict.render[0].tex_coords[3] = {0.0f, 1.0f};
-
-        tile_dict.texture.bind();
-        if(!tile_dict.texture.load_image("./image.jpg", 0))
-            sfk::log.log(sfk::LOG_TYPE_ERROR, "could not load image");
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
 
     void tick(spk::scene_t& scene, float delatime) {
@@ -136,6 +128,7 @@ public:
             start(scene); // start the simulation
 
             scene.user_game_state = STATE_PLAY;
+
             break;
 
         case STATE_PLAY:
@@ -165,7 +158,6 @@ public:
     }
 
     void free(spk::scene_t& scene) {
-        tile_dict.free();
     }
 
 private:
@@ -175,7 +167,8 @@ private:
     current_state_e state;
     flecs::entity ball;
     flecs::entity test_e;
-    spk::tile_dictionary_t tile_dict;
+    flecs::entity bottom;
+    flecs::entity test_b;
 };
 
 int main() {

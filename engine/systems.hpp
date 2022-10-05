@@ -33,6 +33,8 @@ namespace spk {
     };
 
     struct render_system_t {
+        uint32_t rendering_layer = 0U;
+
         virtual void init(scene_t& scene) {}
         virtual void render(scene_t& scene) {}
         virtual void resize(int width, int height) {}

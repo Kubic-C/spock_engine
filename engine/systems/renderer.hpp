@@ -2,11 +2,9 @@
 
 #include "collider_renderer.hpp"
 #include "ui_renderer.hpp"
-#include "tile_renderer.hpp"
 
 namespace spk {
     struct render_scene_t {
-        tile_render_scene_t tile_scene;
 
         glm::mat4 vp;
     };
@@ -29,6 +27,5 @@ namespace spk {
         // non-base-class methods
         collider_renderer_t primitive_renderer;
         ui_renderer_t ui_renderer;
-        tile_renderer_t tile_renderer;
     };
 }

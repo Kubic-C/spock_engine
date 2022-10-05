@@ -5,6 +5,10 @@ namespace spk {
         return _1->sorting_order < _2->sorting_order;
     }
 
+    bool render_systems_ascending(render_system_t* _1, render_system_t* _2) {
+        return _1->rendering_layer < _2->rendering_layer;
+    }    
+
     void system_manager_t::push_system(system_t* system) {
         systems.push_back(system);
         std::sort(systems.begin(), systems.end(), &systems_ascending);
@@ -46,6 +50,7 @@ namespace spk {
 
     void render_system_manager_t::push_system(render_system_t* system) {
         systems.push_back(system);
+        std::sort(systems.begin(), systems.end(), &render_systems_ascending);
     }
     
     void render_system_manager_t::free(scene_t& scene) {

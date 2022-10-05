@@ -161,19 +161,19 @@ namespace sfk {
         glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset, yoffset, width, height, format, type, pixels);
     }
 
-    bool texture2D_t::load_image(const char* path, int desired_channels) {
+    bool texture2D_t::load_image(const char* path, int desired_channels, bool flip) {
         u_char* pixels;
         int width;
         int height;
         int channels;
 
-        stbi_set_flip_vertically_on_load(true);
+        stbi_set_flip_vertically_on_load(flip);
         pixels = stbi_load(path, &width, &height, &channels, desired_channels);
         if(!pixels)
             return false;
 
         bind();
-        allocate(GL_UNSIGNED_BYTE, GL_RGB, GL_RGB, width, height, pixels); 
+        allocate(GL_UNSIGNED_BYTE, GL_RGBA, GL_RGBA, width, height, pixels); 
         glGenerateMipmap(GL_TEXTURE_2D);
         
         stbi_image_free(pixels);
