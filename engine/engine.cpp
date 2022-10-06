@@ -79,6 +79,10 @@ namespace spk {
         system->init(*scene, (void*)this);
     }
 
+    void engine_t::push_render_system(render_system_t* system) {
+        renderer.renderer_manager.push_system(system);
+    }
+
     void engine_t::set_tick_speed(int tick_speed) {
         time.ticks_per_second = tick_speed;
         time.fps_limiter = 1.0f / tick_speed;

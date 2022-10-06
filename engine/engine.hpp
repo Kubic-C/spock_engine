@@ -17,6 +17,7 @@ namespace spk {
         void free();
 
         void push_system(system_t* system);
+        void push_render_system(render_system_t* system); // this will not init the system
 
         void set_time_exit(int ticks_till_end) { time.exit = ticks_till_end; };
         void set_tick_speed(int tick_speed);
