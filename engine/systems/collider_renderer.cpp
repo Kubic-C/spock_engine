@@ -24,7 +24,6 @@ out vec4 fragment_color;
 
 void main() {
     fragment_color = vec4(v_color.xyz, 1.0);
-}
 })###";
  
 namespace spk {

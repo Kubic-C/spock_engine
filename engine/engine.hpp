@@ -2,6 +2,7 @@
 #include "systems/renderer.hpp"
 #include "systems/physics.hpp" 
 #include "systems/ui.hpp"
+#include "systems/tilemap.hpp"
 
 namespace spk {
     void print_name2();
@@ -28,9 +29,16 @@ namespace spk {
         float get_elapsed_time();
         float get_time() { return sfk::time.get_time(); };
 
+        static void update_sys(flecs::iter& iter);
+        static void tick(flecs::iter& iter);
+        static void print_stats(flecs::iter& iter);
+
         resource_manager_t resource_manager;
 
-    private:
+    //private:
+        void init_user_components();
+        void free_user_components();
+
         sfk::sfk_t framework;
         renderer2D_t renderer;
         physics2D_t physics;

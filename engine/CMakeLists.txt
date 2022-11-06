@@ -14,15 +14,18 @@ target_sources(spock_engine PRIVATE
     "systems/renderer.hpp" "systems/renderer.cpp"
     "systems/collider_renderer.hpp" "systems/collider_renderer.cpp"
     "systems/ui_renderer.hpp" "systems/ui_renderer.cpp"
-    "systems/ui.hpp" "systems/ui.cpp" 
-    "systems/physics.hpp" "systems/physics.cpp")
+    "systems/ui.hpp" "systems/ui.cpp"
+    "systems/physics.hpp" "systems/physics.cpp"
+    "systems/tilemap.hpp" "systems/tilemap.cpp")
 
 target_sources(spock_engine PRIVATE
     "utility/physics_.hpp" "utility/physics_.cpp"
     "utility/ui_.hpp" "utility/ui_.cpp"
     "utility/callback.hpp" "utility/callback.cpp"
     "utility/text.hpp" "utility/text.cpp"
-    "utility/resource_manager.hpp" "utility/resource_manager.cpp")
+    "utility/resource_manager.hpp" "utility/resource_manager.cpp"
+    "utility/tilemap.hpp" "utility/tilemap.cpp"
+    "utility/tags.hpp")
 
 target_sources(spock_engine PUBLIC
     "engine.hpp")

@@ -18,7 +18,6 @@ namespace spk {
         scene = new scene_t;
         scene->engine = this;
         scene->window = &window;
-        scene->world.component<transform_t>();
         scene->render_scene = new render_scene_t;
         scene->physics_scene = new physics_scene_t;
         
@@ -89,46 +88,47 @@ namespace spk {
     }
 
     void engine_t::loop() {
-        while(!window.closed()) {
-            float current_frame = sfk::time.get_time();
-            time.delta = (current_frame - time.last_frame);
-            time.ticks_to_do += time.delta / time.fps_limiter;
-            time.last_frame = current_frame;
+        scene->world.system("update").interval(0.0).ctx(this).no_staging(true).iter(update_sys);
+        scene->world.system("tick").interval(1.0f/60.0f).ctx(this).no_staging(true).iter(tick);
+        scene->world.system("print_stats").interval(1.0).ctx(this).no_staging(true).iter(print_stats);
 
-            while(time.ticks_to_do >= 1.0f) {
-                time.ticks_to_do--;
-
-                if(time.exit != INT_MAX) {
-                    time.exit--;
-
-                    if(time.exit <= 0)
-                        window.close();
-                }
-
-                system_manager.tick(*scene, time.delta);
-                time.ticks++;
-            }
-
-            {
-                update();
-                system_manager.update(*scene, time.delta);
-                time.frames++;
-            }
-        
-            if(sfk::time.get_time() - time.second_timer > 1.0) {
-                time.second_timer++;
-                printf("FPS: %4u | UPS: %3u | DELTA: %1.8f | RUNTIME: %5f\n", time.frames, time.ticks, time.delta, scene->world.time());
-                time.frames = 0, time.ticks = 0;
-            }
-        }
+        while(!window.closed() && scene->world.progress(0)) {}
     }
 
     void engine_t::update() {
         glfwPollEvents();
-        scene->world.progress(time.delta);
     }
 
     float engine_t::get_elapsed_time() {
         return time.last_frame - sfk::time.get_time();
+    }
+
+    void engine_t::print_stats(flecs::iter& iter) {
+        spk::engine_t* engine = (spk::engine_t*)iter.ctx();
+
+        printf("FPS: %4u | UPS: %3u | DELTA: %1.8f | RUNTIME: %5f\n", engine->time.frames, engine->time.ticks, engine->time.delta, engine->scene->world.time());
+        engine->time.frames = 0, engine->time.ticks = 0;
+    }
+
+    void engine_t::update_sys(flecs::iter& iter) {
+        spk::engine_t* engine = (spk::engine_t*)iter.ctx();
+
+        engine->update();
+        engine->system_manager.update(*engine->scene,  engine->time.delta);
+        engine->time.frames++;
+    }
+
+    void engine_t::tick(flecs::iter& iter) {
+        spk::engine_t* engine = (spk::engine_t*)iter.ctx();
+
+        if(engine->time.exit != INT_MAX) {
+             engine->time.exit--;
+
+            if(engine->time.exit <= 0)
+                engine->scene->window->close();
+        }
+
+        engine->system_manager.tick(*engine->scene,  engine->time.delta);
+        engine->time.ticks++;
     }
 }

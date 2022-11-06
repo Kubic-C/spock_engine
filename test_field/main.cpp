@@ -80,7 +80,7 @@ public:
             b2CircleShape circle;
             circle.m_radius = 1.0f;
 
-            spk::add_body_fixture(&body, &circle, 0.2f, 1000.0f, 1.0f, 1.0f);
+            spk::add_body_fixture(&body, &circle, 0.2f, 1.0f, 1.0f, 1.0f);
         });
 
         bottom = scene.world.entity();
@@ -104,7 +104,6 @@ public:
 
     void end(spk::scene_t& scene) {
         ball.destruct();
-        test_e.destruct();
         bottom.destruct();
     }
 

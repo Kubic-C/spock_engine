@@ -5,15 +5,6 @@
 #include "window.hpp"
 #include "memory.hpp"
 
-namespace spk {
-
-    struct transform_t { // used by a large majority of components, so it would make some sense to put it here
-        glm::vec3 position;
-        glm::vec3 rotation;
-        glm::vec3 scale;
-    };
-}
-
 // spock framework //
 namespace sfk {
     void print_name();
