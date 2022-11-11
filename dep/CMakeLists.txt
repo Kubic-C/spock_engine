@@ -1,6 +1,7 @@
+add_compile_definitions(ecs_ftime_t=double)
 
 add_subdirectory(flecs)
-add_subdirectory(glfw)
+add_subdirectory(SDL)
 add_subdirectory(glad)
 add_subdirectory(glm)
 

@@ -1,0 +1,2 @@
+[SPOCK: 0.009978] (INFO) info_logger_init
+[SPOCK: 17.903681] (INFO) exiting with code; 0

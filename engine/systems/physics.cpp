@@ -1,28 +1,15 @@
 #include "physics.hpp"
-#include "../engine.hpp"
+#include "../state.hpp"
 
 namespace spk {
-    physics2D_t::physics2D_t() {
-
+    void physics_system_tick(flecs::entity e, comp_box2d_world_t& world, tag_current_box2d_world_t) {
+        world.world->Step(state._get_target_tps(), 8, 3);
     }
 
-    void physics2D_t::init(scene_t& scene, void* data) {
-        flecs::world& world = scene.world;
-        b2World* physics_world = new b2World(b2Vec2(0.0f, -9.81f));
-        physics_world->SetAllowSleeping(false);
-        
-        scene.physics_scene->world = physics_world;
-    
-        add_box2d_components(world, physics_world);
-    }
-    
-    void physics2D_t::tick(scene_t& scene, float deltatime) {
-        flecs::world& world = scene.world;
+    void physics_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
+        comp_box2d_world_init(world);
+        comp_b2Body_init(world);
 
-        scene.physics_scene->world->Step(scene.engine->get_tick_speed(), 8, 3);        
-    }
-
-    void physics2D_t::free(scene_t& scene) {
-        delete scene.physics_scene->world;
+        world.system<comp_box2d_world_t, tag_current_box2d_world_t>().interval(state._get_target_tps()).each(physics_system_tick);
     }
 }

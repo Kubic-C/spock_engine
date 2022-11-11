@@ -2,6 +2,7 @@
 
 // dependencies 
 #include <flecs.h>
+#include <SDL2/SDL.h>
 #include <glm/glm.hpp>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -14,6 +15,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <chrono>
+#include <any>
 
 // streams
 #include <iostream>

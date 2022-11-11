@@ -88,6 +88,8 @@
         "*.sh": "cpp",
         "stb_image.h": "c",
         "*.def": "cpp",
-        "cassert": "cpp"
+        "cassert": "cpp",
+        "csignal": "cpp",
+        "span": "cpp"
     }
 }

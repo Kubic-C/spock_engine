@@ -1,22 +1,10 @@
 #pragma once
+
 #include "../systems.hpp"
-#include "../utility/physics_.hpp"
+#include "../components/box2D.hpp"
 
 namespace spk {
-    struct physics_scene_t {
-        b2World* world; // physics world
-    };
+    void physics_system_tick(flecs::entity e, comp_box2d_world_t& world, tag_current_box2d_world_t);
 
-    class physics2D_t : public system_t {
-    public:
-        physics2D_t();
-        void init(scene_t& scene, void* data);
-        void update(scene_t& scene, float deltatime) {}
-        void tick(scene_t& scene, float deltatime);
-        void free(scene_t& scene);
-
-    private:
-    };
+    void physics_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world);
 }
-    
-    

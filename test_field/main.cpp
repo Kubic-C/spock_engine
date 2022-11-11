@@ -1,6 +1,6 @@
-#include "engine.hpp"
+#include "spock.hpp"
 
-enum current_state_e: uint32_t {
+/*enum current_state_e: uint32_t {
     STATE_MENU,
     STATE_LOAD,
     STATE_PLAY,
@@ -168,22 +168,62 @@ private:
     flecs::entity test_e;
     flecs::entity bottom;
     flecs::entity test_b;
-};
+};*/
 
 int main() {
-    spk::engine_t engine;
-    game_t game;
+    int exit_code = 0;
 
-    engine.init(800, 800, "testing field");
-    engine.push_system(&game);
+    {
+        spk::engine_t engine;
+        flecs::entity e;
 
-    spk::font_t* font = engine.resource_manager.load_ascii_font("generic.otf", 0, 32);
-    if(!font) {
+        sfk::log.log(sfk::LOG_TYPE_INFO, "target fps(%f), target ups(%f)", 
+            engine.get_state()._get_target_fps(), engine.get_state()._get_target_tps());
+
+        engine.init();
+        engine.set_vsync_opt(spk::VSYNC_DISABLED);
+
+        auto ball = engine.world.entity(); 
+        ball.add<spk::comp_collider_render_t>();
+        ball.add<spk::comp_b2Body_t>().set([&](flecs::entity e, spk::comp_b2Body_t& body){
+            
+            b2BodyDef body_def;
+            body_def.angle = 0.0f;
+            body_def.enabled = true;
+            body_def.position = b2Vec2(-5.0f, 5.0f);
+            body_def.type = b2BodyType::b2_dynamicBody;
+            body.body = engine.get_current_b2World()->CreateBody(&body_def);
+
+            b2CircleShape circle;
+            // wyatt is poopy
+            circle.m_radius = 1.0f;
+
+            spk::add_body_fixture(&body, &circle, 0.2f, 1.0f, 1.0f, 1.0f);
+        });
+
+        auto bottom = engine.world.entity();
+        bottom.add<spk::comp_collider_render_t>();
+        bottom.add<spk::comp_b2Body_t>().set([&](flecs::entity e, spk::comp_b2Body_t& body){
+            b2BodyDef body_def;
+            body_def.angle = 0.0f;
+            body_def.enabled = true;
+            body_def.position = b2Vec2(0.0f, -20.0f);
+            body_def.type = b2BodyType::b2_staticBody;
+            body.body = engine.get_current_b2World()->CreateBody(&body_def);
+
+            b2PolygonShape shape;
+            shape.SetAsBox(100.0f, 5.0f);
+
+            spk::add_body_fixture(&body, &shape, 0.2f, 0.0f, 1.0f, 1.0f);
+        });
+
+        engine.set_current_window_title("hello world");
+        engine.set_current_window_size(700, 700);
+
+        exit_code = engine.run();
+    
         engine.free();
-        return -1; 
     }
 
-    engine.loop();
-    engine.free();
-    return 0;
+    return exit_code;
 }
