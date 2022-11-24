@@ -13,7 +13,12 @@ namespace spk {
     void ps_tracker_system_update_sec(flecs::iter& iter, ps_tracker_ctx_t* ctx) {
         // NOTE: ctx is a pointer to an array
 
-        sfk::log.log(sfk::LOG_TYPE_INFO, "FPS: %u | TPS: %u | DELTA-TIME: %f", ctx->fps, ctx->tps, iter.world().delta_time());
+        if(stats.get_ps_stats()) {
+            sfk::log.log(sfk::LOG_TYPE_INFO, "FPS: %u | TPS: %u | DELTA-TIME: %f", ctx->fps, ctx->tps, iter.world().delta_time());
+        }
+
+        stats._set_fps(ctx->fps);
+        stats._set_tps(ctx->tps);
 
         ctx->fps = 0;
         ctx->tps = 0;

@@ -162,7 +162,7 @@ namespace sfk {
     }
 
     bool texture2D_t::load_image(const char* path, int desired_channels, bool flip) {
-        u_char* pixels;
+        uint8_t* pixels;
         int width;
         int height;
         int channels;

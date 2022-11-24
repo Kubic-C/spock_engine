@@ -2,10 +2,9 @@
 
 // dependencies 
 #include <flecs.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <glm/glm.hpp>
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <box2d/box2d.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -15,6 +14,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <chrono>
+#include <functional>
 #include <any>
 
 // streams
@@ -34,6 +34,26 @@
 
 // algorithms
 #include <algorithm> 
+
+#ifdef _WIN32 
+#include <Windows.h>
+
+#define  MAIN \
+WINAPI int WinMain( \
+_In_ HINSTANCE hInstance, \
+_In_opt_ HINSTANCE hPrevInstance, \
+_In_ LPSTR lpCmdLine, \
+_In_ int nShowCmd \
+)
+#else // linux or mac
+#define MAIN main(int argc, argv**)
+#endif  // _WIN32
+
+#ifndef NDEBUG
+#define DEBUG_EXPR(expr) expr
+#else 
+#define DEBUG_EXPR(expr)
+#endif 
 
 namespace sfk {
     inline glm::vec2 to_glm_vec2(b2Vec2 vec2) { return (glm::vec2){vec2.x, vec2.y}; }

@@ -4,8 +4,9 @@
 #include "systems/window.hpp"
 #include "systems/physics.hpp"
 #include "systems/render.hpp"
-#include "systems/collider_render.hpp"
+#include "systems/primitive_render.hpp"
 #include "systems/ps_tracker.hpp"
+#include "systems/ui.hpp"
 
 #define _SPK_NO_DEF_STATE
 #include "state.hpp"
@@ -17,6 +18,8 @@ namespace spk {
         void init();
         int run();
         void free();
+
+        void print_debug_stats();
 
         state_t& get_state();
 

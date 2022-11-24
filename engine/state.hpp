@@ -28,6 +28,7 @@ namespace spk {
         flecs::entity box2D_world = flecs::entity(UINT64_MAX);
         flecs::entity renderer = flecs::entity(UINT64_MAX);
         flecs::entity event_system = flecs::entity(UINT64_MAX);
+        flecs::entity canvas = flecs::entity(UINT64_MAX);
 
     public:
         engine_t* engine;
@@ -55,9 +56,30 @@ namespace spk {
 
         void _set_current_event_system(flecs::entity event_sys) { event_system = event_sys; }
         flecs::entity _get_current_event_system() { return event_system; }
+
+        void _set_current_canvas(flecs::entity canvas_) { canvas = canvas_; }
+        flecs::entity _get_current_canvas() { return canvas; }; 
+    };
+
+    struct stats_t {
+    private:
+        bool print_ps_stats = false;
+        uint32_t fps;
+        uint32_t tps;
+    
+    public:
+        void set_ps_stats(bool print_per_second) { print_ps_stats = print_per_second; }
+        bool get_ps_stats() { return print_ps_stats; }
+
+        void _set_fps(uint32_t fps_) { fps = fps_; };
+        void _set_tps(uint32_t tps_) { fps = tps_; };
+        uint32_t get_fps() { return fps; }
+        uint32_t get_tps() { return tps; }
+
     };
 
 #ifndef _SPK_NO_DEF_STATE
     extern state_t state;
+    extern stats_t stats;
 #endif
 };

@@ -170,21 +170,45 @@ private:
     flecs::entity test_b;
 };*/
 
-int main() {
+struct Position {
+  float x;
+  float y;
+};
+
+MAIN {
     int exit_code = 0;
 
     {
         spk::engine_t engine;
         flecs::entity e;
+        flecs::entity canvas;
 
         sfk::log.log(sfk::LOG_TYPE_INFO, "target fps(%f), target ups(%f)", 
             engine.get_state()._get_target_fps(), engine.get_state()._get_target_tps());
 
         engine.init();
-        engine.set_vsync_opt(spk::VSYNC_DISABLED);
+        engine.set_target_fps(10000);
+        engine.set_vsync_opt(spk::VSYNC_ENABLED);
+
+        canvas = engine.get_state()._get_current_canvas();
+
+        auto box = 
+        engine.world.entity()
+            .child_of(canvas)
+            .set([](spk::ui_comp_t& ui){
+
+            })
+            .set([](spk::ui_comp_attribute_position_t& pos){
+                pos.position = { 0.0f, 0.0f };
+            })
+            .set([](spk::ui_comp_attribute_size_t& size) {
+                size.absolute = true;
+                size.size = { 100.0f, 100.0f };
+            });
+
 
         auto ball = engine.world.entity(); 
-        ball.add<spk::comp_collider_render_t>();
+        ball.add<spk::comp_primitive_render_t>();
         ball.add<spk::comp_b2Body_t>().set([&](flecs::entity e, spk::comp_b2Body_t& body){
             
             b2BodyDef body_def;
@@ -202,7 +226,7 @@ int main() {
         });
 
         auto bottom = engine.world.entity();
-        bottom.add<spk::comp_collider_render_t>();
+        bottom.add<spk::comp_primitive_render_t>();
         bottom.add<spk::comp_b2Body_t>().set([&](flecs::entity e, spk::comp_b2Body_t& body){
             b2BodyDef body_def;
             body_def.angle = 0.0f;

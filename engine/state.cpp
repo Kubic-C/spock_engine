@@ -2,6 +2,7 @@
 
 namespace spk {
     state_t state;
+    stats_t stats;
 
     double state_t::_get_target_fps(bool divide_by_second) { 
         if(divide_by_second) {

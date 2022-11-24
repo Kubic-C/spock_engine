@@ -35,7 +35,7 @@ namespace spk {
 
         FT_Face face; 
 
-        sfk::hashmap_t<character_t, UCHAR_MAX, 2, 0, u_char> char_map;
+        sfk::hashmap_t<character_t, UCHAR_MAX, 2, 0, uint8_t> char_map;
     };
 
     class font_manager_t {

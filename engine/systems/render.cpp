@@ -3,7 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk {
-    void opengl_debug_callback(GLenum source,
+    void CALLBACK opengl_debug_callback(GLenum source,
             GLenum type,
             GLuint id,
             GLenum severity,
@@ -29,20 +29,23 @@ namespace spk {
 #endif
 
         state._set_current_renderer(e);
+        
+        ctx.quad_index_buffer.init(GL_ELEMENT_ARRAY_BUFFER);
+        ctx.quad_index_buffer.generate_quad_indexes(10);
     }
 
     void render_system_on_remove(flecs::entity e, render_system_ctx_t& ctx) {
+        ctx.quad_index_buffer.free();
     }
 
     void render_system_pre_update(flecs::entity e, comp_window_t& window, tag_current_window_t) {
         sfk_assert(e == state._get_current_window());
 
         glClear(GL_COLOR_BUFFER_BIT);
-
     }
 
     void render_system_resize(flecs::iter& iter) {
-        auto ctx = SPK_GET_CTX(iter, render_system_ctx_t); 
+        auto ctx = SPK_GET_CTX_REF(iter, render_system_ctx_t); 
         
         comp_window_size_t* resize = iter.param<comp_window_size_t>();
         float half_width  = (float)resize->width / 4;
@@ -55,8 +58,6 @@ namespace spk {
         ctx->vp = proj * view;
 
         glViewport(0, 0, resize->width, resize->height);
-
-        sfk::log.log(sfk::LOG_TYPE_INFO, "resize");
     }
 
     void render_system_post_update(flecs::entity e, comp_window_t& window, tag_current_window_t) {

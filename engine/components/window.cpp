@@ -9,8 +9,6 @@ namespace spk {
             sfk::log.log(sfk::LOG_TYPE_ERROR, "could not create SDL2 window; %s", SDL_GetError());
         }
 
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
         window.gl_ctx = SDL_GL_CreateContext(window.win);
         if(window.gl_ctx == nullptr) {
             sfk::log.log(sfk::LOG_TYPE_ERROR, "could not create SDL2 window's OpenGL Context; %s", SDL_GetError());

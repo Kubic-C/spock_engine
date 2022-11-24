@@ -40,8 +40,5 @@ namespace spk {
         }
     };
 
-    void comp_window_on_add(comp_window_t& window);
-    void comp_window_on_remove(comp_window_t& window);
-    void tag_current_gl_ctx_on_remove(flecs::iter& iter, tag_current_window_t* c_ctx);
     void comp_window_component_init(flecs::world& world);
 }

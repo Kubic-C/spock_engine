@@ -4,6 +4,11 @@
 
 
 namespace spk {
+    struct ui_attribute_base_t {
+        uint32_t precedence = 0;
+        bool update = true;
+    };
+
     inline float map_value(float value, glm::vec2 start, glm::vec2 end) {
         const float start1 = start.x;
         const float start2 = start.y;
@@ -15,125 +20,29 @@ namespace spk {
         return ret;
     }
 
-    struct ui_button_t;
-    struct scene_t;
-    typedef void(*button_callback_t)(scene_t& scene, ui_button_t* btn);
-
-    enum ui_element_flags_e: int {
-        UI_ELEMENT_FLAGS_ENABLED = (int)1 << 0,
-        UI_ELEMENT_FLAGS_ROOT = (int)1 << 1,
-        UI_ELEMENT_FLAGS_RELATIVE = (int)1 << 2,
-        UI_ELEMENT_FLAGS_ABSOLUTE = (int)1 << 3,
-        UI_ELEMENT_FLAGS_PARENT_RELATIVE = (int)1 << 4
-    };
-
-    enum ui_element_type_e: size_t {
-        UI_ELEMENT_TYPE_ELEMENT = 0,
-        UI_ELEMENT_TYPE_BUTTON  = 1,
-        UI_ELEMENT_TYPE_TEXT    = 2,
-        UI_ELEMENT_TYPE_CANVAS  = 3,
-    };
-
-    struct ui_element_t {
-        glm::vec2 pos;
-        glm::vec2 size;
-        glm::vec3 color = { 1.0f, 0.0f, 0.0f }; // overlay color
-        int flags;
-
-        glm::vec2 abs_pos;
-        glm::vec2 abs_size;
-
-        static const uint32_t max_child_size = 5;
-        std::bitset<max_child_size> in_use;
-        std::array<ui_element_t*, max_child_size> elements;
-        ui_element_t* parent;
-
-        ui_element_t();
-        virtual void init();
-        virtual void free();
-
-        // iterates through all children
-        using children_callback_t = std::function<bool(ui_element_t&)>;
-        void iter_children(children_callback_t callback);
-
-        void gen_abs(glm::vec2 xinput_range, glm::vec2 xoutput_range,
-                     glm::vec2 yinput_range, glm::vec2 youtput_range) {
-            abs_pos = {
-                map_value(pos.x, xinput_range, xoutput_range),
-                map_value(pos.y, yinput_range, youtput_range)
-            };
-
-            abs_size = {
-                map_value(size.x, xinput_range, xoutput_range),
-                map_value(size.y, yinput_range, youtput_range)
-            };
-        }
-
-        uint32_t add_child(ui_element_t* child) {
-            sfk_assert(child);
-            
-            if(in_use.count() >= max_child_size)
-                return UINT32_MAX;
-            
-            for(uint32_t i = 0; i < max_child_size; i++ ) {
-                if(!in_use.test(i)) {
-                    return set_child(i, child);
-                } 
+    inline uint32_t get_selected_pointer(const ui_attribute_base_t* p1, const ui_attribute_base_t* p2) {
+        if(p1 && p2) {
+            if(p1->precedence > p2->precedence) { 
+                return 0;
+            } else { // imp2 > imp1
+                return 1;
             }
-
-            return UINT32_MAX;
+        } else if(p1) { // pointer 2 is null, p1 return
+            return 0;
+        } else if(p2) { // pointer 1 is null, p2 return
+            return 1; 
+        } else { // both are null
+            return 2;
         }
+    } 
 
-        uint32_t set_child(uint32_t index, ui_element_t* child) {
-            sfk_assert(index < max_child_size && child != null && !in_use.test(index)); 
+    // this will give you the absolute coords of a box inside of size.
+    glm::vec2 determine_position(glm::vec2 size, glm::vec2 pos);
 
-            in_use.set(index, true);
+    glm::vec2 keep_inside_box(glm::vec2 size, glm::vec2 box_size, glm::vec2 pos);
 
-            elements[index] = child;
-            child->parent = this;
-
-            return index;
-        }
-
-        ui_element_t* remove_child(uint32_t index) {
-            sfk_assert(index < max_child_size && in_use.test(index)); 
-            
-            ui_element_t* element;
-
-            in_use.set(index, false);
-
-            element = elements[index];
-            elements[index] = nullptr;
-
-            return element;
-        }
-
-        virtual const size_t type() { return UI_ELEMENT_TYPE_ELEMENT; }
-    };
-
-    struct ui_text_t : ui_element_t {
-        text_t text;
-
-        const size_t type() override { return UI_ELEMENT_TYPE_TEXT; }
-    };
-
-    struct ui_button_t : ui_element_t {
-        button_callback_t callback = nullptr;
-        float time_when_clicked = 0.0f;
-
-        const size_t type() override { return UI_ELEMENT_TYPE_BUTTON; }
-    };
-
-    struct ui_canvas_t : ui_element_t {
-        glm::mat4 vp;
-
-        font_t* font;
-        sfk::memory_pool_t<ui_text_t, 32, 4> texts;
-        sfk::memory_pool_t<ui_button_t, 32, 4> btns;
-
-        void init() override;
-        void free() override;
-        void resize(int width, int height);
-        const size_t type() override { return UI_ELEMENT_TYPE_CANVAS; }
-    };
+    inline bool vec2_aabb(const glm::vec2 b1[2], const glm::vec2 b2[2]) {
+        return (b1[0][0] <= b2[1][0] && b1[1][0] >= b2[0][0]) 
+            && (b1[0][1] <= b2[1][1] && b1[1][1] >= b2[0][1]);
+    }
 }

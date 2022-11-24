@@ -2,66 +2,22 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk {
-    ui_element_t::ui_element_t() {
-        sfk::zero(&pos);
-        sfk::zero(&size);
-        sfk::zero(&flags);
+    glm::vec2 determine_position(glm::vec2 size, glm::vec2 pos) {
+        pos.x = map_value(pos.x, {-1.0f, 1.0f}, {0, size.x});
+        pos.y = map_value(pos.y, {-1.0f, 1.0f}, {0, size.y});
 
-        in_use.reset();
-        elements.fill(nullptr);
-        parent = nullptr;   
-        abs_pos  = { 0.0f, 0.0f };
+        return pos; 
     }
 
-    void ui_element_t::init() {
-    }
+    glm::vec2 keep_inside_box(glm::vec2 size, glm::vec2 box_size, glm::vec2 pos) {
+        if(pos.x + box_size.x > size.x) {
+            pos.x = size.x - box_size.x;
+        } 
+        
+        if(pos.y + box_size.y > size.y) {
+            pos.y = size.y - box_size.y;
+        }       
 
-    void ui_element_t::iter_children(children_callback_t callback) {
-        for(auto ele : elements) {
-            if(ele) {
-                if(callback(*ele)) {
-                    continue;
-                } else {
-                   ele->iter_children(callback);
-                }
-            }
-        }
-    }
-
-    void ui_element_t::free() {
-
-    }
-
-    void ui_canvas_t::init() {
-
-        DEBUG_VALUE(bool, ret =) texts.init();
-        sfk_assert(ret);
-        DEBUG_EXPR(ret =) btns.init();
-        sfk_assert(ret);
-
-        font = nullptr;
-
-        flags |= spk::UI_ELEMENT_FLAGS_ROOT |
-                 spk::UI_ELEMENT_FLAGS_ENABLED;
-
-        size = { std::nanf("nan"), std::nanf("nan") };
-        pos = { std::nanf("nan"), std::nanf("nan") };
-    }
-
-    void ui_canvas_t::resize(int width, int height) {
-        glm::mat4 view, proj;
-
-        view = glm::identity<glm::mat4>();
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
-        proj = glm::ortho(0.0f, (float)width, 0.0f, (float)height, 0.01f, 100.0f);
-
-        vp = proj * view;
- 
-        abs_size = { (float)width, (float)height };
-    }
-
-    void ui_canvas_t::free() {
-        texts.free();
-        btns.free();
+        return pos;
     }
 }

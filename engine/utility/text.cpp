@@ -1,8 +1,8 @@
 #include "text.hpp"
 
 namespace spk {
-        bool font_t::init() {
-        if(!char_map.init(sfk::xor_int_hash<u_char>))
+    bool font_t::init() {
+        if(!char_map.init(sfk::xor_int_hash<uint8_t>))
             return false;
 
         if(!texture.init()) {
@@ -27,7 +27,7 @@ namespace spk {
 
         FT_Set_Pixel_Sizes(face, f_width, f_height);
 
-        for(u_char c = 0; c < UCHAR_MAX; c++) {
+        for(uint8_t c = 0; c < UCHAR_MAX; c++) {
             character_t* c_data = nullptr;
 
             DEBUG_VALUE(bool, ret =) char_map.register_key(c); 
@@ -58,7 +58,7 @@ namespace spk {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        for(u_char c = 0; c < UCHAR_MAX; c++) {
+        for(uint8_t c = 0; c < UCHAR_MAX; c++) {
             character_t* c_data = nullptr;
             float gx, gwidth, gheight; // g for glyph
             

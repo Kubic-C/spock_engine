@@ -8,3 +8,8 @@ Current feature list:
 - basic window handling and manipulation
 
 Undergoing heavy construction
+
+## Compiling
+
+Use GCC or CLANG, or a MinGW build if your on windows
+

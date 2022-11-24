@@ -14,12 +14,14 @@ target_sources(spock_engine PRIVATE
     "systems/window.hpp" "systems/window.cpp"
     "systems/render.hpp" "systems/render.cpp"
     "systems/physics.hpp" "systems/physics.cpp"
-    "systems/collider_render.hpp" "systems/collider_render.cpp"
-    "systems/ps_tracker.hpp" "systems/ps_tracker.cpp")
+    "systems/primitive_render.hpp" "systems/primitive_render.cpp"
+    "systems/ps_tracker.hpp" "systems/ps_tracker.cpp"
+    "systems/ui.hpp" "systems/ui.cpp")
 
 target_sources(spock_engine PRIVATE
     "components/window.hpp" "components/window.cpp"
-    "components/box2D.hpp" "components/box2D.cpp")
+    "components/box2D.hpp" "components/box2D.cpp"
+    "components/ui.hpp" "components/ui.cpp")
 
 target_sources(spock_engine PRIVATE
     "utility/ui_.hpp" "utility/ui_.cpp"

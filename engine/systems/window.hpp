@@ -10,7 +10,5 @@ namespace spk {
         SDL_Event event;
     };
 
-    void window_system_update(flecs::iter& iter, comp_window_t* window);
-    void window_system_current_update(comp_window_t& window, tag_current_window_t);
     void window_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world);
 }

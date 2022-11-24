@@ -2,7 +2,7 @@
 #include "../state.hpp"
 
 namespace spk {
-    void handle_window_event(flecs::iter& iter, comp_window_t* c_window, window_system_ctx_t* ctx) {
+    void handle_window_event(flecs::iter& iter, comp_window_t* c_window, flecs::ref<spk::window_system_ctx_t>& ctx) {
         const comp_window_t* window = state._get_current_window().get<comp_window_t>();
 
         // we only want to recieve window events for the current ID
@@ -26,7 +26,7 @@ namespace spk {
     }
 
     void window_system_update(flecs::iter& iter, comp_window_t* c_window) {
-        window_system_ctx_t* ctx = SPK_GET_CTX(iter, window_system_ctx_t);
+        auto ctx = SPK_GET_CTX_REF(iter, window_system_ctx_t);
 
         while(SDL_PollEvent(&ctx->event)) {
             switch(ctx->event.type) {
