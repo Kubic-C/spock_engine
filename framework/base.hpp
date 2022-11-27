@@ -2,7 +2,7 @@
 
 // dependencies 
 #include <flecs.h>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <glm/glm.hpp>
 #include <glad/glad.h>
 #include <box2d/box2d.h>

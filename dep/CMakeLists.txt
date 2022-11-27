@@ -2,7 +2,7 @@ add_compile_definitions(ecs_ftime_t=double)
 
 add_subdirectory(flecs)
 add_subdirectory(SDL)
-add_subdirectory(glad)
+add_subdirectory(glad/cmake)
 add_subdirectory(glm)
 
 set(BOX2D_BUILD_UNIT_TESTS OFF CACHE BOOL "Build the Box2D unit tests")

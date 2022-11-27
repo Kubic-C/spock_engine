@@ -29,18 +29,7 @@ void main() {
     fragment_color = vec4(v_color.xyz, 1.0);
 })###";
 
-namespace spk {
-    void ui_system_on_add(flecs::entity e, ui_system_ctx_t& ctx) {
-
-    }
-
-    void ui_system_on_remove(flecs::entity e, ui_system_ctx_t& ctx) {
-
-    }
-
-    void update_ui_element(flecs::iter& iter, ui_comp_t* ui_comp, 
-        flecs::entity root, glm::vec2 center, glm::vec2 size) {
-        root.children([&](flecs::entity e) {
+/*        root.children([&](flecs::entity e) {
             const ui_comp_attribute_position_t* pos = e.get<ui_comp_attribute_position_t>();
             const ui_comp_attribute_text_t* text = e.get<ui_comp_attribute_text_t>();
             const ui_comp_attribute_size_t* box_size = e.get<ui_comp_attribute_size_t>();
@@ -84,7 +73,6 @@ namespace spk {
             comp->_cache.position = abs_pos;
             comp->margin = {0.0f, 0.0f};
             comp->padding = {0.0f, 0.0f};
-            comp->_cache.update = false;
         });
 
         //NOTE: a quad tree would be better here
@@ -93,44 +81,48 @@ namespace spk {
         // if they are colliding, resolve the collision with respect
         // to margin, padding, etc.
 
-        // root.children([&](flecs::entity e1) {
-        //     ui_comp_t::cache_t* cache1 = &e1.get_mut<ui_comp_t>()->_cache;
-        //     glm::vec2 e1box[2] = {
-        //         { cache1->position.x, cache1->position.x + cache1->size.x },
-        //         { cache1->position.y, cache1->position.y + cache1->size.y }
-        //     };
+        root.children([&](flecs::entity e1) {
+            auto comp1 = e1.get_ref<ui_comp_t>();
+            glm::vec2 e1box[2] = {
+                { comp1->_cache.position.x, comp1->_cache.position.y },
+                { comp1->_cache.position.x + comp1->_cache.size.x, comp1->_cache.position.y + comp1->_cache.size.y }
+            };
 
-        //     root.children([&](flecs::entity e2) {
-        //         ui_comp_t::cache_t* cache2 = &e2.get_mut<ui_comp_t>()->_cache;
+            root.children([&](flecs::entity e2) {
+                auto comp2 = e2.get_ref<ui_comp_t>();
                 
-        //         glm::vec2 e2box[2] = {
-        //             { cache2->position.x, cache2->position.x + cache2->size.x },
-        //             { cache2->position.y, cache2->position.y + cache2->size.y }
-        //         };
+                glm::vec2 e2box[2] = {
+                    { comp2->_cache.position.x, comp2->_cache.position.y },
+                    { comp2->_cache.position.x + comp2->_cache.size.x, comp2->_cache.position.y + comp2->_cache.size.y }
+                };
 
-        //         if(e1 == e2)
-        //             return;
 
-        //         // collision detected so we have to resolve it
-        //         //NOTE: this isn't like physics collision resolution so we can do much cheaper resolving steps
-        //         if(vec2_aabb(e1box, e2box)) {
-        //             // we can stack the element horizontally or vertically
+                if(e1 == e2)
+                    return;
 
-        //             // this is vertical stacking
-        //             cache1->position.x = cache2->position.x;
-        //             cache1->position.y = cache2->position.y + cache2->size.y;    
-        //         }                
-        //     });
-        // });
+                // collision detected so we have to resolve it
+                //NOTE: this isn't like physics collision resolution so we can do much cheaper resolving steps
+                if(vec2_aabb(e1box, e2box)) {
+                    
+                
+
+                }                
+            });
+        });*/
+
+namespace spk {
+    void ui_system_on_add(flecs::entity e, ui_system_ctx_t& ctx) {
+
+    }
+
+    void ui_system_on_remove(flecs::entity e, ui_system_ctx_t& ctx) {
+
     }
 
     void ui_system_tick(flecs::iter& iter, ui_comp_t* ui_comp) {
         auto ctx = SPK_GET_CTX_REF(iter, ui_system_ctx_t);
         comp_window_t* window = state._get_current_window().get_mut<comp_window_t>();
-        glm::vec2 size = static_cast<glm::vec2>(window->get_size());
-        glm::vec2 center = { size.x / 2, size.y / 2 };
         
-        update_ui_element(iter, ui_comp, state._get_current_canvas(), center, size);
     }
 
     void ui_render_system_on_add(flecs::entity e, ui_render_system_ctx_t& ctx) {
@@ -174,7 +166,7 @@ namespace spk {
         ctx->vp = proj * view;
     }
 
-    void ui_render_system_update(flecs::iter& iter, ui_comp_t* comp) {
+    void ui_render_system_update(flecs::iter& iter, ui_comp_t* a_comp) {
         auto render_ctx = state._get_current_renderer().get_ref<render_system_ctx_t>();
         auto ui_ctx = SPK_GET_CTX_REF(iter, ui_render_system_ctx_t);
         const uint32_t quad_vert_count = 4;
@@ -182,6 +174,7 @@ namespace spk {
 
         for(auto i : iter) {
             flecs::entity e = iter.entity(i);
+            ui_comp_t* comp = &a_comp[i];
 
             ui_ctx->mesh[0].pos = { comp->_cache.position.x,                       comp->_cache.position.y };
             ui_ctx->mesh[1].pos = { comp->_cache.position.x + comp->_cache.size.x, comp->_cache.position.y };
@@ -217,9 +210,10 @@ namespace spk {
         auto ui_render_ctx = ctx_alloc.allocate_ctx<ui_render_system_ctx_t>();
 
         world.system<ui_comp_t>()
+            .term<ui_comp_canvas_t>().oper(flecs::Optional)
             .ctx(ui_ctx).interval(state._get_target_tps()).iter(ui_system_tick);
 
-        world.system<ui_comp_t>().kind(flecs::OnUpdate)
+        world.system<ui_comp_t>().kind(flecs::OnUpdate).term_at(1)
             .ctx(ui_render_ctx).iter(ui_render_system_update);
         
         world.observer().event<comp_window_size_t>().term<tag_events_t>()

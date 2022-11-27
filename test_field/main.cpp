@@ -192,20 +192,33 @@ MAIN {
 
         canvas = engine.get_state()._get_current_canvas();
 
-        auto box = 
-        engine.world.entity()
+        auto row = engine.world.entity()
             .child_of(canvas)
-            .set([](spk::ui_comp_t& ui){
+            .set([](spk::ui_comp_row_t& row){
+                row.num = 0;
+            });
 
-            })
-            .set([](spk::ui_comp_attribute_position_t& pos){
+        engine.world.entity()
+            .child_of(row)
+            .set([](spk::ui_comp_t& ui){
+                ui.color = { 0.0f, 0.0f, 1.0f };
+            }).set([](spk::ui_comp_attribute_position_t& pos){
+                pos.position = { 0.25f, 0.0f };
+            }).set([](spk::ui_comp_attribute_size_t& size) {
+                size.absolute = true;
+                size.size = { 100.0f, 75.0f };
+            });
+
+        engine.world.entity()
+            .child_of(row)
+            .set([](spk::ui_comp_t& ui){
+                ui.color = { 0.0f, 1.0f, 0.0f };
+            }).set([](spk::ui_comp_attribute_position_t& pos){
                 pos.position = { 0.0f, 0.0f };
-            })
-            .set([](spk::ui_comp_attribute_size_t& size) {
+            }).set([](spk::ui_comp_attribute_size_t& size) {
                 size.absolute = true;
                 size.size = { 100.0f, 100.0f };
             });
-
 
         auto ball = engine.world.entity(); 
         ball.add<spk::comp_primitive_render_t>();

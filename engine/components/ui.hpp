@@ -42,24 +42,32 @@ namespace spk {
     };
 
     struct ui_comp_t {
-        glm::vec3 color = { 1.0f, 0.0f, 0.0f };
-        bool centered = true;
+        glm::vec3 color;
+        bool centered;
 
         glm::vec2 padding; // x- left and right, y- top and bottom
         glm::vec2 margin; // x- left and right, y- top and bottom
 
         struct cache_t {    
-            bool update = false;
             glm::vec2 position; // absolute position
             glm::vec2 size; // absolute size
         } _cache;
+
+        ui_comp_t() {
+            color = { 1.0f, 0.0f, 0.0f };
+            centered = true;
+        }
     };
 
-    /** structure of a entity thats a canvas' elements
-     * ui_comp_t
-     * ui_attribute_t (type text)
-     * ui_attribute_t (type position)
-     */
+    struct ui_comp_row_t {
+        uint32_t num = 0;
+
+        struct cache_t {
+            float yoff = 0.0f;
+            float height = 0.0f;
+        } _cache;
+    };
+
     struct ui_comp_canvas_t {
         flecs::entity font;
         bool update; // update the canvas; re render framebuffer
