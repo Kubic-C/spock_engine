@@ -21,7 +21,9 @@ namespace spk {
     font_t* resource_manager_t::get_first_font() {
         font_t* font[1];
 
-        font_manager.font_pool.get_valid_blocks(font, 1);
+        uint32_t found = font_manager.font_pool.get_valid_blocks(font, 1);
+        if(!found)
+            return nullptr;
 
         return font[0];
     }

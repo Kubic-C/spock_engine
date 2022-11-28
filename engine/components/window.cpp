@@ -37,7 +37,7 @@ namespace spk {
             SDL_GL_MakeCurrent(window->win, window->gl_ctx);
             state._set_current_window(e);
 
-            if(!gladLoadGL()) {
+            if(!gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress)) {
                 sfk::log.log(sfk::LOG_TYPE_ERROR, "failed to load OpenGL with glad");
             }
 

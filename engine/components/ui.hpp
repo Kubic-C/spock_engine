@@ -1,80 +1,136 @@
 #pragma once
 
-#include "../utility/ui_.hpp"
+#include "../utility/ui.hpp"
 
-// uic == UI component
+#define add_component(world, type) \
+        world.component<type>(); \
+        world.observer<type>().event(flecs::OnAdd).each(type::init); \
+        world.observer<type>().event(flecs::OnRemove).each(type::free) 
 
 namespace spk {
-    struct ui_tag_active_element_t {};
+    struct engine_t;
+    struct ui_button_t;
+    typedef std::function<void(engine_t*, ui_button_t*)> button_callback_t;
+
     struct ui_tag_current_canvas_t {};
 
-    struct ui_comp_attribute_position_t : ui_attribute_base_t {
-        bool absolute;
-        glm::vec2 position;
-
-        ui_comp_attribute_position_t() {
-            precedence = 1;
-            absolute = false;
-            position = {0.0f, 0.0f};
-        }
-    };  
-
-    struct ui_comp_attribute_text_t : ui_attribute_base_t {
-        glm::vec3 color;
-        std::string str;
-    
-        ui_comp_attribute_text_t() {
-            precedence = 0;
-            color = {1.0f, 1.0f, 1.0f};
-            str = "";
-        }
+    enum ui_element_flags_e: int {
+        UI_ELEMENT_FLAGS_ENABLED = (int)1 << 0,
+        UI_ELEMENT_FLAGS_ROOT = (int)1 << 1,
+        UI_ELEMENT_FLAGS_RELATIVE = (int)1 << 2,
+        UI_ELEMENT_FLAGS_ABSOLUTE = (int)1 << 3,
+        UI_ELEMENT_FLAGS_PARENT_RELATIVE = (int)1 << 4
     };
 
-    struct ui_comp_attribute_size_t : ui_attribute_base_t {
-        bool absolute;
+    enum ui_element_type_e: size_t {
+        UI_ELEMENT_TYPE_ELEMENT = 0,
+        UI_ELEMENT_TYPE_BUTTON  = 1,
+        UI_ELEMENT_TYPE_TEXT    = 2,
+        UI_ELEMENT_TYPE_CANVAS  = 3,
+    };
+
+    struct ui_element_t {
+        glm::vec2 pos;
         glm::vec2 size;
+        glm::vec3 color = { 1.0f, 0.0f, 0.0f }; // overlay color
+        int flags;
 
-        ui_comp_attribute_size_t() {
-            precedence = 0;
-            size = {0.0f, 0.0f};
-            absolute = false;
+        glm::vec2 abs_pos;
+        glm::vec2 abs_size;
+
+        static const uint32_t max_child_size = 5;
+        std::bitset<max_child_size> in_use;
+        std::array<ui_element_t*, max_child_size> elements;
+        ui_element_t* parent;
+
+        ui_element_t();
+        virtual void init();
+        virtual void free();
+
+        // iterates through all children
+        using children_callback_t = std::function<bool(ui_element_t&)>;
+        void iter_children(children_callback_t callback);
+
+        void gen_abs(glm::vec2 xinput_range, glm::vec2 xoutput_range,
+                     glm::vec2 yinput_range, glm::vec2 youtput_range) {
+            abs_pos = {
+                map_value(pos.x, xinput_range, xoutput_range),
+                map_value(pos.y, yinput_range, youtput_range)
+            };
+
+            abs_size = {
+                map_value(size.x, xinput_range, xoutput_range),
+                map_value(size.y, yinput_range, youtput_range)
+            };
         }
-    };
 
-    struct ui_comp_t {
-        glm::vec3 color;
-        bool centered;
+        uint32_t add_child(ui_element_t* child) {
+            sfk_assert(child);
+            
+            if(in_use.count() >= max_child_size)
+                return UINT32_MAX;
+            
+            for(uint32_t i = 0; i < max_child_size; i++ ) {
+                if(!in_use.test(i)) {
+                    return set_child(i, child);
+                } 
+            }
 
-        glm::vec2 padding; // x- left and right, y- top and bottom
-        glm::vec2 margin; // x- left and right, y- top and bottom
-
-        struct cache_t {    
-            glm::vec2 position; // absolute position
-            glm::vec2 size; // absolute size
-        } _cache;
-
-        ui_comp_t() {
-            color = { 1.0f, 0.0f, 0.0f };
-            centered = true;
+            return UINT32_MAX;
         }
+
+        uint32_t set_child(uint32_t index, ui_element_t* child) {
+            sfk_assert(index < max_child_size && child != null && !in_use.test(index)); 
+
+            in_use.set(index, true);
+
+            elements[index] = child;
+            child->parent = this;
+
+            return index;
+        }
+
+        ui_element_t* remove_child(uint32_t index) {
+            sfk_assert(index < max_child_size && in_use.test(index)); 
+            
+            ui_element_t* element;
+
+            in_use.set(index, false);
+
+            element = elements[index];
+            elements[index] = nullptr;
+
+            return element;
+        }
+
+        virtual const size_t type() { return UI_ELEMENT_TYPE_ELEMENT; }
     };
 
-    struct ui_comp_row_t {
-        uint32_t num = 0;
+    struct ui_text_t : ui_element_t {
+        text_t text;
 
-        struct cache_t {
-            float yoff = 0.0f;
-            float height = 0.0f;
-        } _cache;
+        const size_t type() override { return UI_ELEMENT_TYPE_TEXT; }
     };
 
-    struct ui_comp_canvas_t {
-        flecs::entity font;
-        bool update; // update the canvas; re render framebuffer
+    struct ui_button_t : ui_element_t {
+        button_callback_t callback = nullptr;
+        float time_when_clicked = 0.0f;
 
-        // TODO framebuffer saves
-        uint32_t framebuffer;
+        const size_t type() override { return UI_ELEMENT_TYPE_BUTTON; }
     };
 
-    void ui_comp_canvas_init(flecs::world& world);
+    struct ui_comp_canvas_t : ui_element_t {
+        glm::mat4 vp;
+
+        font_t* font = null;
+        sfk::memory_pool_t<ui_text_t, 32, 4> texts;
+        sfk::memory_pool_t<ui_button_t, 32, 4> btns;
+
+        static void init(ui_comp_canvas_t& canvas);
+        static void free(ui_comp_canvas_t& canvas);
+        void resize(int width, int height);
+        const size_t type() override { return UI_ELEMENT_TYPE_CANVAS; }
+    };
+
+    void ui_canvas_init(flecs::world& world);
 }

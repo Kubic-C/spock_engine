@@ -2,13 +2,7 @@
 
 #include "resource_manager.hpp"
 
-
 namespace spk {
-    struct ui_attribute_base_t {
-        uint32_t precedence = 0;
-        bool update = true;
-    };
-
     inline float map_value(float value, glm::vec2 start, glm::vec2 end) {
         const float start1 = start.x;
         const float start2 = start.y;
@@ -19,22 +13,6 @@ namespace spk {
 
         return ret;
     }
-
-    inline uint32_t get_selected_pointer(const ui_attribute_base_t* p1, const ui_attribute_base_t* p2) {
-        if(p1 && p2) {
-            if(p1->precedence > p2->precedence) { 
-                return 0;
-            } else { // imp2 > imp1
-                return 1;
-            }
-        } else if(p1) { // pointer 2 is null, p1 return
-            return 0;
-        } else if(p2) { // pointer 1 is null, p2 return
-            return 1; 
-        } else { // both are null
-            return 2;
-        }
-    } 
 
     // this will give you the absolute coords of a box inside of size.
     glm::vec2 determine_position(glm::vec2 size, glm::vec2 pos);

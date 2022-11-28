@@ -1,222 +1,340 @@
 #include "ui.hpp"
 #include "../state.hpp"
-#include "../utility/ui_.hpp"
+#include "../utility/ui.hpp"
 #include "window.hpp"
 #include "primitive_render.hpp"
+#include "../spock.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
-const char* vs_box = R"###(
+const char* vs_font = R"###(
+#version 330 core
+layout(location = 0) in vec2 a_pos;
+layout(location = 1) in vec2 a_tex_coords;
+layout(location = 2) in vec3 a_color;
+out vec2 v_tex_coords;
+out vec3 v_color;
+uniform mat4 u_vp;
+void main() {
+    gl_Position = u_vp * vec4(a_pos, -0.4f, 1.0);
+    v_tex_coords = a_tex_coords;
+    v_color = a_color;
+}
+)###";
+
+const char* fs_font = R"###(
+#version 330 core
+in vec2 v_tex_coords;
+in vec3 v_color;
+out vec4 color;
+uniform sampler2D font;
+void main()
+{    
+    color = vec4(v_color, texture(font, v_tex_coords).r);
+}
+)###";
+
+const char* vs_button = R"###(
 #version 330 core
 layout(location = 0) in vec2 a_pos;
 layout(location = 1) in vec3 a_color;
-
 out vec3 v_color;
-
 uniform mat4 u_vp;
-
 void main() {
-    gl_Position = u_vp * vec4(a_pos, 0.0, 1.0);
+    gl_Position = u_vp * vec4(a_pos, -0.3f, 1.0);
     v_color = a_color;
-})###";
+}
+)###";
 
-const char* fs_box = R"###(
+const char* fs_button = R"###(
 #version 330 core
 in vec3 v_color;
-
-out vec4 fragment_color;
-
-void main() {
-    fragment_color = vec4(v_color.xyz, 1.0);
-})###";
-
-/*        root.children([&](flecs::entity e) {
-            const ui_comp_attribute_position_t* pos = e.get<ui_comp_attribute_position_t>();
-            const ui_comp_attribute_text_t* text = e.get<ui_comp_attribute_text_t>();
-            const ui_comp_attribute_size_t* box_size = e.get<ui_comp_attribute_size_t>();
-
-            size_t i__ = 0;
-            for(auto i : iter) {
-                if(iter.entity(i) == e) {
-                    i__ = i;
-                    break;
-                }
-            }
-
-            ui_comp_t* comp = &ui_comp[i__];
-            glm::vec2 abs_pos = {0.0f, 0.0f};
-            glm::vec2 abs_size = {0.0f, 0.0f};
-
-            if(box_size) {
-                if(box_size->absolute) {
-                    abs_size = box_size->size;
-                } else {
-                    abs_size = determine_position(size, box_size->size);
-                }    
-            }
-
-            if(pos) {
-                if(pos->absolute) {
-                    abs_pos = pos->position;
-                } else {
-                    abs_pos = determine_position(size, pos->position);
-                }   
-            }
-                
-            if(comp->centered) {
-                abs_pos.x -= abs_size.x / 2;
-                abs_pos.y -= abs_size.y / 2;
-            }
-
-            abs_pos = keep_inside_box(size, abs_size, abs_pos);
-
-            comp->_cache.size = abs_size;
-            comp->_cache.position = abs_pos;
-            comp->margin = {0.0f, 0.0f};
-            comp->padding = {0.0f, 0.0f};
-        });
-
-        //NOTE: a quad tree would be better here
-
-        // iterate through every entity that is child of root
-        // if they are colliding, resolve the collision with respect
-        // to margin, padding, etc.
-
-        root.children([&](flecs::entity e1) {
-            auto comp1 = e1.get_ref<ui_comp_t>();
-            glm::vec2 e1box[2] = {
-                { comp1->_cache.position.x, comp1->_cache.position.y },
-                { comp1->_cache.position.x + comp1->_cache.size.x, comp1->_cache.position.y + comp1->_cache.size.y }
-            };
-
-            root.children([&](flecs::entity e2) {
-                auto comp2 = e2.get_ref<ui_comp_t>();
-                
-                glm::vec2 e2box[2] = {
-                    { comp2->_cache.position.x, comp2->_cache.position.y },
-                    { comp2->_cache.position.x + comp2->_cache.size.x, comp2->_cache.position.y + comp2->_cache.size.y }
-                };
-
-
-                if(e1 == e2)
-                    return;
-
-                // collision detected so we have to resolve it
-                //NOTE: this isn't like physics collision resolution so we can do much cheaper resolving steps
-                if(vec2_aabb(e1box, e2box)) {
-                    
-                
-
-                }                
-            });
-        });*/
+out vec4 color;
+void main()
+{    
+    color = vec4(v_color, 1.0f);
+}
+)###"; 
 
 namespace spk {
-    void ui_system_on_add(flecs::entity e, ui_system_ctx_t& ctx) {
+    void font_render_t::init() {
+        vbo.init(GL_ARRAY_BUFFER);
+        vbo.buffer_data(sizeof(vertex_t) * indexes_per_letter * MAX_LETTERS, nullptr, GL_DYNAMIC_DRAW);
 
-    }
-
-    void ui_system_on_remove(flecs::entity e, ui_system_ctx_t& ctx) {
-
-    }
-
-    void ui_system_tick(flecs::iter& iter, ui_comp_t* ui_comp) {
-        auto ctx = SPK_GET_CTX_REF(iter, ui_system_ctx_t);
-        comp_window_t* window = state._get_current_window().get_mut<comp_window_t>();
+        layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), 0, vbo);
+        layout.add(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), sizeof(float) * 2, vbo);
+        layout.add(2, 3, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), sizeof(float) * 4, vbo);
         
-    }
+        vao.init();
+        vao.bind_layout(layout);
 
-    void ui_render_system_on_add(flecs::entity e, ui_render_system_ctx_t& ctx) {
-        uint32_t vs_shader, fs_shader;
-
-        ctx.vertex_array.init();
-
-        ctx.vertex_buffer.init(GL_ARRAY_BUFFER);
-        ctx.vertex_buffer.buffer_data(sizeof(float) * 2 * 3 * 6 * 100, nullptr, GL_DYNAMIC_DRAW);
-        ctx.vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0, ctx.vertex_buffer);
-        ctx.vertex_layout.add(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, sizeof(float) * 2, ctx.vertex_buffer);
-        ctx.vertex_array.bind_layout(ctx.vertex_layout);
-
-        vs_shader = sfk::create_shader_from_src(GL_VERTEX_SHADER, vs_box, nullptr);
-        fs_shader = sfk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_box, nullptr);
+        uint32_t vs_shader = sfk::create_shader_from_src(GL_VERTEX_SHADER, vs_font, nullptr);
+        uint32_t fs_shader = sfk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_font, nullptr);
         
         sfk_assert(vs_shader != UINT32_MAX);
         sfk_assert(fs_shader != UINT32_MAX);
         
-        ctx.program.init();
-        DEBUG_VALUE(bool, ret =) ctx.program.load_shader_modules(vs_shader, fs_shader);
+        program.init();
+        DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
         sfk_assert(ret);
-    
-        ctx.mesh.resize(100 * 3);
+
+        buffer.resize(indexes_per_letter * MAX_LETTERS);
+
+        indexes = 0;
+        vertices = 0;
     }
 
-    void ui_render_system_on_remove(flecs::entity e, ui_render_system_ctx_t& ctx) {
-        ctx.vertex_buffer.free();
-        ctx.vertex_array.free();
-        ctx.program.free();
+    void font_render_t::render(sfk::static_index_buffer_t& ibo, font_t* font, ui_comp_canvas_t* canvas) {
+        // update
+        vbo.buffer_sub_data(0, indexes * sizeof(vertex_t), buffer.data());
+
+        // bind
+        vao.bind();
+        ibo.bind();
+        program.use();
+        program.set_mat4("u_vp", canvas->vp);
+        program.set_int("font", 0);
+        font->texture.active_texture(GL_TEXTURE0);
+
+        // draw
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDrawElements(GL_TRIANGLES, vertices, GL_UNSIGNED_INT, nullptr);
+        glDisable(GL_BLEND);
+
+        indexes = 0;
+        vertices = 0;
+    }
+
+    void font_render_t::free() {
+        program.free();
+        vbo.free();
+        vao.free();
+    }
+
+    void font_render_t::add_ui_text(font_t* font, ui_text_t* text) {
+        vertex_t* vtx = buffer.data() + indexes;
+        const float scalar = text->text.scalar;
+        float xoffset = 0.0f;
+        float yoffset = 0.0f;
+        float x = text->abs_pos.x; // x cursor
+        float y = text->abs_pos.y;
+
+        for(uint8_t c : text->text.str) {
+            character_t* ch = &font->char_map[c];
+
+            xoffset += ch->advance * scalar;
+            yoffset = std::max(yoffset, ch->size.y * scalar);
+        }
+
+        xoffset /= 2.0f;
+        yoffset /= 2.0f;
+        text->abs_size.x = xoffset;
+        text->abs_size.y = yoffset;
+
+        for(uint8_t c : text->text.str) {
+            character_t* ch = &font->char_map[c];
+
+            float x2 = x + ch->bearing.x * scalar;
+            float y2 = y - (ch->size.y - ch->bearing.y) * scalar;
+            float w = ch->size.x * scalar;
+            float h = ch->size.y * scalar;    
+
+            vtx[0] = { .x = (x2    ) - xoffset, .y = (y2    ) - yoffset, .uv = ch->tex_indices[0], .rgb = text->text.color} ;
+            vtx[1] = { .x = (x2 + w) - xoffset, .y = (y2    ) - yoffset, .uv = ch->tex_indices[1], .rgb = text->text.color} ;
+            vtx[2] = { .x = (x2 + w) - xoffset, .y = (y2 + h) - yoffset, .uv = ch->tex_indices[2], .rgb = text->text.color} ;
+            vtx[3] = { .x = (x2    ) - xoffset, .y = (y2 + h) - yoffset, .uv = ch->tex_indices[3], .rgb = text->text.color} ;
+            vtx += indexes_per_letter;
+
+            x += (float)ch->advance * scalar;
+        }
+
+        indexes += indexes_per_letter * text->text.ssize();
+        vertices += vertices_per_letter * text->text.ssize();
+    }
+
+    void button_render_t::init() {
+        vbo.init(GL_ARRAY_BUFFER);
+        vbo.buffer_data(sizeof(vertex_t) * vertices_per_button * MAX_LETTERS, nullptr, GL_DYNAMIC_DRAW);
+
+        layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 3), 0, vbo);
+        layout.add(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 3), sizeof(float) * 2, vbo);
+        
+        vao.init();
+        vao.bind_layout(layout);
+
+        uint32_t vs_shader = sfk::create_shader_from_src(GL_VERTEX_SHADER, vs_button, nullptr);
+        uint32_t fs_shader = sfk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_button, nullptr);
+        
+        sfk_assert(vs_shader != UINT32_MAX);
+        sfk_assert(fs_shader != UINT32_MAX);
+        
+        program.init();
+        DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
+        sfk_assert(ret);
+
+        buffer.resize(vertices_per_button * MAX_LETTERS);
+
+        indexes = 0;
+        vertices = 0;
+    }
+
+    void button_render_t::render(sfk::static_index_buffer_t& ibo, ui_comp_canvas_t* canvas) {
+        // update
+        vbo.buffer_sub_data(0, vertices * sizeof(vertex_t), buffer.data());
+
+        // bind
+        vao.bind();
+        ibo.bind();
+        program.use();
+        program.set_mat4("u_vp", canvas->vp);
+
+        // draw
+        glDrawElements(GL_TRIANGLES, vertices, GL_UNSIGNED_INT, nullptr);
+
+        vertices = 0;
+        indexes = 0;
+    }
+
+    void button_render_t::free() {
+        vao.free();
+        vbo.free();
+        program.free();
+    }
+        
+    void button_render_t::add_ui_button(ui_button_t* btn) {
+        vertex_t* vtx = buffer.data() + indexes;
+        const float x = btn->abs_pos.x;
+        const float y = btn->abs_pos.y;
+        const float hw = btn->abs_size.x;
+        const float hh = btn->abs_size.y;
+        glm::vec3 offset = {0.0f, 0.0f, 0.0f};
+        glm::vec3 color;
+
+        if(btn->time_when_clicked + 0.1f > sfk::time.get_time()) {
+            offset = {0.5f, 0.5f, 0.5f};
+        }
+
+        color = btn->color - offset;
+ 
+        // bl
+        vtx[0] = {.x = x - hw, .y = y - hh, 
+                    .r = color.r, .g = color.g, .b = color.b};
+
+        // tr
+        vtx[2] = {.x = x + hw,   .y = y + hh, 
+                    .r = color.r, .g = color.g, .b = color.b};
+
+        // br
+        vtx[1] = {.x = x + hw,   .y = y - hh, 
+                    .r = color.r, .g = color.g, .b = color.b};
+
+        // tl
+        vtx[3] = {.x = x - hw,   .y = y + hh, 
+                    .r = color.r, .g = color.g, .b = color.b};
+
+        indexes += indexes_per_button;
+        vertices += vertices_per_button;
+    } 
+
+    void ui_render_system_update(flecs::iter& iter, ui_comp_canvas_t* canvas_) {
+        auto ctx = SPK_GET_CTX_REF(iter, ui_render_system_ctx_t);
+        ui_comp_canvas_t& canvas = *canvas_;
+        font_t* font = canvas.font;
+        float xmax = canvas.abs_size.x;
+        float ymax = canvas.abs_size.y;
+
+        if(!(canvas.flags & UI_ELEMENT_FLAGS_ENABLED) || !canvas.in_use.any())
+            return;
+
+        if(!font) { // if font is null, the first font will be the default
+            font = state.engine->rsrc_mng.get_first_font();
+            sfk_assert(font && "when using canvas you must load a font!");
+        }
+
+        canvas.iter_children([&](ui_element_t& ele) -> bool {
+            if(!(ele.flags & UI_ELEMENT_FLAGS_ENABLED) || ele.flags & UI_ELEMENT_FLAGS_ROOT) {
+                return true;
+            }
+
+            ui_element_t* parent = ele.parent;
+
+            if(ele.flags & UI_ELEMENT_FLAGS_RELATIVE || 
+               (parent->flags & UI_ELEMENT_FLAGS_ROOT && ele.flags & UI_ELEMENT_FLAGS_PARENT_RELATIVE)) {
+                ele.gen_abs({-1.0f, 1.0f}, {0, xmax},
+                            {-1.0f, 1.0f}, {0, ymax});
+            } else if(ele.flags & UI_ELEMENT_FLAGS_PARENT_RELATIVE) {
+                glm::vec2 _1abs_pos = {
+                    map_value(ele.pos.x, {-1.0f, 1.0f}, {-parent->abs_size.x, parent->abs_size.x}),
+                    map_value(ele.pos.y, {-1.0f, 1.0f}, {-parent->abs_size.y, parent->abs_size.y})
+                }; 
+
+                ele.abs_pos = _1abs_pos + ele.parent->abs_pos;
+                
+                if(ele.type() != UI_ELEMENT_TYPE_TEXT) {
+                    ele.abs_size = {
+                        map_value(ele.size.x, {-1.0f, 1.0f}, {0, xmax}),
+                        map_value(ele.size.y, {-1.0f, 1.0f}, {0, ymax})
+                    };
+                }
+            } 
+
+            switch(ele.type()) {
+            case UI_ELEMENT_TYPE_ELEMENT:
+                break;
+
+            case UI_ELEMENT_TYPE_TEXT:
+                ctx->font_render.add_ui_text(font, (ui_text_t*)&ele);
+                break;
+
+            case UI_ELEMENT_TYPE_BUTTON:
+                ctx->button_render.add_ui_button((ui_button_t*)&ele);
+                break;
+
+            case UI_ELEMENT_TYPE_CANVAS:
+                sfk_assert(!"yo dawg how this shit happen, this is not accessible");
+                break;
+
+            default:
+                break;
+            }
+
+            return false;
+        });
+
+        ctx->button_render.render(ctx->ibo, canvas_);
+        ctx->font_render.render(ctx->ibo, font, canvas_);
+    }
+
+    void ui_render_system_on_remove(ui_render_system_ctx_t& ctx) {
+        ctx.ibo.free();
+        ctx.button_render.free();
+        ctx.font_render.free();
     }
 
     void ui_render_system_resize(flecs::iter& iter) {
-        auto ctx = SPK_GET_CTX_REF(iter, ui_render_system_ctx_t);
+        auto canvas = state._get_current_canvas().get_ref<ui_comp_canvas_t>();
         comp_window_size_t* resize = iter.param<comp_window_size_t>();
-        glm::mat4 view, proj;
 
-        view = glm::identity<glm::mat4>();
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
-        proj = glm::ortho(0.0f, (float)resize->width, (float)resize->height, 0.0f);
-        ctx->vp = proj * view;
+        canvas->resize(resize->width, resize->height);
     }
 
-    void ui_render_system_update(flecs::iter& iter, ui_comp_t* a_comp) {
-        auto render_ctx = state._get_current_renderer().get_ref<render_system_ctx_t>();
-        auto ui_ctx = SPK_GET_CTX_REF(iter, ui_render_system_ctx_t);
-        const uint32_t quad_vert_count = 4;
-        const uint32_t quad_index_count = 6;
-
-        for(auto i : iter) {
-            flecs::entity e = iter.entity(i);
-            ui_comp_t* comp = &a_comp[i];
-
-            ui_ctx->mesh[0].pos = { comp->_cache.position.x,                       comp->_cache.position.y };
-            ui_ctx->mesh[1].pos = { comp->_cache.position.x + comp->_cache.size.x, comp->_cache.position.y };
-            ui_ctx->mesh[2].pos = { comp->_cache.position.x + comp->_cache.size.x, comp->_cache.position.y + comp->_cache.size.y };
-            ui_ctx->mesh[3].pos = { comp->_cache.position.x,                       comp->_cache.position.y + comp->_cache.size.y };
-
-            for(uint32_t j = 0; j < quad_vert_count; j++)  {
-                ui_ctx->mesh[j].color = comp->color;
-            }
-
-            ui_ctx->vertex_buffer.buffer_sub_data(0,
-                quad_vert_count * sizeof(ui_render_system_ctx_t::vertex_t), ui_ctx->mesh.data());
-            ui_ctx->vertex_array.bind();
-
-            render_ctx->quad_index_buffer.bind();
-            ui_ctx->program.use();
-            ui_ctx->program.set_mat4("u_vp", ui_ctx->vp);
-            glDrawElements(GL_TRIANGLES, quad_index_count, GL_UNSIGNED_INT, nullptr);   
-        }
-    }   
-
     void ui_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
-        ui_comp_canvas_init(world);
+        ui_canvas_init(world);
 
-        world.component<ui_system_ctx_t>();
+        // world.component<ui_system_ctx_t>();
         world.component<ui_render_system_ctx_t>();
-        world.observer<ui_system_ctx_t>().event(flecs::OnAdd).each(ui_system_on_add);
-        world.observer<ui_system_ctx_t>().event(flecs::OnRemove).each(ui_system_on_add);
-        world.observer<ui_render_system_ctx_t>().event(flecs::OnAdd).each(ui_render_system_on_add);
-        world.observer<ui_render_system_ctx_t>().event(flecs::OnRemove).each(ui_render_system_on_remove);
+        // world.observer<ui_system_ctx_t>().event(flecs::OnAdd).each(ui_system_on_add);
+        // world.observer<ui_system_ctx_t>().event(flecs::OnRemove).each(ui_system_on_remove);
 
-        auto ui_ctx = ctx_alloc.allocate_ctx<ui_system_ctx_t>();
+        // auto ui_ctx = ctx_alloc.allocate_ctx<ui_system_ctx_t>();
         auto ui_render_ctx = ctx_alloc.allocate_ctx<ui_render_system_ctx_t>();
 
-        world.system<ui_comp_t>()
-            .term<ui_comp_canvas_t>().oper(flecs::Optional)
-            .ctx(ui_ctx).interval(state._get_target_tps()).iter(ui_system_tick);
-
-        world.system<ui_comp_t>().kind(flecs::OnUpdate).term_at(1)
+        world.system<ui_comp_canvas_t>()
+            .term_at(1).with<ui_tag_current_canvas_t>()
+            .kind(flecs::OnUpdate)
             .ctx(ui_render_ctx).iter(ui_render_system_update);
         
         world.observer().event<comp_window_size_t>().term<tag_events_t>()
-            .ctx(ui_render_ctx).iter(ui_render_system_resize);
+            .iter(ui_render_system_resize);
     }
 }

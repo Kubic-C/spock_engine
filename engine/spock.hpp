@@ -35,5 +35,6 @@ namespace spk {
 
         flecs::world world;
         system_ctx_allocater_t ctx_alloc;
+        resource_manager_t rsrc_mng;
     };
 }

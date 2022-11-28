@@ -181,7 +181,7 @@ MAIN {
     {
         spk::engine_t engine;
         flecs::entity e;
-        flecs::entity canvas;
+        flecs::entity canvas_e;
 
         sfk::log.log(sfk::LOG_TYPE_INFO, "target fps(%f), target ups(%f)", 
             engine.get_state()._get_target_fps(), engine.get_state()._get_target_tps());
@@ -190,35 +190,53 @@ MAIN {
         engine.set_target_fps(10000);
         engine.set_vsync_opt(spk::VSYNC_ENABLED);
 
-        canvas = engine.get_state()._get_current_canvas();
+        canvas_e = engine.get_state()._get_current_canvas();
+        
+        engine.rsrc_mng.load_ascii_font("./LT_fun.otf");
 
-        auto row = engine.world.entity()
-            .child_of(canvas)
-            .set([](spk::ui_comp_row_t& row){
-                row.num = 0;
-            });
+        {
+            auto canvas = canvas_e.get_ref<spk::ui_comp_canvas_t>();
 
-        engine.world.entity()
-            .child_of(row)
-            .set([](spk::ui_comp_t& ui){
-                ui.color = { 0.0f, 0.0f, 1.0f };
-            }).set([](spk::ui_comp_attribute_position_t& pos){
-                pos.position = { 0.25f, 0.0f };
-            }).set([](spk::ui_comp_attribute_size_t& size) {
-                size.absolute = true;
-                size.size = { 100.0f, 75.0f };
-            });
+            auto exit_btn = canvas->btns.malloc();
+            exit_btn->flags = spk::UI_ELEMENT_FLAGS_ENABLED | spk::UI_ELEMENT_FLAGS_RELATIVE;
+            exit_btn->pos = { -0.4f, -0.8f };
+            exit_btn->size = { -0.5f, -0.9f };
+            //exit_btn->callback = exit_game;
+            canvas->add_child(exit_btn);
 
-        engine.world.entity()
-            .child_of(row)
-            .set([](spk::ui_comp_t& ui){
-                ui.color = { 0.0f, 1.0f, 0.0f };
-            }).set([](spk::ui_comp_attribute_position_t& pos){
-                pos.position = { 0.0f, 0.0f };
-            }).set([](spk::ui_comp_attribute_size_t& size) {
-                size.absolute = true;
-                size.size = { 100.0f, 100.0f };
-            });
+            auto play_btn  = canvas->btns.malloc();
+            play_btn->flags = spk::UI_ELEMENT_FLAGS_ENABLED | spk::UI_ELEMENT_FLAGS_RELATIVE;
+            play_btn->pos = { -0.4f, -0.55f };
+            play_btn->size = { -0.5f, -0.9f };
+            //play_btn->callback = play_game;
+            canvas->add_child(play_btn);
+
+            auto exit_play_btn = canvas->btns.malloc();
+            exit_play_btn->flags = spk::UI_ELEMENT_FLAGS_RELATIVE;
+            exit_play_btn->pos  = { -0.4f, -0.8f };
+            exit_play_btn->size = { -0.5f, -0.9f };
+            //exit_play_btn->callback = exit_play_game;
+            canvas->add_child(exit_play_btn);
+
+            spk::ui_text_t* txt = canvas->texts.malloc();
+            txt->flags = spk::UI_ELEMENT_FLAGS_ENABLED | spk::UI_ELEMENT_FLAGS_PARENT_RELATIVE;
+            txt->pos = { 0.0f, 0.0f };
+            txt->text.set("exit", 1.0f, {0.0f, 0.0f, 0.0f});
+            exit_btn->add_child(txt);
+
+            spk::ui_text_t* txt2 = canvas->texts.malloc();
+            txt2->flags = spk::UI_ELEMENT_FLAGS_ENABLED | spk::UI_ELEMENT_FLAGS_PARENT_RELATIVE;
+            txt2->pos = { 0.0f, 0.0f };
+            txt2->text.set("play", 1.0f, {0.0f, 0.0f, 0.0f});
+            play_btn->add_child(txt2);
+
+            spk::ui_text_t* exit_play_text = canvas->texts.malloc();
+            exit_play_text->flags = spk::UI_ELEMENT_FLAGS_ENABLED | spk::UI_ELEMENT_FLAGS_PARENT_RELATIVE;
+            exit_play_text->pos = { 0.0f, 0.0f };
+            exit_play_text->text.set("exit to menu", 1.0f, {0.0f, 0.0f, 0.0f});
+            exit_play_btn->add_child(exit_play_text);
+        }
+        
 
         auto ball = engine.world.entity(); 
         ball.add<spk::comp_primitive_render_t>();

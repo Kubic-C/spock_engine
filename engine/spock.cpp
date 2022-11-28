@@ -36,8 +36,9 @@ namespace spk {
         render_cs_init(ctx_alloc, world);
 
         // render systems
-        ui_cs_init(ctx_alloc, world);
         primitive_render_cs_init(ctx_alloc, world);
+        ui_cs_init(ctx_alloc, world);
+        rsrc_mng.init();
 
         world.entity().add<ui_comp_canvas_t>().add<ui_tag_current_canvas_t>();
 
@@ -55,6 +56,7 @@ namespace spk {
     }
 
     void engine_t::free() {
+        rsrc_mng.free();
         SDL_Quit();
         ctx_alloc.free();
     }

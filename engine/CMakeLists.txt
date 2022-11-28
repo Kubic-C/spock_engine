@@ -24,7 +24,7 @@ target_sources(spock_engine PRIVATE
     "components/ui.hpp" "components/ui.cpp")
 
 target_sources(spock_engine PRIVATE
-    "utility/ui_.hpp" "utility/ui_.cpp"
+    "utility/ui.hpp" "utility/ui.cpp"
     "utility/text.hpp" "utility/text.cpp"
     "utility/resource_manager.hpp" "utility/resource_manager.cpp")
 

@@ -2,9 +2,9 @@
 
 // dependencies 
 #include <flecs.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <glm/glm.hpp>
-#include <glad/glad.h>
+#include <glad/gl.h>
 #include <box2d/box2d.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H

@@ -35,7 +35,7 @@ namespace spk {
 
         FT_Face face; 
 
-        sfk::hashmap_t<character_t, UCHAR_MAX, 2, 0, uint8_t> char_map;
+        sfk::hashmap_t<character_t, UCHAR_MAX, 2, 0, u_char> char_map;
     };
 
     class font_manager_t {
@@ -46,5 +46,28 @@ namespace spk {
 
         sfk::memory_pool_t<font_t, 8, 4> font_pool;
         FT_Library ft_lib; 
+    };
+
+    struct text_t {
+        std::string str;
+        float scalar = 1.0f;
+        glm::vec3 color = { 1.0f, 0.0f, 0.0f };
+
+        void set(const char* _s, float scalar, glm::vec3 color, font_t* font = nullptr) {
+            str = _s;
+            this->scalar = scalar;
+            this->color = color;
+        
+        }
+
+        void operator=(const char* _s) {
+            str = _s;
+        }
+
+        void operator=(const std::string& _s) {
+            str = _s;
+        }
+
+        size_t ssize() { return str.size(); }
     };
 }

@@ -107,7 +107,7 @@ namespace sfk {
         friend class memory_pool_t<T, size, alignment, padding>;
     public: 
 
-        bool init(::sfk::function<uint32_t, keyT> func = sfk::xor_int_hash<keyT>);
+        bool init(const ::sfk::function<uint32_t, keyT>& func = sfk::xor_int_hash<keyT>);
         void free();
 
         bool register_key(keyT key);
@@ -261,7 +261,7 @@ namespace sfk {
     }
 
     template<typename T,  uint32_t size, size_t alignment, size_t padding, typename keyT>
-    bool hashmap_t<T, size, alignment, padding, keyT>::init(::sfk::function<uint32_t, keyT> hash_func) {
+    bool hashmap_t<T, size, alignment, padding, keyT>::init(const ::sfk::function<uint32_t, keyT>& hash_func) {
         translation_table.fill(std::pair<keyT, T*>(null_obj, nullptr));
 
         this->hash_func = hash_func;

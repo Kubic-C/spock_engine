@@ -90,6 +90,7 @@
         "*.def": "cpp",
         "cassert": "cpp",
         "csignal": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "forward_list": "cpp"
     }
 }

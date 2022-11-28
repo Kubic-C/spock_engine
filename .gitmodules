@@ -4,9 +4,6 @@
 [submodule "dep/flecs"]
 	path = dep/flecs
 	url = https://github.com/SanderMertens/flecs
-[submodule "dep/glad"]
-	path = dep/glad
-	url = https://github.com/Dav1dde/glad
 [submodule "dep/box2d"]
 	path = dep/box2d
 	url = https://github.com/erincatto/box2d
@@ -16,3 +13,6 @@
 [submodule "dep/SDL"]
 	path = dep/SDL
 	url = https://github.com/libsdl-org/SDL
+[submodule "dep/glad"]
+	path = dep/glad
+	url = https://github.com/Dav1dde/glad
