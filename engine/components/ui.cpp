@@ -33,7 +33,7 @@ namespace spk {
 
     }
 
-    ui_comp_canvas_t::ui_comp_canvas_t() {
+    void ui_comp_canvas_t::init() {
 
         DEBUG_VALUE(bool, ret =) texts.init();
         sfk_assert(ret);
@@ -61,7 +61,7 @@ namespace spk {
         abs_size = { (float)width, (float)height };
     }
 
-    ui_comp_canvas_t::~ui_comp_canvas_t() {
+    void ui_comp_canvas_t::free() {
         texts.free();
         btns.free();
     }
@@ -75,6 +75,8 @@ namespace spk {
     }
 
     void ui_canvas_init(flecs::world& world) {
+        sfk_register_component(world, ui_comp_canvas_t);
+
         world.observer<ui_comp_canvas_t>().term<ui_tag_current_canvas_t>()
             .event(flecs::OnAdd).each(ui_tag_current_canvas_on_add);
     }

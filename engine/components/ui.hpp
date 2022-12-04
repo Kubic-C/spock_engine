@@ -2,11 +2,6 @@
 
 #include "../utility/ui.hpp"
 
-#define add_component(world, type) \
-        world.component<type>(); \
-        world.observer<type>().event(flecs::OnAdd).each(type::init); \
-        world.observer<type>().event(flecs::OnRemove).each(type::free) 
-
 namespace spk {
     struct engine_t;
     struct ui_button_t;
@@ -126,8 +121,9 @@ namespace spk {
         sfk::memory_pool_t<ui_text_t, 32, 4> texts;
         sfk::memory_pool_t<ui_button_t, 32, 4> btns;
 
-        ui_comp_canvas_t();
-        ~ui_comp_canvas_t();
+        void init();
+        void free();
+        
         void resize(int width, int height);
         const size_t type() override { return UI_ELEMENT_TYPE_CANVAS; }
     };

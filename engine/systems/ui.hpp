@@ -60,7 +60,16 @@ namespace spk {
     };
 
     struct ui_render_system_ctx_t {
-        ui_render_system_ctx_t() {
+        // flecs throws a static error if it cannot trivally
+        // construct this object, probably due to font_renderer's
+        // and button_renderer's trivial contructors
+        ui_render_system_ctx_t() {};
+
+        sfk::static_index_buffer_t ibo;
+        font_render_t font_render;
+        button_render_t button_render;
+
+        void init() {
             font_render.init();
             button_render.init();
 
@@ -68,7 +77,7 @@ namespace spk {
             ibo.generate_quad_indexes(MAX_LETTERS);     
         }
 
-        ~ui_render_system_ctx_t() {
+        void free() {
             ibo.free();
             button_render.free();
             font_render.free();
@@ -83,10 +92,10 @@ namespace spk {
             
             return *this;    
         }
+    };
 
-        sfk::static_index_buffer_t ibo;
-        font_render_t font_render;
-        button_render_t button_render;
+    struct ui_system_ctx_t {
+        SPK_NOT_A_TAG; 
     };
 
     void ui_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world);

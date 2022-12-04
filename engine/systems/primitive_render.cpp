@@ -110,7 +110,7 @@ namespace spk {
         glDrawArrays(GL_TRIANGLES, 0, vertices);
     }
 
-    primitive_render_system_ctx_t::primitive_render_system_ctx_t() {
+    void primitive_render_system_ctx_t::init() {
         vertex_array.init();
         vertex_array.bind();
 
@@ -131,6 +131,12 @@ namespace spk {
         sfk_assert(ret);
     
         mesh.resize(100 * 3);
+    }
+
+    void primitive_render_system_ctx_t::free() {
+        vertex_array.free();
+        vertex_buffer.free();
+        program.free();
     }
 
     void primitive_render_system_update(flecs::iter& iter, comp_primitive_render_t* c_primi_render) {
@@ -174,22 +180,16 @@ namespace spk {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
-    primitive_render_system_ctx_t::~primitive_render_system_ctx_t() {
-        vertex_array.free();
-        vertex_buffer.free();
-        program.free();
-    }
-
     void primitive_render_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
         flecs::entity* ctx;
 
-        world.component<primitive_render_system_ctx_t>();
+        world.component<comp_primitive_render_t>();
+        sfk_register_component(world, primitive_render_system_ctx_t);
 
         ctx = ctx_alloc.allocate_ctx<primitive_render_system_ctx_t>();
 
         world.system<comp_primitive_render_t>().ctx(ctx).kind(flecs::OnUpdate)
             .iter(primitive_render_system_update);
         
-        world.component<comp_primitive_render_t>();
     }
 }

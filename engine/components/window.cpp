@@ -2,7 +2,7 @@
 #include "../state.hpp"
 
 namespace spk {
-    comp_window_t::comp_window_t() {
+    void comp_window_t::init() {
         win = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 500, 
             SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE); 
         if(win == nullptr) {
@@ -17,7 +17,7 @@ namespace spk {
         }
     }
 
-    comp_window_t::~comp_window_t() {
+    void comp_window_t::free() {
         SDL_DestroyWindow(win);
     }
 
@@ -43,7 +43,8 @@ namespace spk {
     }
 
     void comp_window_component_init(flecs::world& world) {
-        world.component<comp_window_t>();
+        sfk_register_component(world, comp_window_t);
+
         world.observer<comp_window_t, tag_current_window_t>("OnAdd Window OpenGL Current Ctx")
             .event(flecs::OnAdd).each(tag_current_gl_ctx_on_add);
     }

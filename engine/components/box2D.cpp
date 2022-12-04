@@ -2,20 +2,20 @@
 #include "../state.hpp"
 
 namespace spk {
-    comp_b2Body_t::comp_b2Body_t() {
+    void comp_b2Body_t::init() {
         body = nullptr;       
     }
 
-    comp_b2Body_t::~comp_b2Body_t() {
+    void comp_b2Body_t::free() {
         if(body)
             body->GetWorld()->DestroyBody(body);
     }
 
-    comp_box2d_world_t::comp_box2d_world_t() {
+    void comp_b2World_t::init() {
         world = new b2World(b2Vec2(0.0f, -9.81f * 10));
     }
 
-    comp_box2d_world_t::~comp_box2d_world_t() {
+    void comp_b2World_t::free() {
         delete world;
     }
 
@@ -24,11 +24,14 @@ namespace spk {
             state._get_current_box2D_world().remove<tag_current_box2d_world_t>();
         }
 
-        sfk_assert(e.has<comp_box2d_world_t>());
+        sfk_assert(e.has<comp_b2World_t>());
         state._set_current_box2D_world(e);
     }
 
-    void comp_box2d_world_init(flecs::world& world) {
+    void comp_box2d_init(flecs::world& world) {
+        sfk_register_component(world, comp_b2Body_t);
+        sfk_register_component(world, comp_b2World_t);
+
         world.observer<tag_current_box2d_world_t>("OnAdd Current b2World tag observer").event(flecs::OnAdd).each(tag_current_box2d_world_on_add);
     }
 

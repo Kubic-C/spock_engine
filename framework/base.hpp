@@ -55,6 +55,11 @@ _In_ int nShowCmd \
 #define DEBUG_EXPR(expr)
 #endif 
 
+#define sfk_register_component(world, type) \
+        world.component<type>() \
+            .on_add([](type& comp){comp.init();}) \
+            .on_remove([](type& comp){comp.free();})
+
 namespace sfk {
     inline glm::vec2 to_glm_vec2(b2Vec2 vec2) { return (glm::vec2){vec2.x, vec2.y}; }
     inline b2Vec2 to_box_vec2(glm::vec2 vec2) { return (b2Vec2){vec2.x, vec2.y}; }

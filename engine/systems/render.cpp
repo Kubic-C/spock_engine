@@ -22,7 +22,7 @@ namespace spk {
         }
     }
 
-    render_system_ctx_t::render_system_ctx_t() {
+    void render_system_ctx_t::init() {
 #ifndef NDEBUG
         glEnable(GL_DEBUG_OUTPUT);
         glDebugMessageCallback(opengl_debug_callback, nullptr);
@@ -32,7 +32,7 @@ namespace spk {
         quad_index_buffer.generate_quad_indexes(10);
     }
 
-    render_system_ctx_t::~render_system_ctx_t() {
+    void render_system_ctx_t::free() {
         quad_index_buffer.free();
     }
 
@@ -67,7 +67,7 @@ namespace spk {
     void render_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
         flecs::entity* ctx;
 
-        world.component<render_system_ctx_t>();
+        sfk_register_component(world, render_system_ctx_t);
         world.observer<render_system_ctx_t>().event(flecs::OnAdd).each(
             [&](flecs::entity e, render_system_ctx_t& ctx){ state._set_current_renderer(e); });
 

@@ -305,12 +305,6 @@ namespace spk {
         ctx->font_render.render(ctx->ibo, font, canvas_);
     }
 
-    void ui_render_system_on_remove(ui_render_system_ctx_t& ctx) {
-        ctx.ibo.free();
-        ctx.button_render.free();
-        ctx.font_render.free();
-    }
-
     void ui_render_system_resize(flecs::iter& iter) {
         auto canvas = state._get_current_canvas().get_ref<ui_comp_canvas_t>();
         comp_window_size_t* resize = iter.param<comp_window_size_t>();
@@ -318,15 +312,47 @@ namespace spk {
         canvas->resize(resize->width, resize->height);
     }
 
+    void ui_system_update(ui_comp_canvas_t& canvas, spk::comp_window_t& window) {
+        glm::ivec2 size;
+        SDL_Cursor* cursor;
+
+
+        // if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        //     auto check_button = [&](ui_button_t& btn) {
+        //         glm::vec2 corners[2] = {
+        //             btn.abs_pos - btn.abs_size,
+        //             btn.abs_pos + btn.abs_size
+        //         };
+
+        //         if(!(btn.flags & spk::UI_ELEMENT_FLAGS_ENABLED))
+        //             return false;
+
+        //         if(corners[0].x < x && x < corners[1].x &&
+        //            corners[0].y < y && y < corners[1].y) {
+                    
+        //             btn.time_when_clicked = sfk::time.get_time();
+
+        //             if(btn.callback) {
+        //                 btn.callback(*self->scene, &btn);
+        //             }
+
+        //             return true;
+        //         }
+
+        //         return false;
+        //     };
+
+        //     self->scene->canvas.btns.get_valid_blocks(nullptr, UINT32_MAX, check_button);
+        // }
+    }
+
     void ui_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
         ui_canvas_init(world);
 
-        // world.component<ui_system_ctx_t>();
-        world.component<ui_render_system_ctx_t>();
-        // world.observer<ui_system_ctx_t>().event(flecs::OnAdd).each(ui_system_on_add);
-        // world.observer<ui_system_ctx_t>().event(flecs::OnRemove).each(ui_system_on_remove);
+        world.component<ui_system_ctx_t>();
+        sfk_register_component(world, ui_render_system_ctx_t);
 
-        // auto ui_ctx = ctx_alloc.allocate_ctx<ui_system_ctx_t>();
+        auto ui_ctx = ctx_alloc.allocate_ctx<ui_system_ctx_t>();
         auto ui_render_ctx = ctx_alloc.allocate_ctx<ui_render_system_ctx_t>();
 
         world.system<ui_comp_canvas_t>()
