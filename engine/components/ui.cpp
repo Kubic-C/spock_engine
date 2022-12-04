@@ -49,7 +49,7 @@ namespace spk {
         pos = { std::nanf("nan"), std::nanf("nan") };
     }
 
-    void ui_comp_canvas_t::resize(int width, int height) {
+    void ui_comp_canvas_t::resize_callback(int width, int height) {
         glm::mat4 view, proj;
 
         view = glm::identity<glm::mat4>();

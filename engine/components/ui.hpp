@@ -123,8 +123,8 @@ namespace spk {
 
         void init();
         void free();
-        
-        void resize(int width, int height);
+
+        void resize_callback(int width, int height);
         const size_t type() override { return UI_ELEMENT_TYPE_CANVAS; }
     };
 

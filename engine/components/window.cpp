@@ -9,8 +9,6 @@ namespace spk {
             sfk::log.log(sfk::LOG_TYPE_ERROR, "could not create SDL2 window; %s", SDL_GetError());
         }
 
-        sfk::log.log("window created");
-
         gl_ctx = SDL_GL_CreateContext(win);
         if(gl_ctx == nullptr) {
             sfk::log.log(sfk::LOG_TYPE_ERROR, "could not create SDL2 window's OpenGL Context; %s", SDL_GetError());
@@ -28,8 +26,6 @@ namespace spk {
             SDL_GL_MakeCurrent(nullptr, nullptr);
             state._get_current_window().remove<tag_current_window_t>();
         }
-
-        sfk::log.log("ctx gl on add");
 
         if(SDL_GL_MakeCurrent(window.win, window.gl_ctx) < 0) {
             sfk::log.log(sfk::LOG_TYPE_ERROR, "failed to make the window context current: %s", SDL_GetError());
