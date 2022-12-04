@@ -44,7 +44,6 @@ namespace spk {
                         .entity(state._get_current_event_system())
                         .ctx(ctx->event.button)                            
                         .emit();
-                    sfk::log.log("mouse click");
                     break;
                 }
 

@@ -309,41 +309,50 @@ namespace spk {
         auto canvas = state._get_current_canvas().get_ref<ui_comp_canvas_t>();
         comp_window_size_t* resize = iter.param<comp_window_size_t>();
 
-        canvas->resize(resize->width, resize->height);
+        canvas->resize_callback(resize->width, resize->height);
     }
 
-    void ui_system_update(ui_comp_canvas_t& canvas, spk::comp_window_t& window) {
-        glm::ivec2 size;
-        SDL_Cursor* cursor;
+    void ui_system_mouse_callback(flecs::iter& iter) {
+        auto window = state._get_current_window().get_ref<comp_window_t>();
+        auto canvas = state._get_current_canvas().get_ref<ui_comp_canvas_t>();
+        comp_window_mouse_click_t* mouse_info = iter.param<comp_window_mouse_click_t>();
+        glm::ivec2 size = window->get_size();
+        float x, y;
 
+        sfk::log.log(sfk::LOG_TYPE_INFO, "mouse click: xy: %i/ %i", (int)mouse_info->x, (int)mouse_info->y);
 
-        // if(button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        //     auto check_button = [&](ui_button_t& btn) {
-        //         glm::vec2 corners[2] = {
-        //             btn.abs_pos - btn.abs_size,
-        //             btn.abs_pos + btn.abs_size
-        //         };
+        // in a ui_canvas coord system, (0,0) starts at the bottom left 
+        // corner in the window, SDL sends us coordinates oriented around the top left
+        x = mouse_info->x;
+        y = size.y - mouse_info->y;
 
-        //         if(!(btn.flags & spk::UI_ELEMENT_FLAGS_ENABLED))
-        //             return false;
+        if(mouse_info->button == SDL_BUTTON_LEFT && mouse_info->state == SDL_PRESSED) {
+            auto check_button = [&](ui_button_t& btn) {
+                    glm::vec2 corners[2] = {
+                        btn.abs_pos - btn.abs_size,
+                        btn.abs_pos + btn.abs_size
+                    };
 
-        //         if(corners[0].x < x && x < corners[1].x &&
-        //            corners[0].y < y && y < corners[1].y) {
-                    
-        //             btn.time_when_clicked = sfk::time.get_time();
+                    if(!(btn.flags & spk::UI_ELEMENT_FLAGS_ENABLED))
+                        return false;
 
-        //             if(btn.callback) {
-        //                 btn.callback(*self->scene, &btn);
-        //             }
+                    if(corners[0].x < x && x < corners[1].x &&
+                        corners[0].y < y && y < corners[1].y) {
+                        
+                        btn.time_when_clicked = sfk::time.get_time();
 
-        //             return true;
-        //         }
+                        if(btn.callback) {
+                            btn.callback(state.engine, &btn);
+                        }
 
-        //         return false;
-        //     };
+                        return true;
+                    }
 
-        //     self->scene->canvas.btns.get_valid_blocks(nullptr, UINT32_MAX, check_button);
-        // }
+                    return false;
+            };
+
+            canvas->btns.get_valid_blocks(nullptr, UINT32_MAX, check_button);
+        }
     }
 
     void ui_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
@@ -362,5 +371,8 @@ namespace spk {
         
         world.observer().event<comp_window_size_t>().term<tag_events_t>()
             .iter(ui_render_system_resize);
+
+        world.observer().event<comp_window_mouse_click_t>().term<tag_events_t>()
+            .iter(ui_system_mouse_callback);
     }
 }
