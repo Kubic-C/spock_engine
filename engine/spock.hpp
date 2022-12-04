@@ -33,6 +33,8 @@ namespace spk {
         void set_target_fps(double target_fps);
         void set_vsync_opt(vsync_setting_e option);
 
+        void* user_state;
+
         flecs::world world;
         system_ctx_allocater_t ctx_alloc;
         resource_manager_t rsrc_mng;

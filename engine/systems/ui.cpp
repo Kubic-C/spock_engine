@@ -307,7 +307,7 @@ namespace spk {
 
     void ui_render_system_resize(flecs::iter& iter) {
         auto canvas = state._get_current_canvas().get_ref<ui_comp_canvas_t>();
-        comp_window_size_t* resize = iter.param<comp_window_size_t>();
+        event_window_size_t* resize = iter.param<event_window_size_t>();
 
         canvas->resize_callback(resize->width, resize->height);
     }
@@ -315,11 +315,9 @@ namespace spk {
     void ui_system_mouse_callback(flecs::iter& iter) {
         auto window = state._get_current_window().get_ref<comp_window_t>();
         auto canvas = state._get_current_canvas().get_ref<ui_comp_canvas_t>();
-        comp_window_mouse_click_t* mouse_info = iter.param<comp_window_mouse_click_t>();
+        const event_window_mouse_click_t* mouse_info = iter.param<event_window_mouse_click_t>();
         glm::ivec2 size = window->get_size();
         float x, y;
-
-        sfk::log.log(sfk::LOG_TYPE_INFO, "mouse click: xy: %i/ %i", (int)mouse_info->x, (int)mouse_info->y);
 
         // in a ui_canvas coord system, (0,0) starts at the bottom left 
         // corner in the window, SDL sends us coordinates oriented around the top left
@@ -342,7 +340,7 @@ namespace spk {
                         btn.time_when_clicked = sfk::time.get_time();
 
                         if(btn.callback) {
-                            btn.callback(state.engine, &btn);
+                            btn.callback(*state.engine, btn);
                         }
 
                         return true;
@@ -369,10 +367,10 @@ namespace spk {
             .kind(flecs::OnUpdate)
             .ctx(ui_render_ctx).iter(ui_render_system_update);
         
-        world.observer().event<comp_window_size_t>().term<tag_events_t>()
+        world.observer().event<event_window_size_t>().term<tag_events_t>()
             .iter(ui_render_system_resize);
 
-        world.observer().event<comp_window_mouse_click_t>().term<tag_events_t>()
+        world.observer().event<event_window_mouse_click_t>().term<tag_events_t>()
             .iter(ui_system_mouse_callback);
     }
 }

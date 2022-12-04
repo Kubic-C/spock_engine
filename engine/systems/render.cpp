@@ -45,7 +45,7 @@ namespace spk {
     void render_system_resize(flecs::iter& iter) {
         auto ctx = SPK_GET_CTX_REF(iter, render_system_ctx_t); 
         
-        comp_window_size_t* resize = iter.param<comp_window_size_t>();
+        event_window_size_t* resize = iter.param<event_window_size_t>();
         float half_width  = (float)resize->width / 4;
         float half_height = (float)resize->height / 4;
         glm::mat4 view, proj;
@@ -77,7 +77,7 @@ namespace spk {
             .kind(flecs::PreUpdate).each(render_system_pre_update);
         world.system<comp_window_t, tag_current_window_t>().ctx(ctx) // POST
             .kind(flecs::PostUpdate).each(render_system_post_update);
-        world.observer().event<comp_window_size_t>().term<tag_events_t>()
+        world.observer().event<event_window_size_t>().term<tag_events_t>()
             .ctx(ctx).iter(render_system_resize);
     }
 }

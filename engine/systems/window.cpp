@@ -9,11 +9,11 @@ namespace spk {
         if(ctx->event.window.windowID == SDL_GetWindowID(window->win)) {
             switch(ctx->event.window.event) {
                 case SDL_WINDOWEVENT_SIZE_CHANGED: {
-                    comp_window_size_t size;
+                    event_window_size_t size;
 
                     SDL_GetWindowSize(window->win, &size.width, &size.height);
 
-                    iter.world().event<comp_window_size_t>()
+                    iter.world().event<event_window_size_t>()
                         .id<tag_events_t>()
                         .entity(state._get_current_event_system())
                         .ctx(size)                            
@@ -39,7 +39,7 @@ namespace spk {
                     break;
 
                 case SDL_MOUSEBUTTONDOWN: {
-                    iter.world().event<comp_window_mouse_click_t>()
+                    iter.world().event<event_window_mouse_click_t>()
                         .id<tag_events_t>()
                         .entity(state._get_current_event_system())
                         .ctx(ctx->event.button)                            

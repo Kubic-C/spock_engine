@@ -5,7 +5,7 @@
 namespace spk {
     struct engine_t;
     struct ui_button_t;
-    typedef std::function<void(engine_t*, ui_button_t*)> button_callback_t;
+    typedef std::function<void(engine_t&, ui_button_t&)> button_callback_t;
 
     struct ui_tag_current_canvas_t {};
 
