@@ -1,5 +1,7 @@
 # Spock
 
+this game engine uses (almost) entirely flecs for handling data and reading/writing data.
+
 spock is a game engine being developed for a game called synther
 
 Current feature list:
