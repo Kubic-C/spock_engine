@@ -33,20 +33,20 @@ namespace spk {
 
     }
 
-    void ui_comp_canvas_t::init(ui_comp_canvas_t& canvas) {
+    ui_comp_canvas_t::ui_comp_canvas_t() {
 
-        DEBUG_VALUE(bool, ret =) canvas.texts.init();
+        DEBUG_VALUE(bool, ret =) texts.init();
         sfk_assert(ret);
-        DEBUG_EXPR(ret =) canvas.btns.init();
+        DEBUG_EXPR(ret =) btns.init();
         sfk_assert(ret);
 
-        canvas.font = nullptr;
+        font = nullptr;
 
-        canvas.flags |= spk::UI_ELEMENT_FLAGS_ROOT |
+        flags |= spk::UI_ELEMENT_FLAGS_ROOT |
                  spk::UI_ELEMENT_FLAGS_ENABLED;
 
-        canvas.size = { std::nanf("nan"), std::nanf("nan") };
-        canvas.pos = { std::nanf("nan"), std::nanf("nan") };
+        size = { std::nanf("nan"), std::nanf("nan") };
+        pos = { std::nanf("nan"), std::nanf("nan") };
     }
 
     void ui_comp_canvas_t::resize(int width, int height) {
@@ -61,9 +61,9 @@ namespace spk {
         abs_size = { (float)width, (float)height };
     }
 
-    void ui_comp_canvas_t::free(ui_comp_canvas_t& canvas) {
-        canvas.texts.free();
-        canvas.btns.free();
+    ui_comp_canvas_t::~ui_comp_canvas_t() {
+        texts.free();
+        btns.free();
     }
 
     void ui_tag_current_canvas_on_add(flecs::entity e, ui_comp_canvas_t& canvas) {
@@ -75,8 +75,6 @@ namespace spk {
     }
 
     void ui_canvas_init(flecs::world& world) {
-        add_component(world, ui_comp_canvas_t);
-
         world.observer<ui_comp_canvas_t>().term<ui_tag_current_canvas_t>()
             .event(flecs::OnAdd).each(ui_tag_current_canvas_on_add);
     }

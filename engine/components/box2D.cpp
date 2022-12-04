@@ -2,27 +2,21 @@
 #include "../state.hpp"
 
 namespace spk {
-    void comp_b2Body_on_add(comp_b2Body_t& comp) {
-        comp.body = nullptr;       
+    comp_b2Body_t::comp_b2Body_t() {
+        body = nullptr;       
     }
 
-    void comp_b2Body_on_remove(comp_b2Body_t& comp) {
-        if(comp.body)
-            comp.body->GetWorld()->DestroyBody(comp.body);
+    comp_b2Body_t::~comp_b2Body_t() {
+        if(body)
+            body->GetWorld()->DestroyBody(body);
     }
 
-    void comp_b2Body_init(flecs::world& world) {
-        world.component<comp_b2Body_t>();
-        world.observer<comp_b2Body_t>("OnAdd b2Body observer").event(flecs::OnAdd).each(comp_b2Body_on_add);
-        world.observer<comp_b2Body_t>("OnRemove b2Body observer").event(flecs::OnRemove).each(comp_b2Body_on_remove);
+    comp_box2d_world_t::comp_box2d_world_t() {
+        world = new b2World(b2Vec2(0.0f, -9.81f * 10));
     }
 
-    void comp_box2d_world_on_add(comp_box2d_world_t& world) {
-        world.world = new b2World(b2Vec2(0.0f, -9.81f * 10));
-    }
-
-    void comp_box2d_world_on_remove(comp_box2d_world_t& world) {
-        delete world.world;
+    comp_box2d_world_t::~comp_box2d_world_t() {
+        delete world;
     }
 
     void tag_current_box2d_world_on_add(flecs::entity e, tag_current_box2d_world_t tag) {
@@ -35,10 +29,7 @@ namespace spk {
     }
 
     void comp_box2d_world_init(flecs::world& world) {
-        world.component<comp_box2d_world_t>();
         world.observer<tag_current_box2d_world_t>("OnAdd Current b2World tag observer").event(flecs::OnAdd).each(tag_current_box2d_world_on_add);
-        world.observer<comp_box2d_world_t>("OnAdd b2World observer").event(flecs::OnAdd).each(comp_box2d_world_on_add);
-        world.observer<comp_box2d_world_t>("OnRemove b2World observer").event(flecs::OnRemove).each(comp_box2d_world_on_remove);
     }
 
     b2Fixture* add_body_fixture(comp_b2Body_t* body, b2Shape* shape, float friction, float restitution,

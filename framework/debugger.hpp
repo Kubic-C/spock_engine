@@ -27,6 +27,7 @@ namespace sfk {
         info_logger_t();
         ~info_logger_t();
 
+        void log(const char* format, ...);
         void log(log_type_e type, const char* format, ...);
         void spew(); // print the current buffer onto console
 

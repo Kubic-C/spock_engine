@@ -31,6 +31,9 @@ namespace spk {
         std::vector<vertex_t> mesh;
         uint32_t vertices; // of vertex vvv
 
+        primitive_render_system_ctx_t();
+        ~primitive_render_system_ctx_t();
+
         void render_box(glm::mat4& vp, sfk::static_index_buffer_t& ind, comp_primitive_render_t* info, const comp_box_t* box);
         void render_polygon(glm::mat4& vp, sfk::static_index_buffer_t& ind, comp_primitive_render_t* info, b2Body* body, b2PolygonShape* polygon);
         void render_circle(glm::mat4& vp, comp_primitive_render_t* info, b2Body* body, b2CircleShape* circle);

@@ -126,8 +126,8 @@ namespace spk {
         sfk::memory_pool_t<ui_text_t, 32, 4> texts;
         sfk::memory_pool_t<ui_button_t, 32, 4> btns;
 
-        static void init(ui_comp_canvas_t& canvas);
-        static void free(ui_comp_canvas_t& canvas);
+        ui_comp_canvas_t();
+        ~ui_comp_canvas_t();
         void resize(int width, int height);
         const size_t type() override { return UI_ELEMENT_TYPE_CANVAS; }
     };

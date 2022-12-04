@@ -22,20 +22,18 @@ namespace spk {
         }
     }
 
-    void render_system_on_add(flecs::entity e, render_system_ctx_t& ctx) {
+    render_system_ctx_t::render_system_ctx_t() {
 #ifndef NDEBUG
         glEnable(GL_DEBUG_OUTPUT);
         glDebugMessageCallback(opengl_debug_callback, nullptr);
 #endif
-
-        state._set_current_renderer(e);
         
-        ctx.quad_index_buffer.init(GL_ELEMENT_ARRAY_BUFFER);
-        ctx.quad_index_buffer.generate_quad_indexes(10);
+        quad_index_buffer.init(GL_ELEMENT_ARRAY_BUFFER);
+        quad_index_buffer.generate_quad_indexes(10);
     }
 
-    void render_system_on_remove(flecs::entity e, render_system_ctx_t& ctx) {
-        ctx.quad_index_buffer.free();
+    render_system_ctx_t::~render_system_ctx_t() {
+        quad_index_buffer.free();
     }
 
     void render_system_pre_update(flecs::entity e, comp_window_t& window, tag_current_window_t) {
@@ -70,8 +68,8 @@ namespace spk {
         flecs::entity* ctx;
 
         world.component<render_system_ctx_t>();
-        world.observer<render_system_ctx_t>().event(flecs::OnAdd).each(render_system_on_add);
-        world.observer<render_system_ctx_t>().event(flecs::OnRemove).each(render_system_on_remove);
+        world.observer<render_system_ctx_t>().event(flecs::OnAdd).each(
+            [&](flecs::entity e, render_system_ctx_t& ctx){ state._set_current_renderer(e); });
 
         ctx = ctx_alloc.allocate_ctx<render_system_ctx_t>();
 

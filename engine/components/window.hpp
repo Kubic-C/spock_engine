@@ -11,6 +11,9 @@ namespace spk {
         SDL_Window* win;
         SDL_GLContext gl_ctx;
 
+        comp_window_t();
+        ~comp_window_t();
+
         void set_title(const std::string& title) {
             SDL_SetWindowTitle(win, title.c_str());
         }

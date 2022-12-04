@@ -110,15 +110,15 @@ namespace spk {
         glDrawArrays(GL_TRIANGLES, 0, vertices);
     }
 
-    void primitive_render_system_on_add(primitive_render_system_ctx_t& ctx) {
-        ctx.vertex_array.init();
-        ctx.vertex_array.bind();
+    primitive_render_system_ctx_t::primitive_render_system_ctx_t() {
+        vertex_array.init();
+        vertex_array.bind();
 
-        ctx.vertex_buffer.init(GL_ARRAY_BUFFER);
-        ctx.vertex_buffer.buffer_data(sizeof(float) * 2 * 3 * 6 * 100, nullptr, GL_DYNAMIC_DRAW);
-        ctx.vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0, ctx.vertex_buffer);
-        ctx.vertex_layout.add(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, sizeof(float) * 2, ctx.vertex_buffer);
-        ctx.vertex_array.bind_layout(ctx.vertex_layout);
+        vertex_buffer.init(GL_ARRAY_BUFFER);
+        vertex_buffer.buffer_data(sizeof(float) * 2 * 3 * 6 * 100, nullptr, GL_DYNAMIC_DRAW);
+        vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0, vertex_buffer);
+        vertex_layout.add(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, sizeof(float) * 2, vertex_buffer);
+        vertex_array.bind_layout(vertex_layout);
 
         uint32_t vs_shader = sfk::create_shader_from_src(GL_VERTEX_SHADER, vs_colliders, nullptr);
         uint32_t fs_shader = sfk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_colliders, nullptr);
@@ -126,11 +126,11 @@ namespace spk {
         sfk_assert(vs_shader != UINT32_MAX);
         sfk_assert(fs_shader != UINT32_MAX);
         
-        ctx.program.init();
-        DEBUG_VALUE(bool, ret =) ctx.program.load_shader_modules(vs_shader, fs_shader);
+        program.init();
+        DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
         sfk_assert(ret);
     
-        ctx.mesh.resize(100 * 3);
+        mesh.resize(100 * 3);
     }
 
     void primitive_render_system_update(flecs::iter& iter, comp_primitive_render_t* c_primi_render) {
@@ -174,18 +174,16 @@ namespace spk {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
-    void primitive_render_system_on_remove(primitive_render_system_ctx_t& ctx) {
-        ctx.vertex_array.free();
-        ctx.vertex_buffer.free();
-        ctx.program.free();
+    primitive_render_system_ctx_t::~primitive_render_system_ctx_t() {
+        vertex_array.free();
+        vertex_buffer.free();
+        program.free();
     }
 
     void primitive_render_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
         flecs::entity* ctx;
 
         world.component<primitive_render_system_ctx_t>();
-        world.observer<primitive_render_system_ctx_t>().event(flecs::OnAdd).each(primitive_render_system_on_add);
-        world.observer<primitive_render_system_ctx_t>().event(flecs::OnRemove).each(primitive_render_system_on_remove);
 
         ctx = ctx_alloc.allocate_ctx<primitive_render_system_ctx_t>();
 
