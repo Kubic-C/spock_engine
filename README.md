@@ -12,7 +12,7 @@ Current feature list:
 Undergoing heavy construction
 
 ## Compiling
-use CMake to generate the projects files for your OS
+use CMake to generate the projects files for your OS.
 Use GCC or CLANG, or a MinGW build if your on windows
 
 note: if your going to use Clang, you will have problems
