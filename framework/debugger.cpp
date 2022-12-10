@@ -37,13 +37,6 @@ namespace sfk {
         };
     }
 
-    void info_logger_t::log(const char* format, ...) {
-        va_list args;
-        va_start(args, format);
-        log(sfk::LOG_TYPE_INFO, format, args);
-        va_end(args);
-    }
-
     void info_logger_t::log(log_type_e type, const char* format, ...) {
         char* msg_begin = buf.data() + ptr; 
         char* msg_ptr = msg_begin;
