@@ -2,8 +2,8 @@
 
 namespace sfk {
     info_logger_t::info_logger_t() {
-        buf.resize(16384);
-        ptr = 0;
+        buf.resize(4096);
+        log_file.open("./log.txt");
         
         flags |= LOG_FLAGS_ENABLE_STD_PIPE;
 
@@ -11,11 +11,7 @@ namespace sfk {
     }
 
     info_logger_t::~info_logger_t() {
-        std::ofstream file("./log.txt");
-
-        file.write(buf.data(), ptr);
-
-        file.close();
+        log_file.close();
     }
 
     const char* type_to_str(log_type_e type) {
@@ -38,7 +34,8 @@ namespace sfk {
     }
 
     void info_logger_t::log(log_type_e type, const char* format, ...) {
-        char* msg_begin = buf.data() + ptr; 
+        size_t ptr = 0;
+        char* msg_begin = buf.data(); 
         char* msg_ptr = msg_begin;
         va_list args;
         
@@ -51,7 +48,8 @@ namespace sfk {
         va_end(args);
 
         *msg_ptr = '\n';
-        ptr++;
+        *(++msg_ptr) = '\0';
+        ptr += 1; 
 
         if(flags & LOG_FLAGS_ENABLE_STD_PIPE) {
             FILE* pipe = nullptr;
@@ -74,6 +72,7 @@ namespace sfk {
             exit(EXIT_FAILURE);
         }
 
+        log_file.write(buf.data(), ptr);
     }
 
     void info_logger_t::spew() {

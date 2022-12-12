@@ -1,5 +1,4 @@
 #include "opengl.hpp"
-#include "external/stb_image.h"
 
 namespace sfk {
     uint32_t create_shader_from_src(uint32_t shader_type, const char* src, int* size) {
@@ -161,11 +160,9 @@ namespace sfk {
         glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset, yoffset, width, height, format, type, pixels);
     }
 
-    bool texture2D_t::load_image(const char* path, int desired_channels, bool flip) {
+    bool texture2D_t::load_image(const char* path, int desired_channels, bool flip, bool gen_mipmap) {
         uint8_t* pixels;
-        int width;
-        int height;
-        int channels;
+        int width, height;
 
         stbi_set_flip_vertically_on_load(flip);
         pixels = stbi_load(path, &width, &height, &channels, desired_channels);
@@ -174,7 +171,10 @@ namespace sfk {
 
         bind();
         allocate(GL_UNSIGNED_BYTE, GL_RGBA, GL_RGBA, width, height, pixels); 
-        glGenerateMipmap(GL_TEXTURE_2D);
+        
+        if(gen_mipmap) {
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
         
         stbi_image_free(pixels);
 
@@ -228,6 +228,17 @@ namespace sfk {
         }
 
         return true;
+    }
+
+    bool program_t::load_shader_str(const char* vs, const char* fs) {
+        uint32_t vs_shader = sfk::create_shader_from_src(GL_VERTEX_SHADER, vs, nullptr);
+        uint32_t fs_shader = sfk::create_shader_from_src(GL_FRAGMENT_SHADER, fs, nullptr);
+        
+        if(vs_shader == UINT32_MAX ||
+           fs_shader == UINT32_MAX)
+            return false;
+
+        return load_shader_modules(vs_shader, fs_shader);
     }
 
     bool program_t::load_shader_modules(uint32_t vsh, uint32_t fsh, bool delete_shaders) {    

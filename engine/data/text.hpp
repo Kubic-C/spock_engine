@@ -40,10 +40,12 @@ namespace spk {
 
     class font_manager_t {
     public:
-        bool init();
-        font_t* load_ascii_font(int f_width, int f_height, const char* file_path);
-        void free();
+        bool fm_init();
+        void fm_free();
+        font_t* load_ascii_font(const char* file_path, int f_width = 0, int f_height = 32);
+        font_t* get_first_font();
 
+    private:
         sfk::memory_pool_t<font_t, 8, 4> font_pool;
         FT_Library ft_lib; 
     };
@@ -57,7 +59,6 @@ namespace spk {
             str = _s;
             this->scalar = scalar;
             this->color = color;
-        
         }
 
         void operator=(const char* _s) {

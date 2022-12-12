@@ -19,20 +19,20 @@ namespace spk {
         delete world;
     }
 
-    void tag_current_box2d_world_on_add(flecs::entity e, tag_current_box2d_world_t tag) {
-        if(state._get_current_box2D_world().id() != UINT64_MAX) {
-            state._get_current_box2D_world().remove<tag_current_box2d_world_t>();
+    void box2d_world_tag_on_add(flecs::entity e, tag_current_box2d_world_t tag) {
+        if(state.get_current_box2D_world().id() != UINT64_MAX) {
+            state.get_current_box2D_world().remove<tag_current_box2d_world_t>();
         }
 
         sfk_assert(e.has<comp_b2World_t>());
-        state._set_current_box2D_world(e);
+        state.set_current_box2D_world(e);
     }
 
-    void comp_box2d_init(flecs::world& world) {
+    void box2d_comp_init(flecs::world& world) {
         sfk_register_component(world, comp_b2Body_t);
         sfk_register_component(world, comp_b2World_t);
 
-        world.observer<tag_current_box2d_world_t>("OnAdd Current b2World tag observer").event(flecs::OnAdd).each(tag_current_box2d_world_on_add);
+        world.observer<tag_current_box2d_world_t>("OnAdd Current b2World tag observer").event(flecs::OnAdd).each(box2d_world_tag_on_add);
     }
 
     b2Fixture* add_body_fixture(comp_b2Body_t* body, b2Shape* shape, float friction, float restitution,

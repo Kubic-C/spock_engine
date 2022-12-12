@@ -91,6 +91,12 @@
         "cassert": "cpp",
         "csignal": "cpp",
         "span": "cpp",
-        "forward_list": "cpp"
+        "forward_list": "cpp",
+        "cerrno": "cpp",
+        "cfloat": "cpp",
+        "ciso646": "cpp",
+        "climits": "cpp",
+        "locale": "cpp",
+        "cstdbool": "cpp"
     }
 }

@@ -15,12 +15,20 @@ namespace spk {
     struct comp_b2Body_t { 
         b2Body* body;
 
+        glm::vec2 get_pos() {
+            return sfk::to_glm_vec2(body->GetPosition());
+        }
+
+        glm::vec2 get_world_point(float x, float y) {
+            return sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){x, y}));
+        }
+
         void init();
         void free();
     };  
 
-    void tag_current_box2d_world_on_add(flecs::entity e, tag_current_box2d_world_t tag);
-    void comp_box2d_init(flecs::world& world); // init all comps
+    void box2d_world_tag_on_add(flecs::entity e, tag_current_box2d_world_t tag);
+    void box2d_comp_init(flecs::world& world); // init all comps
 
     b2Fixture* add_body_fixture(comp_b2Body_t* body, b2Shape* shape, float friction = 0.2f, float restitution = 0.0f,
 		float restitutionThreshold = 1.0f, float density = 0.0f, bool isSensor = false);

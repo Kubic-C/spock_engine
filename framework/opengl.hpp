@@ -2,6 +2,7 @@
 
 #include "base.hpp"
 #include "debugger.hpp"
+#include "external/stb_image.h"
 
 #define BGFX_HANDLE_VALID(handle) (handle.idx != bgfx::kInvalidHandle)
 
@@ -12,7 +13,7 @@
 /* i dont *really* know how to abstract OpenGL and id rather not try
    because its not really fully necessary for this engine, maybe in the future
    ill try to develop a better framework that has some more better abstractions
-   but the main focus is the game engine, not specifaclly rendering */
+   but the main focus is the game engine, not specifaclly the almighty *abstraction* */
 
 namespace sfk {
     uint32_t create_shader_from_src(uint32_t shader_type, const char* src, int* size);
@@ -89,12 +90,27 @@ namespace sfk {
         bool init();
         void allocate(uint32_t type, uint32_t internal_format, uint32_t format, int width, int height, void* pixels);
         void subdata(uint32_t type, uint32_t xoffset, uint32_t yoffset, uint32_t format, int width, int height, void* pixels);
-        bool load_image(const char* path, int desired_channels, bool flip);
+        bool load_image(const char* path, int desired_channels, bool flip, bool gen_mipmap = false);
         void active_texture(uint32_t slot);
         void bind();
         void free();
 
+        glm::ivec2 get_size() {
+            int width, height;
+
+            bind();
+            glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
+            glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
+
+            return { width, height };
+        }
+
+        int get_channels() {
+            return channels;
+        }
+
     private:
+        int channels;
         uint32_t id;
     };
 
@@ -102,6 +118,7 @@ namespace sfk {
     public:
         bool init();
         bool load_shader_files(const char* vsh, const char* fsh);
+        bool load_shader_str(const char* vs, const char* fs);
         bool load_shader_modules(uint32_t vsh, uint32_t fsh, bool delete_shaders = true);
         void use();
         void free();

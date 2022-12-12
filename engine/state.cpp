@@ -4,7 +4,7 @@ namespace spk {
     state_t state;
     stats_t stats;
 
-    double state_t::_get_target_fps(bool divide_by_second) { 
+    double state_t::get_target_fps(bool divide_by_second) const { 
         if(divide_by_second) {
             return 1.0 / target_fps_;
         } else {
@@ -12,7 +12,7 @@ namespace spk {
         }
     }
 
-    double state_t::_get_target_tps(bool divide_by_second) { 
+    double state_t::get_target_tps(bool divide_by_second) const { 
         if(divide_by_second) {
             return 1.0 / target_tps_;
         } else {

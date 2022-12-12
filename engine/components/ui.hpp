@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../utility/ui.hpp"
+#include "../data/resource_manager.hpp"
 
 namespace spk {
     struct engine_t;
@@ -128,5 +129,5 @@ namespace spk {
         const size_t type() override { return UI_ELEMENT_TYPE_CANVAS; }
     };
 
-    void ui_canvas_init(flecs::world& world);
+    void ui_canvas_comp_init(flecs::world& world);
 }

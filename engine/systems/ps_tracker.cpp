@@ -27,7 +27,7 @@ namespace spk {
     void ps_tracker_system_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
         auto ctx = ctx_alloc.allocate_ctx<ps_tracker_ctx_t>();
 
-        world.system<ps_tracker_ctx_t>().interval(state._get_target_tps()).each(ps_tracker_system_tick);
+        world.system<ps_tracker_ctx_t>().interval(state.get_target_tps()).each(ps_tracker_system_tick);
         world.system<ps_tracker_ctx_t>().each(ps_tracker_system_update);
         world.system<ps_tracker_ctx_t>().interval(1.0).iter(ps_tracker_system_update_sec);
     }

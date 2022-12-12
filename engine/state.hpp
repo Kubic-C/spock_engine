@@ -23,6 +23,7 @@ namespace spk {
         double target_fps_ = 120.0;
         double target_tps_ = 60.0;
         vsync_setting_e vsync_opt = VSYNC_DISABLED; 
+        float ppm = 8.0f;
 
         flecs::entity window = flecs::entity(UINT64_MAX);
         flecs::entity box2D_world = flecs::entity(UINT64_MAX);
@@ -37,28 +38,31 @@ namespace spk {
         int get_exit_code() { return exit_code_; }
         bool is_exit() { return exit_; }
 
-        void _set_target_fps(double fps) { target_fps_ = fps; }
-        double _get_target_fps(bool divide_by_second = true);
-        void _set_target_tps(double tps) { target_tps_ = tps; }
-        double _get_target_tps(bool divide_by_second = true);
+        void set_ppm(float ppm) { this->ppm = ppm; };
+        float get_ppm() const { return ppm; }
 
-        void _set_current_window(const flecs::entity& window_) { window = window_; }
-        flecs::entity _get_current_window() { return window; }
+        void set_target_fps(double fps) { target_fps_ = fps; }
+        double get_target_fps(bool divide_by_second = true) const;
+        void set_target_tps(double tps) { target_tps_ = tps; }
+        double get_target_tps(bool divide_by_second = true) const;
 
-        void _set_current_box2D_world(const flecs::entity& world) { box2D_world = world; }
-        flecs::entity _get_current_box2D_world() { return box2D_world; }
+        void set_current_window(const flecs::entity& window_) { window = window_; }
+        flecs::entity get_current_window() const { return window; }
 
-        void _set_current_renderer(const flecs::entity& renderer_) { renderer = renderer_; }
-        flecs::entity _get_current_renderer() { return renderer; }
+        void set_current_box2D_world(const flecs::entity& world) { box2D_world = world; }
+        flecs::entity get_current_box2D_world() const { return box2D_world; }
 
-        void _set_vsync_option(vsync_setting_e option) { vsync_opt = option; }
-        vsync_setting_e _get_vsync_option() { return vsync_opt; }
+        void set_current_renderer(const flecs::entity& renderer_) { renderer = renderer_; }
+        flecs::entity get_current_renderer() const { return renderer; }
 
-        void _set_current_event_system(flecs::entity event_sys) { event_system = event_sys; }
-        flecs::entity _get_current_event_system() { return event_system; }
+        void set_vsync_option(vsync_setting_e option) { vsync_opt = option; }
+        vsync_setting_e get_vsync_option() const { return vsync_opt; }
 
-        void _set_current_canvas(flecs::entity canvas_) { canvas = canvas_; }
-        flecs::entity _get_current_canvas() { return canvas; }; 
+        void set_current_event_system(flecs::entity event_sys) { event_system = event_sys; }
+        flecs::entity get_current_event_system() const { return event_system; }
+
+        void set_current_canvas(flecs::entity canvas_) { canvas = canvas_; }
+        flecs::entity get_current_canvas() const { return canvas; }; 
     };
 
     struct stats_t {

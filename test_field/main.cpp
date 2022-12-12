@@ -20,13 +20,6 @@ void exit_play_game(spk::engine_t& engine, spk::ui_button_t& button) {
     *(current_state_e*)engine.user_state = STATE_EXIT_PLAY;
 }
 
-struct block_t {
-    b2Fixture* fixture = nullptr;
-    uint32_t amount = 0; // how many blocks ahead contain the same amount of fixtures
-};
-
-std::array<block_t, 256> row;
-
 MAIN {
     int exit_code = 0;
     spk::engine_t engine;
@@ -59,10 +52,10 @@ MAIN {
             body_def.type = b2BodyType::b2_dynamicBody;
             body.body = world->CreateBody(&body_def);
 
-            b2CircleShape circle;
-            circle.m_radius = 1.0f;
+            //b2EdgeShape edge;
+            //edge.SetTwoSided(b2Vec2(-1.0f, 0.0f), b2Vec2(1.0f, 0.0f));
 
-            spk::add_body_fixture(&body, &circle, 0.2f, 1.0f, 1.0f, 1.0f);
+            //spk::add_body_fixture(&body, &edge, 0.2f, 1.0f, 1.0f, 1.0f);
         });
 
         bottom = engine.world.entity();
@@ -81,29 +74,26 @@ MAIN {
             spk::add_body_fixture(&body, &shape, 0.2f, 0.0f, 1.0f, 1.0f);
         });
 
-        test = engine.world.entity();
-        test.add<spk::comp_primitive_render_t>();
-        test.set([&](spk::comp_b2Body_t& body){
-            b2BodyDef body_def;
-            body_def.angle = 0.0f;
-            body_def.enabled = true;
-            body_def.position = b2Vec2(0.0f, 0.0f);
-            body_def.type = b2BodyType::b2_dynamicBody;
-            body.body = world->CreateBody(&body_def);
-            
-            b2PolygonShape shape;
-            shape.SetAsBox(1, 1);
-            shape.m_vertices[0].x += 5 * 2; // must include half width
-            shape.m_vertices[1].x += 5 * 2; // |
-            shape.m_vertices[2].x += 5 * 2; // |
-            shape.m_vertices[3].x += 5 * 2; // |
+        for(uint32_t i = 0; i < 11; i++) {
+            test = engine.world.entity(); 
+            test.set([&](spk::comp_sprite_t& sprite) {
+                sprite.atlas_id = 0;
+                sprite.tax = rand() % 4;
+                sprite.tay = 0;
+                sprite.size = (glm::vec2){5.0f, 5.0f};
+            });
+            test.set([&](spk::comp_b2Body_t& body){
+                b2BodyDef body_def;
+                body_def.position = { 0.0f, 0.0f };
+                body_def.type = b2BodyType::b2_dynamicBody;
+                body.body = world->CreateBody(&body_def);
 
-            b2FixtureDef def;
-            def.density = 1.0f;
-            def.shape = &shape;
+                b2PolygonShape shape;
+                shape.SetAsBox(5.0f, 5.0f);
 
-            row[5].fixture = body.body->CreateFixture(&def);
-        });
+                spk::add_body_fixture(&body, &shape, 0.2f, 0.0f, 1.0f, 1.0f);
+            });
+        }
     };
 
     auto end_ = [&](){
@@ -113,8 +103,15 @@ MAIN {
         test.destruct();
     };
 
-    canvas_e = engine.get_state()._get_current_canvas();
+    canvas_e = engine.get_state().get_current_canvas();
     auto canvas = canvas_e.get_ref<spk::ui_comp_canvas_t>();
+
+    engine.rsrc_mng.atlas_init(0, 16, 16);
+    if(!engine.rsrc_mng.atlas_load_from_path(0, "./test_atlas2.png")) {
+        sfk::log.log("failed to load atlas");
+        return 4;
+    }
+
     engine.rsrc_mng.load_ascii_font("./LT_fun.otf");
 
     exit_btn = canvas->btns.malloc();
@@ -164,7 +161,9 @@ MAIN {
     uint32_t x = 0;
     uint32_t cur_i = 0;
 
-    engine.world.system().kind(flecs::OnUpdate).interval(engine.get_state()._get_target_tps())
+    engine.set_ppm(0.5f);
+
+    engine.world.system().kind(flecs::OnUpdate).interval(engine.get_state().get_target_tps())
         .iter([&](flecs::iter& iter){
             switch(my_state) {
             case STATE_LOAD:
@@ -180,71 +179,6 @@ MAIN {
                 break;
 
             case STATE_PLAY: {
-
-                // proof of concept, combining meshes for tilemaps
-                if(last_second + 1 < sfk::time.get_time()) {
-                    auto body = test.get<spk::comp_b2Body_t>()->body;
-                    
-                    b2PolygonShape shape;
-                    shape.SetAsBox(1, 1);
-                    shape.m_vertices[0].x += x; // must include half width
-                    shape.m_vertices[1].x += x; // |
-                    shape.m_vertices[2].x += x; // |
-                    shape.m_vertices[3].x += x; // |
-
-                    b2FixtureDef def;
-                    def.density = 1.0f;
-                    def.shape = &shape;
-
-                    row[cur_i].fixture = body->CreateFixture(&def);
-
-                    for(uint32_t i = 0; i != 256; i += 2) {
-                        if(!row[i].fixture)
-                            continue;
-
-                        b2Fixture* fixture = row[i].fixture;
-                        uint32_t start_next_i = i + (row[i].amount + 1);
-                        uint32_t end_next_i = row[start_next_i].amount + start_next_i;
-                        b2Fixture* next_fixture = row[start_next_i].fixture;
-
-                        if(!next_fixture)
-                            continue;
-
-                        b2PolygonShape* cur_shape = static_cast<b2PolygonShape*>(fixture->GetShape());
-                        b2PolygonShape* next_shape = static_cast<b2PolygonShape*>(next_fixture->GetShape());
-
-                        sfk::log.log("[cur] %f, [nxt] %f", cur_shape->m_vertices[1].x, next_shape->m_vertices[0].x);
-                        if(cur_shape->m_vertices[1].x == next_shape->m_vertices[0].x) {
-                            // combine the two fixtues
-                            b2Vec2 points[4] = {
-                                cur_shape->m_vertices[0],
-                                next_shape->m_vertices[1],
-                                next_shape->m_vertices[2],
-                                cur_shape->m_vertices[3]
-
-                            };
-                            memcpy(cur_shape->m_vertices, points, sizeof(b2Vec2)*4);
-                            body->DestroyFixture(next_fixture);
-
-                            // starting from the begginning, set all the rows 
-                            // that contained the destroyed fixture to the new fixture
-                            // and the new amount relative to the end of next amount
-                            for(uint32_t j = i; j != end_next_i; j++) {
-                                row[j].fixture = fixture;
-                                row[j].amount = end_next_i - i;
-                            }
-
-                            // start from the beggining again, memory locations
-                            // will certainly move after deleting a fixture
-                            i = 0;
-                        }
-                    }
-
-                    x += 4;
-                    cur_i += 2;
-                    last_second = sfk::time.get_time();
-
-                }
             } break;
 
             case STATE_EXIT_PLAY:
@@ -260,7 +194,7 @@ MAIN {
                 break;
 
             case STATE_EXIT:
-                engine.get_state().exit(0);
+                engine.exit(0);
                 sfk::log.log("exiting app");
                 break;
 

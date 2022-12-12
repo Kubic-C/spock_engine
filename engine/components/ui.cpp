@@ -67,14 +67,14 @@ namespace spk {
     }
 
     void ui_tag_current_canvas_on_add(flecs::entity e, ui_comp_canvas_t& canvas) {
-        if(state._get_current_canvas().id() != UINT64_MAX) {
-            state._get_current_canvas().remove<ui_tag_current_canvas_t>();
+        if(state.get_current_canvas().id() != UINT64_MAX) {
+            state.get_current_canvas().remove<ui_tag_current_canvas_t>();
         }
 
-        state._set_current_canvas(e);
+        state.set_current_canvas(e);
     }
 
-    void ui_canvas_init(flecs::world& world) {
+    void ui_canvas_comp_init(flecs::world& world) {
         sfk_register_component(world, ui_comp_canvas_t);
 
         world.observer<ui_comp_canvas_t>().term<ui_tag_current_canvas_t>()

@@ -34,9 +34,9 @@ namespace sfk {
         void log(log_type_e type, const char* format, ...);
         void spew(); // print the current buffer onto console
 
+        std::ofstream log_file;
         std::vector<char> buf;
         uint8_t flags;
-        size_t ptr;
     };
 
     inline info_logger_t log;

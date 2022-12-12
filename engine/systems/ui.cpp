@@ -25,8 +25,11 @@ const char* fs_font = R"###(
 #version 330 core
 in vec2 v_tex_coords;
 in vec3 v_color;
-out vec4 color;
+
 uniform sampler2D font;
+
+out vec4 color;
+
 void main()
 {    
     color = vec4(v_color, texture(font, v_tex_coords).r);
@@ -180,7 +183,7 @@ namespace spk {
 
     void button_render_t::render(sfk::static_index_buffer_t& ibo, ui_comp_canvas_t* canvas) {
         // update
-        vbo.buffer_sub_data(0, vertices * sizeof(vertex_t), buffer.data());
+        vbo.buffer_sub_data(0, indexes * sizeof(vertex_t), buffer.data());
 
         // bind
         vao.bind();
@@ -306,15 +309,15 @@ namespace spk {
     }
 
     void ui_render_system_resize(flecs::iter& iter) {
-        auto canvas = state._get_current_canvas().get_ref<ui_comp_canvas_t>();
+        auto canvas = state.get_current_canvas().get_ref<ui_comp_canvas_t>();
         event_window_size_t* resize = iter.param<event_window_size_t>();
 
         canvas->resize_callback(resize->width, resize->height);
     }
 
     void ui_system_mouse_callback(flecs::iter& iter) {
-        auto window = state._get_current_window().get_ref<comp_window_t>();
-        auto canvas = state._get_current_canvas().get_ref<ui_comp_canvas_t>();
+        auto window = state.get_current_window().get_ref<comp_window_t>();
+        auto canvas = state.get_current_canvas().get_ref<ui_comp_canvas_t>();
         const event_window_mouse_click_t* mouse_info = iter.param<event_window_mouse_click_t>();
         glm::ivec2 size = window->get_size();
         float x, y;
@@ -354,7 +357,7 @@ namespace spk {
     }
 
     void ui_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
-        ui_canvas_init(world);
+        ui_canvas_comp_init(world);
 
         world.component<ui_system_ctx_t>();
         sfk_register_component(world, ui_render_system_ctx_t);

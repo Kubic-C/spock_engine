@@ -43,5 +43,5 @@ namespace spk {
         }
     };
 
-    void comp_window_component_init(flecs::world& world);
+    void window_component_init(flecs::world& world);
 }

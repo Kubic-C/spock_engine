@@ -7,8 +7,8 @@ namespace spk {
         state.engine = this;
 
         ctx_alloc.init(world);
-        world.set_target_fps(state._get_target_fps(false));
-        state._set_current_event_system(world.entity().add<tag_events_t>());
+        world.set_target_fps(state.get_target_fps(false));
+        state.set_current_event_system(world.entity().add<tag_events_t>());
 
         if(SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO) < 0) {
             sfk::log.log(sfk::LOG_TYPE_ERROR, "could not load SDL2 video. %s", SDL_GetError());
@@ -37,12 +37,13 @@ namespace spk {
 
         // render systems
         primitive_render_cs_init(ctx_alloc, world);
+        sprite_render_cs_init(ctx_alloc, world);
         ui_cs_init(ctx_alloc, world);
         rsrc_mng.init();
 
         world.entity().add<ui_comp_canvas_t>().add<ui_tag_current_canvas_t>();
 
-        state._get_current_window().get_mut<comp_window_t>()->force_resize_event();
+        state.get_current_window().get_mut<comp_window_t>()->force_resize_event();
 
         DEBUG_EXPR(print_debug_stats());
     }
@@ -61,42 +62,41 @@ namespace spk {
         ctx_alloc.free();
     }
 
-    state_t& engine_t::get_state() {
+    const state_t& engine_t::get_state() {
         return state;
     }
 
-
     void engine_t::set_current_window_size(int w, int h) {
-        state._get_current_window().get_mut<comp_window_t>()->set_size(w, h);
+        state.get_current_window().get_ref<comp_window_t>()->set_size(w, h);
     }
 
     glm::ivec2 engine_t::get_current_window_size() {
-        return state._get_current_window().get_mut<comp_window_t>()->get_size();
+        return state.get_current_window().get_ref<comp_window_t>()->get_size();
     }
 
     void engine_t::get_current_window_size(int& w, int& h) {
-        glm::ivec2 size = state._get_current_window().get_mut<comp_window_t>()->get_size();
+        glm::ivec2 size = state.get_current_window().get_ref<comp_window_t>()->get_size();
         w = size.x;
         h = size.y;
     }
 
     void engine_t::set_current_window_title(const std::string& title) {
-        state._get_current_window().get_mut<comp_window_t>()->set_title(title);
+        state.get_current_window().get_ref<comp_window_t>()->set_title(title);
     }
 
     b2World* engine_t::get_current_b2World() {
-        return state._get_current_box2D_world().get<comp_b2World_t>()->world;
+        return state.get_current_box2D_world().get<comp_b2World_t>()->world;
     }
 
     void engine_t::set_target_fps(double target_fps) {
         world.set_target_fps(target_fps);
-        state._set_target_fps(target_fps);
+        state.set_target_fps(target_fps);
     }
 
     void engine_t::set_vsync_opt(vsync_setting_e option) {
         sfk_assert(-1 <= option && option <= 1 && "must be a valid vsync option!");
 
-        state._set_vsync_option(option);
+        state.set_vsync_option(option);
         SDL_GL_SetSwapInterval(option);
     }
 
@@ -109,5 +109,14 @@ namespace spk {
 
         sfk::log.log(sfk::LOG_TYPE_INFO, "SDL Version %u.%u.%u", sdl_ver.major, sdl_ver.minor, sdl_ver.patch);
         sfk::log.log(sfk::LOG_TYPE_INFO, "OGL Version %s", ogl_ver);
+    }
+
+    void engine_t::set_ppm(float ppm) {
+        state.set_ppm(ppm);
+        state.get_current_window().get_ref<comp_window_t>()->force_resize_event();
+    }
+
+    void engine_t::exit(int code) {
+        state.exit(code);
     }
 }

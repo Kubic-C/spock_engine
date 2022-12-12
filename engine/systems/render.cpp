@@ -29,7 +29,7 @@ namespace spk {
 #endif
         
         quad_index_buffer.init(GL_ELEMENT_ARRAY_BUFFER);
-        quad_index_buffer.generate_quad_indexes(10);
+        quad_index_buffer.generate_quad_indexes(5000);
     }
 
     void render_system_ctx_t::free() {
@@ -37,7 +37,7 @@ namespace spk {
     }
 
     void render_system_pre_update(flecs::entity e, comp_window_t& window, tag_current_window_t) {
-        sfk_assert(e == state._get_current_window());
+        sfk_assert(e == state.get_current_window());
 
         glClear(GL_COLOR_BUFFER_BIT);
     }
@@ -52,14 +52,17 @@ namespace spk {
 
         view = glm::identity<glm::mat4>();
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
-        proj = glm::ortho(-(float)half_width / sfk::ppm, (float)half_width / sfk::ppm, -half_height / sfk::ppm, half_height / sfk::ppm);
+        proj = glm::ortho(-(float)half_width / state.get_ppm(), 
+                           (float)half_width / state.get_ppm(), 
+                                 -half_height / state.get_ppm(), 
+                                  half_height / state.get_ppm());
         ctx->vp = proj * view;
 
         glViewport(0, 0, resize->width, resize->height);
     }
 
     void render_system_post_update(flecs::entity e, comp_window_t& window, tag_current_window_t) {
-        sfk_assert(e == state._get_current_window());
+        sfk_assert(e == state.get_current_window());
 
         SDL_GL_SwapWindow(window.win);
     }
@@ -69,7 +72,7 @@ namespace spk {
 
         sfk_register_component(world, render_system_ctx_t);
         world.observer<render_system_ctx_t>().event(flecs::OnAdd).each(
-            [&](flecs::entity e, render_system_ctx_t& ctx){ state._set_current_renderer(e); });
+            [&](flecs::entity e, render_system_ctx_t& ctx){ state.set_current_renderer(e); });
 
         ctx = ctx_alloc.allocate_ctx<render_system_ctx_t>();
 

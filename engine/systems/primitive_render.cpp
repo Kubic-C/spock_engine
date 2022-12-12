@@ -110,25 +110,33 @@ namespace spk {
         glDrawArrays(GL_TRIANGLES, 0, vertices);
     }
 
+    void primitive_render_system_ctx_t::render_edge(glm::mat4& vp, comp_primitive_render_t* info, b2Body* body, b2EdgeShape* edge) {
+        uint32_t vertices = 2;
+
+        mesh[0] = { sfk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex0)), info->color };
+        mesh[1] = { sfk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex1)), info->color };
+    
+        vertex_buffer.buffer_sub_data(0, vertices * sizeof(vertex_t), mesh.data());
+        vertex_array.bind();
+
+        program.use();
+        program.set_mat4("u_vp", vp);
+        glDrawArrays(GL_LINES, 0, vertices);
+    }
+
     void primitive_render_system_ctx_t::init() {
         vertex_array.init();
         vertex_array.bind();
 
         vertex_buffer.init(GL_ARRAY_BUFFER);
-        vertex_buffer.buffer_data(sizeof(float) * 2 * 3 * 6 * 100, nullptr, GL_DYNAMIC_DRAW);
+        vertex_buffer.buffer_data(sizeof(vertex_t) * 4 * 100, nullptr, GL_DYNAMIC_DRAW);
         vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0, vertex_buffer);
         vertex_layout.add(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, sizeof(float) * 2, vertex_buffer);
         vertex_array.bind_layout(vertex_layout);
 
-        uint32_t vs_shader = sfk::create_shader_from_src(GL_VERTEX_SHADER, vs_colliders, nullptr);
-        uint32_t fs_shader = sfk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_colliders, nullptr);
-        
-        sfk_assert(vs_shader != UINT32_MAX);
-        sfk_assert(fs_shader != UINT32_MAX);
-        
         program.init();
-        DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
-        sfk_assert(ret);
+        bool ret = program.load_shader_str(vs_colliders, fs_colliders);
+        sfk_assert(ret && "primitive render shaders invalid");
     
         mesh.resize(100 * 3);
     }
@@ -140,7 +148,7 @@ namespace spk {
     }
 
     void primitive_render_system_update(flecs::iter& iter, comp_primitive_render_t* c_primi_render) {
-        auto render_ctx = state._get_current_renderer().get_ref<render_system_ctx_t>(); // this is a safe op as render system only has pre and post update
+        auto render_ctx = state.get_current_renderer().get_ref<render_system_ctx_t>(); // this is a safe op as render system only has pre and post update
         auto ctx = SPK_GET_CTX_REF(iter, primitive_render_system_ctx_t);
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -166,6 +174,10 @@ namespace spk {
 
                     case b2Shape::Type::e_circle:
                         ctx->render_circle(render_ctx->vp, render_info, body, (b2CircleShape*)shape);
+                        break;
+
+                    case b2Shape::Type::e_edge:
+                        ctx->render_edge(render_ctx->vp, render_info, body, (b2EdgeShape*)shape);
                         break;
 
                     default:
