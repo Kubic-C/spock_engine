@@ -2,6 +2,7 @@
 
 #include "../systems.hpp"
 #include "../components/sprite.hpp"
+#include "../components/tilebody.hpp"
 #include "render.hpp"
 
 namespace spk {
@@ -13,6 +14,9 @@ namespace spk {
 
         void init();
         void free();
+
+        void draw_atlas_meshes();
+        void add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset = {0.0f, 0.0f});
 
         sfk::vertex_layout_t vertex_layout;
         sfk::vertex_buffer_t vertex_buffer;

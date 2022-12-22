@@ -2,6 +2,7 @@
 
 #include "../systems.hpp"
 #include "../components/box2D.hpp"
+#include "../components/tilebody.hpp"
 #include "render.hpp"
 
 /* quick and dirty debug rendering for Box2D shapes or primitive shapes */

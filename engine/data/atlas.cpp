@@ -22,12 +22,9 @@ namespace spk {
         const glm::ivec2 tsize = texture.get_size();
 
         texture.bind();
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glGenerateMipmap(GL_TEXTURE_2D);
-        sfk::log.log("size: %i, %i", tsize.x, tsize.y);
 
         width_per_sprite = (float)tsize.x / (float)sprites_per_row;
         height_per_sprite = (float)tsize.y / (float)sprites_per_column;

@@ -20,6 +20,10 @@ void exit_play_game(spk::engine_t& engine, spk::ui_button_t& button) {
     *(current_state_e*)engine.user_state = STATE_EXIT_PLAY;
 }
 
+// TODO:
+// Tick and update for user side now becomes intergated, and seperate from flecs
+// fix on_add being called after flecs::entity::set
+
 MAIN {
     int exit_code = 0;
     spk::engine_t engine;
@@ -29,77 +33,67 @@ MAIN {
     spk::ui_button_t* play_btn;
     spk::ui_button_t* exit_play_btn;
     current_state_e my_state;
-    flecs::entity ball;
-    flecs::entity bottom;
-    flecs::entity test;
+    flecs::entity test, bottom;
 
     engine.init();
     engine.set_target_fps(10000);
     engine.set_vsync_opt(spk::VSYNC_ENABLED);
 
-    auto start_ = [&](){
-        sfk::log.log("starting sim");
-        b2World* world = engine.get_current_b2World();
 
-        ball = engine.world.entity();
-        ball.add<spk::comp_primitive_render_t>();
-        ball.add<spk::comp_b2Body_t>().set([&](spk::comp_b2Body_t& body){
-            
-            b2BodyDef body_def;
-            body_def.angle = 0.0f;
-            body_def.enabled = true;
-            body_def.position = b2Vec2(-5.0f, 5.0f);
-            body_def.type = b2BodyType::b2_dynamicBody;
-            body.body = world->CreateBody(&body_def);
+    b2World* world = engine.get_current_b2World();
+    world->SetGravity(b2Vec2(0.0f, -100.0f));
 
-            //b2EdgeShape edge;
-            //edge.SetTwoSided(b2Vec2(-1.0f, 0.0f), b2Vec2(1.0f, 0.0f));
+    // test = engine.world.entity()
+    //     .set([&](spk::comp_tilebody_t& tilebody){
+    //         //tilebody.body->SetType(b2_dynamicBody);
+    //         sfk::log.log("inside the code");
+    //     });
 
-            //spk::add_body_fixture(&body, &edge, 0.2f, 1.0f, 1.0f, 1.0f);
+    for(uint32_t i = 0; i < 20; i++) {
+        test = engine.world.entity();
+        test.add<spk::comp_primitive_render_t>();
+        test.set([&](spk::comp_tilebody_t& comp){
+            comp.dictionary[0].sprite.tax = 0;
+            comp.dictionary[1].sprite.tax = 1;
+            comp.dictionary[2].sprite.tax = 2;
+            comp.dictionary[3].sprite.tax = 3;
+
+            comp.tilemap.tiles[0][0].flags &= ~spk::TILE_FLAGS_EMPTY;
+            comp.tilemap.tiles[1][0].flags &= ~spk::TILE_FLAGS_EMPTY;
+            comp.tilemap.tiles[2][0].flags &= ~spk::TILE_FLAGS_EMPTY;
+
+            comp.tilemap.tiles[0][1].flags &= ~spk::TILE_FLAGS_EMPTY;
+            comp.tilemap.tiles[1][1].flags &= ~spk::TILE_FLAGS_EMPTY;
+            comp.tilemap.tiles[2][1].flags &= ~spk::TILE_FLAGS_EMPTY;
+
+            comp.tilemap.tiles[0][2].flags &= ~spk::TILE_FLAGS_EMPTY;
+            comp.tilemap.tiles[1][2].flags &= ~spk::TILE_FLAGS_EMPTY;
+
+            comp.add_fixtures();
+            comp.body->SetType(b2_dynamicBody);
         });
+    }
 
-        bottom = engine.world.entity();
-        bottom.add<spk::comp_primitive_render_t>();
-        bottom.add<spk::comp_b2Body_t>().set([&](spk::comp_b2Body_t& body){
-            b2BodyDef body_def;
-            body_def.angle = 0.0f;
-            body_def.enabled = true;
-            body_def.position = b2Vec2(0.0f, -20.0f);
-            body_def.type = b2BodyType::b2_staticBody;
-            body.body = world->CreateBody(&body_def);
+    bottom = engine.world.entity();
+    bottom.set([&](spk::comp_tilebody_t& comp){
+        comp.dictionary[0].sprite.tax = 0;
+        comp.dictionary[1].sprite.tax = 1;
+        comp.dictionary[2].sprite.tax = 2;
+        comp.dictionary[3].sprite.tax = 3;
 
-            b2PolygonShape shape;
-            shape.SetAsBox(100.0f, 5.0f);
-
-            spk::add_body_fixture(&body, &shape, 0.2f, 0.0f, 1.0f, 1.0f);
-        });
-
-        for(uint32_t i = 0; i < 11; i++) {
-            test = engine.world.entity(); 
-            test.set([&](spk::comp_sprite_t& sprite) {
-                sprite.atlas_id = 0;
-                sprite.tax = rand() % 4;
-                sprite.tay = 0;
-                sprite.size = (glm::vec2){5.0f, 5.0f};
-            });
-            test.set([&](spk::comp_b2Body_t& body){
-                b2BodyDef body_def;
-                body_def.position = { 0.0f, 0.0f };
-                body_def.type = b2BodyType::b2_dynamicBody;
-                body.body = world->CreateBody(&body_def);
-
-                b2PolygonShape shape;
-                shape.SetAsBox(5.0f, 5.0f);
-
-                spk::add_body_fixture(&body, &shape, 0.2f, 0.0f, 1.0f, 1.0f);
-            });
+        for(uint32_t x = 0; x < comp.tilemap.size.x; x++) {
+            comp.tilemap.tiles[x][0].id = 0;
+            comp.tilemap.tiles[x][0].flags &= ~spk::TILE_FLAGS_EMPTY;
         }
-    };
+
+        comp.body->SetTransform(b2Vec2(0.0f, -10.0f), 0.0f);
+        comp.add_fixtures();
+    });
+
+    sfk::log.log("body count %i", engine.get_current_b2World()->GetBodyCount());
 
     auto end_ = [&](){
         sfk::log.log("ending sim");
-        ball.destruct();
-        bottom.destruct();
         test.destruct();
     };
 
@@ -112,7 +106,7 @@ MAIN {
         return 4;
     }
 
-    engine.rsrc_mng.load_ascii_font("./LT_fun.otf");
+    engine.rsrc_mng.font_load_ascii("./Raleway-Regular.ttf");
 
     exit_btn = canvas->btns.malloc();
     exit_btn->flags = spk::UI_ELEMENT_FLAGS_ENABLED | spk::UI_ELEMENT_FLAGS_RELATIVE;
@@ -156,14 +150,44 @@ MAIN {
     my_state = STATE_MENU;
     engine.user_state = &my_state;
 
-    double last_second = 0.0;
-    double last_10_seconds = 0.0;
-    uint32_t x = 0;
-    uint32_t cur_i = 0;
+    engine.set_ppm(5.0f);
+    engine.world.observer().event<spk::event_window_mouse_wheel_t>().term<spk::tag_events_t>()
+        .iter([&](flecs::iter& iter){
+            auto event = iter.param<spk::event_window_mouse_wheel_t>();
+            float step = 0.1f;
 
-    engine.set_ppm(0.5f);
+            if(event->y < 0) {
+                engine.set_ppm(engine.get_ppm() - step);
+            } else if(event->y > 0) {
+                engine.set_ppm(engine.get_ppm() + step);
+            }
+        });
 
-    engine.world.system().kind(flecs::OnUpdate).interval(engine.get_state().get_target_tps())
+    engine.world.observer().event<spk::event_window_mouse_click_t>().term<spk::tag_events_t>()
+        .iter([&](flecs::iter& iter){
+            auto event = iter.param<spk::event_window_mouse_click_t>();
+            auto box_world = engine.get_current_b2World();
+
+            glm::ivec2 window_size = engine.get_current_window_size();
+            // perspective offset
+            float perspx = 0.0f, perspy = 0.0f;
+
+            float rel_window_width  = (window_size.x / engine.get_ppm()) / 2.0f;
+            float rel_window_height = (window_size.y / engine.get_ppm()) / 2.0f;
+
+            float mouse_y = window_size.y - event->y; // flip the y
+
+            float mouse_clickx = perspx + ((float)event->x / engine.get_ppm() - rel_window_width);
+            float mouse_clicky = perspy + ((float)mouse_y  / engine.get_ppm() - rel_window_height);
+            
+            if(test.is_alive() && test.has<spk::comp_tilebody_t>()) {
+                test.set([&](spk::comp_tilebody_t& body) {
+                    body.body->SetTransform(b2Vec2(mouse_clickx, mouse_clicky), 0.0f);
+                });
+            }
+        });
+
+    engine.world.system().kind(flecs::OnUpdate).term().read_write().interval(engine.get_state().get_target_tps())
         .iter([&](flecs::iter& iter){
             switch(my_state) {
             case STATE_LOAD:
@@ -171,8 +195,6 @@ MAIN {
                 exit_btn->flags &= ~spk::UI_ELEMENT_FLAGS_ENABLED;
                 exit_play_btn->flags |= spk::UI_ELEMENT_FLAGS_ENABLED;
             
-                start_(); // start the simulation
-
                 my_state = STATE_PLAY;
                 
                 sfk::log.log("loading state");
@@ -185,8 +207,6 @@ MAIN {
                 play_btn->flags |= spk::UI_ELEMENT_FLAGS_ENABLED;
                 exit_btn->flags |= spk::UI_ELEMENT_FLAGS_ENABLED;
                 exit_play_btn->flags &= ~spk::UI_ELEMENT_FLAGS_ENABLED;
-
-                end_(); // end the simulation
 
                 my_state = STATE_MENU;
 
@@ -207,6 +227,8 @@ MAIN {
     engine.set_current_window_size(700, 700);
 
     exit_code = engine.run();
+
+    sfk::log.log("exiting!");
     engine.free();
 
     return exit_code;

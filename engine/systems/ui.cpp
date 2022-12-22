@@ -352,6 +352,7 @@ namespace spk {
                     return false;
             };
 
+            // iterate through all blocks and use check_button lambda on them
             canvas->btns.get_valid_blocks(nullptr, UINT32_MAX, check_button);
         }
     }

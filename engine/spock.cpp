@@ -36,8 +36,8 @@ namespace spk {
         render_cs_init(ctx_alloc, world);
 
         // render systems
-        primitive_render_cs_init(ctx_alloc, world);
         sprite_render_cs_init(ctx_alloc, world);
+        primitive_render_cs_init(ctx_alloc, world);
         ui_cs_init(ctx_alloc, world);
         rsrc_mng.init();
 
@@ -114,6 +114,10 @@ namespace spk {
     void engine_t::set_ppm(float ppm) {
         state.set_ppm(ppm);
         state.get_current_window().get_ref<comp_window_t>()->force_resize_event();
+    }
+
+    float engine_t::get_ppm() {
+        return state.get_ppm();
     }
 
     void engine_t::exit(int code) {

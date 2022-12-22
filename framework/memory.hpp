@@ -238,20 +238,22 @@ namespace sfk {
 
         !) invalid conversion from ‘long int’ to ‘int*’ [-fpermissive] pointer subtracrion  
             
+         despite the two varibles being the same type:
          if anyone can figure out why this happens that'd be great */
+        
+        ptr->~T();
 
-        // 'n' in pointer format 
+        // couldn't use pointer types because of the 
+        // error described above, so size_t is used in place of pointers
         size_t n_ptr = (size_t)ptr - (size_t)aligned_ptr;
         // TODO: make this faster
-        size_t n = n_ptr / sizeof(T); // division is slow so there could be a better way to do this  
+        uint32_t n = n_ptr / sizeof(T); // division is slow so there could be a better way to do this  
     
         sfk_assert( ! (block_flags[n] & BLOCK_FLAGS_FREE));
 
-        block_flags[n] |= 0b00000001;
+        block_flags[n] |= BLOCK_FLAGS_FREE;
 
         currently_allocated--;
-
-        ptr->~T();
     }
 
     template<typename T, uint32_t size, size_t alignment, size_t padding>

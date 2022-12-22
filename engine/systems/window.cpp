@@ -47,6 +47,14 @@ namespace spk {
                     break;
                 }
 
+                case SDL_MOUSEWHEEL:
+                    iter.world().event<event_window_mouse_wheel_t>()
+                        .id<tag_events_t>()
+                        .entity(state.get_current_event_system())
+                        .ctx(ctx->event.wheel) 
+                        .emit();
+                    break;
+
                 default:
                     break;
             } // switch

@@ -42,7 +42,7 @@ namespace spk {
     public:
         bool fm_init();
         void fm_free();
-        font_t* load_ascii_font(const char* file_path, int f_width = 0, int f_height = 32);
+        font_t* font_load_ascii(const char* file_path, int f_width = 0, int f_height = 32);
         font_t* get_first_font();
 
     private:

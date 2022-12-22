@@ -3,6 +3,7 @@
 #include "entity.hpp"
 #include "opengl.hpp"
 #include "memory.hpp"
+#include "structure.hpp"
 
 // spock framework //
 namespace sfk {

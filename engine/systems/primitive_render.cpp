@@ -157,9 +157,16 @@ namespace spk {
             comp_primitive_render_t* render_info = &c_primi_render[i];
             const comp_b2Body_t* comp_body = iter.entity(i).get<comp_b2Body_t>();
             const comp_box_t* box = iter.entity(i).get<comp_box_t>();
+            const comp_tilebody_t* tilebody = iter.entity(i).get<comp_tilebody_t>();
+            
+            b2Body* body = nullptr;
 
-            if(comp_body) {
-                b2Body* body = comp_body->body;
+            if(comp_body)
+                body = comp_body->body;
+            else if(tilebody)
+                body = tilebody->body;
+
+            if(body) {
                 b2Fixture* fixture = body->GetFixtureList();
 
                 for(; fixture; fixture = fixture->GetNext()) {
@@ -186,7 +193,7 @@ namespace spk {
                 }
             } else if(box) {
                 ctx->render_box(render_ctx->vp, render_ctx->quad_index_buffer, render_info, box);
-            }
+            } 
         }
         
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

@@ -15,7 +15,8 @@ target_sources(spock_framework PRIVATE
     "entity.hpp" "entity.cpp"
     "opengl.hpp" "opengl.cpp"
     "debugger.hpp" "debugger.cpp"
-    "memory.hpp" "memory.cpp")
+    "memory.hpp" "memory.cpp"
+    "structure.hpp" "structure.cpp")
 
 target_sources(spock_framework PUBLIC
     "external/stb_image.h" "external/stb_image.c")

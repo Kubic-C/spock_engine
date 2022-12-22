@@ -109,7 +109,7 @@ namespace spk {
         }
     }
 
-    font_t* font_manager_t::load_ascii_font(const char* file_path, int f_width, int f_height) {
+    font_t* font_manager_t::font_load_ascii(const char* file_path, int f_width, int f_height) {
         font_t* font = font_pool.malloc();
         if(!font)
             return nullptr;

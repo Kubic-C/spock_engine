@@ -23,15 +23,19 @@ target_sources(spock_engine PRIVATE
     "components/window.hpp" "components/window.cpp"
     "components/box2D.hpp" "components/box2D.cpp"
     "components/ui.hpp" "components/ui.cpp"
-    "components/sprite.hpp" "components/sprite.cpp")
+    "components/sprite.hpp" "components/sprite.cpp"
+    "components/tilebody.hpp" "components/tilebody.cpp")
 
 target_sources(spock_engine PRIVATE
-    "utility/ui.hpp" "utility/ui.cpp")
+    "utility/ui.hpp" "utility/ui.cpp"
+    "utility/entity.hpp" "utility/entity.cpp")
 
 target_sources(spock_engine PRIVATE
     "data/text.hpp" "data/text.cpp"
     "data/resource_manager.hpp" "data/resource_manager.cpp"
-    "data/atlas.hpp" "data/atlas.cpp")    
+    "data/atlas.hpp" "data/atlas.cpp"
+    "data/tiles.hpp" "data/tiles.cpp"
+    "data/tilemap.hpp" "data/tilemap.cpp")    
 
 target_sources(spock_engine PUBLIC
     "spock.hpp")

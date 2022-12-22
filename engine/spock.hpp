@@ -8,6 +8,8 @@
 #include "systems/primitive_render.hpp"
 #include "systems/sprite_render.hpp"
 
+#include "utility/entity.hpp"
+
 #define _SPK_NO_DEF_STATE
 #include "state.hpp"
 #undef _SPK_NO_DEF_STATE
@@ -49,6 +51,9 @@ namespace spk {
         
         // sets pixels per meter
         void set_ppm(float ppm);
+
+        // gets ppm
+        float get_ppm();
 
         // signal the engine to end
         void exit(int code);

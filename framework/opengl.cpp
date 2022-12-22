@@ -164,6 +164,13 @@ namespace sfk {
         uint8_t* pixels;
         int width, height;
 
+        //TODO: desired_channels parameter does not work as expected
+        sfk_assert(desired_channels == 0);
+
+        if(desired_channels == 0) {
+            desired_channels = STBI_rgb_alpha;
+        }
+
         stbi_set_flip_vertically_on_load(flip);
         pixels = stbi_load(path, &width, &height, &channels, desired_channels);
         if(!pixels)

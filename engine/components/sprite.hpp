@@ -4,7 +4,6 @@
 #include "../data/atlas.hpp"
 
 namespace spk {
-    
     struct comp_sprite_t {
         void init() {}
         void free() {}
@@ -14,7 +13,6 @@ namespace spk {
         // sprite's position on the in x and y
         uint32_t tax, tay;
         glm::vec2 size;
-        glm::vec2 offset; // the offset relative to the body's position 
     };
 
     void sprite_comp_init(flecs::world& world);
