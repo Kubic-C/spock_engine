@@ -67,7 +67,7 @@ namespace spk {
 
     struct stats_t {
     private:
-        bool print_ps_stats;
+        bool print_ps_stats = true;
         uint32_t fps;
         uint32_t tps;
     

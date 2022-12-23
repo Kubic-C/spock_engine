@@ -49,7 +49,41 @@ namespace spk {
     }
 
     int engine_t::run() {
-        while(!state.is_exit() && world.progress(0)) {}
+        double delta_time = 0.0;
+        double ticks_to_do = 0.0;
+        double last_frame = 0.0;
+        
+        while(!state.is_exit()) {
+            double current_frame = sfk::time.get_time();
+            delta_time = current_frame - last_frame;
+            ticks_to_do += delta_time / state.get_target_tps(true);
+            last_frame = current_frame;
+
+            if(user_state.tick != nullptr) {
+                while(ticks_to_do >= 1.0) {
+                    ticks_to_do--;
+
+                    // one tick
+                    user_state.tick(*this);
+                }
+            } else {
+                ticks_to_do = 0.0;
+            }
+
+            // one update
+            world.frame_begin(delta_time);
+
+            world.run_pipeline(flecs::entity(0ULL), delta_time);
+
+            if(user_state.update != nullptr)
+                user_state.update(*this);
+
+            world.frame_end();
+
+            // exit conditions:
+            if(world.should_quit())
+                state.exit(0);
+        }
 
         sfk::log.log(sfk::LOG_TYPE_INFO, "exiting with code; %i", state.get_exit_code());
 

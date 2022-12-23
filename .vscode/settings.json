@@ -97,6 +97,8 @@
         "ciso646": "cpp",
         "climits": "cpp",
         "locale": "cpp",
-        "cstdbool": "cpp"
+        "cstdbool": "cpp",
+        "charconv": "cpp",
+        "ranges": "cpp"
     }
 }

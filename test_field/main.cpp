@@ -9,15 +9,15 @@ enum current_state_e: uint32_t {
 };
 
 void exit_game(spk::engine_t& engine, spk::ui_button_t& button) {
-    *(current_state_e*)engine.user_state = STATE_EXIT;
+    *(current_state_e*)engine.user_state.user_data = STATE_EXIT;
 }
 
 void play_game(spk::engine_t& engine, spk::ui_button_t& button) {
-    *(current_state_e*)engine.user_state = STATE_LOAD;
+    *(current_state_e*)engine.user_state.user_data = STATE_LOAD;
 }
 
 void exit_play_game(spk::engine_t& engine, spk::ui_button_t& button) {
-    *(current_state_e*)engine.user_state = STATE_EXIT_PLAY;
+    *(current_state_e*)engine.user_state.user_data = STATE_EXIT_PLAY;
 }
 
 // TODO:
@@ -49,46 +49,48 @@ MAIN {
     //         sfk::log.log("inside the code");
     //     });
 
-    for(uint32_t i = 0; i < 20; i++) {
-        test = engine.world.entity();
-        test.add<spk::comp_primitive_render_t>();
-        test.set([&](spk::comp_tilebody_t& comp){
+    auto start_ = [&]() -> void {
+        for(uint32_t i = 0; i < 20; i++) {
+            test = engine.world.entity();
+            test.add<spk::comp_primitive_render_t>();
+            test.set([&](spk::comp_tilebody_t& comp){
+                comp.dictionary[0].sprite.tax = 0;
+                comp.dictionary[1].sprite.tax = 1;
+                comp.dictionary[2].sprite.tax = 2;
+                comp.dictionary[3].sprite.tax = 3;
+
+                comp.tilemap.tiles[0][0].flags &= ~spk::TILE_FLAGS_EMPTY;
+                comp.tilemap.tiles[1][0].flags &= ~spk::TILE_FLAGS_EMPTY;
+                comp.tilemap.tiles[2][0].flags &= ~spk::TILE_FLAGS_EMPTY;
+
+                comp.tilemap.tiles[0][1].flags &= ~spk::TILE_FLAGS_EMPTY;
+                comp.tilemap.tiles[1][1].flags &= ~spk::TILE_FLAGS_EMPTY;
+                comp.tilemap.tiles[2][1].flags &= ~spk::TILE_FLAGS_EMPTY;
+
+                comp.tilemap.tiles[0][2].flags &= ~spk::TILE_FLAGS_EMPTY;
+                comp.tilemap.tiles[1][2].flags &= ~spk::TILE_FLAGS_EMPTY;
+
+                comp.add_fixtures();
+                comp.body->SetType(b2_dynamicBody);
+            });
+        }
+
+        bottom = engine.world.entity();
+        bottom.set([&](spk::comp_tilebody_t& comp){
             comp.dictionary[0].sprite.tax = 0;
             comp.dictionary[1].sprite.tax = 1;
             comp.dictionary[2].sprite.tax = 2;
             comp.dictionary[3].sprite.tax = 3;
 
-            comp.tilemap.tiles[0][0].flags &= ~spk::TILE_FLAGS_EMPTY;
-            comp.tilemap.tiles[1][0].flags &= ~spk::TILE_FLAGS_EMPTY;
-            comp.tilemap.tiles[2][0].flags &= ~spk::TILE_FLAGS_EMPTY;
+            for(uint32_t x = 0; x < comp.tilemap.size.x; x++) {
+                comp.tilemap.tiles[x][0].id = 0;
+                comp.tilemap.tiles[x][0].flags &= ~spk::TILE_FLAGS_EMPTY;
+            }
 
-            comp.tilemap.tiles[0][1].flags &= ~spk::TILE_FLAGS_EMPTY;
-            comp.tilemap.tiles[1][1].flags &= ~spk::TILE_FLAGS_EMPTY;
-            comp.tilemap.tiles[2][1].flags &= ~spk::TILE_FLAGS_EMPTY;
-
-            comp.tilemap.tiles[0][2].flags &= ~spk::TILE_FLAGS_EMPTY;
-            comp.tilemap.tiles[1][2].flags &= ~spk::TILE_FLAGS_EMPTY;
-
+            comp.body->SetTransform(b2Vec2(0.0f, -10.0f), 0.0f);
             comp.add_fixtures();
-            comp.body->SetType(b2_dynamicBody);
         });
-    }
-
-    bottom = engine.world.entity();
-    bottom.set([&](spk::comp_tilebody_t& comp){
-        comp.dictionary[0].sprite.tax = 0;
-        comp.dictionary[1].sprite.tax = 1;
-        comp.dictionary[2].sprite.tax = 2;
-        comp.dictionary[3].sprite.tax = 3;
-
-        for(uint32_t x = 0; x < comp.tilemap.size.x; x++) {
-            comp.tilemap.tiles[x][0].id = 0;
-            comp.tilemap.tiles[x][0].flags &= ~spk::TILE_FLAGS_EMPTY;
-        }
-
-        comp.body->SetTransform(b2Vec2(0.0f, -10.0f), 0.0f);
-        comp.add_fixtures();
-    });
+    };
 
     sfk::log.log("body count %i", engine.get_current_b2World()->GetBodyCount());
 
@@ -148,7 +150,7 @@ MAIN {
     exit_play_btn->add_child(exit_play_text);
 
     my_state = STATE_MENU;
-    engine.user_state = &my_state;
+    engine.user_state.user_data = &my_state;
 
     engine.set_ppm(5.0f);
     engine.world.observer().event<spk::event_window_mouse_wheel_t>().term<spk::tag_events_t>()
@@ -187,14 +189,16 @@ MAIN {
             }
         });
 
-    engine.world.system().kind(flecs::OnUpdate).term().read_write().interval(engine.get_state().get_target_tps())
-        .iter([&](flecs::iter& iter){
+    engine.user_state.tick = 
+        [&](spk::engine_t& engine){
             switch(my_state) {
             case STATE_LOAD:
                 play_btn->flags &= ~spk::UI_ELEMENT_FLAGS_ENABLED;
                 exit_btn->flags &= ~spk::UI_ELEMENT_FLAGS_ENABLED;
                 exit_play_btn->flags |= spk::UI_ELEMENT_FLAGS_ENABLED;
             
+                start_();
+
                 my_state = STATE_PLAY;
                 
                 sfk::log.log("loading state");
@@ -210,6 +214,8 @@ MAIN {
 
                 my_state = STATE_MENU;
 
+                end_();
+
                 sfk::log.log("exiting play");
                 break;
 
@@ -221,7 +227,7 @@ MAIN {
             default:
                 break;
             }
-        });
+        };
 
     engine.set_current_window_title("hello world");
     engine.set_current_window_size(700, 700);

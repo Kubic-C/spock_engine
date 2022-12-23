@@ -15,6 +15,15 @@
 #undef _SPK_NO_DEF_STATE
 
 namespace spk {
+    typedef std::function<void(engine_t& engine)> user_tick_t;
+    typedef std::function<void(engine_t& engine)> user_update_t;
+    
+    struct user_state_t {
+        void* user_data      = nullptr;
+        user_tick_t tick     = nullptr;
+        user_update_t update = nullptr;
+    };
+
     class engine_t {
     public: 
         void init();
@@ -58,10 +67,9 @@ namespace spk {
         // signal the engine to end
         void exit(int code);
 
-        void* user_state;
-
         flecs::world world;
         system_ctx_allocater_t ctx_alloc;
         resource_manager_t rsrc_mng;
+        user_state_t user_state;
     };
 }
