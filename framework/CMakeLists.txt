@@ -14,7 +14,7 @@ target_sources(spock_framework PRIVATE
     "fbase.hpp"
     "entity.hpp" "entity.cpp"
     "opengl.hpp" "opengl.cpp"
-    "debugger.hpp" "debugger.cpp"
+    "logger.hpp" "logger.cpp"
     "memory.hpp" "memory.cpp"
     "structure.hpp" "structure.cpp")
 

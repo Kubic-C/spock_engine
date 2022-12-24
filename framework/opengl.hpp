@@ -1,7 +1,7 @@
 #pragma once
 
 #include "fbase.hpp"
-#include "debugger.hpp"
+#include "logger.hpp"
 #include "external/stb_image.h"
 
 #define BGFX_HANDLE_VALID(handle) (handle.idx != bgfx::kInvalidHandle)

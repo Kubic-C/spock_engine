@@ -4,7 +4,7 @@ namespace spk {
     extern state_t state;
 
     void engine_t::init() {
-        SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "## \u001B[31m ENGINE INIT \u001B[0m ##");
+        SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "[emt][red] ENGINE INIT [reset][emt]");
 
         state.engine = this;
 
