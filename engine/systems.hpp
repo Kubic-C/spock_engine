@@ -5,7 +5,7 @@
 /* handling of systems with FLECS */
 
 #define SPK_GET_CTX_REF(iter, type) static_cast<flecs::entity*>(iter.ctx())->get_ref<type>()
-#define SPK_NOT_A_TAG float ___not_a_tag;
+#define SPK_NOT_A_TAG  uint8_t ___not_a_tag;
 
 namespace spk {
     class system_ctx_allocater_t {

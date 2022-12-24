@@ -1,6 +1,6 @@
 #include "tilemap.hpp"
 
-#define TILE_EMPTY(tile) (tile.flags & TILE_FLAGS_EMPTY)
+#define TILE_EMPTY(tile) (tile.id == 0)
 
 namespace spk {
     void tilemap_t::init() {
@@ -14,7 +14,8 @@ namespace spk {
 
         for(uint32_t x = 0; x < size.x; x++) {
             for(uint32_t y = 0; y < size.y; y++) {
-                tiles[x][y].flags |= TILE_FLAGS_EMPTY;
+                tiles[x][y].id = 0;
+                tiles[x][y].flags = TILE_FLAGS_COLLIADABLE;
             }
         }
     }
@@ -75,9 +76,10 @@ namespace spk {
         for(uint32_t x = 0; x < size.x; x++) {
             for(uint32_t y = 0; y < size.y; y++) {
                 bool empty_near;
-                
-                if(tiles[x][y].flags & TILE_FLAGS_COLLIADABLE)
-                    goto add_collide;
+
+                if(tiles[x][y].id == 0 ||
+                   !(tiles[x][y].flags & TILE_FLAGS_COLLIADABLE))
+                    break;
 
                 empty_near = tile_is_colliadable(x, y);
                 

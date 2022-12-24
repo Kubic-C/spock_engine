@@ -17,14 +17,16 @@ target_sources(spock_engine PRIVATE
     "systems/primitive_render.hpp" "systems/primitive_render.cpp"
     "systems/sprite_render.hpp" "systems/sprite_render.cpp"
     "systems/ps_tracker.hpp" "systems/ps_tracker.cpp"
-    "systems/ui.hpp" "systems/ui.cpp")
+    "systems/ui.hpp" "systems/ui.cpp"
+    "systems/camera.hpp" "systems/camera.cpp")
 
 target_sources(spock_engine PRIVATE
     "components/window.hpp" "components/window.cpp"
     "components/box2D.hpp" "components/box2D.cpp"
     "components/ui.hpp" "components/ui.cpp"
     "components/sprite.hpp" "components/sprite.cpp"
-    "components/tilebody.hpp" "components/tilebody.cpp")
+    "components/tilebody.hpp" "components/tilebody.cpp"
+    "components/camera.hpp" "components/camera.cpp")
 
 target_sources(spock_engine PRIVATE
     "utility/ui.hpp" "utility/ui.cpp"

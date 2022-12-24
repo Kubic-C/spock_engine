@@ -7,8 +7,7 @@
 
 namespace spk {
     enum tile_flags_t {
-        TILE_FLAGS_COLLIADABLE = 1 << 0,
-        TILE_FLAGS_EMPTY       = 1 << 1
+        TILE_FLAGS_COLLIADABLE = 1 << 0
     };
 
     struct tile_metadata_t {
@@ -25,4 +24,18 @@ namespace spk {
     };
 
     typedef std::unordered_map<uint32_t, tile_metadata_t> tile_dictionary_t;
+
+    class tile_dictionary_manager_t {
+    public:
+        void td_init();
+        void td_free();
+
+        tile_dictionary_t& get_tile_dictionary() {
+            return dictionary;
+        }
+
+    private:
+        tile_dictionary_t dictionary;
+
+    };
 }

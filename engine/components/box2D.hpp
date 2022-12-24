@@ -27,7 +27,6 @@ namespace spk {
         void free();
     };  
 
-    void box2d_world_tag_on_add(flecs::entity e, tag_current_box2d_world_t tag);
     void box2d_comp_init(flecs::world& world); // init all comps
 
     b2Fixture* add_body_fixture(comp_b2Body_t* body, b2Shape* shape, float friction = 0.2f, float restitution = 0.0f,

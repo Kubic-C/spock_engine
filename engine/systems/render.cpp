@@ -43,22 +43,9 @@ namespace spk {
     }
 
     void render_system_resize(flecs::iter& iter) {
-        auto ctx = SPK_GET_CTX_REF(iter, render_system_ctx_t); 
-        
+        auto ctx = SPK_GET_CTX_REF(iter, render_system_ctx_t);
         event_window_size_t* resize = iter.param<event_window_size_t>();
-        float half_width  = (float)resize->width / 2;
-        float half_height = (float)resize->height / 2;
-        glm::mat4 view, proj;
-
-        view = glm::identity<glm::mat4>();
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
-        view = glm::scale(view, glm::vec3(state.get_ppm()));
-        proj = glm::ortho(-half_width, 
-                           half_width, 
-                          -half_height, 
-                           half_height);
-        ctx->vp = proj * view;
-
+        
         glViewport(0, 0, resize->width, resize->height);
     }
 

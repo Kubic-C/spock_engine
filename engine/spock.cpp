@@ -33,6 +33,7 @@ namespace spk {
         world.entity().add<comp_window_t>().add<tag_current_window_t>();
         world.entity().add<comp_b2World_t>().add<tag_current_box2d_world_t>();
 
+        camera_cs_init(ctx_alloc, world);
         render_cs_init(ctx_alloc, world);
 
         // render systems

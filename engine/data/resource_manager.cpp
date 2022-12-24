@@ -8,11 +8,14 @@ namespace spk {
         if(!am_init())
             return false;
 
+        td_init();
+
         return true;
     }
 
     void resource_manager_t::free() {
         am_free();
         fm_free();
+        td_free();
     }
 }

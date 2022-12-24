@@ -7,6 +7,7 @@
 #include "systems/render.hpp"
 #include "systems/primitive_render.hpp"
 #include "systems/sprite_render.hpp"
+#include "systems/camera.hpp"
 
 #include "utility/entity.hpp"
 

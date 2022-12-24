@@ -23,7 +23,7 @@ namespace spk {
     }
 
     void comp_tilebody_t::add_fixtures() {
-        auto& dictionary = this->dictionary;
+        auto& dictionary = state.engine->rsrc_mng.get_tile_dictionary();
 
         tilemap.find_colliding_tiles();
 

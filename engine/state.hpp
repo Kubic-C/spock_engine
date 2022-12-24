@@ -30,6 +30,7 @@ namespace spk {
         flecs::entity renderer = flecs::entity(UINT64_MAX);
         flecs::entity event_system = flecs::entity(UINT64_MAX);
         flecs::entity canvas = flecs::entity(UINT64_MAX);
+        flecs::entity camera = flecs::entity(UINT64_MAX);
 
     public:
         engine_t* engine;
@@ -63,11 +64,14 @@ namespace spk {
 
         void set_current_canvas(flecs::entity canvas_) { canvas = canvas_; }
         flecs::entity get_current_canvas() const { return canvas; }; 
+     
+        void set_current_camera(flecs::entity camera_) { camera = camera_; }
+        flecs::entity get_current_camera() const { return camera; }; 
     };
 
     struct stats_t {
     private:
-        bool print_ps_stats = true;
+        bool print_ps_stats = false;
         uint32_t fps;
         uint32_t tps;
     

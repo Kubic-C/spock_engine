@@ -11,7 +11,6 @@
 namespace spk {
     struct comp_tilebody_t {
         tilemap_t tilemap;
-        tile_dictionary_t dictionary;
         b2Body* body;
 
         void init();

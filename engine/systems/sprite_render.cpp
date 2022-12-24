@@ -32,11 +32,13 @@ void main() {
 namespace spk {
 
     void sprite_render_system_ctx_t::init() {
+        const uint32_t gfx_buffer_size = 2000;
+
         vertex_array.init();
         vertex_array.bind();
         
         vertex_buffer.init(GL_ARRAY_BUFFER);
-        vertex_buffer.buffer_data(sizeof(vertex_t) * 4 * 1000, nullptr, GL_DYNAMIC_DRAW);
+        vertex_buffer.buffer_data(sizeof(vertex_t) * 4 * gfx_buffer_size, nullptr, GL_DYNAMIC_DRAW);
         vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, 0, vertex_buffer);
         vertex_layout.add(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, sizeof(float) * 2, vertex_buffer);
         vertex_array.bind_layout(vertex_layout);
@@ -46,7 +48,7 @@ namespace spk {
         sfk_assert(ret && "sprite render shaders invalid");
 
         for(uint32_t i = 0; i < SPK_MAX_ATLAS; i++) {
-            meshes[i].mesh.resize(1000 * 4); // 4 vertex per sprite
+            meshes[i].mesh.resize(gfx_buffer_size * 4); // 4 vertex per sprite
             meshes[i].sprites = 0;
         }
     }
@@ -77,8 +79,9 @@ namespace spk {
 
     void sprite_render_system_ctx_t::draw_atlas_meshes() {
         auto render_ctx = state.get_current_renderer().get_ref<render_system_ctx_t>(); // this is a safe op as render system only has pre and post update
+        auto camera = state.get_current_camera().get_ref<comp_camera_t>();
         resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
-        
+
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         for(uint32_t i = 0; i < SPK_MAX_ATLAS; i++) {
@@ -95,7 +98,7 @@ namespace spk {
 
                 render_ctx->quad_index_buffer.bind();
                 program.use();
-                program.set_mat4("u_vp", render_ctx->vp);
+                program.set_mat4("u_vp", camera->vp);
                 program.set_int("atlas", 0);
                 atlas->texture.active_texture(GL_TEXTURE0);
                 glDrawElements(GL_TRIANGLES, atlas_mesh.sprites * vertexes_per_sprite, GL_UNSIGNED_INT, nullptr);   
@@ -118,8 +121,8 @@ namespace spk {
                 for(uint32_t y = 0; y < tilebody.tilemap.size.y; y++) {
                     tile_t& tile = tilebody.tilemap.tiles[x][y];
 
-                    if(!(tile.flags & TILE_FLAGS_EMPTY)) {
-                        ctx->add_sprite_mesh(tilebody.body, tilebody.dictionary[tile.id].sprite, 
+                    if(tile.id != 0) {
+                        ctx->add_sprite_mesh(tilebody.body, rsrc_mng->get_tile_dictionary()[tile.id].sprite, 
                             {x, y});
                     }
                 }

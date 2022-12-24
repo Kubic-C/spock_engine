@@ -149,6 +149,7 @@ namespace spk {
 
     void primitive_render_system_update(flecs::iter& iter, comp_primitive_render_t* c_primi_render) {
         auto render_ctx = state.get_current_renderer().get_ref<render_system_ctx_t>(); // this is a safe op as render system only has pre and post update
+        auto camera = state.get_current_camera().get_ref<comp_camera_t>();
         auto ctx = SPK_GET_CTX_REF(iter, primitive_render_system_ctx_t);
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -175,16 +176,16 @@ namespace spk {
 
                     switch(type) {
                     case b2Shape::Type::e_polygon:
-                        ctx->render_polygon(render_ctx->vp, render_ctx->quad_index_buffer,
+                        ctx->render_polygon(camera->vp, render_ctx->quad_index_buffer,
                             render_info, body, (b2PolygonShape*)shape);
                         break;
 
                     case b2Shape::Type::e_circle:
-                        ctx->render_circle(render_ctx->vp, render_info, body, (b2CircleShape*)shape);
+                        ctx->render_circle(camera->vp, render_info, body, (b2CircleShape*)shape);
                         break;
 
                     case b2Shape::Type::e_edge:
-                        ctx->render_edge(render_ctx->vp, render_info, body, (b2EdgeShape*)shape);
+                        ctx->render_edge(camera->vp, render_info, body, (b2EdgeShape*)shape);
                         break;
 
                     default:
@@ -192,7 +193,7 @@ namespace spk {
                     };
                 }
             } else if(box) {
-                ctx->render_box(render_ctx->vp, render_ctx->quad_index_buffer, render_info, box);
+                ctx->render_box(camera->vp, render_ctx->quad_index_buffer, render_info, box);
             } 
         }
         
