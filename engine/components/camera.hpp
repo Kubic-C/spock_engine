@@ -1,11 +1,11 @@
 #pragma once
 
-#include "framework.hpp"
+#include "../base.hpp"
 
 namespace spk {
     struct tag_current_camera_t {};
 
-    struct comp_camera_t {
+    struct comp_camera_t { 
         glm::mat4 vp;
         glm::mat4 view;
         glm::mat4 proj;
@@ -16,6 +16,7 @@ namespace spk {
 
         void init();
         void free();
+        glm::vec2 get_world_position(const glm::vec2& screen_coords);
 
         void recalculate();
    }; 

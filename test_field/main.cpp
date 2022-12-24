@@ -34,8 +34,28 @@ MAIN {
     spk::ui_button_t* exit_play_btn;
     current_state_e my_state;
     flecs::entity test, bottom;
-    
+    flecs::entity cam1, cam2;
+
+    spk::debug.flags |= spk::DEBUG_FLAGS_ENABLE_STATE_CHANGE | spk::DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME;
+
     engine.init();
+    
+    srand(1);
+
+    cam1 = engine.world.entity();
+    cam2 = engine.world.entity();
+
+    cam1.set([&](spk::comp_camera_t& cam){
+        cam.pos.x = -50.0f;
+        cam.pos.y = -50.0f;
+        cam.recalculate();
+    });
+    
+    cam2.set([&](spk::comp_camera_t& cam){
+        cam.pos.x  = 50.0f;
+        cam.pos.y = 50.0f;
+        cam.recalculate();
+    });
 
     { // engine and window setup
         engine.set_target_fps(10000);
@@ -44,7 +64,7 @@ MAIN {
         engine.set_current_window_size(700, 700);
 
         b2World* world = engine.get_current_b2World();
-        world->SetGravity(b2Vec2(0.0f, 0.0f));
+        world->SetGravity(b2Vec2(0.0f, -9.81f));
     }
 
     // resource management 
@@ -111,32 +131,32 @@ MAIN {
         td[1].sprite.tay = 3;
 
         td[2].sprite.tax = 0;
-        td[2].density = 1000.0f;
+        td[2].density = 5.0f;
     }   
 
     auto start_ = [&]() -> void {
-        for(uint32_t i = 0; i < 10; i++) {
             test = engine.world.entity();
             test.set([&](spk::comp_tilebody_t& comp){
                 uint32_t id = (rand() % 2) + 1;
 
-                comp.tilemap.tiles[0][0].id = id;
-                comp.tilemap.tiles[1][0].id = id;
-                comp.tilemap.tiles[2][0].id = id;
+                comp.tilemap.tiles =
+                    { std::vector<spk::tile_t>({0, 1, 1, 1, 1, 0, 0, 0, 0, 0}), 
+                      std::vector<spk::tile_t>({0, 1, 1, 1, 1, 0, 0, 0, 0, 0}),  
+                      std::vector<spk::tile_t>({0, 1, 1, 1, 1, 0, 0, 0, 0, 0}), 
+                      std::vector<spk::tile_t>({0, 1, 1, 1, 1, 0, 0, 0, 0, 0}), 
+                      std::vector<spk::tile_t>({0, 1, 1, 1, 1, 1, 1, 1, 1, 1}), 
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 1}),
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 1}),
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 1}), 
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 1}), 
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 2}), 
+                    };
 
-                comp.tilemap.tiles[0][1].id = id; 
-                comp.tilemap.tiles[2][1].id = id; 
-
-                comp.tilemap.tiles[0][2].id = id; 
-                comp.tilemap.tiles[1][2].id = id; 
-                comp.tilemap.tiles[2][2].id = id; 
-                
                 comp.add_fixtures();
                 comp.body->SetType(b2_dynamicBody);
-                comp.body->SetTransform(b2Vec2((float)i * 4.0f, 0.0f), 0.0f);
-                comp.body->SetBullet(true);
-            });
-        }
+                comp.body->SetTransform(b2Vec2(0.0f, 0.0f), 0.0f);
+                comp.body->SetBullet(true);   
+        });
 
         bottom = engine.world.entity();
         bottom.set([&](spk::comp_tilebody_t& comp){
@@ -144,8 +164,8 @@ MAIN {
                 comp.tilemap.tiles[x][0].id = (rand() % 2) + 1;
             }
 
-            comp.body->SetTransform(b2Vec2(0.0f, -10.0f), 0.0f);
             comp.add_fixtures();
+            comp.body->SetTransform(b2Vec2(0.0f, -10.0f), 0.0f);
         });
     };
 
@@ -160,30 +180,30 @@ MAIN {
     engine.world.observer().event<spk::event_keyboard_t>().term<spk::tag_events_t>()
         .iter([&](flecs::iter& iter){
             auto event = iter.param<spk::event_keyboard_t>();
-            auto camera = engine.get_state().get_current_renderer().get_ref<spk::comp_camera_t>();
+            auto camera = engine.get_current_camera();
         
             if(event->type == SDL_KEYDOWN || event->repeat) {
                 switch(event->keysym.scancode) {
                 case SDL_SCANCODE_A:
-                    camera->pos.x -= 10.0f;
+                    engine.set_current_camera(cam1);
                     sfk::log.log("A key");
                     break;
                 case SDL_SCANCODE_D: 
-                    camera->pos += 10.0f;
+                    engine.set_current_camera(cam2);
                     sfk::log.log("D key"); 
                     break;
                 case SDL_SCANCODE_S: 
-                    camera->pos.y += 10.0f;
+                    test.add<spk::comp_primitive_render_t>();
                     sfk::log.log("S key");
                     break;
                 case SDL_SCANCODE_W:
+                    test.remove<spk::comp_primitive_render_t>();
                     sfk::log.log("W key");
-                    camera->pos.y -= 10.0f;
                     break;
                 }
             }
 
-            camera->recalculate();
+            engine.get_current_camera()->recalculate();
         });
 
     engine.world.observer().event<spk::event_mouse_wheel_t>().term<spk::tag_events_t>()
@@ -202,28 +222,20 @@ MAIN {
         .iter([&](flecs::iter& iter){
             auto event = iter.param<spk::event_window_mouse_click_t>();
             auto box_world = engine.get_current_b2World();
+            auto camera = engine.get_current_camera();
 
-            glm::ivec2 window_size = engine.get_current_window_size();
-            // perspective offset
-            float perspx = 0.0f, perspy = 0.0f;
-
-            float rel_window_width  = (window_size.x / engine.get_ppm()) / 2.0f;
-            float rel_window_height = (window_size.y / engine.get_ppm()) / 2.0f;
-
-            float mouse_y = window_size.y - event->y; // flip the y
-
-            float mouse_clickx = perspx + ((float)event->x / engine.get_ppm() - rel_window_width);
-            float mouse_clicky = perspy + ((float)mouse_y  / engine.get_ppm() - rel_window_height);
-
+            glm::vec2 mouse_click = camera->get_world_position((glm::vec2){(float)event->x, (float)event->y});
+          
             if(test.is_alive() && test.has<spk::comp_tilebody_t>()) {
                 test.set([&](spk::comp_tilebody_t& body) {
                     b2Vec2 position = body.body->GetPosition();
                     
-                    b2Vec2 dir = b2Vec2(mouse_clickx, mouse_clicky) - position;
+                    b2Vec2 dir = sfk::to_box_vec2(mouse_click) - position;
                     dir.Normalize();
-                    dir *= 2000.0f;
+                    dir *= 200.0f;
 
-                    body.body->ApplyLinearImpulseToCenter(dir, true);
+                    body.body->SetTransform(sfk::to_box_vec2(mouse_click), 0.0f);
+                    body.body->SetAwake(true);
                 });
             }
         });

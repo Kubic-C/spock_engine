@@ -10,7 +10,6 @@ namespace spk {
 
         b2BodyDef body_def;
         body_def.type = b2_staticBody;
-        body_def.position =  {0.0f, 0.0f};
         this->body = box_world->CreateBody(&body_def);
     }
 
@@ -40,6 +39,6 @@ namespace spk {
     }
 
     void tile_comp_init(flecs::world& world) {
-        sfk_register_component(world, comp_tilebody_t);
+        spk_register_component(world, comp_tilebody_t);
     }
 }

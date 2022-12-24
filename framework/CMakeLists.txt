@@ -11,7 +11,7 @@ target_link_libraries(spock_framework PUBLIC
 
 target_sources(spock_framework PRIVATE
     "framework.cpp"
-    "base.hpp"
+    "fbase.hpp"
     "entity.hpp" "entity.cpp"
     "opengl.hpp" "opengl.cpp"
     "debugger.hpp" "debugger.cpp"

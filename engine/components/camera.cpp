@@ -1,5 +1,6 @@
 #include "camera.hpp"
 #include "../state.hpp"
+#include "../spock.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk { 
@@ -13,6 +14,22 @@ namespace spk {
 
     void comp_camera_t::free() {
 
+    }
+
+    glm::vec2 comp_camera_t::get_world_position(const glm::vec2& screen_coords) {
+        // screen camera size -> world camera size
+        // SDL Window's positive Y is oppisote of Box2D's postive Y
+        float world_y = size.y - screen_coords.y; // flip the y
+
+        // divide by the PPM to get the screen coordinates world position
+        // (everything is multiplied by PPM in rendering), and subtract by 
+        // 1/2 of the world size to correctly offset the qoutient. 
+        // Simply put we are doing the reverse of VP
+        glm::vec2 world_coords = 
+            { (screen_coords.x - size.x / 2.0f - pos.x) / state.get_ppm(), 
+              (        world_y - size.y / 2.0f - pos.y) / state.get_ppm()};
+ 
+        return world_coords;
     }
 
     void comp_camera_t::recalculate() {
@@ -37,10 +54,14 @@ namespace spk {
         }
 
         state.set_current_camera(e);
+        
+        // likely that the camera does not have its size set yet,
+        // so emiting a resize event seems reasonable here
+        state.get_current_window().get_ref<comp_window_t>()->force_resize_event();
     } 
 
     void camera_comp_init(flecs::world& world) {
-        sfk_register_component(world, comp_camera_t);
+        spk_register_component(world, comp_camera_t);
     
         world.observer<comp_camera_t, tag_current_camera_t>()
             .event(flecs::OnAdd).each(tag_current_camera_on_add);

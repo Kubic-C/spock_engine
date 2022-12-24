@@ -20,7 +20,14 @@ namespace spk {
 
     struct tile_t {
         uint32_t id   = 0;
-        uint8_t flags = 0;
+        uint8_t flags = TILE_FLAGS_COLLIADABLE;
+
+        tile_t() {}
+
+        tile_t(uint32_t id)
+            : id(id) {
+            
+        }
     };
 
     typedef std::unordered_map<uint32_t, tile_metadata_t> tile_dictionary_t;
@@ -38,4 +45,8 @@ namespace spk {
         tile_dictionary_t dictionary;
 
     };
+
+    inline bool is_tile_empty(const tile_t& tile) {
+        return (tile.id == 0 ||  !(tile.flags & TILE_FLAGS_COLLIADABLE));
+    }
 }

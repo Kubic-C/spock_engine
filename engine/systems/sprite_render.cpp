@@ -123,7 +123,7 @@ namespace spk {
 
                     if(tile.id != 0) {
                         ctx->add_sprite_mesh(tilebody.body, rsrc_mng->get_tile_dictionary()[tile.id].sprite, 
-                            {x, y});
+                            (glm::vec2){x, y} - tilebody.tilemap.center);
                     }
                 }
             }
@@ -150,7 +150,7 @@ namespace spk {
         sprite_comp_init(world);
         tile_comp_init(world);
 
-        sfk_register_component(world, sprite_render_system_ctx_t);
+        spk_register_component(world, sprite_render_system_ctx_t);
         
         auto ctx = allocater.allocate_ctx<sprite_render_system_ctx_t>();
 

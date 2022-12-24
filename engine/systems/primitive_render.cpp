@@ -204,7 +204,7 @@ namespace spk {
         flecs::entity* ctx;
 
         world.component<comp_primitive_render_t>();
-        sfk_register_component(world, primitive_render_system_ctx_t);
+        spk_register_component(world, primitive_render_system_ctx_t);
 
         ctx = ctx_alloc.allocate_ctx<primitive_render_system_ctx_t>();
 

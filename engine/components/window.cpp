@@ -39,7 +39,7 @@ namespace spk {
     }
 
     void window_component_init(flecs::world& world) {
-        sfk_register_component(world, comp_window_t);
+        spk_register_component(world, comp_window_t);
 
         world.observer<comp_window_t, tag_current_window_t>("OnAdd Window OpenGL Current Ctx")
             .event(flecs::OnAdd).each(tag_current_gl_ctx_on_add);

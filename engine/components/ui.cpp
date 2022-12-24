@@ -75,7 +75,7 @@ namespace spk {
     }
 
     void ui_canvas_comp_init(flecs::world& world) {
-        sfk_register_component(world, ui_comp_canvas_t);
+        spk_register_component(world, ui_comp_canvas_t);
 
         world.observer<ui_comp_canvas_t>().term<ui_tag_current_canvas_t>()
             .event(flecs::OnAdd).each(ui_tag_current_canvas_on_add);

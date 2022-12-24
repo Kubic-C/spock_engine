@@ -361,7 +361,7 @@ namespace spk {
         ui_canvas_comp_init(world);
 
         world.component<ui_system_ctx_t>();
-        sfk_register_component(world, ui_render_system_ctx_t);
+        spk_register_component(world, ui_render_system_ctx_t);
 
         auto ui_ctx = ctx_alloc.allocate_ctx<ui_system_ctx_t>();
         auto ui_render_ctx = ctx_alloc.allocate_ctx<ui_render_system_ctx_t>();

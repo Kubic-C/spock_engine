@@ -3,6 +3,8 @@
 #include "../state.hpp"
 
 namespace spk {
+
+
     void camera_resize(flecs::iter& iter) {
         auto ctx = SPK_GET_CTX_REF(iter, camera_system_ctx_t);
         auto camera = state.get_current_camera().get_ref<comp_camera_t>();    
@@ -11,6 +13,7 @@ namespace spk {
         camera->size = { static_cast<float>(size->width), static_cast<float>(size->height) };
         camera->recalculate();
     }
+
     void camera_system(flecs::iter& iter, comp_camera_t* cameras) {
         for(auto i : iter) {
 

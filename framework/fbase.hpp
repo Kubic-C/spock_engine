@@ -1,5 +1,7 @@
 #pragma once
 
+// named fbase to avoid overlap with base.hpp in engine/base.hpp
+
 // dependencies 
 #include <flecs.h>
 #include <SDL.h>
@@ -53,14 +55,8 @@ _In_ int nShowCmd \
 #define DEBUG_EXPR(expr) expr
 #else 
 #define DEBUG_EXPR(expr)
-#endif 
+#endif
 
-#define sfk_register_component(world, type) \
-        world.component<type>() \
-            .on_add([](type& comp){ DEBUG_EXPR(sfk::log.log("on add hook | " #type)); comp.init(); }) \
-            .on_set([](type& comp){ DEBUG_EXPR(sfk::log.log("on set hook | " #type)); }) \
-            .on_remove([](type& comp){ DEBUG_EXPR(sfk::log.log("on remove hook | " #type)); comp.free();})
-            
 namespace sfk {
     inline glm::vec2 to_glm_vec2(b2Vec2 vec2) { return (glm::vec2){vec2.x, vec2.y}; }
     inline b2Vec2 to_box_vec2(glm::vec2 vec2) { return (b2Vec2){vec2.x, vec2.y}; }

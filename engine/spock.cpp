@@ -4,6 +4,8 @@ namespace spk {
     extern state_t state;
 
     void engine_t::init() {
+        SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "## \u001B[31m ENGINE INIT \u001B[0m ##");
+
         state.engine = this;
 
         ctx_alloc.init(world);
@@ -50,6 +52,8 @@ namespace spk {
     }
 
     int engine_t::run() {
+        SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "## ENGINE RUN ##");
+
         double delta_time = 0.0;
         double ticks_to_do = 0.0;
         double last_frame = 0.0;
@@ -92,6 +96,8 @@ namespace spk {
     }
 
     void engine_t::free() {
+        SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "## ENGINE FREE ##");  
+        
         rsrc_mng.free();
         SDL_Quit();
         ctx_alloc.free();
@@ -157,5 +163,14 @@ namespace spk {
 
     void engine_t::exit(int code) {
         state.exit(code);
+    }
+
+    flecs::ref<comp_camera_t> engine_t::get_current_camera() {
+        return state.get_current_camera().get_ref<comp_camera_t>();
+    }
+
+    void engine_t::set_current_camera(flecs::entity e) {
+        e.add<tag_current_camera_t>();
+        state.set_current_camera(e);
     }
 }

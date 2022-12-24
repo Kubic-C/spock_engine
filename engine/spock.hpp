@@ -68,6 +68,10 @@ namespace spk {
         // signal the engine to end
         void exit(int code);
 
+        // camera
+        flecs::ref<comp_camera_t> get_current_camera();
+        void set_current_camera(flecs::entity e);
+
         flecs::world world;
         system_ctx_allocater_t ctx_alloc;
         resource_manager_t rsrc_mng;

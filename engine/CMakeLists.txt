@@ -6,9 +6,11 @@ target_include_directories(spock_engine INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/"
 
 target_sources(spock_engine PRIVATE
     "spock.cpp"
+    "base.hpp"
     "systems.hpp" "systems.cpp"
     "state.hpp" "state.cpp"
-    "events.hpp" "events.cpp")
+    "events.hpp" "events.cpp"
+    "debug.hpp" "debug.cpp")
 
 target_sources(spock_engine PRIVATE
     "systems/window.hpp" "systems/window.cpp"

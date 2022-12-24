@@ -58,7 +58,7 @@ namespace spk {
     void render_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
         flecs::entity* ctx;
 
-        sfk_register_component(world, render_system_ctx_t);
+        spk_register_component(world, render_system_ctx_t);
         world.observer<render_system_ctx_t>().event(flecs::OnAdd).each(
             [&](flecs::entity e, render_system_ctx_t& ctx){ state.set_current_renderer(e); });
 

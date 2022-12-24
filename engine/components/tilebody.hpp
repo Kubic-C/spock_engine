@@ -1,12 +1,7 @@
 #pragma once
 
 #include "../data/tilemap.hpp"
-
-#define spk_register_game_component(world, type) \
-        world.component<type>() \
-            .on_add([](type& comp){ DEBUG_EXPR(sfk::log.log("on add hook | " #type)); comp.init(); }) \
-            .on_set([](type& comp){ DEBUG_EXPR(sfk::log.log("on set hook | " #type)); }) \
-            .on_remove([](type& comp){ DEBUG_EXPR(sfk::log.log("on remove hook | " #type)); comp.free();})
+#include "../debug.hpp"
 
 namespace spk {
     struct comp_tilebody_t {
