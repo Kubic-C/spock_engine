@@ -32,7 +32,7 @@ MAIN {
     flecs::entity test, bottom;
     flecs::entity cam1, cam2;
 
-    spk::debug.flags |= spk::DEBUG_FLAGS_ENABLE_STATE_CHANGE | spk::DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME | spk::DEBUG_FLAGS_ENABLE_HOOK;
+    spk::debug.flags |= spk::DEBUG_FLAGS_ENABLE_STATE_CHANGE | spk::DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME;
 
     engine.init();
     
@@ -140,39 +140,46 @@ MAIN {
     }   
 
     auto start_ = [&]() -> void {
-            test = engine.world.entity();
-            test.set([&](spk::comp_particles_t& particles){
-                particles.width = 0.3f;
-                particles.base_lifetime = 1.3f;
-                particles.base_cycle = 0.05f;
-                particles.speed = 0.4f;
-                particles.max = UINT32_MAX;
-                particles.world_positioning = true;
-                particles.sprite.atlas_id = 1;
-                particles.sprite.size.x = 0.6f;
-                particles.sprite.size.y = 0.6f;
-            });
-            test.set([&](spk::comp_tilebody_t& comp){
-                uint32_t id = (rand() % 2) + 1;
+            for(uint32_t i = 0; i < 1; i++) {
+                test = engine.world.entity();
+                test.set([&](spk::comp_particles_t& particles){
+                    particles.width = 0.5f;
+                    particles.base_lifetime = 0.5f;
+                    particles.base_cycle = 0.05f;
+                    particles.speed = 100.0f;
+                    particles.step = 0.01f;
+                    particles.max = UINT32_MAX;
+                    particles.world_positioning = true;
+                    particles.sprite.atlas_id = 1;
+                    particles.sprite.size.x = 0.5f;
+                    particles.sprite.size.y = 0.5f;
+                    particles.pos = {0.0f, 0.0f};
+                    particles.dir = {-1.0f, 0.0f};
+                    particles.flags |= spk::PARTICLE_FLAG_ACTIVE;
+                    particles.funnel = spk::PARTICLE_SYSTEM_FUNNEL_FUNNEL;
+                });
+                test.set([&](spk::comp_tilebody_t& comp){
+                    uint32_t id = (rand() % 2) + 1;
 
-                comp.tilemap.tiles =
-                    { std::vector<spk::tile_t>({1, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),  
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                    };
+                    comp.tilemap.tiles =
+                        { std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
+                        std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),  
+                        std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
+                        std::vector<spk::tile_t>({1, 2, 1, 0, 0, 0, 0, 0, 0, 0}), 
+                        std::vector<spk::tile_t>({1, 2, 1, 0, 0, 0, 0, 0, 0, 0}), 
+                        std::vector<spk::tile_t>({1, 2, 1, 0, 0, 0, 0, 0, 0, 0}),
+                        std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+                        std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
+                        std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
+                        std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
+                        };
 
-                comp.add_fixtures();
-                comp.body->SetType(b2_dynamicBody);
-                comp.body->SetTransform(b2Vec2(0.0f, 0.0f), 0.0f);
-                comp.body->SetBullet(true);   
-        });
+                    comp.add_fixtures();
+                    comp.body->SetType(b2_dynamicBody);
+                    comp.body->SetTransform(b2Vec2(0.0f, 0.0f), 0.0f);
+                    comp.body->SetBullet(true);   
+                });
+            }
 
         bottom = engine.world.entity();
         bottom.set([&](spk::comp_tilebody_t& comp){
@@ -273,9 +280,9 @@ MAIN {
                 break;
 
             case STATE_PLAY: {
-                test.set([&](spk::comp_particles_t& particles) {
-                    particles.dir = {sin(sfk::time.get_time()), cos(sfk::time.get_time())};
-                });
+                // test.set([&](spk::comp_particles_t& particles) {
+                //     particles.dir = {sin(sfk::time.get_time()), cos(sfk::time.get_time())};
+                // });
             } break;
 
             case STATE_EXIT_PLAY:

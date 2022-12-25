@@ -1,5 +1,5 @@
 #include "particles.hpp"
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 #include "../state.hpp"
 #include "../utility/ui.hpp"
 
@@ -17,83 +17,89 @@ namespace spk {
         return randomf;         
     };
 
-    void process_particle_system(b2Body* body, double delta_time, comp_particles_t& ps) {
-            float angle = glm::dot({0.0f, 1.0f}, ps.dir);
+    void process_particle_system(b2Body* body, float delta_time, comp_particles_t& ps) {
+        if(!(ps.flags & PARTICLE_FLAG_ACTIVE))
+            return;
 
-            if(angle == 1.0f) {
-                angle = 0.0f;
-            }
+        float angle = glm::dot({0.0f, 1.0f}, ps.dir);
 
-            // update the lifetime of every particle, remove those outdated
-            bool erase = false;
-            uint32_t amount = 0;
-            for(uint32_t i = 0; i < ps.particles.size(); i++) {
-                ps.particles[i].lifetime -= delta_time;
+        if(angle == 1.0f) {
+            angle = 0.0f;
+        }
 
-                if(ps.particles[i].lifetime <= 0.0f) {
-                    if(!erase) {
-                        sfk_assert(amount == 0, "amount to erase is non-zero;" 
-                                                 " meaning a particle is in a invalid" 
-                                                 " position based on its lifetime."
-                                                " particles must be in decesnding order");
-                        erase = true;
-                    }
-                } else { // found particle with valid lifetime
-                    ps.particles[i].pos += ps.particles[i].dir * ps.speed;
+        // update the lifetime of every particle, remove those outdated
+        bool erase = false;
+        uint32_t amount = 0;
+        for(uint32_t i = 0; i < ps.particles.size(); i++) {
+            ps.particles[i].lifetime -= delta_time;
 
-                    if(erase) {
-                        amount = i + 1;
-                        erase = false;
-                    }
+            if(ps.particles[i].lifetime <= 0.0f) {
+                if(!erase) {
+                    sfk_assert(amount == 0, "amount to erase is non-zero;" 
+                                                " meaning a particle is in a invalid" 
+                                                " position based on its lifetime."
+                                            " particles must be in decesnding order");
+                    erase = true;
+                }
+            } else { // found particle with valid lifetime
+                ps.particles[i].pos += ps.particles[i].dir * (ps.speed * delta_time);
+
+                if(erase) {
+                    amount = i + 1;
+                    erase = false;
                 }
             }
+        }
 
-            if(erase) { // if erase is still true, then the entire deque died
-                ps.particles.clear();
-            } else if(amount != 0) {
-                ps.particles.erase(ps.particles.begin(), ps.particles.begin() + amount);
-            }
+        if(erase) { // if erase is still true, then the entire deque died
+            ps.particles.clear();
+        } else if(amount != 0) {
+            ps.particles.erase(ps.particles.begin(), ps.particles.begin() + amount);
+        }
 
-            if(ps.current_cycle <= 0.0f) { // create new particle if cycle allows
-                float y = 0.0f; 
+        if(ps.current_cycle <= 0.0f) { // create new particle if cycle allows
+            float y = 0.0f; 
 
-                ps.current_cycle = ps.base_cycle;
+            ps.current_cycle = ps.base_cycle;
 
-                while(y <= ps.length && ps.particles.size() < ps.max) {
-                    if(random_positive_float(0.0f, 1.0f) < ps.chance) {
-                        particle_t& p = ps.particles.emplace_back();
+            while(y <= ps.length && ps.particles.size() < ps.max) {
+                if(random_positive_float(0.0f, 1.0f) < ps.chance) {
+                    particle_t& p = ps.particles.emplace_back();
 
-                        p.lifetime = ps.base_lifetime;
-                        p.pos = {random_positive_float(0.0f, ps.width) - ps.width / 2.0f, y / ps.length};
+                    p.lifetime = ps.base_lifetime;
+                    p.pos = {random_positive_float(0.0f, ps.width) - ps.width / 2.0f, y / ps.length};
 
-                        glm::mat4 rot = glm::identity<glm::mat4>();
-                        rot = glm::rotate(rot, -angle, glm::vec3(0.0f, 0.0f, 1.0f));
+                    p.pos = glm::rotate(p.pos, -angle);
 
-                        p.pos = (rot * glm::vec4(p.pos, 0.0f, 0.0f));
+                    if(ps.world_positioning)
+                        p.pos = sfk::to_glm_vec2(body->GetWorldPoint(sfk::to_box_vec2(ps.pos + p.pos)));
+                    
+                    const b2Vec2& b2pos = sfk::to_box_vec2(p.pos);
 
-                        if(ps.world_positioning)
-                            p.pos = sfk::to_glm_vec2(body->GetPosition()) + ps.pos + p.pos;
-                        
-                        switch(ps.funnel) {
-                            case PARTICLE_SYSTEM_FUNNEL_LINE:
-                                p.dir = ps.dir;
-                                break;
+                    switch(ps.funnel) {
+                        case PARTICLE_SYSTEM_FUNNEL_LINE:
+                            p.dir = ps.dir;
+                            break;
 
-                            case PARTICLE_SYSTEM_FUNNEL_FUNNEL:
-                                p.dir = glm::normalize(p.pos - ps.pos);
-                                break;
+                        case PARTICLE_SYSTEM_FUNNEL_FUNNEL:
+                            if(ps.world_positioning)
+                                p.dir = sfk::to_glm_vec2(b2pos - body->GetWorldPoint(sfk::to_box_vec2(ps.pos)));
+                            else {
+                                p.dir = p.pos - ps.pos;
+                            }
+                            break;
 
-                            default:
-                                sfk_assert(ps.funnel < PARTICLE_SYSTEM_FUNNEL_LAST, "invalid particle system funnel");
-                                break;
-                        }
+                        default:
+                            sfk_assert(ps.funnel < PARTICLE_SYSTEM_FUNNEL_LAST, "invalid particle system funnel");
+                            break;
                     }
+                }
 
-                    y += ps.step;
-                } 
-            } else {
-                ps.current_cycle -= delta_time;
-            }
+                y += ps.step;
+            } 
+        } else {
+            ps.current_cycle -= delta_time;
+        }
     }
 
     void particles_system_tick(flecs::iter& iter, comp_b2Body_t* bodies, comp_particles_t* particles) {
@@ -108,7 +114,7 @@ namespace spk {
         }
     }
 
-    void add_particles(flecs::ref<sprite_render_system_ctx_t>& ctx, glm::vec2 world_pos, comp_particles_t& ps) {
+    void add_particles(flecs::ref<sprite_render_system_ctx_t>& ctx, b2Body* body, comp_particles_t& ps) {
         for(uint32_t j = 0; j < ps.particles.size(); j++) {
                 particle_t& particle = ps.particles[j];
 
@@ -121,7 +127,7 @@ namespace spk {
                 
                 if(!ps.world_positioning) {
                     for(glm::vec2& v : vertexes) {
-                        v += world_pos + ps.pos;
+                        v = sfk::to_glm_vec2(body->GetWorldPoint(sfk::to_box_vec2(ps.pos + v)));
                     }
                 }
 
@@ -133,12 +139,7 @@ namespace spk {
         auto ctx = SPK_GET_CTX_REF(iter, sprite_render_system_ctx_t);
 
         for(auto i : iter) {
-            comp_particles_t& ps  = particles[i];
-            comp_sprite_t& sprite = ps.sprite;
-            glm::vec2 world_pos = bodies[i].get_pos();
-
-            // process particles
-            add_particles(ctx, world_pos, ps);            
+            add_particles(ctx, bodies[i].body, particles[i]);            
         }
 
         ctx->draw_atlas_meshes();
@@ -149,12 +150,7 @@ namespace spk {
         auto ctx = SPK_GET_CTX_REF(iter, sprite_render_system_ctx_t);
 
         for(auto i : iter) {
-            comp_particles_t& ps  = particles[i];
-            comp_sprite_t& sprite = ps.sprite;
-            glm::vec2 world_pos = sfk::to_glm_vec2(bodies[i].body->GetPosition());
-
-            // process particles
-            add_particles(ctx, world_pos, ps);            
+            add_particles(ctx, bodies[i].body, particles[i]);            
         }
 
         ctx->draw_atlas_meshes();
