@@ -6,7 +6,7 @@ namespace sfk {
             case ' ':
                 return true;
 
-            case SFK_RULING_TEXT_START:
+            case SFK_RULING_DEFAULT_TEXT_START:
                 return true;
 
             default:
@@ -14,41 +14,7 @@ namespace sfk {
         }
     }
 
-    std::string ansi_rule(const std::string& rule) {
-        // im tired
-
-        if(rule == SFK_RULING_RESET) {
-            return SFK_ANSI_RESET;
-        } else if(rule == SFK_RULING_EMPHASIS) {
-            return SFK_ANSI_EMPHASIS;
-        } else if(rule == SFK_RULING_ITALIC) {
-            return SFK_ANSI_ITALIC;
-        } else if(rule == SFK_RULING_BLACK) {
-            return SFK_ANSI_BLACK;
-        } else if(rule == SFK_RULING_RED) {
-            return SFK_ANSI_RED; 
-        } else if(rule == SFK_RULING_GREEN) {
-            return SFK_ANSI_GREEN;
-        }  else if(rule == SFK_RULING_YELLOW) {
-            return SFK_ANSI_YELLOW;
-        } else if(rule == SFK_RULING_BLUE) {
-            return SFK_ANSI_BLUE;
-        } else if(rule == SFK_RULING_PURPLE) {
-            return SFK_ANSI_PURPLE;
-        } else if(rule == SFK_RULING_CYAN) {
-            return SFK_ANSI_CYAN;
-        } else if(rule == SFK_RULING_WHITE) {
-            return SFK_ANSI_WHITE;
-        } else if(rule == SFK_RULING_RESET) {
-            return SFK_ANSI_RESET;
-        } else if(rule == SFK_RULING_EPHASIS_TEXT) {
-            return SFK_OUTPUT_EMPHASIS_TEXT;
-        } else {
-            return ("<![red]ukwn rule: " + rule + "[reset]!>").c_str();
-        }
-    }
-
-    std::string parse_ruling(const std::string& str) {
+    std::string parse_ruling(rule_map_t& map, const std::string& str) {
         std::string ansi_rules = "";
         std::string rule = "";
 
@@ -57,8 +23,13 @@ namespace sfk {
 
         for(uint32_t i = 0; i < str.size(); i++) {
             if(!should_ignore_character(str[i])) {
-                if(str[i] == SFK_RULING_SEPERATOR || str[i] == SFK_RULING_TEXT_END) {
-                    ansi_rules += ansi_rule(rule);
+                if(str[i] == SFK_RULING_DEFAULT_SEPERATOR || str[i] == SFK_RULING_DEFAULT_TEXT_END) {
+                    if(map.find(rule) != map.end()) {
+                        ansi_rules += map[rule];
+                    } else {
+                        ansi_rules += "<![red]ukwn rule: " + rule + "[reset]!>";
+                    }
+
                     rule = ""; 
                 } else {
                     rule += str[i];
@@ -69,21 +40,21 @@ namespace sfk {
         return ansi_rules;
     }
 
-    std::string parse_format(const std::string& format_) {
+    std::string parse_format(rule_map_t& map, const std::string& format_) {
         std::string f = format_;
 
         bool rule = false;
         uint32_t rule_start = 0;
 
         for(uint32_t i = 0; i < f.size(); i++) {
-            if(f[i] == SFK_RULING_TEXT_START) {
+            if(f[i] == SFK_RULING_DEFAULT_TEXT_START) {
                 rule = true;
                 rule_start = i;
             }
             
-            if(f[i] == SFK_RULING_TEXT_END && rule) {
+            if(f[i] == SFK_RULING_DEFAULT_TEXT_END && rule) {
                 uint32_t    rule_remainder = (i - rule_start) + 1;    
-                std::string parsed_rule = parse_ruling(f.substr(rule_start, rule_remainder));
+                std::string parsed_rule = parse_ruling(map, f.substr(rule_start, rule_remainder));
             
                 f.erase(rule_start, rule_remainder);
                 f.insert(rule_start, parsed_rule);
@@ -112,6 +83,21 @@ namespace sfk {
         
         flags |= LOG_FLAGS_ENABLE_STD_PIPE;
 
+        // default rule mapping
+        rule_map[SFK_RULING_DEFAULT_RESET]    = SFK_ANSI_RESET;
+        rule_map[SFK_RULING_DEFAULT_EMPHASIS] = SFK_ANSI_EMPHASIS;
+        rule_map[SFK_RULING_DEFAULT_ITALIC]   = SFK_ANSI_ITALIC;
+        rule_map[SFK_RULING_DEFAULT_BLACK]    = SFK_ANSI_BLACK;
+        rule_map[SFK_RULING_DEFAULT_RED]      = SFK_ANSI_RED; 
+        rule_map[SFK_RULING_DEFAULT_GREEN]    = SFK_ANSI_GREEN;
+        rule_map[SFK_RULING_DEFAULT_YELLOW]   = SFK_ANSI_YELLOW;
+        rule_map[SFK_RULING_DEFAULT_BLUE]     = SFK_ANSI_BLUE;
+        rule_map[SFK_RULING_DEFAULT_PURPLE]   = SFK_ANSI_PURPLE;
+        rule_map[SFK_RULING_DEFAULT_CYAN]     = SFK_ANSI_CYAN;
+        rule_map[SFK_RULING_DEFAULT_WHITE]    = SFK_ANSI_WHITE;
+        rule_map[SFK_RULING_DEFAULT_RESET]    = SFK_ANSI_RESET;
+        rule_map[SFK_RULING_DEFAULT_EPHASIS_TEXT] = SFK_OUTPUT_EMPHASIS_TEXT;
+        
         log(LOG_TYPE_INFO, "info_logger_init");
     }
 
@@ -145,7 +131,7 @@ namespace sfk {
         va_list args;
 
         // parse for rulings
-        std::string format = parse_format(
+        std::string format = parse_format(rule_map,
                 strprintf("|SPOCK: %f> %s ", time.get_time(), type_to_str(type)) + std::string(format_));
 
         va_start(args, format_);

@@ -52,7 +52,7 @@ namespace spk {
     }
 
     int engine_t::run() {
-        SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "## ENGINE RUN ##");
+        SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "[emt, red] ENGINE RUN [reset, emt]");
 
         double delta_time = 0.0;
         double ticks_to_do = 0.0;
@@ -96,7 +96,7 @@ namespace spk {
     }
 
     void engine_t::free() {
-        SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "## ENGINE FREE ##");  
+        SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "[emt, red] ENGINE FREE [reset, emt]");  
         
         rsrc_mng.free();
         SDL_Quit();

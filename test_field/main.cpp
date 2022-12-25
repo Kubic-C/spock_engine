@@ -42,6 +42,10 @@ MAIN {
     
     srand(1);
 
+    sfk::log.log("[em, red] this text is red and emphasized [reset] ");
+    sfk::log.log("[it, blue] this text is italic and blue [reset]");
+    sfk::log.log("[emt] <- this is a recursive rule -> [emt]");
+
     cam1 = engine.world.entity();
     cam2 = engine.world.entity();
 

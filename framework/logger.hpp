@@ -23,21 +23,21 @@
 
 // parsing ruling
 // ruling is how the text should be displated
-#define SFK_RULING_TEXT_START '['
-#define SFK_RULING_EPHASIS_TEXT "emt"
-#define SFK_RULING_EMPHASIS   "em"
-#define SFK_RULING_ITALIC     "it"
-#define SFK_RULING_BLACK      "black"
-#define SFK_RULING_RED        "red"
-#define SFK_RULING_GREEN      "green"
-#define SFK_RULING_YELLOW     "yellow"
-#define SFK_RULING_BLUE       "blue"
-#define SFK_RULING_PURPLE     "purple"
-#define SFK_RULING_CYAN       "cyan"
-#define SFK_RULING_WHITE      "white"
-#define SFK_RULING_RESET      "reset"
-#define SFK_RULING_SEPERATOR  ','
-#define SFK_RULING_TEXT_END        ']'
+#define SFK_RULING_DEFAULT_TEXT_START '['
+#define SFK_RULING_DEFAULT_EPHASIS_TEXT "emt"
+#define SFK_RULING_DEFAULT_EMPHASIS   "em"
+#define SFK_RULING_DEFAULT_ITALIC     "it"
+#define SFK_RULING_DEFAULT_BLACK      "black"
+#define SFK_RULING_DEFAULT_RED        "red"
+#define SFK_RULING_DEFAULT_GREEN      "green"
+#define SFK_RULING_DEFAULT_YELLOW     "yellow"
+#define SFK_RULING_DEFAULT_BLUE       "blue"
+#define SFK_RULING_DEFAULT_PURPLE     "purple"
+#define SFK_RULING_DEFAULT_CYAN       "cyan"
+#define SFK_RULING_DEFAULT_WHITE      "white"
+#define SFK_RULING_DEFAULT_RESET      "reset"
+#define SFK_RULING_DEFAULT_SEPERATOR  ','
+#define SFK_RULING_DEFAULT_TEXT_END        ']'
 
 // ruling results that arent ansi codes
 #define SFK_OUTPUT_EMPHASIS_TEXT "[em] #===# [reset]" 
@@ -46,6 +46,8 @@
 // sfk::log.log("[em, red] my text is red and emphasized [reset]")
 
 namespace sfk {
+    typedef std::map<std::string, const char*> rule_map_t;
+
     enum log_type_e {
         LOG_TYPE_ERROR,
         LOG_TYPE_ASSERT,
@@ -69,6 +71,7 @@ namespace sfk {
         void log(log_type_e type, const char* format, ...);
         void spew(); // print the current buffer onto console
 
+        rule_map_t rule_map;
         std::ofstream log_file;
         std::vector<char> buf;
         uint8_t flags;
@@ -76,7 +79,7 @@ namespace sfk {
 
     inline info_logger_t log;
 
-    std::string parse_format(const std::string& format);
+    std::string parse_format(rule_map_t& map, const std::string& format);
     void _assert(const char* file, const char* func, int line, const char* expr);
     
     inline std::string strprintf(const char* format, ...) {
