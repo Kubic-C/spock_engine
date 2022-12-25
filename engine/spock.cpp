@@ -78,7 +78,7 @@ namespace spk {
             // one update
             world.frame_begin(delta_time);
 
-            world.run_pipeline(flecs::entity(0ULL), delta_time);
+            world.run_pipeline(flecs::entity((uint64_t)0ULL), delta_time);
 
             if(user_state.update != nullptr)
                 user_state.update(*this);
