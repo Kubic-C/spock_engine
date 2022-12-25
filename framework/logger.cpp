@@ -171,8 +171,9 @@ namespace sfk {
         printf("%s", buf.data());
     }
 
-    void _assert(const char* file, const char* func, int line, const char* expr) {
-        log.log(LOG_TYPE_ASSERT, "file(%s), func(%s), line(%i), expr(%s)\n", file, func, line, expr);
+    void _assert(const char* file, const char* func, int line, const char* expr, const char* message) {
+        log.log(LOG_TYPE_ASSERT, "\n\t# file(%s),\n \t| func(%s),\n \t| line(%i),\n \t| expr(%s)\n \t| %s", 
+                                    file, func, line, expr, message);
         abort();
     }
 }

@@ -5,7 +5,7 @@
 
 namespace spk {
     struct comp_sprite_t {
-        void init() {}
+        void init() { atlas_id = 0; tax = 0; tay = 0; size = {0.5f, 0.5f}; }
         void free() {}
 
         uint32_t atlas_id;

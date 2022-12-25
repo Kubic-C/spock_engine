@@ -20,10 +20,6 @@ void exit_play_game(spk::engine_t& engine, spk::ui_button_t& button) {
     *(current_state_e*)engine.user_state.user_data = STATE_EXIT_PLAY;
 }
 
-// TODO:
-// Tick and update for user side now becomes intergated, and seperate from flecs
-// fix on_add being called after flecs::entity::set
-
 MAIN {
     int exit_code = 0;
     spk::engine_t engine;
@@ -74,10 +70,16 @@ MAIN {
     // resource management 
     {
         engine.rsrc_mng.font_load_ascii("./Raleway-Regular.ttf");
-        engine.rsrc_mng.atlas_init(0, 16, 16);
+        engine.rsrc_mng.atlas_init(0, 4, 4);
         if(!engine.rsrc_mng.atlas_load_from_path(0, "./test_atlas.png")) {
             sfk::log.log("failed to load atlas");
             return -100;
+        }
+        
+        engine.rsrc_mng.atlas_init(1, 8, 8);
+        if(!engine.rsrc_mng.atlas_load_from_path(1, "./firetexture.png")) {
+            sfk::log.log("failed to load fire texture");
+            return -101;
         }
     }
     
@@ -131,29 +133,39 @@ MAIN {
     { // game setup
         spk::tile_dictionary_t& td = engine.rsrc_mng.get_tile_dictionary();
         
-        td[1].sprite.tax = 6;
-        td[1].sprite.tay = 3;
+        td[1].sprite.tax = 0;
 
-        td[2].sprite.tax = 0;
+        td[2].sprite.tax = 2;
         td[2].density = 5.0f;
     }   
 
     auto start_ = [&]() -> void {
             test = engine.world.entity();
+            test.set([&](spk::comp_particles_t& particles){
+                particles.width = 0.3f;
+                particles.base_lifetime = 1.3f;
+                particles.base_cycle = 0.05f;
+                particles.speed = 0.4f;
+                particles.max = UINT32_MAX;
+                particles.world_positioning = true;
+                particles.sprite.atlas_id = 1;
+                particles.sprite.size.x = 0.6f;
+                particles.sprite.size.y = 0.6f;
+            });
             test.set([&](spk::comp_tilebody_t& comp){
                 uint32_t id = (rand() % 2) + 1;
 
                 comp.tilemap.tiles =
-                    { std::vector<spk::tile_t>({0, 1, 1, 1, 1, 0, 0, 0, 0, 0}), 
-                      std::vector<spk::tile_t>({0, 1, 1, 1, 1, 0, 0, 0, 0, 0}),  
-                      std::vector<spk::tile_t>({0, 1, 1, 1, 1, 0, 0, 0, 0, 0}), 
-                      std::vector<spk::tile_t>({0, 1, 1, 1, 1, 0, 0, 0, 0, 0}), 
-                      std::vector<spk::tile_t>({0, 1, 1, 1, 1, 1, 1, 1, 1, 1}), 
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 1}),
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 1}),
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 1}), 
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 1}), 
-                      std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 2}), 
+                    { std::vector<spk::tile_t>({1, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),  
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
+                      std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
                     };
 
                 comp.add_fixtures();
@@ -261,6 +273,9 @@ MAIN {
                 break;
 
             case STATE_PLAY: {
+                test.set([&](spk::comp_particles_t& particles) {
+                    particles.dir = {sin(sfk::time.get_time()), cos(sfk::time.get_time())};
+                });
             } break;
 
             case STATE_EXIT_PLAY:

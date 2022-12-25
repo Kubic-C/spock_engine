@@ -3,7 +3,11 @@
 #include "../systems.hpp"
 #include "../components/sprite.hpp"
 #include "../components/tilebody.hpp"
+#include "../components/particle_system.hpp"
 #include "render.hpp"
+
+/* the sprite render system is responsible for more then just rendering comp_sprite_t
+    it also renders tile_bodies and particle_systems*/
 
 namespace spk {
     struct sprite_render_system_ctx_t {
@@ -16,6 +20,8 @@ namespace spk {
         void free();
 
         void draw_atlas_meshes();
+        void add_sprite_mesh( comp_sprite_t& sprite, const glm::vec2& _1, const glm::vec2& _2, const glm::vec2& _3, const glm::vec2& _4);
+
         void add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset = {0.0f, 0.0f});
 
         sfk::vertex_layout_t vertex_layout;

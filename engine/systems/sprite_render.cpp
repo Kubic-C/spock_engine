@@ -1,4 +1,5 @@
 #include "sprite_render.hpp"
+#include "particles.hpp"
 #include "../state.hpp"
 #include "../spock.hpp"
 #include <glm/gtx/rotate_vector.hpp> 
@@ -59,22 +60,30 @@ namespace spk {
         program.free();
     }
 
-    void sprite_render_system_ctx_t::add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset) {
-        resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
-
+    void sprite_render_system_ctx_t::add_sprite_mesh(comp_sprite_t& sprite, const glm::vec2& _1, const glm::vec2& _2, const glm::vec2& _3, const glm::vec2& _4) { 
         if(sprite.atlas_id == UINT32_MAX)
             return;
-
+        
+        resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
+        
         const uint32_t atlas_id = sprite.atlas_id;
         sprite_atlas_t* atlas = rsrc_mng->get_atlas(atlas_id);
         uint32_t index = meshes[atlas_id].sprites * indexes_per_sprite;
         std::array<glm::vec2, 4> tex_coords = atlas->gen_tex_coords(sprite.tax, sprite.tay);
 
-        meshes[atlas_id].mesh[index + 0] = { {sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){-sprite.size.x, -sprite.size.y} + sfk::to_box_vec2(offset)))},  tex_coords[0]};
-        meshes[atlas_id].mesh[index + 1] = { {sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){ sprite.size.x, -sprite.size.y} + sfk::to_box_vec2(offset)))},  tex_coords[1]};
-        meshes[atlas_id].mesh[index + 2] = { {sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){ sprite.size.x,  sprite.size.y} + sfk::to_box_vec2(offset)))},  tex_coords[2]};
-        meshes[atlas_id].mesh[index + 3] = { {sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){-sprite.size.x,  sprite.size.y} + sfk::to_box_vec2(offset)))},  tex_coords[3]};
+        meshes[atlas_id].mesh[index + 0] = {_1,  tex_coords[0]};
+        meshes[atlas_id].mesh[index + 1] = {_2,  tex_coords[1]};
+        meshes[atlas_id].mesh[index + 2] = {_3,  tex_coords[2]};
+        meshes[atlas_id].mesh[index + 3] = {_4,  tex_coords[3]};
         meshes[atlas_id].sprites += 1;
+    }
+
+    void sprite_render_system_ctx_t::add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset) {
+        add_sprite_mesh(sprite, 
+            sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){-sprite.size.x, -sprite.size.y} + sfk::to_box_vec2(offset))),
+            sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){ sprite.size.x, -sprite.size.y} + sfk::to_box_vec2(offset))),
+            sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){ sprite.size.x,  sprite.size.y} + sfk::to_box_vec2(offset))),
+            sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){-sprite.size.x,  sprite.size.y} + sfk::to_box_vec2(offset))));
     }
 
     void sprite_render_system_ctx_t::draw_atlas_meshes() {
@@ -115,7 +124,6 @@ namespace spk {
 
         for(auto i : iter) {
             comp_tilebody_t& tilebody = tilebodies[i];
-            glm::vec2 half_size = (glm::vec2)tilebody.tilemap.size / 2.0f;
 
             for(uint32_t x = 0; x < tilebody.tilemap.size.x; x++) {
                 for(uint32_t y = 0; y < tilebody.tilemap.size.y; y++) {
@@ -159,5 +167,7 @@ namespace spk {
     
         world.system<comp_tilebody_t>().ctx(ctx).kind(flecs::OnUpdate)
             .iter(sprite_render_system_tilebody_update);
+
+        _particles_cs_init(ctx, world);        
     }
 }

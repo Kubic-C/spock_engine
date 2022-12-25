@@ -5,8 +5,9 @@
 #ifdef NDEBUG
 #define sfk_assert(expr)
 #else 
-#define sfk_assert(expr) ((bool)(expr) ? void(0) : \
-    sfk::_assert(__FILE__, __PRETTY_FUNCTION__, __LINE__, #expr))
+#define SFK_FIRST_W_COMMA(arg, ...) #arg
+#define sfk_assert(expr, ...) ((bool)(expr) ? void(0) : \
+    sfk::_assert(__FILE__, __PRETTY_FUNCTION__, __LINE__, #expr, SFK_FIRST_W_COMMA(__VA_ARGS__)))
 #endif 
 
 #define SFK_ANSI_RESET  "\u001B[0m"
@@ -80,7 +81,7 @@ namespace sfk {
     inline info_logger_t log;
 
     std::string parse_format(rule_map_t& map, const std::string& format);
-    void _assert(const char* file, const char* func, int line, const char* expr);
+    void _assert(const char* file, const char* func, int line, const char* expr, const char* msg);
     
     inline std::string strprintf(const char* format, ...) {
         va_list va_list;
