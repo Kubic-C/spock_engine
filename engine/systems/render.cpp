@@ -3,10 +3,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk {
+#ifndef CALLBACK
+    #define CALLBACK 
+#endif
+  
     void CALLBACK opengl_debug_callback(GLenum source,
             GLenum type,
-            GLuint id,
             GLenum severity,
+            GLuint id,                  
             GLsizei length,
             const GLchar *message,
             const void *userParam) {

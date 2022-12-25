@@ -36,7 +36,7 @@ MAIN {
     flecs::entity test, bottom;
     flecs::entity cam1, cam2;
 
-    spk::debug.flags |= spk::DEBUG_FLAGS_ENABLE_STATE_CHANGE | spk::DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME;
+    spk::debug.flags |= spk::DEBUG_FLAGS_ENABLE_STATE_CHANGE | spk::DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME | spk::DEBUG_FLAGS_ENABLE_HOOK;
 
     engine.init();
     
@@ -75,9 +75,9 @@ MAIN {
     {
         engine.rsrc_mng.font_load_ascii("./Raleway-Regular.ttf");
         engine.rsrc_mng.atlas_init(0, 16, 16);
-        if(!engine.rsrc_mng.atlas_load_from_path(0, "./test_atlas2.png")) {
+        if(!engine.rsrc_mng.atlas_load_from_path(0, "./test_atlas.png")) {
             sfk::log.log("failed to load atlas");
-            return 4;
+            return -100;
         }
     }
     
@@ -253,7 +253,8 @@ MAIN {
                 exit_play_btn->flags |= spk::UI_ELEMENT_FLAGS_ENABLED;
             
                 start_();
-
+                sfk::log.rule_map["myrule"] = "[yellow] goo";
+                sfk::log.log("[it, em, myrule]This is video game[reset]");
                 my_state = STATE_PLAY;
                 
                 sfk::log.log("loading state");

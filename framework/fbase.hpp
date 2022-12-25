@@ -48,7 +48,7 @@ _In_ LPSTR lpCmdLine, \
 _In_ int nShowCmd \
 )
 #else // linux or mac
-#define MAIN main(int argc, argv**)
+#define MAIN int main(int argc, char** argv)
 #endif  // _WIN32
 
 #ifndef NDEBUG
