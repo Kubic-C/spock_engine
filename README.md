@@ -8,6 +8,10 @@ Current feature list:
 - simple UI system, which currently includes button and text
 - simple physics world, using box2d
 - basic window handling and manipulation
+- a particle system using sprites
+- tilebodies and tilemaps
+- sprites
+- resource manager, allowing simple loading of files for sprites, textures, or other related files
 
 Undergoing heavy construction
 
@@ -25,6 +29,6 @@ the project. But when compiling, spock engine's dependencies rely on python scri
 Installing 'jinja2' may be necessary if not already installed.
 
 if your lazy:
-```
+```console
 pip install jinja2
 ```
