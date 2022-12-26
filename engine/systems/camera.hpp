@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../components/camera.hpp"
-#include "../systems.hpp"
+#include "components/camera.hpp"
+#include "systems.hpp"
 
 namespace spk {
     struct camera_system_ctx_t {

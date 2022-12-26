@@ -1,8 +1,14 @@
 
 add_library(spock_engine STATIC)
 
-target_link_libraries(spock_engine PUBLIC spock_framework)
-target_include_directories(spock_engine INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/")
+target_compile_definitions(flecs_static PUBLIC ecs_ftime_t=double)
+
+glad_add_library(glad_gl4_4 STATIC API gl:core=4.4)
+
+target_link_libraries(spock_engine PUBLIC
+    SDL2 glad_gl4_4 flecs_static glm box2d freetype)
+
+target_include_directories(spock_engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/")
 
 target_sources(spock_engine PRIVATE
     "spock.cpp"
@@ -10,7 +16,8 @@ target_sources(spock_engine PRIVATE
     "systems.hpp" "systems.cpp"
     "state.hpp" "state.cpp"
     "events.hpp" "events.cpp"
-    "debug.hpp" "debug.cpp")
+    "debug.hpp" "debug.cpp"
+    "logger.hpp" "logger.cpp")
 
 target_sources(spock_engine PRIVATE
     "systems/window.hpp" "systems/window.cpp"
@@ -34,7 +41,10 @@ target_sources(spock_engine PRIVATE
 
 target_sources(spock_engine PRIVATE
     "utility/ui.hpp" "utility/ui.cpp"
-    "utility/entity.hpp" "utility/entity.cpp")
+    "utility/entity.hpp" "utility/entity.cpp"
+    "utility/opengl.hpp" "utility/opengl.cpp"
+    "utility/structure.hpp" "utility/structure.cpp"
+    "utility/memory.hpp" "utility/memory.cpp")
 
 target_sources(spock_engine PRIVATE
     "data/text.hpp" "data/text.cpp"
@@ -42,6 +52,9 @@ target_sources(spock_engine PRIVATE
     "data/atlas.hpp" "data/atlas.cpp"
     "data/tiles.hpp" "data/tiles.cpp"
     "data/tilemap.hpp" "data/tilemap.cpp")    
+
+target_sources(spock_engine PRIVATE
+    "external/stb_image.h" "external/stb_image.c")
 
 target_sources(spock_engine PUBLIC
     "spock.hpp")

@@ -1,5 +1,5 @@
 #include "primitive_render.hpp"
-#include "../state.hpp"
+#include "state.hpp"
 #include <glm/gtx/rotate_vector.hpp> 
 
 const char* vs_colliders = R"###(
@@ -27,7 +27,7 @@ void main() {
 })###";
 
 namespace spk {
-    void primitive_render_system_ctx_t::render_box(glm::mat4& vp, sfk::static_index_buffer_t& ind, 
+    void primitive_render_system_ctx_t::render_box(glm::mat4& vp, spk::static_index_buffer_t& ind, 
         comp_primitive_render_t* render_info, const comp_box_t* box) {
         const uint32_t quad_vert_count = 4;
         const uint32_t quad_index_count = 6;
@@ -50,7 +50,7 @@ namespace spk {
         glDrawElements(GL_TRIANGLES, quad_index_count, GL_UNSIGNED_INT, nullptr);   
     }
 
-    void primitive_render_system_ctx_t::render_polygon(glm::mat4& vp, sfk::static_index_buffer_t& ind, 
+    void primitive_render_system_ctx_t::render_polygon(glm::mat4& vp, spk::static_index_buffer_t& ind, 
         comp_primitive_render_t* render_info, b2Body* body, b2PolygonShape* polygon) {
         // this will get the amount of indexes to use, so if quad has 4 verts: 4 / 2 = 2 -> 2 * 3 = 6 (indexes)
         int32_t index_count = (polygon->m_count / 2) * 3; // special case: 3 works because of integer division black magic
@@ -71,7 +71,7 @@ namespace spk {
     }
 
     void primitive_render_system_ctx_t::render_circle(glm::mat4& vp, comp_primitive_render_t* primitve, b2Body* body, b2CircleShape* circle) {
-        const glm::vec2 position = sfk::to_glm_vec2(body->GetPosition());
+        const glm::vec2 position = spk::to_glm_vec2(body->GetPosition());
         const uint32_t steps = 8;
         const float r = circle->m_radius;
         const float c = 2.0f * r * b2_pi;
@@ -113,8 +113,8 @@ namespace spk {
     void primitive_render_system_ctx_t::render_edge(glm::mat4& vp, comp_primitive_render_t* info, b2Body* body, b2EdgeShape* edge) {
         uint32_t vertices = 2;
 
-        mesh[0] = { sfk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex0)), info->color };
-        mesh[1] = { sfk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex1)), info->color };
+        mesh[0] = { spk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex0)), info->color };
+        mesh[1] = { spk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex1)), info->color };
     
         vertex_buffer.buffer_sub_data(0, vertices * sizeof(vertex_t), mesh.data());
         vertex_array.bind();
@@ -189,7 +189,7 @@ namespace spk {
                         break;
 
                     default:
-                        sfk::log.log(sfk::LOG_TYPE_INFO, "unsupported collider type for render_info renderer");
+                        log.log(spk::LOG_TYPE_INFO, "unsupported collider type for render_info renderer");
                     };
                 }
             } else if(box) {

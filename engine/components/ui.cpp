@@ -1,12 +1,12 @@
 #include "ui.hpp"
-#include "../state.hpp"
+#include "state.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk {
     ui_element_t::ui_element_t() {
-        sfk::zero(&pos);
-        sfk::zero(&size);
-        sfk::zero(&flags);
+        spk::zero(&pos);
+        spk::zero(&size);
+        spk::zero(&flags);
 
         in_use.reset();
         elements.fill(nullptr);
@@ -35,9 +35,9 @@ namespace spk {
 
     void ui_comp_canvas_t::init() {
 
-        DEBUG_VALUE(bool, ret =) texts.init();
+        SPK_DEBUG_VALUE(bool, ret =) texts.init();
         sfk_assert(ret);
-        DEBUG_EXPR(ret =) btns.init();
+        SPK_DEBUG_EXPR(ret =) btns.init();
         sfk_assert(ret);
 
         font = nullptr;

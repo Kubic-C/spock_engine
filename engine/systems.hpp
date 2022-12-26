@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base.hpp"
+#include "utility/memory.hpp"
 
 /* handling of systems with FLECS */
 
@@ -24,7 +25,7 @@ namespace spk {
 
     private:
         flecs::world* world;
-        sfk::memory_pool_t<flecs::entity, 100, 4> ctx_name_list;
+        memory_pool_t<flecs::entity, 100, 4> ctx_name_list;
     };
 
 }

@@ -1,5 +1,5 @@
 #include "render.hpp"
-#include "../state.hpp"
+#include "state.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk {
@@ -16,13 +16,13 @@ namespace spk {
             const void *userParam) {
         switch(type) {
         case GL_DEBUG_TYPE_ERROR:
-            sfk::log.log(sfk::LOG_TYPE_ERROR, message);
+            log.log(spk::LOG_TYPE_ERROR, message);
             break;
 
         default:
-            sfk::log.flags &= ~sfk::LOG_FLAGS_ENABLE_STD_PIPE;
-            sfk::log.log(sfk::LOG_TYPE_INFO, message); 
-            sfk::log.flags |= sfk::LOG_FLAGS_ENABLE_STD_PIPE;
+            log.flags &= ~spk::LOG_FLAGS_ENABLE_STD_PIPE;
+            log.log(spk::LOG_TYPE_INFO, message); 
+            log.flags |= spk::LOG_FLAGS_ENABLE_STD_PIPE;
         }
     }
 

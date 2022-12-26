@@ -1,9 +1,9 @@
 #include "ui.hpp"
-#include "../state.hpp"
-#include "../utility/ui.hpp"
+#include "state.hpp"
+#include "utility/ui.hpp"
 #include "window.hpp"
 #include "primitive_render.hpp"
-#include "../spock.hpp"
+#include "spock.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 const char* vs_font = R"###(
@@ -70,14 +70,14 @@ namespace spk {
         vao.init();
         vao.bind_layout(layout);
 
-        uint32_t vs_shader = sfk::create_shader_from_src(GL_VERTEX_SHADER, vs_font, nullptr);
-        uint32_t fs_shader = sfk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_font, nullptr);
+        uint32_t vs_shader = spk::create_shader_from_src(GL_VERTEX_SHADER, vs_font, nullptr);
+        uint32_t fs_shader = spk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_font, nullptr);
         
         sfk_assert(vs_shader != UINT32_MAX);
         sfk_assert(fs_shader != UINT32_MAX);
         
         program.init();
-        DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
+        SPK_DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
         sfk_assert(ret);
 
         buffer.resize(indexes_per_letter * MAX_LETTERS);
@@ -86,7 +86,7 @@ namespace spk {
         vertices = 0;
     }
 
-    void font_render_t::render(sfk::static_index_buffer_t& ibo, font_t* font, ui_comp_canvas_t* canvas) {
+    void font_render_t::render(spk::static_index_buffer_t& ibo, font_t* font, ui_comp_canvas_t* canvas) {
         // update
         vbo.buffer_sub_data(0, indexes * sizeof(vertex_t), buffer.data());
 
@@ -165,14 +165,14 @@ namespace spk {
         vao.init();
         vao.bind_layout(layout);
 
-        uint32_t vs_shader = sfk::create_shader_from_src(GL_VERTEX_SHADER, vs_button, nullptr);
-        uint32_t fs_shader = sfk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_button, nullptr);
+        uint32_t vs_shader = spk::create_shader_from_src(GL_VERTEX_SHADER, vs_button, nullptr);
+        uint32_t fs_shader = spk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_button, nullptr);
         
         sfk_assert(vs_shader != UINT32_MAX);
         sfk_assert(fs_shader != UINT32_MAX);
         
         program.init();
-        DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
+        SPK_DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
         sfk_assert(ret);
 
         buffer.resize(vertices_per_button * MAX_LETTERS);
@@ -181,7 +181,7 @@ namespace spk {
         vertices = 0;
     }
 
-    void button_render_t::render(sfk::static_index_buffer_t& ibo, ui_comp_canvas_t* canvas) {
+    void button_render_t::render(spk::static_index_buffer_t& ibo, ui_comp_canvas_t* canvas) {
         // update
         vbo.buffer_sub_data(0, indexes * sizeof(vertex_t), buffer.data());
 
@@ -213,7 +213,7 @@ namespace spk {
         glm::vec3 offset = {0.0f, 0.0f, 0.0f};
         glm::vec3 color;
 
-        if(btn->time_when_clicked + 0.1f > sfk::time.get_time()) {
+        if(btn->time_when_clicked + 0.1f > spk::time.get_time()) {
             offset = {0.5f, 0.5f, 0.5f};
         }
 
@@ -340,7 +340,7 @@ namespace spk {
                     if(corners[0].x < x && x < corners[1].x &&
                         corners[0].y < y && y < corners[1].y) {
                         
-                        btn.time_when_clicked = sfk::time.get_time();
+                        btn.time_when_clicked = spk::time.get_time();
 
                         if(btn.callback) {
                             btn.callback(*state.engine, btn);

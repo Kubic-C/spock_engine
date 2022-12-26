@@ -1,7 +1,7 @@
 #include "sprite_render.hpp"
 #include "particles.hpp"
-#include "../state.hpp"
-#include "../spock.hpp"
+#include "state.hpp"
+#include "spock.hpp"
 #include <glm/gtx/rotate_vector.hpp> 
 
 const char* vs_sprite = R"###(
@@ -80,10 +80,10 @@ namespace spk {
 
     void sprite_render_system_ctx_t::add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset) {
         add_sprite_mesh(sprite, 
-            sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){-sprite.size.x, -sprite.size.y} + sfk::to_box_vec2(offset))),
-            sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){ sprite.size.x, -sprite.size.y} + sfk::to_box_vec2(offset))),
-            sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){ sprite.size.x,  sprite.size.y} + sfk::to_box_vec2(offset))),
-            sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){-sprite.size.x,  sprite.size.y} + sfk::to_box_vec2(offset))));
+            spk::to_glm_vec2(body->GetWorldPoint((b2Vec2){-sprite.size.x, -sprite.size.y} + spk::to_box_vec2(offset))),
+            spk::to_glm_vec2(body->GetWorldPoint((b2Vec2){ sprite.size.x, -sprite.size.y} + spk::to_box_vec2(offset))),
+            spk::to_glm_vec2(body->GetWorldPoint((b2Vec2){ sprite.size.x,  sprite.size.y} + spk::to_box_vec2(offset))),
+            spk::to_glm_vec2(body->GetWorldPoint((b2Vec2){-sprite.size.x,  sprite.size.y} + spk::to_box_vec2(offset))));
     }
 
     void sprite_render_system_ctx_t::draw_atlas_meshes() {

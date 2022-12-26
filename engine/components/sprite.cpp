@@ -1,5 +1,5 @@
 #include "sprite.hpp"
-#include "../state.hpp" 
+#include "state.hpp" 
 
 namespace spk {
     void sprite_comp_init(flecs::world& world) {

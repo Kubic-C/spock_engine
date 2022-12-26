@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../components/sprite.hpp"
+#include "components/sprite.hpp"
 
 // in meters
 #define SPK_TILE_HALF_SIZE 0.5f

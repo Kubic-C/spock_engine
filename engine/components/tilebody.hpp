@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../data/tilemap.hpp"
-#include "../debug.hpp"
+#include "data/tilemap.hpp"
+#include "debug.hpp"
 
 namespace spk {
     struct comp_tilebody_t {

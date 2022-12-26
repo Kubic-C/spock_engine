@@ -1,14 +1,15 @@
 #pragma once
 
 #include "./window.hpp"
-#include "../systems.hpp"
-#include "../components/camera.hpp"
+#include "systems.hpp"
+#include "components/camera.hpp"
+#include "utility/opengl.hpp"
 
 namespace spk {
     struct render_system_ctx_t {
 
         // quad indexes can be used in many places
-        sfk::static_index_buffer_t quad_index_buffer;
+        static_index_buffer_t quad_index_buffer;
 
         void init();
         void free();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../events.hpp"
+#include "events.hpp"
 
 namespace spk {
     struct tag_current_window_t {};

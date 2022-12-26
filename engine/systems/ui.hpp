@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../systems.hpp"
-#include "../components/ui.hpp"
+#include "systems.hpp"
+#include "components/ui.hpp"
 
 #define MAX_LETTERS 0xfff
 
@@ -13,10 +13,10 @@ namespace spk {
             glm::vec3 rgb;
         };
         
-        sfk::vertex_layout_t layout;
-        sfk::vertex_array_t vao;
-        sfk::vertex_buffer_t vbo;
-        sfk::program_t program;
+        vertex_layout_t layout;
+        vertex_array_t vao;
+        vertex_buffer_t vbo;
+        program_t program;
 
         std::vector<vertex_t> buffer;
 
@@ -27,7 +27,7 @@ namespace spk {
         const uint32_t vertices_per_letter = 6;
 
         void init();
-        void render(sfk::static_index_buffer_t& ibo, font_t* font, ui_comp_canvas_t* canvas);
+        void render(static_index_buffer_t& ibo, font_t* font, ui_comp_canvas_t* canvas);
         void free();
 
         void add_ui_text(font_t* font, ui_text_t* text);
@@ -39,10 +39,10 @@ namespace spk {
             float r, g, b;
         };
 
-        sfk::vertex_layout_t layout;
-        sfk::vertex_array_t vao;
-        sfk::vertex_buffer_t vbo;
-        sfk::program_t program;
+        vertex_layout_t layout;
+        vertex_array_t vao;
+        vertex_buffer_t vbo;
+        program_t program;
 
         std::vector<vertex_t> buffer;
 
@@ -53,7 +53,7 @@ namespace spk {
         const uint32_t vertices_per_button = 6;
 
         void init();
-        void render(sfk::static_index_buffer_t& ibo, ui_comp_canvas_t* canvas);
+        void render(static_index_buffer_t& ibo, ui_comp_canvas_t* canvas);
         void free();
 
         void add_ui_button(ui_button_t* button);
@@ -65,7 +65,7 @@ namespace spk {
         // and button_renderer's trivial contructors
         ui_render_system_ctx_t() {};
 
-        sfk::static_index_buffer_t ibo;
+        static_index_buffer_t ibo;
         font_render_t font_render;
         button_render_t button_render;
 

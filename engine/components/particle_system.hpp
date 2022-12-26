@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base.hpp"
+#include "base.hpp"
 #include "sprite.hpp"
 
 namespace spk {
@@ -33,6 +33,7 @@ namespace spk {
         float current_cycle;
         float base_cycle;
         bool world_positioning;
+        bool world_direction; 
 
         glm::vec2 pos;
         glm::vec2 dir;
@@ -42,6 +43,8 @@ namespace spk {
         uint32_t max;
         std::deque<particle_t> particles;
         
+        glm::vec2 get_point(b2Body* body, glm::vec2 point);
+
         void init();
         void free();
     };

@@ -1,5 +1,5 @@
 #include "window.hpp"
-#include "../state.hpp"
+#include "state.hpp"
 
 namespace spk {
     void handle_window_event(flecs::iter& iter, comp_window_t* c_window, flecs::ref<spk::window_system_ctx_t>& ctx) {

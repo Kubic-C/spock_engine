@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../systems.hpp"
-#include "../components/box2D.hpp"
-#include "../components/tilebody.hpp"
+#include "systems.hpp"
+#include "components/box2D.hpp"
+#include "components/tilebody.hpp"
 #include "render.hpp"
 
 /* quick and dirty debug rendering for Box2D shapes or primitive shapes */
@@ -24,10 +24,10 @@ namespace spk {
             glm::vec3 color; // color
         };
 
-        sfk::vertex_buffer_t vertex_buffer;
-        sfk::vertex_layout_t vertex_layout;
-        sfk::vertex_array_t  vertex_array;
-        sfk::program_t program;
+        vertex_buffer_t vertex_buffer;
+        vertex_layout_t vertex_layout;
+        vertex_array_t  vertex_array;
+        program_t program;
 
         std::vector<vertex_t> mesh;
         uint32_t vertices; // of vertex vvv
@@ -35,8 +35,8 @@ namespace spk {
         void init();
         void free();
 
-        void render_box(glm::mat4& vp, sfk::static_index_buffer_t& ind, comp_primitive_render_t* info, const comp_box_t* box);
-        void render_polygon(glm::mat4& vp, sfk::static_index_buffer_t& ind, comp_primitive_render_t* info, b2Body* body, b2PolygonShape* polygon);
+        void render_box(glm::mat4& vp, static_index_buffer_t& ind, comp_primitive_render_t* info, const comp_box_t* box);
+        void render_polygon(glm::mat4& vp, static_index_buffer_t& ind, comp_primitive_render_t* info, b2Body* body, b2PolygonShape* polygon);
         void render_circle(glm::mat4& vp, comp_primitive_render_t* info, b2Body* body, b2CircleShape* circle);
         void render_edge(glm::mat4& vp, comp_primitive_render_t* info, b2Body* body, b2EdgeShape* circle);
 

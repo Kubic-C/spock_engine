@@ -1,5 +1,5 @@
 #include "box2D.hpp"
-#include "../state.hpp"
+#include "state.hpp"
 
 namespace spk {
     void comp_b2Body_t::init() {

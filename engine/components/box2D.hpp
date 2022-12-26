@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base.hpp"
+#include "base.hpp"
 
 namespace spk {
     struct tag_current_box2d_world_t {};
@@ -16,11 +16,11 @@ namespace spk {
         b2Body* body;
 
         glm::vec2 get_pos() {
-            return sfk::to_glm_vec2(body->GetPosition());
+            return to_glm_vec2(body->GetPosition());
         }
 
         glm::vec2 get_world_point(float x, float y) {
-            return sfk::to_glm_vec2(body->GetWorldPoint((b2Vec2){x, y}));
+            return to_glm_vec2(body->GetWorldPoint((b2Vec2){x, y}));
         }
 
         void init();

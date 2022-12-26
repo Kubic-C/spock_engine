@@ -1,13 +1,13 @@
 #pragma once
 
-#include "fbase.hpp"
+#include "base.hpp"
 
 #ifdef NDEBUG
 #define sfk_assert(expr)
 #else 
 #define SFK_FIRST_W_COMMA(arg, ...) #arg
 #define sfk_assert(expr, ...) ((bool)(expr) ? void(0) : \
-    sfk::_assert(__FILE__, __PRETTY_FUNCTION__, __LINE__, #expr, SFK_FIRST_W_COMMA(__VA_ARGS__)))
+    spk::_assert(__FILE__, __PRETTY_FUNCTION__, __LINE__, #expr, SFK_FIRST_W_COMMA(__VA_ARGS__)))
 #endif 
 
 #define SFK_ANSI_RESET  "\u001B[0m"
@@ -44,9 +44,9 @@
 #define SFK_OUTPUT_EMPHASIS_TEXT "[em] #===# [reset]" 
 
 // ruling in logging:
-// sfk::log.log("[em, red] my text is red and emphasized [reset]")
+// log.log("[em, red] my text is red and emphasized [reset]")
 
-namespace sfk {
+namespace spk {
     typedef std::map<std::string, const char*> rule_map_t;
 
     enum log_type_e {
@@ -60,14 +60,13 @@ namespace sfk {
         LOG_FLAGS_ENABLE_STD_PIPE = 1
     };
 
-
     struct info_logger_t {
         info_logger_t();
         ~info_logger_t();
 
         template<typename ... params>
         void log(const char* format, const params& ... args) {
-            log(sfk::LOG_TYPE_INFO, format, args...);
+            log(spk::LOG_TYPE_INFO, format, args...);
         }
         void log(log_type_e type, const char* format, ...);
         void spew(); // print the current buffer onto console

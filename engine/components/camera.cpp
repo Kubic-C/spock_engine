@@ -1,6 +1,6 @@
 #include "camera.hpp"
-#include "../state.hpp"
-#include "../spock.hpp"
+#include "state.hpp"
+#include "spock.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk { 

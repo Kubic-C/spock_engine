@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../utility/ui.hpp"
-#include "../data/resource_manager.hpp"
+#include "utility/ui.hpp"
+#include "data/resource_manager.hpp"
 
 namespace spk {
     struct engine_t;
@@ -119,8 +119,8 @@ namespace spk {
         glm::mat4 vp;
 
         font_t* font = null;
-        sfk::memory_pool_t<ui_text_t, 32, 4> texts;
-        sfk::memory_pool_t<ui_button_t, 32, 4> btns;
+        memory_pool_t<ui_text_t, 32, 4> texts;
+        memory_pool_t<ui_button_t, 32, 4> btns;
 
         void init();
         void free();

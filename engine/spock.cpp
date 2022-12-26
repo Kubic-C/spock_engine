@@ -13,13 +13,13 @@ namespace spk {
         state.set_current_event_system(world.entity().add<tag_events_t>());
 
         if(SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO) < 0) {
-            sfk::log.log(sfk::LOG_TYPE_ERROR, "could not load SDL2 video. %s", SDL_GetError());
+            log.log(spk::LOG_TYPE_ERROR, "could not load SDL2 video. %s", SDL_GetError());
         }
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
-        DEBUG_EXPR({
+        SPK_DEBUG_EXPR({
             int code;
             SDL_GL_GetAttribute(SDL_GL_CONTEXT_FLAGS, &code);
             code |= SDL_GL_CONTEXT_DEBUG_FLAG;
@@ -48,7 +48,7 @@ namespace spk {
 
         state.get_current_window().get_mut<comp_window_t>()->force_resize_event();
 
-        DEBUG_EXPR(print_debug_stats());
+        SPK_DEBUG_EXPR(print_debug_stats());
     }
 
     int engine_t::run() {
@@ -59,7 +59,7 @@ namespace spk {
         double last_frame = 0.0;
         
         while(!state.is_exit()) {
-            double current_frame = sfk::time.get_time();
+            double current_frame = spk::time.get_time();
             delta_time = current_frame - last_frame;
             ticks_to_do += delta_time / state.get_target_tps(true);
             last_frame = current_frame;
@@ -90,7 +90,7 @@ namespace spk {
                 state.exit(0);
         }
 
-        sfk::log.log(sfk::LOG_TYPE_INFO, "exiting with code; %i", state.get_exit_code());
+        log.log(spk::LOG_TYPE_INFO, "exiting with code; %i", state.get_exit_code());
 
         return state.get_exit_code();
     }
@@ -148,8 +148,8 @@ namespace spk {
         SDL_GetVersion(&sdl_ver);
         ogl_ver = glGetString(GL_VERSION);
 
-        sfk::log.log(sfk::LOG_TYPE_INFO, "SDL Version %u.%u.%u", sdl_ver.major, sdl_ver.minor, sdl_ver.patch);
-        sfk::log.log(sfk::LOG_TYPE_INFO, "OGL Version %s", ogl_ver);
+        log.log(spk::LOG_TYPE_INFO, "SDL Version %u.%u.%u", sdl_ver.major, sdl_ver.minor, sdl_ver.patch);
+        log.log(spk::LOG_TYPE_INFO, "OGL Version %s", ogl_ver);
     }
 
     void engine_t::set_ppm(float ppm) {

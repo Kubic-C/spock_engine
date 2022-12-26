@@ -1,5 +1,5 @@
 #include "physics.hpp"
-#include "../state.hpp"
+#include "state.hpp"
 
 namespace spk {
     void physics_system_tick(flecs::entity e, comp_b2World_t& world, tag_current_box2d_world_t) {

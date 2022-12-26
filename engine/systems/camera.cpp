@@ -1,6 +1,6 @@
 #include "camera.hpp"
-#include "../events.hpp"
-#include "../state.hpp"
+#include "events.hpp"
+#include "state.hpp"
 
 namespace spk {
 

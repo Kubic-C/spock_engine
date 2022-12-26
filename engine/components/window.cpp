@@ -1,17 +1,17 @@
 #include "window.hpp"
-#include "../state.hpp"
+#include "state.hpp"
 
 namespace spk {
     void comp_window_t::init() {
         win = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 500, 
             SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE); 
         if(win == nullptr) {
-            sfk::log.log(sfk::LOG_TYPE_ERROR, "could not create SDL2 window; %s", SDL_GetError());
+            log.log(spk::LOG_TYPE_ERROR, "could not create SDL2 window; %s", SDL_GetError());
         }
 
         gl_ctx = SDL_GL_CreateContext(win);
         if(gl_ctx == nullptr) {
-            sfk::log.log(sfk::LOG_TYPE_ERROR, "could not create SDL2 window's OpenGL Context; %s", SDL_GetError());
+            log.log(spk::LOG_TYPE_ERROR, "could not create SDL2 window's OpenGL Context; %s", SDL_GetError());
         }
     }
 
@@ -28,13 +28,13 @@ namespace spk {
         }
 
         if(SDL_GL_MakeCurrent(window.win, window.gl_ctx) < 0) {
-            sfk::log.log(sfk::LOG_TYPE_ERROR, "failed to make the window context current: %s", SDL_GetError());
+            log.log(spk::LOG_TYPE_ERROR, "failed to make the window context current: %s", SDL_GetError());
         }
 
         state.set_current_window(e);
         
         if(!gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress)) { 
-            sfk::log.log(sfk::LOG_TYPE_ERROR, "failed to load OpenGL with glad");
+            log.log(spk::LOG_TYPE_ERROR, "failed to load OpenGL with glad");
         }
     }
 

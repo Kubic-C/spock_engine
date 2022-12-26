@@ -1,17 +1,9 @@
 #pragma once
 
-#include "fbase.hpp"
+#include "base.hpp"
 #include <bitset>
 
-#ifndef NDEBUG
-#define DEBUG_VALUE(type, value) type value
-#define DEBUG_EXPR(expr) expr
-#else // not debugging
-#define DEBUG_VALUE(type, value) 
-#define DEBUG_EXPR(expr)
-#endif
-
-namespace sfk {
+namespace spk {
     inline uint32_t str_hash(std::string str) {
         return (str.size() ^ 0xfffffffff);
     }
@@ -107,7 +99,7 @@ namespace sfk {
         friend class memory_pool_t<T, size, alignment, padding>;
     public: 
 
-        bool init(const ::sfk::function<uint32_t, keyT>& func = sfk::xor_int_hash<keyT>);
+        bool init(const ::spk::function<uint32_t, keyT>& func = spk::xor_int_hash<keyT>);
         void free();
 
         bool register_key(keyT key);
@@ -263,7 +255,7 @@ namespace sfk {
     }
 
     template<typename T,  uint32_t size, size_t alignment, size_t padding, typename keyT>
-    bool hashmap_t<T, size, alignment, padding, keyT>::init(const ::sfk::function<uint32_t, keyT>& hash_func) {
+    bool hashmap_t<T, size, alignment, padding, keyT>::init(const ::spk::function<uint32_t, keyT>& hash_func) {
         translation_table.fill(std::pair<keyT, T*>(null_obj, nullptr));
 
         this->hash_func = hash_func;

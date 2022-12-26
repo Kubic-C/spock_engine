@@ -1,7 +1,8 @@
 #include "particles.hpp"
-#include <glm/gtx/rotate_vector.hpp>
-#include "../state.hpp"
-#include "../utility/ui.hpp"
+#include "sprite_render.hpp"
+#include <glm/gtx/vector_angle.hpp>
+#include "state.hpp"
+#include "utility/ui.hpp"
 
 namespace spk {
     float random_positive_float(float min, float max) {
@@ -20,12 +21,6 @@ namespace spk {
     void process_particle_system(b2Body* body, float delta_time, comp_particles_t& ps) {
         if(!(ps.flags & PARTICLE_FLAG_ACTIVE))
             return;
-
-        float angle = glm::dot({0.0f, 1.0f}, ps.dir);
-
-        if(angle == 1.0f) {
-            angle = 0.0f;
-        }
 
         // update the lifetime of every particle, remove those outdated
         bool erase = false;
@@ -58,6 +53,8 @@ namespace spk {
         }
 
         if(ps.current_cycle <= 0.0f) { // create new particle if cycle allows
+            float angle = glm::angle(ps.dir,
+                                     glm::normalize((glm::vec2){0.0f, 1.0f}));
             float y = 0.0f; 
 
             ps.current_cycle = ps.base_cycle;
@@ -71,22 +68,20 @@ namespace spk {
 
                     p.pos = glm::rotate(p.pos, -angle);
 
-                    if(ps.world_positioning)
-                        p.pos = sfk::to_glm_vec2(body->GetWorldPoint(sfk::to_box_vec2(ps.pos + p.pos)));
-                    
-                    const b2Vec2& b2pos = sfk::to_box_vec2(p.pos);
+                    glm::vec2 ps_world_pos = ps.get_point(body, ps.pos);
+                    glm::vec2 p_world_pos  = ps.get_point(body, ps.pos + p.pos); 
+
+                    if(ps.world_positioning) {
+                        p.pos = p_world_pos;
+                    }
 
                     switch(ps.funnel) {
                         case PARTICLE_SYSTEM_FUNNEL_LINE:
-                            p.dir = ps.dir;
+                            p.dir = ps.dir * glm::length(p_world_pos - ps_world_pos);
                             break;
 
                         case PARTICLE_SYSTEM_FUNNEL_FUNNEL:
-                            if(ps.world_positioning)
-                                p.dir = sfk::to_glm_vec2(b2pos - body->GetWorldPoint(sfk::to_box_vec2(ps.pos)));
-                            else {
-                                p.dir = p.pos - ps.pos;
-                            }
+                            p.dir = p_world_pos - ps_world_pos;
                             break;
 
                         default:
@@ -127,7 +122,7 @@ namespace spk {
                 
                 if(!ps.world_positioning) {
                     for(glm::vec2& v : vertexes) {
-                        v = sfk::to_glm_vec2(body->GetWorldPoint(sfk::to_box_vec2(ps.pos + v)));
+                        v = ps.get_point(body, v);
                     }
                 }
 

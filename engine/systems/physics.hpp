@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../systems.hpp"
-#include "../components/box2D.hpp"
+#include "systems.hpp"
+#include "components/box2D.hpp"
 
 namespace spk {
     

@@ -1,6 +1,6 @@
 #include "opengl.hpp"
 
-namespace sfk {
+namespace spk {
     uint32_t create_shader_from_src(uint32_t shader_type, const char* src, int* size) {
         uint32_t shaderid;
 
@@ -211,8 +211,8 @@ namespace sfk {
         uint32_t vsh, fsh;
         bool vsh_invalid, fsh_invalid, leave;
     
-        vsh = sfk::create_shader(GL_VERTEX_SHADER, vsh_path);
-        fsh = sfk::create_shader(GL_FRAGMENT_SHADER, fsh_path);
+        vsh = spk::create_shader(GL_VERTEX_SHADER, vsh_path);
+        fsh = spk::create_shader(GL_FRAGMENT_SHADER, fsh_path);
 
         vsh_invalid = vsh == UINT32_MAX;
         fsh_invalid = fsh == UINT32_MAX;
@@ -238,8 +238,8 @@ namespace sfk {
     }
 
     bool program_t::load_shader_str(const char* vs, const char* fs) {
-        uint32_t vs_shader = sfk::create_shader_from_src(GL_VERTEX_SHADER, vs, nullptr);
-        uint32_t fs_shader = sfk::create_shader_from_src(GL_FRAGMENT_SHADER, fs, nullptr);
+        uint32_t vs_shader = spk::create_shader_from_src(GL_VERTEX_SHADER, vs, nullptr);
+        uint32_t fs_shader = spk::create_shader_from_src(GL_FRAGMENT_SHADER, fs, nullptr);
         
         if(vs_shader == UINT32_MAX ||
            fs_shader == UINT32_MAX)
@@ -261,7 +261,7 @@ namespace sfk {
             glGetProgramiv(id, GL_LINK_STATUS, &success);
             if(!success) {
                 glGetShaderInfoLog(id, 512, NULL, info_log);
-                log.log(sfk::LOG_TYPE_INFO, "program failure to compile %s", info_log);
+                log.log(spk::LOG_TYPE_INFO, "program failure to compile %s", info_log);
                 ret = false;
             }
         }

@@ -2,7 +2,7 @@
 
 namespace spk {
       bool font_t::init() {
-        if(!char_map.init(sfk::xor_int_hash<u_char>))
+        if(!char_map.init(spk::xor_int_hash<u_char>))
             return false;
 
         if(!texture.init()) {
@@ -30,7 +30,7 @@ namespace spk {
         for(u_char c = 0; c < UCHAR_MAX; c++) {
             character_t* c_data = nullptr;
 
-            DEBUG_VALUE(bool, ret =) char_map.register_key(c); 
+            SPK_DEBUG_VALUE(bool, ret =) char_map.register_key(c); 
             /* this should never happen */
             sfk_assert(ret);
         

@@ -88,10 +88,10 @@ namespace spk {
             auto& shape = colliding_tiles.back().shape;
 
             shape.SetAsBox(SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE);
-            shape.m_vertices[0] += (b2Vec2){(float)x, (float)y} - sfk::to_box_vec2(center);
-            shape.m_vertices[1] += (b2Vec2){(float)x, (float)y} - sfk::to_box_vec2(center);
-            shape.m_vertices[2] += (b2Vec2){(float)x, (float)y} - sfk::to_box_vec2(center);
-            shape.m_vertices[3] += (b2Vec2){(float)x, (float)y} - sfk::to_box_vec2(center);
+            shape.m_vertices[0] += (b2Vec2){(float)x, (float)y} - spk::to_box_vec2(center);
+            shape.m_vertices[1] += (b2Vec2){(float)x, (float)y} - spk::to_box_vec2(center);
+            shape.m_vertices[2] += (b2Vec2){(float)x, (float)y} - spk::to_box_vec2(center);
+            shape.m_vertices[3] += (b2Vec2){(float)x, (float)y} - spk::to_box_vec2(center);
         });
     }
 

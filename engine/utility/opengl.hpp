@@ -1,7 +1,6 @@
 #pragma once
 
-#include "fbase.hpp"
-#include "logger.hpp"
+#include "base.hpp"
 #include "external/stb_image.h"
 
 #define BGFX_HANDLE_VALID(handle) (handle.idx != bgfx::kInvalidHandle)
@@ -10,12 +9,9 @@
 
 #define SFK_MAX_VERTEX_LAYOUT_ATTRIBUTES 8
 
-/* i dont *really* know how to abstract OpenGL and id rather not try
-   because its not really fully necessary for this engine, maybe in the future
-   ill try to develop a better framework that has some more better abstractions
-   but the main focus is the game engine, not specifaclly the almighty *abstraction* */
+// todo: rendering abstraction/utility
 
-namespace sfk {
+namespace spk {
     uint32_t create_shader_from_src(uint32_t shader_type, const char* src, int* size);
     uint32_t create_shader(uint32_t shader_type, const char* file_path);
 

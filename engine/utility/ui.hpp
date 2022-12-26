@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base.hpp"
+#include "base.hpp"
 
 namespace spk {
     inline float map_value(float value, glm::vec2 start, glm::vec2 end) {

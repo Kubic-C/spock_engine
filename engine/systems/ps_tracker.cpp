@@ -1,5 +1,5 @@
 #include "ps_tracker.hpp"
-#include "../state.hpp"
+#include "state.hpp"
 
 namespace spk {
     void ps_tracker_system_tick(ps_tracker_ctx_t& ctx) {
@@ -14,7 +14,7 @@ namespace spk {
         // NOTE: ctx is a pointer to an array
 
         if(stats.get_ps_stats()) {
-            sfk::log.log(sfk::LOG_TYPE_INFO, "FPS: %u | TPS: %u | DELTA-TIME: %f", ctx->fps, ctx->tps, iter.world().delta_time());
+            log.log(spk::LOG_TYPE_INFO, "FPS: %u | TPS: %u | DELTA-TIME: %f", ctx->fps, ctx->tps, iter.world().delta_time());
         }
 
         stats._set_fps(ctx->fps);

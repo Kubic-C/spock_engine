@@ -1,6 +1,6 @@
 #include "logger.hpp"
 
-namespace sfk {
+namespace spk {
     bool should_ignore_character(char c) {
         switch(c) {
             case ' ':

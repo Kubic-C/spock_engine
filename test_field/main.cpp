@@ -38,9 +38,9 @@ MAIN {
     
     srand(1);
 
-    sfk::log.log("[em, red] this text is red and emphasized [reset] ");
-    sfk::log.log("[it, blue] this text is italic and blue [reset]");
-    sfk::log.log("[emt] <- this is a recursive rule -> [emt]");
+    spk::log.log("[em, red] this text is red and emphasized [reset] ");
+    spk::log.log("[it, blue] this text is italic and blue [reset]");
+    spk::log.log("[emt] <- this is a recursive rule -> [emt]");
 
     cam1 = engine.world.entity();
     cam2 = engine.world.entity();
@@ -72,13 +72,13 @@ MAIN {
         engine.rsrc_mng.font_load_ascii("./Raleway-Regular.ttf");
         engine.rsrc_mng.atlas_init(0, 4, 4);
         if(!engine.rsrc_mng.atlas_load_from_path(0, "./test_atlas.png")) {
-            sfk::log.log("failed to load atlas");
+            spk::log.log("failed to load atlas");
             return -100;
         }
         
         engine.rsrc_mng.atlas_init(1, 8, 8);
         if(!engine.rsrc_mng.atlas_load_from_path(1, "./firetexture.png")) {
-            sfk::log.log("failed to load fire texture");
+            spk::log.log("failed to load fire texture");
             return -101;
         }
     }
@@ -140,23 +140,23 @@ MAIN {
     }   
 
     auto start_ = [&]() -> void {
-            for(uint32_t i = 0; i < 1; i++) {
+            for(uint32_t i = 0; i < 2; i++) {
                 test = engine.world.entity();
                 test.set([&](spk::comp_particles_t& particles){
-                    particles.width = 0.5f;
-                    particles.base_lifetime = 0.5f;
+                    particles.width = 10.0f;
+                    particles.base_lifetime = 1.0f;
                     particles.base_cycle = 0.05f;
-                    particles.speed = 100.0f;
+                    particles.speed = 1.0f;
                     particles.step = 0.01f;
                     particles.max = UINT32_MAX;
                     particles.world_positioning = true;
+                    particles.world_direction = true;
                     particles.sprite.atlas_id = 1;
                     particles.sprite.size.x = 0.5f;
                     particles.sprite.size.y = 0.5f;
-                    particles.pos = {0.0f, 0.0f};
-                    particles.dir = {-1.0f, 0.0f};
+                    particles.dir = {0.0f, 0.0f};
                     particles.flags |= spk::PARTICLE_FLAG_ACTIVE;
-                    particles.funnel = spk::PARTICLE_SYSTEM_FUNNEL_FUNNEL;
+                    particles.funnel = spk::PARTICLE_SYSTEM_FUNNEL_LINE;
                 });
                 test.set([&](spk::comp_tilebody_t& comp){
                     uint32_t id = (rand() % 2) + 1;
@@ -193,7 +193,7 @@ MAIN {
     };
 
     auto end_ = [&](){
-        sfk::log.log("ending sim");
+        spk::log.log("ending sim");
         test.destruct();
         bottom.destruct();
     };
@@ -209,19 +209,19 @@ MAIN {
                 switch(event->keysym.scancode) {
                 case SDL_SCANCODE_A:
                     engine.set_current_camera(cam1);
-                    sfk::log.log("A key");
+                    spk::log.log("A key");
                     break;
                 case SDL_SCANCODE_D: 
                     engine.set_current_camera(cam2);
-                    sfk::log.log("D key"); 
+                    spk::log.log("D key"); 
                     break;
                 case SDL_SCANCODE_S: 
                     test.add<spk::comp_primitive_render_t>();
-                    sfk::log.log("S key");
+                    spk::log.log("S key");
                     break;
                 case SDL_SCANCODE_W:
                     test.remove<spk::comp_primitive_render_t>();
-                    sfk::log.log("W key");
+                    spk::log.log("W key");
                     break;
                 }
             }
@@ -232,7 +232,7 @@ MAIN {
     engine.world.observer().event<spk::event_mouse_wheel_t>().term<spk::tag_events_t>()
         .iter([&](flecs::iter& iter){
             auto event = iter.param<spk::event_mouse_wheel_t>();
-            float step = 0.1f;
+            float step = 0.6f;
 
             if(event->y < 0) {
                 engine.set_ppm(engine.get_ppm() - step);
@@ -253,16 +253,17 @@ MAIN {
                 test.set([&](spk::comp_tilebody_t& body) {
                     b2Vec2 position = body.body->GetPosition();
                     
-                    b2Vec2 dir = sfk::to_box_vec2(mouse_click) - position;
+                    b2Vec2 dir = spk::to_box_vec2(mouse_click) - position;
                     dir.Normalize();
                     dir *= 200.0f;
 
-                    body.body->SetTransform(sfk::to_box_vec2(mouse_click), 0.0f);
+                    body.body->SetTransform(spk::to_box_vec2(mouse_click), 0.0f);
                     body.body->SetAwake(true);
                 });
             }
         });
 
+    glm::vec2 last_pos = {0.0f, 0.0f};
     engine.user_state.tick = 
         [&](spk::engine_t& engine){
             switch(my_state) {
@@ -272,17 +273,24 @@ MAIN {
                 exit_play_btn->flags |= spk::UI_ELEMENT_FLAGS_ENABLED;
             
                 start_();
-                sfk::log.rule_map["myrule"] = "[yellow] goo";
-                sfk::log.log("[it, em, myrule]This is video game[reset]");
+                spk::log.rule_map["myrule"] = "[yellow] goo";
+                spk::log.log("[it, em, myrule]This is video game[reset]");
                 my_state = STATE_PLAY;
                 
-                sfk::log.log("loading state");
+                spk::log.log("loading state");
                 break;
 
             case STATE_PLAY: {
-                // test.set([&](spk::comp_particles_t& particles) {
-                //     particles.dir = {sin(sfk::time.get_time()), cos(sfk::time.get_time())};
-                // });
+                test.set([&](spk::comp_tilebody_t& body, spk::comp_particles_t& particles) {
+                    glm::vec2 cur_pos = spk::to_glm_vec2(body.body->GetPosition());
+                    if(cur_pos == last_pos) {
+                        return;
+                    } 
+
+                    particles.dir = glm::normalize(last_pos - spk::to_glm_vec2(body.body->GetPosition()));
+
+                    last_pos = spk::to_glm_vec2(body.body->GetPosition()); 
+                });
             } break;
 
             case STATE_EXIT_PLAY:
@@ -294,12 +302,12 @@ MAIN {
 
                 end_();
 
-                sfk::log.log("exiting play");
+                spk::log.log("exiting play");
                 break;
 
             case STATE_EXIT:
                 engine.exit(0);
-                sfk::log.log("exiting app");
+                spk::log.log("exiting app");
                 break;
 
             default:

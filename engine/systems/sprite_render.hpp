@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../systems.hpp"
-#include "../components/sprite.hpp"
-#include "../components/tilebody.hpp"
-#include "../components/particle_system.hpp"
+#include "systems.hpp"
+#include "components/sprite.hpp"
+#include "components/tilebody.hpp"
+#include "components/particle_system.hpp"
 #include "render.hpp"
 
 /* the sprite render system is responsible for more then just rendering comp_sprite_t
@@ -24,10 +24,10 @@ namespace spk {
 
         void add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset = {0.0f, 0.0f});
 
-        sfk::vertex_layout_t vertex_layout;
-        sfk::vertex_buffer_t vertex_buffer;
-        sfk::vertex_array_t vertex_array;
-        sfk::program_t program;
+        vertex_layout_t vertex_layout;
+        vertex_buffer_t vertex_buffer;
+        vertex_array_t vertex_array;
+        program_t program;
 
         static constexpr uint32_t vertexes_per_sprite = 6;
         static constexpr uint32_t indexes_per_sprite = 4;

@@ -1,8 +1,8 @@
 #pragma once 
 
-#include "../systems.hpp"
-#include "../components/window.hpp"
-#include "../systems.hpp"
+#include "systems.hpp"
+#include "components/window.hpp"
+#include "systems.hpp"
 
 
 namespace spk {

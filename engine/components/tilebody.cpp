@@ -1,6 +1,6 @@
 #include "tilebody.hpp"
-#include "../state.hpp"
-#include "../spock.hpp"
+#include "state.hpp"
+#include "spock.hpp"
 
 namespace spk {
     void comp_tilebody_t::init() {

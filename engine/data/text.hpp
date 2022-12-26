@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../base.hpp"
+#include "base.hpp"
+#include "utility/opengl.hpp"
+#include "utility/memory.hpp"
 
 /*
 
@@ -31,11 +33,11 @@ namespace spk {
         uint32_t widest_glyph;
         uint32_t tallest_glyph;
         uint32_t width, height;
-        sfk::texture2D_t texture;
+        texture2D_t texture;
 
         FT_Face face; 
 
-        sfk::hashmap_t<character_t, UCHAR_MAX, 2, 0, u_char> char_map;
+        hashmap_t<character_t, UCHAR_MAX, 2, 0, u_char> char_map;
     };
 
     class font_manager_t {
@@ -46,7 +48,7 @@ namespace spk {
         font_t* get_first_font();
 
     private:
-        sfk::memory_pool_t<font_t, 8, 4> font_pool;
+        memory_pool_t<font_t, 8, 4> font_pool;
         FT_Library ft_lib; 
     };
 

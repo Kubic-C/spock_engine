@@ -1,5 +1,5 @@
 #include "structure.hpp"
 
-namespace sfk {
+namespace spk {
 
 }

@@ -10,6 +10,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -gdwarf-4 -O0 -std=c++17 -Wfatal-errors"
 message(STATUS "CXX OPTIONS: ${CMAKE_CXX_FLAGS}")
 
 add_subdirectory("dep")
-add_subdirectory("framework")
 add_subdirectory("engine")
 add_subdirectory("test_field")

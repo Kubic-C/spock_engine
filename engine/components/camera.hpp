@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../base.hpp"
+#include "base.hpp"
 
 namespace spk {
     struct tag_current_camera_t {};

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../base.hpp"
+#include "base.hpp"
+#include "utility/opengl.hpp"
 
 #define SPK_MAX_ATLAS 8
 
@@ -17,7 +18,7 @@ namespace spk {
         float height_per_sprite;
         uint32_t sprites_per_row;
         uint32_t sprites_per_column;
-        sfk::texture2D_t texture;
+        texture2D_t texture;
     };
 
     class atlas_manager_t {
