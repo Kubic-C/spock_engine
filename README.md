@@ -18,3 +18,13 @@ Use GCC or CLANG, or a MinGW build if your on windows
 note: if your going to use Clang, you will have problems
 using valgrind as for whatever reason valgrind has problems with 
 the debugging symbols that Clang generates.
+
+## Dependencies
+All the libraries that spock engine is dependent on are all built within
+the project. But when compiling, spock engine's dependencies rely on python scripts.
+Installing 'jinja2' may be necessary if not already installed.
+
+if your lazy:
+```
+pip install jinja2
+```
