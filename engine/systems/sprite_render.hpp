@@ -1,10 +1,9 @@
 #pragma once
 
-#include "systems.hpp"
-#include "components/sprite.hpp"
-#include "components/tilebody.hpp"
-#include "components/particle_system.hpp"
 #include "render.hpp"
+#include "components/sprite.hpp"
+#include "systems/particles.hpp"
+#include "systems/tilebody.hpp"
 
 /* the sprite render system is responsible for more then just rendering comp_sprite_t
     it also renders tile_bodies and particle_systems*/

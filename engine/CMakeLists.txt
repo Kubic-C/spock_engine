@@ -28,7 +28,8 @@ target_sources(spock_engine PRIVATE
     "systems/ps_tracker.hpp" "systems/ps_tracker.cpp"
     "systems/ui.hpp" "systems/ui.cpp"
     "systems/camera.hpp" "systems/camera.cpp"
-    "systems/particles.hpp" "systems/particles.cpp")
+    "systems/particles.hpp" "systems/particles.cpp"
+    "systems/tilebody.hpp" "systems/tilebody.cpp")
 
 target_sources(spock_engine PRIVATE
     "components/window.hpp" "components/window.cpp"
