@@ -8,6 +8,10 @@ Current feature list:
 - simple UI system, which currently includes button and text
 - simple physics world, using box2d
 - basic window handling and manipulation
+- a particle system using sprites
+- tilebodies and tilemaps
+- sprites
+- resource manager, allowing simple loading of files for sprites, textures, or other related files
 
 Undergoing heavy construction
 
