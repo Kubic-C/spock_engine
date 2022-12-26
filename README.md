@@ -25,6 +25,6 @@ the project. But when compiling, spock engine's dependencies rely on python scri
 Installing 'jinja2' may be necessary if not already installed.
 
 if your lazy:
-```
+```console
 pip install jinja2
 ```
