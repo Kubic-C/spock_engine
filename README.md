@@ -4,8 +4,10 @@ this game engine uses (almost) entirely flecs for handling data and reading/writ
 
 spock is a game engine being developed for a game called synther
 
+***This engine is still undergoing many changes, and it will take while to develop a stable and non changing API. ENUMs, class names, struct names, the internal structure of the engine as a whole all could change so please keep that in mind when using***
+
 Current feature list:
-- simple UI system, which currently includes button and text
+- simple UI system, which currently includes button and 
 - simple physics world, using box2d
 - basic window handling and manipulation
 - a particle system using sprites
