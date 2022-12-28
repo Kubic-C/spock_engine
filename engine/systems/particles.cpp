@@ -21,8 +21,10 @@ namespace spk {
     };
 
     void process_particle_system(b2Body* body, float delta_time, comp_particles_t& ps) {
-        if(!(ps.flags & PARTICLES_FLAG_ACTIVE))
+        if(!(ps.flags & PARTICLES_FLAGS_ACTIVE))
             return;
+
+        /* now just a thought (JUST A THOUGHT), what if every particle was a entity*/
 
         // update the lifetime of every particle, remove those outdated
         bool erase = false;
@@ -31,11 +33,12 @@ namespace spk {
             ps.particles[i].lifetime -= delta_time;
 
             if(ps.particles[i].lifetime <= 0.0f) {
+                sfk_assert(amount == 0, "amount to erase is non-zero;" 
+                                        " meaning a particle is in a invalid" 
+                                        " position based on its lifetime."
+                                        " particles must be in decesnding order");
+
                 if(!erase) {
-                    sfk_assert(amount == 0, "amount to erase is non-zero;" 
-                                                " meaning a particle is in a invalid" 
-                                                " position based on its lifetime."
-                                            " particles must be in decesnding order");
                     erase = true;
                 }
             } else { // found particle with valid lifetime
@@ -47,7 +50,9 @@ namespace spk {
                 // sure particle speed is not negative
                 if(ps.particles[i].speed <= 0.0f) {
                     ps.particles[i].speed = 0.0f;
-                }   
+                }  else {
+                    
+                } 
 
                 if(erase) {
                     amount = i + 1;
@@ -89,26 +94,26 @@ namespace spk {
                         glm::vec2 ps_world_pos = ps.get_point(body, ps.pos);
                         glm::vec2 p_world_pos  = ps.get_point(body, ps.pos + p.pos); 
 
-                        if(ps.flags & PARTICLES_FLAG_WORLD_POSITION) {
+                        if(ps.flags & PARTICLES_FLAGS_WORLD_POSITION) {
                             p.pos = p_world_pos;
                         }
 
-                        if(ps.flags & PARTICLES_FLAG_COLLIADABLE) {
+                        if(ps.flags & PARTICLES_FLAGS_COLLIADABLE) {
                             p.init_body(ps.particle.id, body->GetWorld());
                             p.body->SetTransform(to_box_vec2(p.pos), 0.0f);
                         }
 
                         switch(ps.funnel) {
-                            case PARTICLE_SYSTEM_FUNNEL_LINE:
+                            case PARTICLES_FUNNEL_LINE:
                                 p.dir = ps.dir; 
                                 break;
 
-                            case PARTICLE_SYSTEM_FUNNEL_FUNNEL:
+                            case PARTICLES_FUNNEL_FUNNEL:
                                 p.dir = p_world_pos - ps_world_pos;
                                 break;
 
                             default:
-                                sfk_assert(ps.funnel < PARTICLE_SYSTEM_FUNNEL_LAST, "invalid particle system funnel");
+                                sfk_assert(ps.funnel < PARTICLES_FUNNEL_LAST, "invalid particle system funnel");
                                 break;
                         }
                     }
@@ -123,13 +128,13 @@ namespace spk {
 
     void particles_system_tick(flecs::iter& iter, comp_b2Body_t* bodies, comp_particles_t* particles) {
         for(auto i : iter) {
-            process_particle_system(bodies[i].body, stats.get_delta_time(), particles[i]);
+            process_particle_system(bodies[i].body, stats.delta_time, particles[i]);
         }
     }
 
     void particles_system_tile_body_tick(flecs::iter& iter, comp_tilebody_t* bodies, comp_particles_t* particles) {
         for(auto i : iter) {
-            process_particle_system(bodies[i].body, stats.get_delta_time(), particles[i]);
+            process_particle_system(bodies[i].body, stats.delta_time, particles[i]);
         }
     }
 
@@ -146,7 +151,7 @@ namespace spk {
                     (glm::vec2){particle.pos.x - tmd.sprite.size.x, particle.pos.y + tmd.sprite.size.y} // tl
                 };
                 
-                if(!(ps.flags & PARTICLES_FLAG_WORLD_POSITION)) {
+                if(!(ps.flags & PARTICLES_FLAGS_WORLD_POSITION)) {
                     for(glm::vec2& v : vertexes) {
                         v = ps.get_point(body, v);
                     }

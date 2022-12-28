@@ -3,7 +3,7 @@
 #include "base.hpp"
 
 #ifdef NDEBUG
-#define sfk_assert(expr)
+#define sfk_assert(expr, ...)
 #else 
 #define SFK_FIRST_W_COMMA(arg, ...) #arg
 #define sfk_assert(expr, ...) ((bool)(expr) ? void(0) : \

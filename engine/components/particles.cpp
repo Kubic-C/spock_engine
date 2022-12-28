@@ -1,4 +1,4 @@
-#include "particle_system.hpp"
+#include "particles.hpp"
 #include "state.hpp"
 #include "spock.hpp"
 
@@ -31,9 +31,9 @@ namespace spk {
     }
  
     void comp_particles_t::init() {
-        flags = PARTICLES_FLAG_ACTIVE;
+        flags = PARTICLES_FLAGS_ACTIVE;
         
-        funnel = PARTICLE_SYSTEM_FUNNEL_LINE;
+        funnel = PARTICLES_FUNNEL_LINE;
         chance = 1.0f;
         step   = 0.5f;
         base_speed  = 75.0f;
@@ -57,7 +57,7 @@ namespace spk {
 
 
     glm::vec2 comp_particles_t::get_point(b2Body* body, glm::vec2 point) {
-        if(flags & PARTICLES_FLAG_WORLD_POSITION) {
+        if(flags & PARTICLES_FLAGS_WORLD_POSITION) {
             return spk::to_glm_vec2(body->GetPosition()) + pos + point;
         } else {
             return spk::to_glm_vec2(body->GetWorldPoint(spk::to_box_vec2(pos + point)));

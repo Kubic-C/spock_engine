@@ -79,8 +79,6 @@ namespace spk {
     int engine_t::run() {
         SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "[emt, red] ENGINE RUN [reset, emt]");
 
-        stats.set_ps_stats(true);
-
         double frame_time = 0.0;
         double delta_time = 0.0;
 
@@ -109,7 +107,7 @@ namespace spk {
                 delta_time = current_tick - last_tick;
                 last_tick = current_tick;
 
-                stats.set_delta_time(delta_time);
+                stats.delta_time = delta_time;
 
                 // one tick
                world.frame_begin(0.0);
@@ -147,6 +145,11 @@ namespace spk {
         return state;
     }
 
+
+    const stats_t engine_t::get_stats() {
+        return stats;
+    }
+
     void engine_t::set_current_window_size(int w, int h) {
         state.get_current_window().get_ref<comp_window_t>()->set_size(w, h);
     }
@@ -175,7 +178,6 @@ namespace spk {
 
     void engine_t::set_target_tps(double target_tps) {
         state.set_target_tps(target_tps);
-        world.set_target_fps(target_tps);
     }
 
     void engine_t::set_vsync_opt(vsync_setting_e option) {

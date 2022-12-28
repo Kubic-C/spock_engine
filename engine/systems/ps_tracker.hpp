@@ -8,7 +8,7 @@ namespace spk {
     struct ps_tracker_ctx_t {
         uint32_t fps = 0;
         uint32_t tps = 0;
-        float delta_time = 0.0f;
+        float average_delta_time = 0.0f;
         float last_tick = 0.0f;
     };
 

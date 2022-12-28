@@ -40,6 +40,9 @@ namespace spk {
         // state
         const state_t& get_state();
 
+        // stats
+        const stats_t get_stats();
+
         // sets the current size of the window 
         void set_current_window_size(int w, int h);
 

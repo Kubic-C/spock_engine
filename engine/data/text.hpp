@@ -63,6 +63,10 @@ namespace spk {
             this->color = color;
         }
 
+        void set(const std::string _s, float scalar, glm::vec3 color, font_t* font = nullptr) {
+            set(_s.c_str(), scalar, color, font);
+        }
+
         void operator=(const char* _s) {
             str = _s;
         }

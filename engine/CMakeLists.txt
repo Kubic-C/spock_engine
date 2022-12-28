@@ -39,7 +39,7 @@ target_sources(spock_engine PRIVATE
     "components/sprite.hpp" "components/sprite.cpp"
     "components/tilebody.hpp" "components/tilebody.cpp"
     "components/camera.hpp" "components/camera.cpp"
-    "components/particle_system.hpp" "components/particle_system.cpp")
+    "components/particles.hpp" "components/particles.cpp")
 
 target_sources(spock_engine PRIVATE
     "utility/ui.hpp" "utility/ui.cpp"

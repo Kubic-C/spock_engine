@@ -1,6 +1,6 @@
 #pragma once
 
-#include "components/particle_system.hpp"
+#include "components/particles.hpp"
 
 namespace spk {
     // particles_cs_init will be called by sprite_cs_init

@@ -28,11 +28,13 @@ MAIN {
     spk::ui_button_t* exit_btn;
     spk::ui_button_t* play_btn;
     spk::ui_button_t* exit_play_btn;
+    spk::ui_text_t* stats;
     current_state_e my_state;
     flecs::entity test, bottom;
     flecs::entity cam1, cam2;
 
-    spk::debug.flags |= spk::DEBUG_FLAGS_ENABLE_STATE_CHANGE | spk::DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME;
+    SPK_DEBUG_ENABLE(spk::DEBUG_FLAGS_ENABLE_STATE_CHANGE);
+    SPK_DEBUG_ENABLE(spk::DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME);
 
     engine.init();
 
@@ -126,8 +128,11 @@ MAIN {
         exit_play_text->text.set("exit to menu", 1.0f, {0.0f, 0.0f, 0.0f});
         exit_play_btn->add_child(exit_play_text);
 
-        spk::ui_text_t* stats = canvas->texts.malloc();
-        
+        stats = canvas->texts.malloc();
+        stats->flags = spk::UI_ELEMENT_FLAGS_ENABLED | spk::UI_ELEMENT_FLAGS_PARENT_RELATIVE;
+        stats->pos = {0.0f, 0.95f};
+        stats->text.set("stats ...", 1.0f, {1.0f, 1.0f, 1.0f});
+        canvas->add_child(stats);
 
         my_state = STATE_MENU;
         engine.user_state.user_data = &my_state;
@@ -146,15 +151,18 @@ MAIN {
     }   
 
     auto start_ = [&]() -> void {
-            engine.set_target_tps(120);
+            engine.set_target_tps(60);
+
             for(uint32_t i = 0; i < 1; i++) {
                 test = engine.world.entity();
                 test.set([&](spk::comp_particles_t& ps){
-                    ps.flags |= spk::PARTICLES_FLAG_WORLD_DIRECTION | 
-                                spk::PARTICLES_FLAG_WORLD_POSITION;
-                    ps.funnel = spk::PARTICLE_SYSTEM_FUNNEL_FUNNEL;
+                    ps.flags |= spk::PARTICLES_FLAGS_WORLD_DIRECTION | 
+                                spk::PARTICLES_FLAGS_WORLD_POSITION;
+                    ps.funnel = spk::PARTICLES_FUNNEL_LINE;
                     ps.base_cycle = 0.001;
                     ps.max = UINT32_MAX;
+                    ps.particle.id = 3;
+                    ps.base_lifetime = 1.0f;
                 });
                 test.set([&](spk::comp_tilebody_t& comp){
                     uint32_t id = (rand() % 2) + 1;
@@ -244,7 +252,7 @@ MAIN {
                     
                     b2Vec2 dir = spk::to_box_vec2(mouse_click) - position;
                     dir.Normalize();
-                    dir *= 20000.0f;
+                    dir *= 2000.0f;
 
                     body.body->ApplyForceToCenter(dir, true);
                     body.body->SetAwake(true);
@@ -261,14 +269,18 @@ MAIN {
                 exit_play_btn->flags |= spk::UI_ELEMENT_FLAGS_ENABLED;
             
                 start_();
-                spk::log.rule_map["myrule"] = "[yellow] goo";
-                spk::log.log("[it, em, myrule]This is video game[reset]");
                 my_state = STATE_PLAY;
                 
                 spk::log.log("loading state");
                 break;
 
             case STATE_PLAY: {
+                auto stats_ = engine.get_stats();
+                stats->text.set(std::string("stats: FPS: ") + 
+                                std::to_string(stats_.fps) + " | TPS: " + 
+                                std::to_string(stats_.tps) + " | DT: " +
+                                std::to_string(stats_.average_delta_time), 0.5f, {1.0f, 1.0f, 1.0f});
+
                 test.set([&](spk::comp_tilebody_t& body, spk::comp_particles_t& particles) {
                     glm::vec2 velocity = spk::to_glm_vec2(body.body->GetLinearVelocity());
                     glm::vec2 dir = glm::normalize(-velocity);

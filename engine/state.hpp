@@ -16,6 +16,8 @@ namespace spk {
 
     const char* vsync_name(vsync_setting_e opt);
 
+    /* the reason for state_t using getters and setters is because any changes that do
+        occur to it should be logged as way to track global-state related bugs */
     class state_t {
     private:
         bool exit_ = false;
@@ -117,26 +119,12 @@ namespace spk {
     };
 
     struct stats_t {
-    private:
         bool print_ps_stats = false;
         double delta_time = 0.0;
         double frame_time = 0.0;
-        uint32_t fps;
-        uint32_t tps;
-    
-    public:
-        void set_ps_stats(bool print_per_second) { print_ps_stats = print_per_second; }
-        bool get_ps_stats() { return print_ps_stats; }
-
-        void set_fps(uint32_t fps_) { fps = fps_; };
-        void set_tps(uint32_t tps_) { fps = tps_; };
-        void set_delta_time(double delta_time_) { delta_time = delta_time_; }
-        void set_frame_time(double frame_time_) { frame_time = frame_time_; }
-        uint32_t get_fps() { return fps; }
-        uint32_t get_tps() { return tps; }
-        double get_delta_time() { return delta_time; }
-        double get_frame_time() { return frame_time; }
-
+        double average_delta_time = 0;
+        uint32_t fps = 0;
+        uint32_t tps = 0;
     };
 
 #ifndef _SPK_NO_DEF_STATE

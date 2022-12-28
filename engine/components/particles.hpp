@@ -5,16 +5,16 @@
 
 namespace spk {
     enum particles_funnel_e: uint16_t {
-        PARTICLE_SYSTEM_FUNNEL_LINE,
-        PARTICLE_SYSTEM_FUNNEL_FUNNEL,
-        PARTICLE_SYSTEM_FUNNEL_LAST
+        PARTICLES_FUNNEL_LINE,
+        PARTICLES_FUNNEL_FUNNEL,
+        PARTICLES_FUNNEL_LAST
     };
 
     enum particles_flags_e {
-        PARTICLES_FLAG_ACTIVE = 1 << 0,
-        PARTICLES_FLAG_WORLD_POSITION = 1 << 1,
-        PARTICLES_FLAG_WORLD_DIRECTION = 1 << 2,
-        PARTICLES_FLAG_COLLIADABLE = 1 << 3
+        PARTICLES_FLAGS_ACTIVE = 1 << 0,
+        PARTICLES_FLAGS_WORLD_POSITION = 1 << 1,
+        PARTICLES_FLAGS_WORLD_DIRECTION = 1 << 2,
+        PARTICLES_FLAGS_COLLIADABLE = 1 << 3
     };
 
     struct particle_t {
