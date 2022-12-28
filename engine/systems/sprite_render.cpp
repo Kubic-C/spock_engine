@@ -32,7 +32,7 @@ void main() {
 namespace spk {
 
     void sprite_render_system_ctx_t::init() {
-        const uint32_t gfx_buffer_size = 2000;
+        const uint32_t gfx_buffer_size = 9000;
 
         vertex_array.init();
         vertex_array.bind();
@@ -138,8 +138,8 @@ namespace spk {
         
         auto ctx = allocater.allocate_ctx<sprite_render_system_ctx_t>();
 
-        world.system<comp_b2Body_t, comp_sprite_t>().ctx(ctx).kind(flecs::OnUpdate)
-            .iter(sprite_render_system_update);
+        world.system<comp_b2Body_t, comp_sprite_t>().ctx(ctx).kind(on_render)
+            .iter(sprite_render_system_update).add<render_system_t>();
 
         _particles_cs_init(ctx, world);        
         _tilebody_cs_init(ctx, world); 

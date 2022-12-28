@@ -368,8 +368,9 @@ namespace spk {
 
         world.system<ui_comp_canvas_t>()
             .term_at(1).with<ui_tag_current_canvas_t>()
-            .kind(flecs::OnUpdate)
-            .ctx(ui_render_ctx).iter(ui_render_system_update);
+            .kind(on_render)
+            .ctx(ui_render_ctx)
+            .iter(ui_render_system_update).add<render_system_t>();
         
         world.observer().event<event_window_size_t>().term<tag_events_t>()
             .iter(ui_render_system_resize);

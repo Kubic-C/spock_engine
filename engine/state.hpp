@@ -16,9 +16,6 @@ namespace spk {
 
     const char* vsync_name(vsync_setting_e opt);
 
-    // functions labeled with an '_' means changing the option will not 
-    // have an affect on the current working state. Change the setting through
-    // engine_t will have an immediate affect
     class state_t {
     private:
         bool exit_ = false;
@@ -34,8 +31,11 @@ namespace spk {
         flecs::entity event_system = flecs::entity(UINT64_MAX);
         flecs::entity canvas = flecs::entity(UINT64_MAX);
         flecs::entity camera = flecs::entity(UINT64_MAX);
+        flecs::entity render_pipeline = flecs::entity(UINT64_MAX);
+        flecs::entity game_pipeline = flecs::entity(UINT64_MAX);
 
     public:
+        std::bitset<SDL_NUM_SCANCODES> keys;
         engine_t* engine;
 
         void exit(int exit_code) { exit_ = true; exit_code_ = 0; }
@@ -52,6 +52,8 @@ namespace spk {
         flecs::entity get_current_event_system() const { return event_system; }
         flecs::entity get_current_canvas() const { return canvas; }; 
         flecs::entity get_current_camera() const { return camera; }; 
+        flecs::entity get_current_render_pipeline() const { return render_pipeline; }
+        flecs::entity get_current_game_pipeline() const { return game_pipeline; }
 
         void set_ppm(float ppm) { 
             SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "pixels per meter(PPM) changed to: %f", ppm);
@@ -102,11 +104,23 @@ namespace spk {
             SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "current camera changed to: (id)%llu", camera_.id()); 
             camera = camera_; 
         }
+
+        void set_current_render_pipeline(flecs::entity render_pipeline_) {
+            SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "current render pipeline changed to: (id)%llu", render_pipeline_); 
+            render_pipeline = render_pipeline_;
+        }
+   
+        void set_current_game_pipeline(flecs::entity game_pipeline_) {
+            SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "current game pipeline changed to: (id)%llu", game_pipeline_); 
+            game_pipeline = game_pipeline_;
+        }
     };
 
     struct stats_t {
     private:
         bool print_ps_stats = false;
+        double delta_time = 0.0;
+        double frame_time = 0.0;
         uint32_t fps;
         uint32_t tps;
     
@@ -114,10 +128,14 @@ namespace spk {
         void set_ps_stats(bool print_per_second) { print_ps_stats = print_per_second; }
         bool get_ps_stats() { return print_ps_stats; }
 
-        void _set_fps(uint32_t fps_) { fps = fps_; };
-        void _set_tps(uint32_t tps_) { fps = tps_; };
+        void set_fps(uint32_t fps_) { fps = fps_; };
+        void set_tps(uint32_t tps_) { fps = tps_; };
+        void set_delta_time(double delta_time_) { delta_time = delta_time_; }
+        void set_frame_time(double frame_time_) { frame_time = frame_time_; }
         uint32_t get_fps() { return fps; }
         uint32_t get_tps() { return tps; }
+        double get_delta_time() { return delta_time; }
+        double get_frame_time() { return frame_time; }
 
     };
 

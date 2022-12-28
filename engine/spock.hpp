@@ -11,6 +11,8 @@
 
 #include "utility/entity.hpp"
 
+#include "pipeline.hpp"
+
 #define _SPK_NO_DEF_STATE
 #include "state.hpp"
 #undef _SPK_NO_DEF_STATE
@@ -53,8 +55,11 @@ namespace spk {
         // gets the box2d physics world currently in use 
         b2World* get_current_b2World();
         
-        // sets the target FPS in flecs
+        // sets the target FPS for rendering
         void set_target_fps(double target_fps);
+
+        // sets the target TPS in flecs
+        void set_target_tps(double target_tps); 
 
         // sets the vertical sync (V-sync) type
         void set_vsync_opt(vsync_setting_e option);
@@ -67,6 +72,9 @@ namespace spk {
 
         // signal the engine to end
         void exit(int code);
+
+        // get the state of a key
+        bool is_pressed(SDL_Scancode sc);
 
         // camera
         flecs::ref<comp_camera_t> get_current_camera();

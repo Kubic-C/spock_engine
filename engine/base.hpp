@@ -4,7 +4,7 @@
 
 // dependencies 
 #include <flecs.h>
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include <glm/glm.hpp>
 #include <glad/gl.h>
 #include <box2d/box2d.h>
@@ -34,6 +34,7 @@
 // engine
 #include "logger.hpp"
 #include "debug.hpp"
+#include "pipeline.hpp"
 
 #ifdef _WIN32 
 #include <Windows.h>
@@ -77,6 +78,7 @@ namespace spk {
     inline glm::vec2 to_glm_vec2(b2Vec2 vec2) { return (glm::vec2){vec2.x, vec2.y}; }
     inline b2Vec2 to_box_vec2(glm::vec2 vec2) { return (b2Vec2){vec2.x, vec2.y}; }
 
+    // double are used for high defenition time keeping
     struct time_t {
         std::chrono::time_point<std::chrono::steady_clock> tp;
 
@@ -88,10 +90,10 @@ namespace spk {
 
         }
 
-        float get_time() {
+        double get_time() {
             auto ep = std::chrono::steady_clock::now();
 
-            std::chrono::duration<float> duration = ep - tp;
+            std::chrono::duration<double> duration = ep - tp;
 
             return (duration).count();
         }

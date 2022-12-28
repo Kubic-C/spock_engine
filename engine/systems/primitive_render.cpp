@@ -27,6 +27,19 @@ void main() {
 })###";
 
 namespace spk {
+    void primitive_render_system_ctx_t::draw_indexed_buffer(static_index_buffer_t& ind, glm::mat4& vp, uint32_t count) { 
+        ind.bind();
+        program.use();
+        program.set_mat4("u_vp", vp);
+        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);   
+    }
+
+    void primitive_render_system_ctx_t::draw_buffer( glm::mat4& vp, uint32_t count) { 
+        program.use();
+        program.set_mat4("u_vp", vp);
+        glDrawArrays(GL_TRIANGLES, 0, count);   
+    }
+
     void primitive_render_system_ctx_t::render_box(glm::mat4& vp, spk::static_index_buffer_t& ind, 
         comp_primitive_render_t* render_info, const comp_box_t* box) {
         const uint32_t quad_vert_count = 4;
@@ -44,10 +57,7 @@ namespace spk {
         vertex_buffer.buffer_sub_data(0, quad_vert_count * sizeof(vertex_t), mesh.data());
         vertex_array.bind();
 
-        ind.bind();
-        program.use();
-        program.set_mat4("u_vp", vp);
-        glDrawElements(GL_TRIANGLES, quad_index_count, GL_UNSIGNED_INT, nullptr);   
+        draw_indexed_buffer(ind, vp, quad_index_count);
     }
 
     void primitive_render_system_ctx_t::render_polygon(glm::mat4& vp, spk::static_index_buffer_t& ind, 
@@ -64,10 +74,7 @@ namespace spk {
         vertex_buffer.buffer_sub_data(0, polygon->m_count * sizeof(vertex_t), mesh.data());
         vertex_array.bind();
 
-        ind.bind();
-        program.use();
-        program.set_mat4("u_vp", vp);
-        glDrawElements(GL_TRIANGLES, index_count, GL_UNSIGNED_INT, nullptr);   
+        draw_indexed_buffer(ind, vp, index_count);
     }
 
     void primitive_render_system_ctx_t::render_circle(glm::mat4& vp, comp_primitive_render_t* primitve, b2Body* body, b2CircleShape* circle) {
@@ -105,9 +112,7 @@ namespace spk {
         vertex_buffer.buffer_sub_data(0, vertices * sizeof(vertex_t), mesh.data());
         vertex_array.bind();
 
-        program.use();
-        program.set_mat4("u_vp", vp);
-        glDrawArrays(GL_TRIANGLES, 0, vertices);
+        draw_buffer(vp, vertices);
     }
 
     void primitive_render_system_ctx_t::render_edge(glm::mat4& vp, comp_primitive_render_t* info, b2Body* body, b2EdgeShape* edge) {
@@ -208,8 +213,8 @@ namespace spk {
 
         ctx = ctx_alloc.allocate_ctx<primitive_render_system_ctx_t>();
 
-        world.system<comp_primitive_render_t>().ctx(ctx).kind(flecs::OnUpdate)
-            .iter(primitive_render_system_update);
+        world.system<comp_primitive_render_t>().ctx(ctx).kind(on_render)
+            .iter(primitive_render_system_update).add<render_system_t>();
         
     }
 }

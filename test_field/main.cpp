@@ -35,7 +35,7 @@ MAIN {
     spk::debug.flags |= spk::DEBUG_FLAGS_ENABLE_STATE_CHANGE | spk::DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME;
 
     engine.init();
-    
+
     srand(1);
 
     spk::log.log("[em, red] this text is red and emphasized [reset] ");
@@ -59,18 +59,18 @@ MAIN {
 
     { // engine and window setup
         engine.set_target_fps(10000);
-        engine.set_vsync_opt(spk::VSYNC_ENABLED);
+        engine.set_vsync_opt(spk::VSYNC_DISABLED);
         engine.set_current_window_title("hello world");
         engine.set_current_window_size(700, 700);
 
         b2World* world = engine.get_current_b2World();
-        world->SetGravity(b2Vec2(0.0f, -9.81f));
+        world->SetGravity(b2Vec2(0.0f, -0.0f));
     }
 
     // resource management 
     {
         engine.rsrc_mng.font_load_ascii("./Raleway-Regular.ttf");
-        engine.rsrc_mng.atlas_init(0, 4, 4);
+        engine.rsrc_mng.atlas_init(0, 16, 16);
         if(!engine.rsrc_mng.atlas_load_from_path(0, "./test_atlas.png")) {
             spk::log.log("failed to load atlas");
             return -100;
@@ -126,6 +126,9 @@ MAIN {
         exit_play_text->text.set("exit to menu", 1.0f, {0.0f, 0.0f, 0.0f});
         exit_play_btn->add_child(exit_play_text);
 
+        spk::ui_text_t* stats = canvas->texts.malloc();
+        
+
         my_state = STATE_MENU;
         engine.user_state.user_data = &my_state;
     }
@@ -137,26 +140,21 @@ MAIN {
 
         td[2].sprite.tax = 2;
         td[2].density = 5.0f;
+
+        td[3].sprite.atlas_id = 1;
+        td[3].sprite.tax = 0;
     }   
 
     auto start_ = [&]() -> void {
-            for(uint32_t i = 0; i < 2; i++) {
+            engine.set_target_tps(120);
+            for(uint32_t i = 0; i < 1; i++) {
                 test = engine.world.entity();
-                test.set([&](spk::comp_particles_t& particles){
-                    particles.width = 10.0f;
-                    particles.base_lifetime = 1.0f;
-                    particles.base_cycle = 0.05f;
-                    particles.speed = 1.0f;
-                    particles.step = 0.01f;
-                    particles.max = UINT32_MAX;
-                    particles.world_positioning = true;
-                    particles.world_direction = true;
-                    particles.sprite.atlas_id = 1;
-                    particles.sprite.size.x = 0.5f;
-                    particles.sprite.size.y = 0.5f;
-                    particles.dir = {0.0f, 0.0f};
-                    particles.flags |= spk::PARTICLE_FLAG_ACTIVE;
-                    particles.funnel = spk::PARTICLE_SYSTEM_FUNNEL_LINE;
+                test.set([&](spk::comp_particles_t& ps){
+                    ps.flags |= spk::PARTICLES_FLAG_WORLD_DIRECTION | 
+                                spk::PARTICLES_FLAG_WORLD_POSITION;
+                    ps.funnel = spk::PARTICLE_SYSTEM_FUNNEL_FUNNEL;
+                    ps.base_cycle = 0.001;
+                    ps.max = UINT32_MAX;
                 });
                 test.set([&](spk::comp_tilebody_t& comp){
                     uint32_t id = (rand() % 2) + 1;
@@ -204,41 +202,32 @@ MAIN {
         .iter([&](flecs::iter& iter){
             auto event = iter.param<spk::event_keyboard_t>();
             auto camera = engine.get_current_camera();
-        
+
             if(event->type == SDL_KEYDOWN || event->repeat) {
                 switch(event->keysym.scancode) {
-                case SDL_SCANCODE_A:
+                case SDL_SCANCODE_1:
                     engine.set_current_camera(cam1);
-                    spk::log.log("A key");
                     break;
-                case SDL_SCANCODE_D: 
+                case SDL_SCANCODE_2: 
                     engine.set_current_camera(cam2);
-                    spk::log.log("D key"); 
-                    break;
-                case SDL_SCANCODE_S: 
-                    test.add<spk::comp_primitive_render_t>();
-                    spk::log.log("S key");
-                    break;
-                case SDL_SCANCODE_W:
-                    test.remove<spk::comp_primitive_render_t>();
-                    spk::log.log("W key");
                     break;
                 }
             }
-
-            engine.get_current_camera()->recalculate();
         });
 
     engine.world.observer().event<spk::event_mouse_wheel_t>().term<spk::tag_events_t>()
         .iter([&](flecs::iter& iter){
             auto event = iter.param<spk::event_mouse_wheel_t>();
-            float step = 0.6f;
+            auto camera = engine.get_current_camera();
+            float scale = 0.5;
 
             if(event->y < 0) {
-                engine.set_ppm(engine.get_ppm() - step);
+                camera->scale *= scale;
             } else if(event->y > 0) {
-                engine.set_ppm(engine.get_ppm() + step);
+                camera->scale *= scale + 1;
             }
+
+            camera->recalculate();
         });
 
     engine.world.observer().event<spk::event_window_mouse_click_t>().term<spk::tag_events_t>()
@@ -255,15 +244,14 @@ MAIN {
                     
                     b2Vec2 dir = spk::to_box_vec2(mouse_click) - position;
                     dir.Normalize();
-                    dir *= 200.0f;
+                    dir *= 20000.0f;
 
-                    body.body->SetTransform(spk::to_box_vec2(mouse_click), 0.0f);
+                    body.body->ApplyForceToCenter(dir, true);
                     body.body->SetAwake(true);
                 });
             }
         });
 
-    glm::vec2 last_pos = {0.0f, 0.0f};
     engine.user_state.tick = 
         [&](spk::engine_t& engine){
             switch(my_state) {
@@ -282,15 +270,30 @@ MAIN {
 
             case STATE_PLAY: {
                 test.set([&](spk::comp_tilebody_t& body, spk::comp_particles_t& particles) {
-                    glm::vec2 cur_pos = spk::to_glm_vec2(body.body->GetPosition());
-                    if(cur_pos == last_pos) {
-                        return;
-                    } 
-
-                    particles.dir = glm::normalize(last_pos - spk::to_glm_vec2(body.body->GetPosition()));
-
-                    last_pos = spk::to_glm_vec2(body.body->GetPosition()); 
+                    glm::vec2 velocity = spk::to_glm_vec2(body.body->GetLinearVelocity());
+                    glm::vec2 dir = glm::normalize(-velocity);
+                    particles.dir = dir;
+                    particles.base_speed = glm::length(velocity);
                 });
+
+                auto cam = engine.get_current_camera();
+                float speed = 1.0f;
+
+                if(engine.is_pressed(SDL_SCANCODE_A)) {
+                    cam->pos.x += speed;                     
+                }
+                if(engine.is_pressed(SDL_SCANCODE_D)) {
+                    cam->pos.x -= speed;
+                } 
+                if(engine.is_pressed(SDL_SCANCODE_S)) {
+                    cam->pos.y += speed;
+                }
+                if(engine.is_pressed(SDL_SCANCODE_W)) {
+                    cam->pos.y -= speed;
+                }
+
+                cam->recalculate();
+                
             } break;
 
             case STATE_EXIT_PLAY:

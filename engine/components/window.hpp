@@ -21,8 +21,7 @@ namespace spk {
         void force_resize_event() {
             SDL_Event event;
 
-            event.type = SDL_WINDOWEVENT;
-            event.window.event = SDL_WINDOWEVENT_SIZE_CHANGED;
+            event.type = SDL_WINDOWEVENT_RESIZED;
             event.window.windowID = SDL_GetWindowID(win);
 
             SDL_PushEvent(&event);

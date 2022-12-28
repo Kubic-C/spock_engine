@@ -6,13 +6,14 @@ target_compile_definitions(flecs_static PUBLIC ecs_ftime_t=double)
 glad_add_library(glad_gl4_4 STATIC API gl:core=4.4)
 
 target_link_libraries(spock_engine PUBLIC
-    SDL2 glad_gl4_4 flecs_static glm box2d freetype)
+    SDL3 glad_gl4_4 flecs_static glm box2d freetype)
 
 target_include_directories(spock_engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/")
 
 target_sources(spock_engine PRIVATE
     "spock.cpp"
     "base.hpp"
+    "pipeline.hpp"
     "systems.hpp" "systems.cpp"
     "state.hpp" "state.cpp"
     "events.hpp" "events.cpp"

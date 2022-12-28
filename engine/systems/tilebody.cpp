@@ -29,7 +29,7 @@ namespace spk {
     void _tilebody_cs_init(flecs::entity* ctx, flecs::world& world) {
         tile_comp_init(world);
 
-        world.system<comp_tilebody_t>().ctx(ctx).kind(flecs::OnUpdate)
-            .iter(sprite_render_system_tilebody_update);
+        world.system<comp_tilebody_t>().ctx(ctx).kind(on_render)
+            .iter(sprite_render_system_tilebody_update).add<render_system_t>();
     }
 }

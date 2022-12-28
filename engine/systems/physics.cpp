@@ -9,6 +9,6 @@ namespace spk {
     void physics_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
         box2d_comp_init(world);
 
-        world.system<comp_b2World_t, tag_current_box2d_world_t>().interval(state.get_target_tps()).each(physics_system_tick);
+        world.system<comp_b2World_t, tag_current_box2d_world_t>().each(physics_system_tick);
     }
 }

@@ -8,6 +8,7 @@ namespace spk {
         z = -1.0f;
         pos  = { 0.0f, 0.0f };
         size = { 0.0f, 0.0f };
+        scale = 1.0f;
         view = glm::identity<glm::mat4>();
         proj = glm::identity<glm::mat4>();        
     }
@@ -26,10 +27,10 @@ namespace spk {
         // 1/2 of the world size to correctly offset the qoutient. 
         // Simply put we are doing the reverse of VP
         glm::vec2 world_coords = 
-            { (screen_coords.x - size.x / 2.0f - pos.x) / state.get_ppm(), 
-              (        world_y - size.y / 2.0f - pos.y) / state.get_ppm()};
+            { (screen_coords.x - size.x / 2.0f - pos.x), 
+              (        world_y - size.y / 2.0f - pos.y)};
  
-        return world_coords;
+        return world_coords / (state.get_ppm() * scale);
     }
 
     void comp_camera_t::recalculate() {
@@ -38,7 +39,7 @@ namespace spk {
         
         view = glm::identity<glm::mat4>();
         view = glm::translate(view, glm::vec3(pos, z));
-        view = glm::scale(view, glm::vec3(state.get_ppm()));
+        view = glm::scale(view, glm::vec3(state.get_ppm() * scale));
  
         proj = glm::ortho(-half_width, 
                            half_width, 

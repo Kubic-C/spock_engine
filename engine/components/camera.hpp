@@ -10,6 +10,7 @@ namespace spk {
         glm::mat4 view;
         glm::mat4 proj;
 
+        float scale;
         glm::vec2 size;
         glm::vec2 pos;
         float z;

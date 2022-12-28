@@ -69,9 +69,9 @@ namespace spk {
         ctx = ctx_alloc.allocate_ctx<render_system_ctx_t>();
 
         world.system<comp_window_t, tag_current_window_t>().ctx(ctx) // PRE
-            .kind(flecs::PreUpdate).each(render_system_pre_update);
+            .kind(on_render_begin).each(render_system_pre_update).add<render_system_t>();
         world.system<comp_window_t, tag_current_window_t>().ctx(ctx) // POST
-            .kind(flecs::PostUpdate).each(render_system_post_update);
+            .kind(on_render_end).each(render_system_post_update).add<render_system_t>();
         world.observer().event<event_window_size_t>().term<tag_events_t>()
             .ctx(ctx).iter(render_system_resize);
     }

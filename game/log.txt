@@ -1,20 +1,36 @@
-|SPOCK: 179346.546875> [32m INFO [0m info_logger_init
-|SPOCK: 0.018609> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
-|SPOCK: 0.019059> [32m INFO [0m current event system changed to: (id)520
-|SPOCK: 0.477634> [32m INFO [0m current window changed to: (id)540
-|SPOCK: 0.479766> [32m INFO [0m current box2D world changed to: (id)541
-|SPOCK: 0.480490> [32m INFO [0m current camera changed to: (id)545
-|SPOCK: 0.482077> [32m INFO [0m current renderer changed to: (id)549
-|SPOCK: 0.488576> [32m INFO [0m current canvas changed to: (id)586
-|SPOCK: 0.488811> [32m INFO [0m SDL Version 2.26.0
-|SPOCK: 0.488958> [32m INFO [0m OGL Version 4.3.14761 Core Profile/Debug Context 21.30.02 30.0.13002.23
-|SPOCK: 0.489109> [32m INFO [0m [1m[31m this text is red and emphasized [0m 
-|SPOCK: 0.489241> [32m INFO [0m [3m[34m this text is italic and blue [0m
-|SPOCK: 0.489385> [32m INFO [0m [1m #===# [0m <- this is a recursive rule -> [1m #===# [0m
-|SPOCK: 0.489611> [32m INFO [0m target fps changed to: 10000.000000
-|SPOCK: 0.489746> [32m INFO [0m current VSYNC setting changed to: VSYNC_ENABLED
-|SPOCK: 0.545737> [32m INFO [0m pixels per meter(PPM) changed to: 16.000000
-|SPOCK: 0.546468> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
-|SPOCK: 1.222873> [32m INFO [0m [3m[1m[33m gooThis is video game[0m
-|SPOCK: 1.223082> [32m INFO [0m loading state
-|SPOCK: 2.542570> [32m INFO [0m full unsafe exit due to error
+|SPOCK: 356656.384927> [32m INFO [0m info_logger_init
+|SPOCK: 0.019297> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
+|SPOCK: 0.024970> [32m INFO [0m current render pipeline changed to: (id)29756472800
+|SPOCK: 0.025502> [32m INFO [0m current game pipeline changed to: (id)29756472800
+|SPOCK: 0.025731> [32m INFO [0m current event system changed to: (id)554
+|SPOCK: 0.511115> [32m INFO [0m current window changed to: (id)573
+|SPOCK: 0.514751> [32m INFO [0m current box2D world changed to: (id)574
+|SPOCK: 0.515612> [32m INFO [0m current camera changed to: (id)578
+|SPOCK: 0.517856> [32m INFO [0m current renderer changed to: (id)582
+|SPOCK: 0.529007> [32m INFO [0m current canvas changed to: (id)619
+|SPOCK: 0.529284> [32m INFO [0m SDL Version 3.0.0
+|SPOCK: 0.529441> [32m INFO [0m OGL Version 4.3.14761 Core Profile/Debug Context 21.30.02 30.0.13002.23
+|SPOCK: 0.529622> [32m INFO [0m [1m[31m this text is red and emphasized [0m 
+|SPOCK: 0.529765> [32m INFO [0m [3m[34m this text is italic and blue [0m
+|SPOCK: 0.529917> [32m INFO [0m [1m #===# [0m <- this is a recursive rule -> [1m #===# [0m
+|SPOCK: 0.530184> [32m INFO [0m target fps changed to: 10000.000000
+|SPOCK: 0.530314> [32m INFO [0m current VSYNC setting changed to: VSYNC_DISABLED
+|SPOCK: 0.590130> [32m INFO [0m pixels per meter(PPM) changed to: 16.000000
+|SPOCK: 0.590668> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
+|SPOCK: 1.584252> [32m INFO [0m FPS: 1306 | TPS: 95 | DELTA-TIME: 0.016856
+|SPOCK: 3.172623> [32m INFO [0m FPS: 1657 | TPS: 54 | DELTA-TIME: 0.705845
+|SPOCK: 3.583939> [32m INFO [0m FPS: 689 | TPS: 66 | DELTA-TIME: 0.016878
+|SPOCK: 3.883395> [32m INFO [0m target tps changed to: 120.000000
+|SPOCK: 3.884002> [32m INFO [0m [3m[1m[33m gooThis is video game[0m
+|SPOCK: 3.884144> [32m INFO [0m loading state
+|SPOCK: 4.576263> [32m INFO [0m FPS: 796 | TPS: 100 | DELTA-TIME: 0.008471
+|SPOCK: 5.578563> [32m INFO [0m FPS: 50 | TPS: 115 | DELTA-TIME: 0.008680
+|SPOCK: 6.579680> [32m INFO [0m FPS: 15 | TPS: 116 | DELTA-TIME: 0.008813
+|SPOCK: 7.581091> [32m INFO [0m FPS: 9 | TPS: 118 | DELTA-TIME: 0.007564
+|SPOCK: 8.577042> [32m INFO [0m FPS: 8 | TPS: 115 | DELTA-TIME: 0.007874
+|SPOCK: 9.556141> [32m INFO [0m ending sim
+|SPOCK: 9.556452> [32m INFO [0m exiting play
+|SPOCK: 9.580432> [32m INFO [0m FPS: 7 | TPS: 119 | DELTA-TIME: 0.007409
+|SPOCK: 10.198262> [32m INFO [0m exiting app
+|SPOCK: 10.199443> [32m INFO [0m exiting with code; 0
+|SPOCK: 10.199605> [32m INFO [0m [1m #===# [0m[31m ENGINE FREE [0m[1m #===# [0m

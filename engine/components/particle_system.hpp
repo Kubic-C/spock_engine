@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base.hpp"
-#include "sprite.hpp"
+#include "tilebody.hpp"
 
 namespace spk {
     enum particles_funnel_e: uint16_t {
@@ -11,29 +11,36 @@ namespace spk {
     };
 
     enum particles_flags_e {
-        PARTICLE_FLAG_ACTIVE = 1 << 0
-       // PARTICLE_FLAG_USE_SPRITE = 1 < 1
+        PARTICLES_FLAG_ACTIVE = 1 << 0,
+        PARTICLES_FLAG_WORLD_POSITION = 1 << 1,
+        PARTICLES_FLAG_WORLD_DIRECTION = 1 << 2,
+        PARTICLES_FLAG_COLLIADABLE = 1 << 3
     };
 
     struct particle_t {
         glm::vec2 pos;
         glm::vec2 dir;
+        float speed;
         float lifetime;
+        b2Body* body;
+
+        void init_body(tile_t id, b2World* world);
+
+        ~particle_t(); // RAII
     };
 
     struct comp_particles_t {
         uint8_t flags;
 
-        comp_sprite_t sprite;
+        tile_t particle;
         particles_funnel_e funnel;
         float chance;
         float step;
-        float speed;
+        float base_speed;
+        float speed_step;
         float base_lifetime;
         float current_cycle;
         float base_cycle;
-        bool world_positioning;
-        bool world_direction; 
 
         glm::vec2 pos;
         glm::vec2 dir;
@@ -44,7 +51,7 @@ namespace spk {
         std::deque<particle_t> particles;
         
         glm::vec2 get_point(b2Body* body, glm::vec2 point);
-
+        
         void init();
         void free();
     };
