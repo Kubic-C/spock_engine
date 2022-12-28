@@ -14,7 +14,7 @@ namespace spk {
     }
 
     bool font_t::load_ascii_font(FT_Library lib, int f_width, int f_height, const char* file_path) {
-        /* introducing bullshit by bullshit dev */
+        const float x_padding = 3.0f;
         float x = 0; // cursor within this->texture's data, used for writing
         tallest_glyph = 0;
         widest_glyph = 0;
@@ -38,7 +38,7 @@ namespace spk {
                 continue;
             }
 
-            width += face->glyph->bitmap.width;
+            width += face->glyph->bitmap.width + x_padding;
             widest_glyph = std::max(widest_glyph, face->glyph->bitmap.width);
             tallest_glyph = std::max(tallest_glyph, face->glyph->bitmap.rows);
 
@@ -71,9 +71,7 @@ namespace spk {
 
             c_data = &char_map[c];
 
-            // 0.2f is added to x to prevent the letter before it to be added to it when rendered, as the letters
-            // are stored right next to eachother in memory
-            gx = (x + 0.2f) / (float)width;
+            gx = x / (float)width;
             gwidth = (float)c_data->size.x / (float)width;
             gheight = (float)c_data->size.y / (float)height;
 
@@ -83,7 +81,7 @@ namespace spk {
             c_data->tex_indices[2] = { gx + gwidth, 0       };
             c_data->tex_indices[3] = { gx         , 0       };
 
-            x += (float)c_data->size.x;
+            x += (float)c_data->size.x + x_padding;
         }
 
         // texture still bound
