@@ -18,7 +18,7 @@ namespace spk {
         glm::vec2 size;
     };
 
-    struct primitive_render_system_ctx_t {
+    struct primitive_render_system_ctx_t : public system_t {
         struct vertex_t {
             glm::vec2 pos; // position
             glm::vec3 color; // color

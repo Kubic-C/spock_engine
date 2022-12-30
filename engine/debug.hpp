@@ -18,9 +18,9 @@ namespace spk {
     #define SPK_DEBUG_EXPR_IF(expr, flag) \
         if(debug.flags & flag) { (expr); }
     #define SPK_DEBUG_LOG_IF(flag, ...) \
-        SPK_DEBUG_EXPR_IF(spk::log.log(__VA_ARGS__), flag)
-    #define SPK_DEBUG_ENABLE(flag) (debug.flags |= flag)
-    #define SPK_DEBUG_DISABLE(flag) (debug.flags &= ~flag)
+        SPK_DEBUG_EXPR_IF(::spk::log.log(__VA_ARGS__), flag)
+    #define SPK_DEBUG_ENABLE(flag) (::spk::debug.flags |= flag)
+    #define SPK_DEBUG_DISABLE(flag) (::spk::debug.flags &= ~flag)
 #else // NOT DEBUG (release)
     #define SPK_DEBUG_EXPR_IF(expr, flag)
     #define SPK_DEBUG_LOG_IF(flag, format, ...)

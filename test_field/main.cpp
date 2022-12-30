@@ -71,7 +71,7 @@ MAIN {
 
     // resource management 
     {
-        engine.rsrc_mng.font_load_ascii("./Raleway-Regular.ttf");
+        engine.rsrc_mng.font_load_ascii("./Anonymous.ttf");
         engine.rsrc_mng.atlas_init(0, 16, 16);
         if(!engine.rsrc_mng.atlas_load_from_path(0, "./test_atlas.png")) {
             spk::log.log("failed to load atlas");
@@ -159,7 +159,7 @@ MAIN {
                     ps.flags |= spk::PARTICLES_FLAGS_WORLD_DIRECTION | 
                                 spk::PARTICLES_FLAGS_WORLD_POSITION;
                     ps.funnel = spk::PARTICLES_FUNNEL_LINE;
-                    ps.base_cycle = 0.001;
+                    ps.base_cycle = 0.1;
                     ps.max = UINT32_MAX;
                     ps.particle.id = 3;
                     ps.base_lifetime = 1.0f;
@@ -204,23 +204,21 @@ MAIN {
         bottom.destruct();
     };
 
-    engine.set_ppm(16.0f);
-
     engine.world.observer().event<spk::event_keyboard_t>().term<spk::tag_events_t>()
         .iter([&](flecs::iter& iter){
             auto event = iter.param<spk::event_keyboard_t>();
             auto camera = engine.get_current_camera();
 
-            if(event->type == SDL_KEYDOWN || event->repeat) {
-                switch(event->keysym.scancode) {
-                case SDL_SCANCODE_1:
-                    engine.set_current_camera(cam1);
-                    break;
-                case SDL_SCANCODE_2: 
-                    engine.set_current_camera(cam2);
-                    break;
-                }
-            }
+            // if(event->type == SDL_KEYDOWN || event->repeat) {
+            //     switch(event->keysym.scancode) {
+            //     case SDL_SCANCODE_1:
+            //         engine.set_current_camera(cam1);
+            //         break;
+            //     case SDL_SCANCODE_2: 
+            //         engine.set_current_camera(cam2);
+            //         break;
+            //     }
+            // }
         });
 
     engine.world.observer().event<spk::event_mouse_wheel_t>().term<spk::tag_events_t>()

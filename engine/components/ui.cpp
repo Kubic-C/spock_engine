@@ -36,9 +36,9 @@ namespace spk {
     void ui_comp_canvas_t::init() {
 
         SPK_DEBUG_VALUE(bool, ret =) texts.init();
-        sfk_assert(ret);
+        spk_assert(ret);
         SPK_DEBUG_EXPR(ret =) btns.init();
-        sfk_assert(ret);
+        spk_assert(ret);
 
         font = nullptr;
 

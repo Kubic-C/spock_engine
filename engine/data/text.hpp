@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base.hpp"
-#include "utility/opengl.hpp"
+#include "render/opengl.hpp"
 #include "utility/memory.hpp"
 
 /*
@@ -17,8 +17,8 @@ namespace spk {
     struct character_t {
         glm::vec2 tex_indices[4];
         glm::ivec2 size;
-        glm::ivec2 bearing;
-        uint32_t advance;
+        glm::vec2 offset;
+        glm::vec2 advance;
     };
 
     class font_t {

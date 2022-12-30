@@ -10,8 +10,8 @@ namespace spk {
     float random_positive_float(float min, float max) {
         const float precision = 1000.0f;
 
-        sfk_assert(min < max);
-        sfk_assert(min >= 0.0f);
+        spk_assert(min < max);
+        spk_assert(min >= 0.0f);
 
         float randomf = (float)(rand() % (uint32_t)precision);
 
@@ -33,7 +33,7 @@ namespace spk {
             ps.particles[i].lifetime -= delta_time;
 
             if(ps.particles[i].lifetime <= 0.0f) {
-                sfk_assert(amount == 0, "amount to erase is non-zero;" 
+                spk_assert(amount == 0, "amount to erase is non-zero;" 
                                         " meaning a particle is in a invalid" 
                                         " position based on its lifetime."
                                         " particles must be in decesnding order");
@@ -113,7 +113,7 @@ namespace spk {
                                 break;
 
                             default:
-                                sfk_assert(ps.funnel < PARTICLES_FUNNEL_LAST, "invalid particle system funnel");
+                                spk_assert(ps.funnel < PARTICLES_FUNNEL_LAST, "invalid particle system funnel");
                                 break;
                         }
                     }
@@ -138,59 +138,55 @@ namespace spk {
         }
     }
 
-    void add_particles(flecs::ref<sprite_render_system_ctx_t>& ctx, b2Body* body, comp_particles_t& ps) {
+    void add_particles(sprite_batch_mesh_t* ctx, b2Body* body, comp_particles_t& ps) {
         tile_metadata_t& tmd = state.engine->rsrc_mng.get_tile_dictionary()[ps.particle.id];
        
         for(uint32_t j = 0; j < ps.particles.size(); j++) {
-                particle_t& particle = ps.particles[j];
+            particle_t& particle = ps.particles[j];
 
-                std::array<glm::vec2, 4> vertexes = { 
-                    (glm::vec2){particle.pos - tmd.sprite.size}, // bl
-                    (glm::vec2){particle.pos.x + tmd.sprite.size.x, particle.pos.y - tmd.sprite.size.y}, // br
-                    (glm::vec2){particle.pos + tmd.sprite.size}, // tr
-                    (glm::vec2){particle.pos.x - tmd.sprite.size.x, particle.pos.y + tmd.sprite.size.y} // tl
-                };
-                
-                if(!(ps.flags & PARTICLES_FLAGS_WORLD_POSITION)) {
-                    for(glm::vec2& v : vertexes) {
-                        v = ps.get_point(body, v);
-                    }
+            std::array<glm::vec2, 4> vertexes = { 
+                (glm::vec2){particle.pos - tmd.sprite.size}, // bl
+                (glm::vec2){particle.pos.x + tmd.sprite.size.x, particle.pos.y - tmd.sprite.size.y}, // br
+                (glm::vec2){particle.pos + tmd.sprite.size}, // tr
+                (glm::vec2){particle.pos.x - tmd.sprite.size.x, particle.pos.y + tmd.sprite.size.y} // tl
+            };
+            
+            if(!(ps.flags & PARTICLES_FLAGS_WORLD_POSITION)) {
+                for(glm::vec2& v : vertexes) {
+                    v = ps.get_point(body, v);
                 }
+            }
 
-                ctx->add_sprite_mesh(tmd.sprite, vertexes[0], vertexes[1], vertexes[2], vertexes[3]);
+            ctx->add_sprite_mesh(tmd.sprite, vertexes[0], vertexes[1], vertexes[2], vertexes[3]);
         }         
     }
 
     void particles_system_update(flecs::iter& iter, comp_b2Body_t* bodies, comp_particles_t* particles) {
-        auto ctx = SPK_GET_CTX_REF(iter, sprite_render_system_ctx_t);
+        auto ctx = SPK_GET_CTX_REF(iter, sprite_batch_mesh_t);
 
         for(auto i : iter) {
             add_particles(ctx, bodies[i].body, particles[i]);            
         }
-
-        ctx->draw_atlas_meshes();
     }
 
 
     void particles_system_tilebody_update(flecs::iter& iter, comp_tilebody_t* bodies, comp_particles_t* particles) {
-        auto ctx = SPK_GET_CTX_REF(iter, sprite_render_system_ctx_t);
+        auto ctx = SPK_GET_CTX_REF(iter, sprite_batch_mesh_t);
 
         for(auto i : iter) {
             add_particles(ctx, bodies[i].body, particles[i]);            
         }
-
-        ctx->draw_atlas_meshes();
     }
 
-    void _particles_cs_init(flecs::entity* ctx, flecs::world& world) {
+    void _particles_cs_init(sprite_batch_mesh_t* ctx, flecs::world& world) {
         particles_comp_init(world);
 
         world.system<comp_b2Body_t, comp_particles_t>().iter(particles_system_tick);
         world.system<comp_tilebody_t, comp_particles_t>().iter(particles_system_tile_body_tick);
 
-        world.system<comp_b2Body_t, comp_particles_t>().kind(flecs::OnUpdate)
-            .ctx(ctx).kind(on_render).iter(particles_system_update).add<render_system_t>();  
-        world.system<comp_tilebody_t, comp_particles_t>().kind(flecs::OnUpdate)
-            .ctx(ctx).kind(on_render).iter(particles_system_tilebody_update).add<render_system_t>();  
+        world.system<comp_b2Body_t, comp_particles_t>()
+            .kind(on_compute_mesh).ctx(ctx).iter(particles_system_update);  
+        world.system<comp_tilebody_t, comp_particles_t>()
+            .kind(on_compute_mesh).ctx(ctx).iter(particles_system_tilebody_update);  
     } 
 }

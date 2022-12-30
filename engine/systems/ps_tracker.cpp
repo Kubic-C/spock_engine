@@ -35,7 +35,7 @@ namespace spk {
         auto ctx = ctx_alloc.allocate_ctx<ps_tracker_ctx_t>();
 
         world.system<ps_tracker_ctx_t>().each(ps_tracker_system_tick);
-        world.system<ps_tracker_ctx_t>().kind(on_render).each(ps_tracker_system_update).add<render_system_t>();
+        world.system<ps_tracker_ctx_t>().kind(on_render).each(ps_tracker_system_update).add<tag_render_system_t>();
         world.system<ps_tracker_ctx_t>().interval(1.0).each(ps_tracker_system_update_sec);
     }
 }

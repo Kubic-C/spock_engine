@@ -3,5 +3,7 @@
 #include "components/tilebody.hpp"
 
 namespace spk {
-    void _tilebody_cs_init(flecs::entity* ctx, flecs::world& world);
+    struct sprite_batch_mesh_t;
+
+    void _tilebody_cs_init(sprite_batch_mesh_t* ctx, flecs::world& world);
 }

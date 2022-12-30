@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base.hpp"
-#include "utility/opengl.hpp"
+#include "render/opengl.hpp"
 
 #define SPK_MAX_ATLAS 8
 

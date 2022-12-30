@@ -5,7 +5,7 @@
 // per second tracker | UPS TPS DELTA-TIME
 
 namespace spk {
-    struct ps_tracker_ctx_t {
+    struct ps_tracker_ctx_t : public system_t {
         uint32_t fps = 0;
         uint32_t tps = 0;
         float average_delta_time = 0.0f;

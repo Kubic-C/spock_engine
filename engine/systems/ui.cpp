@@ -73,12 +73,12 @@ namespace spk {
         uint32_t vs_shader = spk::create_shader_from_src(GL_VERTEX_SHADER, vs_font, nullptr);
         uint32_t fs_shader = spk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_font, nullptr);
         
-        sfk_assert(vs_shader != UINT32_MAX);
-        sfk_assert(fs_shader != UINT32_MAX);
+        spk_assert(vs_shader != UINT32_MAX);
+        spk_assert(fs_shader != UINT32_MAX);
         
         program.init();
         SPK_DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
-        sfk_assert(ret);
+        spk_assert(ret);
 
         buffer.resize(indexes_per_letter * MAX_LETTERS);
 
@@ -125,7 +125,7 @@ namespace spk {
         for(uint8_t c : text->text.str) {
             character_t* ch = &font->char_map[c];
 
-            xoffset += ch->advance * scalar;
+            xoffset += ch->advance[0] * scalar;
             yoffset = std::max(yoffset, ch->size.y * scalar);
         }
 
@@ -137,8 +137,8 @@ namespace spk {
         for(uint8_t c : text->text.str) {
             character_t* ch = &font->char_map[c];
 
-            float x2 = x + ch->bearing.x * scalar;
-            float y2 = y - (ch->size.y - ch->bearing.y) * scalar;
+            float x2 = x + ch->offset[0] * scalar;
+            float y2 = y - ch->offset[1] * scalar;
             float w = ch->size.x * scalar;
             float h = ch->size.y * scalar;    
 
@@ -148,7 +148,8 @@ namespace spk {
             vtx[3] = { .x = (x2    ) - xoffset, .y = (y2 + h) - yoffset, .uv = ch->tex_indices[3], .rgb = text->text.color} ;
             vtx += indexes_per_letter;
 
-            x += (float)ch->advance * scalar;
+            x += (float)ch->advance[0] * scalar;
+            y += (float)ch->advance[1] * scalar;
         }
 
         indexes += indexes_per_letter * text->text.ssize();
@@ -168,12 +169,12 @@ namespace spk {
         uint32_t vs_shader = spk::create_shader_from_src(GL_VERTEX_SHADER, vs_button, nullptr);
         uint32_t fs_shader = spk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_button, nullptr);
         
-        sfk_assert(vs_shader != UINT32_MAX);
-        sfk_assert(fs_shader != UINT32_MAX);
+        spk_assert(vs_shader != UINT32_MAX);
+        spk_assert(fs_shader != UINT32_MAX);
         
         program.init();
         SPK_DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
-        sfk_assert(ret);
+        spk_assert(ret);
 
         buffer.resize(vertices_per_button * MAX_LETTERS);
 
@@ -251,7 +252,7 @@ namespace spk {
 
         if(!font) { // if font is null, the first font will be the default
             font = state.engine->rsrc_mng.get_first_font();
-            sfk_assert(font && "when using canvas you must load a font!");
+            spk_assert(font && "when using canvas you must load a font!");
         }
 
         canvas.iter_children([&](ui_element_t& ele) -> bool {
@@ -294,7 +295,7 @@ namespace spk {
                 break;
 
             case UI_ELEMENT_TYPE_CANVAS:
-                sfk_assert(!"yo dawg how this shit happen, this is not accessible");
+                spk_assert(!"yo dawg how this shit happen, this is not accessible");
                 break;
 
             default:
@@ -370,7 +371,7 @@ namespace spk {
             .term_at(1).with<ui_tag_current_canvas_t>()
             .kind(on_render)
             .ctx(ui_render_ctx)
-            .iter(ui_render_system_update).add<render_system_t>();
+            .iter(ui_render_system_update).add<tag_render_system_t>();
         
         world.observer().event<event_window_size_t>().term<tag_events_t>()
             .iter(ui_render_system_resize);

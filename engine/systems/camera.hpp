@@ -4,7 +4,7 @@
 #include "systems.hpp"
 
 namespace spk {
-    struct camera_system_ctx_t {
+    struct camera_system_ctx_t : public system_t {
         SPK_NOT_A_TAG
     };
 

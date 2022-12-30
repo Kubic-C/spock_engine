@@ -1,9 +1,0 @@
-|SPOCK: 364086.465867> [32m INFO [0m info_logger_init
-|SPOCK: 0.684699> [32m INFO [0m [1m[31m this text is red and emphasized [0m 
-|SPOCK: 0.684875> [32m INFO [0m [3m[34m this text is italic and blue [0m
-|SPOCK: 0.684947> [32m INFO [0m [1m #===# [0m <- this is a recursive rule -> [1m #===# [0m
-|SPOCK: 3.033623> [32m INFO [0m loading state
-|SPOCK: 4.600047> [32m INFO [0m ending sim
-|SPOCK: 4.600220> [32m INFO [0m exiting play
-|SPOCK: 4.716872> [32m INFO [0m exiting app
-|SPOCK: 4.717440> [32m INFO [0m exiting with code; 0

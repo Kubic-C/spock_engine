@@ -1,31 +1,41 @@
 #pragma once
 
 #include "base.hpp"
-#include "utility/memory.hpp"
+#include "utility/structure.hpp"
 
 /* handling of systems with FLECS */
 
-#define SPK_GET_CTX_REF(iter, type) static_cast<flecs::entity*>(iter.ctx())->get_ref<type>()
+#define SPK_GET_CTX_REF(iter, type) static_cast<type*>(iter.ctx())
 #define SPK_NOT_A_TAG  uint8_t ___not_a_tag;
 
 namespace spk {
+    class system_t {
+    public:
+        virtual void init() {}
+        virtual void free() {}
+    };
+
     class system_ctx_allocater_t {
     public:
-        void init(flecs::world& world);
+        void init();
         void free();
 
         template<typename T>
-        flecs::entity* allocate_ctx() {
-            flecs::entity* e = ctx_name_list.malloc();
+        T* allocate_ctx() {
+            T*& ctx = (T*&)ctx_name_list.emplace_back();
 
-            *e =  world->entity().add<T>();
+            // better allocation will come later i swear
+            ctx = (T*)malloc(sizeof(T));
 
-            return e;
+            new(ctx)T();
+
+            static_cast<spk::system_t*>(ctx)->init();
+
+            return ctx;
         }
 
     private:
-        flecs::world* world;
-        memory_pool_t<flecs::entity, 100, 4> ctx_name_list;
+        static_list<system_t*, 100> ctx_name_list;
     };
 
 }

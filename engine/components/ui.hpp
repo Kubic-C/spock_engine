@@ -61,7 +61,7 @@ namespace spk {
         }
 
         uint32_t add_child(ui_element_t* child) {
-            sfk_assert(child);
+            spk_assert(child);
             
             if(in_use.count() >= max_child_size)
                 return UINT32_MAX;
@@ -76,7 +76,7 @@ namespace spk {
         }
 
         uint32_t set_child(uint32_t index, ui_element_t* child) {
-            sfk_assert(index < max_child_size && child != null && !in_use.test(index)); 
+            spk_assert(index < max_child_size && child != null && !in_use.test(index)); 
 
             in_use.set(index, true);
 
@@ -87,7 +87,7 @@ namespace spk {
         }
 
         ui_element_t* remove_child(uint32_t index) {
-            sfk_assert(index < max_child_size && in_use.test(index)); 
+            spk_assert(index < max_child_size && in_use.test(index)); 
             
             ui_element_t* element;
 
@@ -122,8 +122,8 @@ namespace spk {
         memory_pool_t<ui_text_t, 32, 4> texts;
         memory_pool_t<ui_button_t, 32, 4> btns;
 
-        void init();
-        void free();
+        void init() override;
+        void free() override;
 
         void resize_callback(int width, int height);
         const size_t type() override { return UI_ELEMENT_TYPE_CANVAS; }

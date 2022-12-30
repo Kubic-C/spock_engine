@@ -141,7 +141,7 @@ namespace spk {
 
         program.init();
         bool ret = program.load_shader_str(vs_colliders, fs_colliders);
-        sfk_assert(ret && "primitive render shaders invalid");
+        spk_assert(ret && "primitive render shaders invalid");
     
         mesh.resize(100 * 3);
     }
@@ -153,9 +153,9 @@ namespace spk {
     }
 
     void primitive_render_system_update(flecs::iter& iter, comp_primitive_render_t* c_primi_render) {
-        auto render_ctx = state.get_current_renderer().get_ref<render_system_ctx_t>(); // this is a safe op as render system only has pre and post update
-        auto camera = state.get_current_camera().get_ref<comp_camera_t>();
-        auto ctx = SPK_GET_CTX_REF(iter, primitive_render_system_ctx_t);
+        auto render_ctx = (render_system_t*)state.get_current_renderer();
+        auto camera     = state.get_current_camera().get_ref<comp_camera_t>();
+        auto ctx        = SPK_GET_CTX_REF(iter, primitive_render_system_ctx_t);
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -206,15 +206,10 @@ namespace spk {
     }
 
     void primitive_render_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
-        flecs::entity* ctx;
-
-        world.component<comp_primitive_render_t>();
-        spk_register_component(world, primitive_render_system_ctx_t);
-
-        ctx = ctx_alloc.allocate_ctx<primitive_render_system_ctx_t>();
+        auto ctx = ctx_alloc.allocate_ctx<primitive_render_system_ctx_t>();
 
         world.system<comp_primitive_render_t>().ctx(ctx).kind(on_render)
-            .iter(primitive_render_system_update).add<render_system_t>();
+            .iter(primitive_render_system_update).add<tag_render_system_t>();
         
     }
 }

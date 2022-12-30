@@ -6,7 +6,7 @@
 
 
 namespace spk {
-    struct window_system_ctx_t {
+    struct window_system_ctx_t : public system_t {
         SDL_Event event;
     };
 

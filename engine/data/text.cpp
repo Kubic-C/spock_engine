@@ -28,11 +28,11 @@ namespace spk {
         FT_Set_Pixel_Sizes(face, f_width, f_height);
 
         for(u_char c = 0; c < UCHAR_MAX; c++) {
-            character_t* c_data = nullptr;
+            character_t* ch = nullptr;
 
             SPK_DEBUG_VALUE(bool, ret =) char_map.register_key(c); 
             /* this should never happen */
-            sfk_assert(ret);
+            spk_assert(ret);
         
             if(FT_Load_Char(face, c, FT_LOAD_RENDER)) {
                 continue;
@@ -42,10 +42,13 @@ namespace spk {
             widest_glyph = std::max(widest_glyph, face->glyph->bitmap.width);
             tallest_glyph = std::max(tallest_glyph, face->glyph->bitmap.rows);
 
-            c_data = &char_map[c];
-            c_data->advance = face->glyph->advance.x >> 6;
-            c_data->size    = {face->glyph->bitmap.width, face->glyph->bitmap.rows};
-            c_data->bearing = {face->glyph->bitmap_left, face->glyph->bitmap_top};
+            ch = &char_map[c];
+            ch->advance[0] = face->glyph->advance.x >> 6;
+            ch->advance[1] = face->glyph->advance.y >> 6;
+            ch->size       = {face->glyph->bitmap.width, face->glyph->bitmap.rows};
+
+            ch->offset[0] = face->glyph->bitmap_left; 
+            ch->offset[1] = ch->size.y - face->glyph->bitmap_top;
         }
 
         height = tallest_glyph;

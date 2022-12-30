@@ -34,7 +34,7 @@ namespace spk {
     }
 
     std::array<glm::vec2, 4> sprite_atlas_t::gen_tex_coords(uint32_t tax, uint32_t tay) {
-        sfk_assert(tax < sprites_per_row && tay < sprites_per_row, "tax or tay is outside of the valid range for the spritesheet");
+        spk_assert(tax < sprites_per_row && tay < sprites_per_row, "tax or tay is outside of the valid range for the spritesheet");
         float blx = width_per_sprite * tax;
         float bly = (height_per_sprite * tay) -  height_per_sprite;
 
@@ -72,7 +72,7 @@ namespace spk {
     }
 
     sprite_atlas_t* atlas_manager_t::get_atlas(uint32_t index) {
-        sfk_assert(in_use[index]);
+        spk_assert(in_use[index]);
 
         return &atlases[index];
     }

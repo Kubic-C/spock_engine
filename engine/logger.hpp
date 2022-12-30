@@ -3,10 +3,10 @@
 #include "base.hpp"
 
 #ifdef NDEBUG
-#define sfk_assert(expr, ...)
+#define spk_assert(expr, ...)
 #else 
 #define SFK_FIRST_W_COMMA(arg, ...) #arg
-#define sfk_assert(expr, ...) ((bool)(expr) ? void(0) : \
+#define spk_assert(expr, ...) ((bool)(expr) ? void(0) : \
     spk::_assert(__FILE__, __PRETTY_FUNCTION__, __LINE__, #expr, SFK_FIRST_W_COMMA(__VA_ARGS__)))
 #endif 
 

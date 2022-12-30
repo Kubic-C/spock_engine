@@ -9,32 +9,38 @@
     it also renders tile_bodies and particle_systems*/
 
 namespace spk {
-    struct sprite_render_system_ctx_t {
-        struct vertex_t {
-            glm::vec2 pos;
-            glm::vec2 tex_coords;
-        };
+    struct sprite_vertex_t {
+        glm::vec2 pos;
+        glm::vec2 tex_coords;
+    };
 
-        void init();
-        void free();
-
-        void draw_atlas_meshes();
+    struct sprite_batch_mesh_t : public comp_mesh_t {
         void add_sprite_mesh( comp_sprite_t& sprite, const glm::vec2& _1, const glm::vec2& _2, const glm::vec2& _3, const glm::vec2& _4);
-
         void add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset = {0.0f, 0.0f});
 
-        vertex_layout_t vertex_layout;
-        vertex_buffer_t vertex_buffer;
-        vertex_array_t vertex_array;
-        program_t program;
-
-        static constexpr uint32_t vertexes_per_sprite = 6;
-        static constexpr uint32_t indexes_per_sprite = 4;
-
         struct atlas_mesh_t {
-            std::vector<vertex_t> mesh;
+            std::vector<sprite_vertex_t> mesh;
             uint32_t sprites;
         } meshes[SPK_MAX_ATLAS];
+
+        static const uint32_t vertexes_per_sprite = 6;
+        static const uint32_t indexes_per_sprite  = 4;
+
+        void init() { m_init(); }
+        void free() { m_free(); }
+
+        void gpu_write(uint32_t atlas);
+    };
+
+    class sprite_renderer_t : public base_renderer_t {
+    public:
+
+        void init() override;
+        void free() override;
+        void draw() override;
+
+        // sprite rendering uses batch rendering
+        sprite_batch_mesh_t sprites;
     };
 
     void sprite_render_cs_init(system_ctx_allocater_t& allocater, flecs::world& world);

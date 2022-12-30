@@ -5,7 +5,7 @@
 
 namespace spk {
     void sprite_render_system_tilebody_update(flecs::iter& iter, comp_tilebody_t* tilebodies) {
-        auto ctx = SPK_GET_CTX_REF(iter, sprite_render_system_ctx_t);
+        auto ctx = SPK_GET_CTX_REF(iter, sprite_batch_mesh_t);
         resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
 
         for(auto i : iter) {
@@ -22,14 +22,11 @@ namespace spk {
                 }
             }
         }
-
-        ctx->draw_atlas_meshes();
     }
 
-    void _tilebody_cs_init(flecs::entity* ctx, flecs::world& world) {
+    void _tilebody_cs_init(sprite_batch_mesh_t* ctx, flecs::world& world) {
         tile_comp_init(world);
 
-        world.system<comp_tilebody_t>().ctx(ctx).kind(on_render)
-            .iter(sprite_render_system_tilebody_update).add<render_system_t>();
+        world.system<comp_tilebody_t>().kind(on_compute_mesh).ctx(ctx).iter(sprite_render_system_tilebody_update);
     }
 }

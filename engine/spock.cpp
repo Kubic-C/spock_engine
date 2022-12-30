@@ -9,8 +9,6 @@ namespace spk {
 
         state.engine = this;
 
-        ctx_alloc.init(world);
-        //world.set_target_fps(state.get_target_tps(false));
 
         if(SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO) < 0) {
             log.log(spk::LOG_TYPE_ERROR, "could not load SDL2 video. %s", SDL_GetError());
@@ -34,7 +32,7 @@ namespace spk {
                     .with(flecs::Phase).cascade(flecs::DependsOn)
                     .without(flecs::Disabled).up(flecs::DependsOn)
                     .without(flecs::Disabled).up(flecs::ChildOf)
-                .with<render_system_t>().build();
+                .with<tag_render_system_t>().build();
 
             state.set_current_render_pipeline(render_pipeline);
 
@@ -43,12 +41,14 @@ namespace spk {
                     .with(flecs::Phase).cascade(flecs::DependsOn)
                     .without(flecs::Disabled).up(flecs::DependsOn)
                     .without(flecs::Disabled).up(flecs::ChildOf) 
-                .without<render_system_t>().build();
+                .without<tag_render_system_t>().build();
 
             state.set_current_game_pipeline(game_pipeline);
         }
 
         { // engine setup and state setup
+            ctx_alloc.init();
+            
             state.set_current_event_system(world.entity().add<tag_events_t>());
             ps_tracker_system_init(ctx_alloc, world);
             window_cs_init(ctx_alloc, world);
@@ -69,8 +69,6 @@ namespace spk {
             rsrc_mng.init();
 
             world.entity().add<ui_comp_canvas_t>().add<ui_tag_current_canvas_t>();
-
-            state.get_current_window().get_mut<comp_window_t>()->force_resize_event();
         }
 
         SPK_DEBUG_EXPR(print_debug_stats());
@@ -85,6 +83,10 @@ namespace spk {
         double ticks_to_do = 0.0;
         double last_frame = 0.0;
         double last_tick = 0.0;
+
+        // render pipeline contains Window events 
+        world.run_pipeline(state.get_current_render_pipeline(), frame_time);
+        world.run_pipeline(state.get_current_game_pipeline(), delta_time);
 
         while(!state.is_exit()) {
             double current_frame = spk::time.get_time();
@@ -181,7 +183,7 @@ namespace spk {
     }
 
     void engine_t::set_vsync_opt(vsync_setting_e option) {
-        sfk_assert(-1 <= option && option <= 1 && "must be a valid vsync option!");
+        spk_assert(-1 <= option && option <= 1 && "must be a valid vsync option!");
 
         state.set_vsync_option(option);
         SDL_GL_SetSwapInterval(option);

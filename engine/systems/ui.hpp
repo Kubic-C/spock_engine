@@ -59,7 +59,7 @@ namespace spk {
         void add_ui_button(ui_button_t* button);
     };
 
-    struct ui_render_system_ctx_t {
+    struct ui_render_system_ctx_t : public system_t {
         // flecs throws a static error if it cannot trivally
         // construct this object, probably due to font_renderer's
         // and button_renderer's trivial contructors
@@ -84,17 +84,17 @@ namespace spk {
         }
 
         ui_render_system_ctx_t(ui_render_system_ctx_t&& other) {
-            memcpy(this, static_cast<const void*>(&other), sizeof(ui_render_system_ctx_t));
+            memcpy((void*)this, static_cast<const void*>(&other), sizeof(ui_render_system_ctx_t));
         }
 
         ui_render_system_ctx_t& operator=(ui_render_system_ctx_t&& other) {
-            memcpy(this, static_cast<const void*>(&other), sizeof(ui_render_system_ctx_t));
+            memcpy((void*)this, static_cast<const void*>(&other), sizeof(ui_render_system_ctx_t));
             
             return *this;    
         }
     };
 
-    struct ui_system_ctx_t {
+    struct ui_system_ctx_t : public system_t {
         SPK_NOT_A_TAG; 
     };
 

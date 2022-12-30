@@ -49,20 +49,20 @@ namespace spk {
 
     vertex_layout_t& vertex_layout_t::add(size_t index, size_t size, size_t type, 
         bool normalized, size_t stride, size_t offset, uint32_t buffer) {
-        sfk_assert(!attributes_active[index]);
+        spk_assert(!attributes_active[index]);
         
         attributes_active[index].flip();
 
         {
             vertex_attribute_t* pva = attributes + index;
             
-            pva->index = index;
-            pva->size = size;
-            pva->type = type;
+            pva->index      = index;
+            pva->size       = size;
+            pva->type       = type;
             pva->normalized = normalized;
-            pva->stride = stride;
-            pva->offset = offset;
-            pva->buffer = buffer;
+            pva->stride     = stride;
+            pva->offset     = offset;
+            pva->buffer     = buffer;
 
         }
 
@@ -70,7 +70,7 @@ namespace spk {
     }
 
     void vertex_layout_t::set_buffer(uint32_t index, uint32_t buffer) {
-        sfk_assert(attributes_active[index]);
+        spk_assert(attributes_active[index]);
 
         attributes[index].buffer = buffer;
     }
@@ -165,7 +165,7 @@ namespace spk {
         int width, height;
 
         //TODO: desired_channels parameter does not work as expected
-        sfk_assert(desired_channels == 0);
+        spk_assert(desired_channels == 0);
 
         if(desired_channels == 0) {
             desired_channels = STBI_rgb_alpha;

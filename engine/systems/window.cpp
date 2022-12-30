@@ -8,7 +8,7 @@ namespace spk {
 
         for(auto i : iter) {
             if(iter.entity(i).has<comp_window_t>()) {
-                cur_win_i == i;
+                cur_win_i = i;
                 break;
             }
         }
@@ -80,12 +80,12 @@ namespace spk {
     }
 
     void window_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
-        flecs::entity* ctx = ctx_alloc.allocate_ctx<window_system_ctx_t>();
+        window_system_ctx_t* ctx = ctx_alloc.allocate_ctx<window_system_ctx_t>();
 
         window_component_init(world);
         
         world.system<comp_window_t>().kind(on_render_begin).ctx(ctx).iter(window_system_update)
-            .add<render_system_t>();
+            .add<tag_render_system_t>();
 
         world.system<comp_window_t, tag_current_window_t>().ctx(ctx).interval(state.get_target_fps()).each(window_system_current_update);
     }

@@ -6,7 +6,7 @@ namespace spk {
         void particle_t::init_body(tile_t tile, b2World* world) {
             tile_metadata_t tmd = state.engine->rsrc_mng.get_tile_dictionary()[tile.id];
 
-            sfk_assert(!true, "feature is not developed, particle systems in box2d are bugged");
+            spk_assert(!true, "feature is not developed, particle systems in box2d are bugged");
 
             b2BodyDef def;
             def.linearVelocity = to_box_vec2(dir * speed);

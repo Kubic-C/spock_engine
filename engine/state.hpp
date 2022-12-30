@@ -1,11 +1,13 @@
 #pragma once
 
 #include "base.hpp"
+#include "systems.hpp"
 
 /* global accessible state | acting like a global context */
 
 namespace spk {
     class engine_t; // forward decloration
+    class render_system_t;
 
     enum vsync_setting_e {
         VSYNC_ADAPATIVE = -1,
@@ -27,14 +29,14 @@ namespace spk {
         vsync_setting_e vsync_opt = VSYNC_DISABLED; 
         float ppm = 8.0f;
 
-        flecs::entity window = flecs::entity(UINT64_MAX);
-        flecs::entity box2D_world = flecs::entity(UINT64_MAX);
-        flecs::entity renderer = flecs::entity(UINT64_MAX);
-        flecs::entity event_system = flecs::entity(UINT64_MAX);
-        flecs::entity canvas = flecs::entity(UINT64_MAX);
-        flecs::entity camera = flecs::entity(UINT64_MAX);
-        flecs::entity render_pipeline = flecs::entity(UINT64_MAX);
-        flecs::entity game_pipeline = flecs::entity(UINT64_MAX);
+        flecs::entity    window          = flecs::entity(UINT64_MAX);
+        flecs::entity    box2D_world     = flecs::entity(UINT64_MAX);
+        render_system_t* renderer        = nullptr;
+        flecs::entity    event_system    = flecs::entity(UINT64_MAX);
+        flecs::entity    canvas          = flecs::entity(UINT64_MAX);
+        flecs::entity    camera          = flecs::entity(UINT64_MAX);
+        flecs::entity    render_pipeline = flecs::entity(UINT64_MAX);
+        flecs::entity    game_pipeline   = flecs::entity(UINT64_MAX);
 
     public:
         std::bitset<SDL_NUM_SCANCODES> keys;
@@ -44,18 +46,18 @@ namespace spk {
         int get_exit_code() { return exit_code_; }
         bool is_exit() { return exit_; }
 
-        float get_ppm() const { return ppm; }
-        double get_target_fps(bool divide_by_second = true) const;
-        double get_target_tps(bool divide_by_second = true) const;
-        flecs::entity get_current_window() const { return window; }
-        flecs::entity get_current_box2D_world() const { return box2D_world; }
-        flecs::entity get_current_renderer() const { return renderer; }
-        vsync_setting_e get_vsync_option() const { return vsync_opt; }
-        flecs::entity get_current_event_system() const { return event_system; }
-        flecs::entity get_current_canvas() const { return canvas; }; 
-        flecs::entity get_current_camera() const { return camera; }; 
-        flecs::entity get_current_render_pipeline() const { return render_pipeline; }
-        flecs::entity get_current_game_pipeline() const { return game_pipeline; }
+        float            get_ppm() const { return ppm; }
+        double           get_target_fps(bool divide_by_second = true) const;
+        double           get_target_tps(bool divide_by_second = true) const;
+        flecs::entity    get_current_window() const { return window; }
+        flecs::entity    get_current_box2D_world() const { return box2D_world; }
+        render_system_t* get_current_renderer() const { return renderer; }
+        vsync_setting_e  get_vsync_option() const { return vsync_opt; }
+        flecs::entity    get_current_event_system() const { return event_system; }
+        flecs::entity    get_current_canvas() const { return canvas; }; 
+        flecs::entity    get_current_camera() const { return camera; }; 
+        flecs::entity    get_current_render_pipeline() const { return render_pipeline; }
+        flecs::entity    get_current_game_pipeline() const { return game_pipeline; }
 
         void set_ppm(float ppm) { 
             SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "pixels per meter(PPM) changed to: %f", ppm);
@@ -82,8 +84,8 @@ namespace spk {
             box2D_world = world; 
         }
 
-        void set_current_renderer(flecs::entity renderer_) {             
-            SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "current renderer changed to: (id)%llu", renderer_.id());
+        void set_current_renderer(render_system_t* renderer_) {             
+            SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "current renderer changed to: %p", renderer_);
             renderer = renderer_; 
         }
 
@@ -108,12 +110,12 @@ namespace spk {
         }
 
         void set_current_render_pipeline(flecs::entity render_pipeline_) {
-            SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "current render pipeline changed to: (id)%llu", render_pipeline_); 
+            SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "current render pipeline changed to: (id)%llu", render_pipeline_.id()); 
             render_pipeline = render_pipeline_;
         }
    
         void set_current_game_pipeline(flecs::entity game_pipeline_) {
-            SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "current game pipeline changed to: (id)%llu", game_pipeline_); 
+            SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "current game pipeline changed to: (id)%llu", game_pipeline_.id()); 
             game_pipeline = game_pipeline_;
         }
     };

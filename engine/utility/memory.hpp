@@ -163,10 +163,10 @@ namespace spk {
 
         currently_allocated = 0;
 
-        sfk_assert(real_ptr);
+        spk_assert(real_ptr);
 
         return true;
-    } 
+    }
 
     template<typename T, uint32_t size, size_t alignment, size_t padding>
     void memory_pool_t<T, size, alignment, padding>::free() {   
@@ -188,7 +188,7 @@ namespace spk {
             }
         }
 
-        sfk_assert(ptr != null && "memory_pool out of space");
+        spk_assert(ptr != null && "memory_pool out of space");
     
         if(ptr) {
             currently_allocated++;
@@ -221,7 +221,7 @@ namespace spk {
 
     template<typename T, uint32_t size, size_t alignment, size_t padding>
     void memory_pool_t<T, size, alignment, padding>::letgo(T* ptr) {
-        sfk_assert(aligned_ptr <= ptr && (aligned_ptr + size) > ptr);
+        spk_assert(aligned_ptr <= ptr && (aligned_ptr + size) > ptr);
 
         /* note to future devs reading this code:
           i HAD to cast everything to size_t when doing pointer arithmetic,
@@ -241,7 +241,7 @@ namespace spk {
         // TODO: make this faster
         uint32_t n = n_ptr / sizeof(T); // division is slow so there could be a better way to do this  
     
-        sfk_assert( ! (block_flags[n] & BLOCK_FLAGS_FREE));
+        spk_assert( ! (block_flags[n] & BLOCK_FLAGS_FREE));
 
         block_flags[n] |= BLOCK_FLAGS_FREE;
 

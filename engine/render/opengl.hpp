@@ -105,6 +105,10 @@ namespace spk {
             return channels;
         }
 
+        operator uint32_t() {
+            return id;
+        }
+
     private:
         int channels;
         uint32_t id;
