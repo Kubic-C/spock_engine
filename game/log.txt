@@ -1,0 +1,20 @@
+|SPOCK: 1364.502630> [32m INFO [0m info_logger_init
+|SPOCK: 0.020475> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
+|SPOCK: 0.021425> [32m INFO [0m current render pipeline changed to: (id)538
+|SPOCK: 0.022006> [32m INFO [0m current game pipeline changed to: (id)545
+|SPOCK: 0.022230> [32m INFO [0m current event system changed to: (id)551
+|SPOCK: 0.059455> [32m INFO [0m current window changed to: (id)568
+|SPOCK: 0.061485> [32m INFO [0m current box2D world changed to: (id)569
+|SPOCK: 0.062747> [32m INFO [0m current camera changed to: (id)573
+|SPOCK: 0.064541> [32m INFO [0m current renderer changed to: 0x555b0b138040
+|SPOCK: 0.083135> [32m INFO [0m current canvas changed to: (id)611
+|SPOCK: 0.084690> [32m INFO [0m SDL Version 3.0.0
+|SPOCK: 0.086776> [32m INFO [0m OGL Version 4.5 (Core Profile) Mesa 22.0.5
+|SPOCK: 0.087161> [32m INFO [0m [1m[31m this text is red and emphasized [0m 
+|SPOCK: 0.087304> [32m INFO [0m [3m[34m this text is italic and blue [0m
+|SPOCK: 0.087430> [32m INFO [0m [1m #===# [0m <- this is a recursive rule -> [1m #===# [0m
+|SPOCK: 0.088346> [32m INFO [0m target fps changed to: 10000.000000
+|SPOCK: 0.088364> [32m INFO [0m current VSYNC setting changed to: VSYNC_DISABLED
+|SPOCK: 0.299300> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
+|SPOCK: 14.731341> [32m INFO [0m exiting with code; 0
+|SPOCK: 14.731381> [32m INFO [0m [1m #===# [0m[31m ENGINE FREE [0m[1m #===# [0m

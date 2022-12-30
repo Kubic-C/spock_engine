@@ -22,6 +22,9 @@ namespace spk {
             SDL_Event event;
 
             event.type = SDL_WINDOWEVENT_SIZE_CHANGED;
+            event.window.data1 = 0;
+            event.window.data2 = 0;
+            event.window.timestamp = 0;
             event.window.windowID = SDL_GetWindowID(win);
 
             SDL_PushEvent(&event);

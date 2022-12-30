@@ -143,7 +143,7 @@ namespace spk {
 
         auto sr = allocater.allocate_ctx<sprite_renderer_t>();
 
-        state.get_current_renderer()->rp_add_renderer(0, (base_renderer_t*)&sr);
+        state.get_current_renderer()->rp_add_renderer(0, (base_renderer_t*)sr);
 
         world.system<comp_b2Body_t, comp_sprite_t>().kind(on_compute_mesh)
             .ctx(&sr->sprites).iter(sprite_render_system_update);
