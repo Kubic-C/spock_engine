@@ -1,8 +1,8 @@
 #include "particles.hpp"
 #include "utility/ui.hpp"
 #include "components/tilebody.hpp"
-#include "systems/sprite_render.hpp"
 #include <glm/gtx/vector_angle.hpp>
+#include "sprite.hpp"
 #include "state.hpp"
 #include "spock.hpp"
 
@@ -185,8 +185,8 @@ namespace spk {
         world.system<comp_tilebody_t, comp_particles_t>().iter(particles_system_tile_body_tick);
 
         world.system<comp_b2Body_t, comp_particles_t>()
-            .kind(on_compute_mesh).ctx(ctx).iter(particles_system_update);  
+            .kind(on_mesh).ctx(ctx).iter(particles_system_update);  
         world.system<comp_tilebody_t, comp_particles_t>()
-            .kind(on_compute_mesh).ctx(ctx).iter(particles_system_tilebody_update);  
+            .kind(on_mesh).ctx(ctx).iter(particles_system_tilebody_update);  
     } 
 }

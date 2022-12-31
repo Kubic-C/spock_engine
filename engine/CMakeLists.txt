@@ -1,5 +1,5 @@
 
-add_library(spock_engine STATIC)
+add_library(spock_engine STATIC "spock.hpp")
 
 target_compile_definitions(flecs_static PUBLIC ecs_ftime_t=double)
 
@@ -24,8 +24,8 @@ target_sources(spock_engine PRIVATE
     "systems/window.hpp" "systems/window.cpp"
     "systems/render.hpp" "systems/render.cpp"
     "systems/physics.hpp" "systems/physics.cpp"
-    "systems/primitive_render.hpp" "systems/primitive_render.cpp"
-    "systems/sprite_render.hpp" "systems/sprite_render.cpp"
+    "systems/primitive.hpp" "systems/primitive.cpp"
+    "systems/sprite.hpp" "systems/sprite.cpp"
     "systems/ps_tracker.hpp" "systems/ps_tracker.cpp"
     "systems/ui.hpp" "systems/ui.cpp"
     "systems/camera.hpp" "systems/camera.cpp"
@@ -57,11 +57,12 @@ target_sources(spock_engine PRIVATE
 target_sources(spock_engine PRIVATE
     "render/opengl.hpp" "render/opengl.cpp"
     "render/render_system.hpp" "render/render_system.cpp"
+    "render/meshes.hpp" "render/meshes.cpp"
     "render/base_renderer.hpp" "render/base_renderer.cpp"
-    "render/meshes.hpp" "render/meshes.cpp")
+    "render/button_renderer.hpp" "render/button_renderer.cpp"
+    "render/font_renderer.hpp" "render/font_renderer.cpp"
+    "render/sprite_renderer.hpp" "render/sprite_renderer.cpp"
+    "render/primitive_renderer.hpp" "render/primitive_renderer.cpp")
 
 target_sources(spock_engine PRIVATE
     "external/stb_image.h" "external/stb_image.c")
-
-target_sources(spock_engine PUBLIC
-    "spock.hpp")

@@ -1,5 +1,5 @@
 #include "tilebody.hpp"
-#include "systems/sprite_render.hpp"
+#include "sprite.hpp"
 #include "state.hpp"
 #include "spock.hpp"
 
@@ -27,6 +27,6 @@ namespace spk {
     void _tilebody_cs_init(sprite_batch_mesh_t* ctx, flecs::world& world) {
         tile_comp_init(world);
 
-        world.system<comp_tilebody_t>().kind(on_compute_mesh).ctx(ctx).iter(sprite_render_system_tilebody_update);
+        world.system<comp_tilebody_t>().kind(on_mesh).ctx(ctx).iter(sprite_render_system_tilebody_update);
     }
 }

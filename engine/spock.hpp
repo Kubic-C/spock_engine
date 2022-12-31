@@ -5,8 +5,8 @@
 #include "systems/ps_tracker.hpp"
 #include "systems/ui.hpp"
 #include "systems/render.hpp"
-#include "systems/primitive_render.hpp"
-#include "systems/sprite_render.hpp"
+#include "systems/primitive.hpp"
+#include "systems/sprite.hpp"
 #include "systems/camera.hpp"
 
 #include "utility/entity.hpp"

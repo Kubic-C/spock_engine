@@ -121,12 +121,12 @@ namespace spk {
     };
 
     struct stats_t {
-        bool print_ps_stats = false;
-        double delta_time = 0.0;
-        double frame_time = 0.0;
-        double average_delta_time = 0;
-        uint32_t fps = 0;
-        uint32_t tps = 0;
+        bool     print_ps_stats     = false;
+        double   delta_time         = 0.0;
+        double   frame_time         = 0.0;
+        double   average_delta_time = 0;
+        uint32_t fps                = 0;
+        uint32_t tps                = 0;
     };
 
 #ifndef _SPK_NO_DEF_STATE

@@ -99,6 +99,10 @@
         "locale": "cpp",
         "cstdbool": "cpp",
         "charconv": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "format": "cpp",
+        "xlocbuf": "cpp",
+        "xloctime": "cpp",
+        "shared_mutex": "cpp"
     }
 }

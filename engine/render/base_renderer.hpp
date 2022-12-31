@@ -19,11 +19,12 @@ namespace spk {
         void b_free();
 
         virtual void draw() {}
-    
+
+        static_list<flecs::entity, 8> systems;  
     protected:
-        vertex_layout_t vertex_layout;
-        vertex_array_t  vertex_array;
-        program_t       program;
+        vertex_layout_t               vertex_layout;
+        vertex_array_t                vertex_array;
+        program_t                     program;
 
     };
 

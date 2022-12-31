@@ -37,6 +37,7 @@ MAIN {
     SPK_DEBUG_ENABLE(spk::DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME);
 
     engine.init();
+    engine.set_target_tps(100);
 
     srand(1);
 
@@ -151,41 +152,71 @@ MAIN {
     }   
 
     auto start_ = [&]() -> void {
-            engine.set_target_tps(60);
+        for(uint32_t i = 0; i < 10; i++) {
+            test = engine.world.entity();
+            test.set([&](spk::comp_particles_t& ps){
+                ps.flags |= spk::PARTICLES_FLAGS_WORLD_DIRECTION | 
+                            spk::PARTICLES_FLAGS_WORLD_POSITION;
+                ps.funnel = spk::PARTICLES_FUNNEL_LINE;
+                ps.base_cycle = 0.1;
+                ps.max = 100;
+                ps.speed_step = -0.1f;
+                ps.base_speed = 10.0f;
+                ps.particle.id = 3;
+                ps.base_lifetime = 2.0f;
+                ps.dir = {0.0f, 1.0f};
+            });
+            test.add<spk::comp_sprite_t>();
+            test.set([&](spk::comp_b2Body_t& body){
+                b2World* world = engine.get_current_b2World();
 
-            for(uint32_t i = 0; i < 1; i++) {
-                test = engine.world.entity();
-                test.set([&](spk::comp_particles_t& ps){
-                    ps.flags |= spk::PARTICLES_FLAGS_WORLD_DIRECTION | 
-                                spk::PARTICLES_FLAGS_WORLD_POSITION;
-                    ps.funnel = spk::PARTICLES_FUNNEL_LINE;
-                    ps.base_cycle = 0.1;
-                    ps.max = UINT32_MAX;
-                    ps.particle.id = 3;
-                    ps.base_lifetime = 1.0f;
-                });
-                test.set([&](spk::comp_tilebody_t& comp){
-                    uint32_t id = (rand() % 2) + 1;
+                b2BodyDef body_def;
+                body_def.type = b2_dynamicBody;
+                body_def.position = { 10.0f, 0.0f };
+                body.body = world->CreateBody(&body_def);
 
-                    comp.tilemap.tiles =
-                        { std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                        std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),  
-                        std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                        std::vector<spk::tile_t>({1, 2, 1, 0, 0, 0, 0, 0, 0, 0}), 
-                        std::vector<spk::tile_t>({1, 2, 1, 0, 0, 0, 0, 0, 0, 0}), 
-                        std::vector<spk::tile_t>({1, 2, 1, 0, 0, 0, 0, 0, 0, 0}),
-                        std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
-                        std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                        std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                        std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                        };
+                b2PolygonShape shape;
+                shape.SetAsBox(SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE);
 
-                    comp.add_fixtures();
-                    comp.body->SetType(b2_dynamicBody);
-                    comp.body->SetTransform(b2Vec2(0.0f, 0.0f), 0.0f);
-                    comp.body->SetBullet(true);   
-                });
-            }
+                b2FixtureDef fix_def;
+                fix_def.shape = & shape;
+                fix_def.density = 1.0f;
+                body.body->CreateFixture(&fix_def);
+            });
+        }
+
+        test = engine.world.entity();
+        test.add<spk::comp_body_prim_t>();
+        test.set([&](spk::comp_particles_t& ps){
+            ps.flags |= spk::PARTICLES_FLAGS_WORLD_DIRECTION | 
+                        spk::PARTICLES_FLAGS_WORLD_POSITION;
+            ps.funnel = spk::PARTICLES_FUNNEL_LINE;
+            ps.base_cycle = 0.1;
+            ps.max = UINT32_MAX;
+            ps.particle.id = 3;
+            ps.base_lifetime = 1.0f;
+        });
+        test.set([&](spk::comp_tilebody_t& comp){
+            uint32_t id = (rand() % 2) + 1;
+
+            comp.tilemap.tiles =
+                { std::vector<spk::tile_t>({0, 0, 0, 0, 2, 0, 0, 0, 0, 0}), 
+                    std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 0}),  
+                    std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 0}), 
+                    std::vector<spk::tile_t>({0, 0, 0, 1, 1, 1, 0, 0, 0, 0}), 
+                    std::vector<spk::tile_t>({2, 1, 1, 1, 1, 1, 1, 1, 2, 0}), 
+                    std::vector<spk::tile_t>({0, 0, 0, 1, 1, 1, 0, 0, 0, 0}),
+                    std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 0}),
+                    std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 0}), 
+                    std::vector<spk::tile_t>({0, 0, 0, 0, 2, 0, 0, 0, 0, 0}), 
+                    std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
+                };
+
+            comp.add_fixtures();
+            comp.body->SetType(b2_dynamicBody);
+            comp.body->SetTransform(b2Vec2(0.0f, 0.0f), 0.0f);
+            comp.body->SetBullet(true);   
+        });
 
         bottom = engine.world.entity();
         bottom.set([&](spk::comp_tilebody_t& comp){
@@ -209,16 +240,18 @@ MAIN {
             auto event = iter.param<spk::event_keyboard_t>();
             auto camera = engine.get_current_camera();
 
-            // if(event->type == SDL_KEYDOWN || event->repeat) {
-            //     switch(event->keysym.scancode) {
-            //     case SDL_SCANCODE_1:
-            //         engine.set_current_camera(cam1);
-            //         break;
-            //     case SDL_SCANCODE_2: 
-            //         engine.set_current_camera(cam2);
-            //         break;
-            //     }
-            // }
+            if(event->type == SDL_KEYDOWN || event->repeat) {
+                switch(event->keysym.scancode) {
+                case SDL_SCANCODE_1:
+                    engine.set_current_camera(cam1);
+                    break;
+                case SDL_SCANCODE_2: 
+                    engine.set_current_camera(cam2);
+                    break;
+                default:
+                    break;
+                }
+            }
         });
 
     engine.world.observer().event<spk::event_mouse_wheel_t>().term<spk::tag_events_t>()

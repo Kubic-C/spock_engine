@@ -1,4 +1,5 @@
 #include "render_system.hpp"
+#include "state.hpp"
 
 namespace spk {
 #ifndef CALLBACK
@@ -188,6 +189,10 @@ namespace spk {
             glClear(fb->clear_bits);
 
             for(auto renderer : rp.renderer) {
+                for(auto& system : renderer->systems) {
+                    flecs::system(system.world().m_world, system.id()).run(stats.delta_time);
+                }
+
                 renderer->draw();
             }
 

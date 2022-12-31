@@ -4,7 +4,7 @@
 #include "utility/structure.hpp"
 
 namespace spk {
-    struct comp_mesh_t {
+    struct mesh_t {
         vertex_buffer_t vertex_buffer;
 
         void m_init();

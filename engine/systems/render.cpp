@@ -7,7 +7,7 @@ namespace spk {
         auto                 rs     = state.get_current_renderer();
         event_window_size_t* resize = iter.param<event_window_size_t>();
 
-       rs->resize(resize->width, resize->height); 
+        rs->resize(resize->width, resize->height); 
     }
 
     void render_system_begin_render(flecs::iter& iter, comp_window_t* window) {

@@ -2,246 +2,11 @@
 #include "state.hpp"
 #include "utility/ui.hpp"
 #include "window.hpp"
-#include "primitive_render.hpp"
 #include "spock.hpp"
-#include <glm/gtc/matrix_transform.hpp>
-
-const char* vs_font = R"###(
-#version 330 core
-layout(location = 0) in vec2 a_pos;
-layout(location = 1) in vec2 a_tex_coords;
-layout(location = 2) in vec3 a_color;
-out vec2 v_tex_coords;
-out vec3 v_color;
-uniform mat4 u_vp;
-void main() {
-    gl_Position = u_vp * vec4(a_pos, -0.4f, 1.0);
-    v_tex_coords = a_tex_coords;
-    v_color = a_color;
-}
-)###";
-
-const char* fs_font = R"###(
-#version 330 core
-in vec2 v_tex_coords;
-in vec3 v_color;
-
-uniform sampler2D font;
-
-out vec4 color;
-
-void main()
-{    
-    color = vec4(v_color, texture(font, v_tex_coords).r);
-}
-)###";
-
-const char* vs_button = R"###(
-#version 330 core
-layout(location = 0) in vec2 a_pos;
-layout(location = 1) in vec3 a_color;
-out vec3 v_color;
-uniform mat4 u_vp;
-void main() {
-    gl_Position = u_vp * vec4(a_pos, -0.3f, 1.0);
-    v_color = a_color;
-}
-)###";
-
-const char* fs_button = R"###(
-#version 330 core
-in vec3 v_color;
-out vec4 color;
-void main()
-{    
-    color = vec4(v_color, 1.0f);
-}
-)###"; 
 
 namespace spk {
-    void font_render_t::init() {
-        vbo.init(GL_ARRAY_BUFFER);
-        vbo.buffer_data(sizeof(vertex_t) * indexes_per_letter * MAX_LETTERS, nullptr, GL_DYNAMIC_DRAW);
-
-        layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), 0, vbo);
-        layout.add(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), sizeof(float) * 2, vbo);
-        layout.add(2, 3, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), sizeof(float) * 4, vbo);
-        
-        vao.init();
-        vao.bind_layout(layout);
-
-        uint32_t vs_shader = spk::create_shader_from_src(GL_VERTEX_SHADER, vs_font, nullptr);
-        uint32_t fs_shader = spk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_font, nullptr);
-        
-        spk_assert(vs_shader != UINT32_MAX);
-        spk_assert(fs_shader != UINT32_MAX);
-        
-        program.init();
-        SPK_DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
-        spk_assert(ret);
-
-        buffer.resize(indexes_per_letter * MAX_LETTERS);
-
-        indexes = 0;
-        vertices = 0;
-    }
-
-    void font_render_t::render(spk::static_index_buffer_t& ibo, font_t* font, ui_comp_canvas_t* canvas) {
-        // update
-        vbo.buffer_sub_data(0, indexes * sizeof(vertex_t), buffer.data());
-
-        // bind
-        vao.bind();
-        ibo.bind();
-        program.use();
-        program.set_mat4("u_vp", canvas->vp);
-        program.set_int("font", 0);
-        font->texture.active_texture(GL_TEXTURE0);
-
-        // draw
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDrawElements(GL_TRIANGLES, vertices, GL_UNSIGNED_INT, nullptr);
-        glDisable(GL_BLEND);
-
-        indexes = 0;
-        vertices = 0;
-    }
-
-    void font_render_t::free() {
-        program.free();
-        vbo.free();
-        vao.free();
-    }
-
-    void font_render_t::add_ui_text(font_t* font, ui_text_t* text) {
-        vertex_t* vtx = buffer.data() + indexes;
-        const float scalar = text->text.scalar;
-        float xoffset = 0.0f;
-        float yoffset = 0.0f;
-        float x = text->abs_pos.x; // x cursor
-        float y = text->abs_pos.y;
-
-        for(uint8_t c : text->text.str) {
-            character_t* ch = &font->char_map[c];
-
-            xoffset += ch->advance[0] * scalar;
-            yoffset = std::max(yoffset, ch->size.y * scalar);
-        }
-
-        xoffset /= 2.0f;
-        yoffset /= 2.0f;
-        text->abs_size.x = xoffset;
-        text->abs_size.y = yoffset;
-
-        for(uint8_t c : text->text.str) {
-            character_t* ch = &font->char_map[c];
-
-            float x2 = x + ch->offset[0] * scalar;
-            float y2 = y - ch->offset[1] * scalar;
-            float w = ch->size.x * scalar;
-            float h = ch->size.y * scalar;    
-
-            vtx[0] = { .x = (x2    ) - xoffset, .y = (y2    ) - yoffset, .uv = ch->tex_indices[0], .rgb = text->text.color} ;
-            vtx[1] = { .x = (x2 + w) - xoffset, .y = (y2    ) - yoffset, .uv = ch->tex_indices[1], .rgb = text->text.color} ;
-            vtx[2] = { .x = (x2 + w) - xoffset, .y = (y2 + h) - yoffset, .uv = ch->tex_indices[2], .rgb = text->text.color} ;
-            vtx[3] = { .x = (x2    ) - xoffset, .y = (y2 + h) - yoffset, .uv = ch->tex_indices[3], .rgb = text->text.color} ;
-            vtx += indexes_per_letter;
-
-            x += (float)ch->advance[0] * scalar;
-            y += (float)ch->advance[1] * scalar;
-        }
-
-        indexes += indexes_per_letter * text->text.ssize();
-        vertices += vertices_per_letter * text->text.ssize();
-    }
-
-    void button_render_t::init() {
-        vbo.init(GL_ARRAY_BUFFER);
-        vbo.buffer_data(sizeof(vertex_t) * vertices_per_button * MAX_LETTERS, nullptr, GL_DYNAMIC_DRAW);
-
-        layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 3), 0, vbo);
-        layout.add(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 3), sizeof(float) * 2, vbo);
-        
-        vao.init();
-        vao.bind_layout(layout);
-
-        uint32_t vs_shader = spk::create_shader_from_src(GL_VERTEX_SHADER, vs_button, nullptr);
-        uint32_t fs_shader = spk::create_shader_from_src(GL_FRAGMENT_SHADER, fs_button, nullptr);
-        
-        spk_assert(vs_shader != UINT32_MAX);
-        spk_assert(fs_shader != UINT32_MAX);
-        
-        program.init();
-        SPK_DEBUG_VALUE(bool, ret =) program.load_shader_modules(vs_shader, fs_shader);
-        spk_assert(ret);
-
-        buffer.resize(vertices_per_button * MAX_LETTERS);
-
-        indexes = 0;
-        vertices = 0;
-    }
-
-    void button_render_t::render(spk::static_index_buffer_t& ibo, ui_comp_canvas_t* canvas) {
-        // update
-        vbo.buffer_sub_data(0, indexes * sizeof(vertex_t), buffer.data());
-
-        // bind
-        vao.bind();
-        ibo.bind();
-        program.use();
-        program.set_mat4("u_vp", canvas->vp);
-
-        // draw
-        glDrawElements(GL_TRIANGLES, vertices, GL_UNSIGNED_INT, nullptr);
-
-        vertices = 0;
-        indexes = 0;
-    }
-
-    void button_render_t::free() {
-        vao.free();
-        vbo.free();
-        program.free();
-    }
-        
-    void button_render_t::add_ui_button(ui_button_t* btn) {
-        vertex_t* vtx = buffer.data() + indexes;
-        const float x = btn->abs_pos.x;
-        const float y = btn->abs_pos.y;
-        const float hw = btn->abs_size.x;
-        const float hh = btn->abs_size.y;
-        glm::vec3 offset = {0.0f, 0.0f, 0.0f};
-        glm::vec3 color;
-
-        if(btn->time_when_clicked + 0.1f > spk::time.get_time()) {
-            offset = {0.5f, 0.5f, 0.5f};
-        }
-
-        color = btn->color - offset;
- 
-        // bl
-        vtx[0] = {.x = x - hw, .y = y - hh, 
-                    .r = color.r, .g = color.g, .b = color.b};
-
-        // tr
-        vtx[2] = {.x = x + hw,   .y = y + hh, 
-                    .r = color.r, .g = color.g, .b = color.b};
-
-        // br
-        vtx[1] = {.x = x + hw,   .y = y - hh, 
-                    .r = color.r, .g = color.g, .b = color.b};
-
-        // tl
-        vtx[3] = {.x = x - hw,   .y = y + hh, 
-                    .r = color.r, .g = color.g, .b = color.b};
-
-        indexes += indexes_per_button;
-        vertices += vertices_per_button;
-    } 
-
     void ui_render_system_update(flecs::iter& iter, ui_comp_canvas_t* canvas_) {
-        auto ctx = SPK_GET_CTX_REF(iter, ui_render_system_ctx_t);
+        auto ctx = SPK_GET_CTX_REF(iter, ui_meshes_t);
         ui_comp_canvas_t& canvas = *canvas_;
         font_t* font = canvas.font;
         float xmax = canvas.abs_size.x;
@@ -254,6 +19,13 @@ namespace spk {
             font = state.engine->rsrc_mng.get_first_font();
             spk_assert(font && "when using canvas you must load a font!");
         }
+
+        ctx->font_mesh->font = font;
+        ctx->font_mesh->vp   = canvas.vp;
+        ctx->font_mesh->zero();
+
+        ctx->btn_mesh->vp    = canvas.vp;
+        ctx->btn_mesh->zero();
 
         canvas.iter_children([&](ui_element_t& ele) -> bool {
             if(!(ele.flags & UI_ELEMENT_FLAGS_ENABLED) || ele.flags & UI_ELEMENT_FLAGS_ROOT) {
@@ -287,15 +59,15 @@ namespace spk {
                 break;
 
             case UI_ELEMENT_TYPE_TEXT:
-                ctx->font_render.add_ui_text(font, (ui_text_t*)&ele);
+                ctx->font_mesh->add_ui_text((ui_text_t*)&ele);
                 break;
 
             case UI_ELEMENT_TYPE_BUTTON:
-                ctx->button_render.add_ui_button((ui_button_t*)&ele);
+                ctx->btn_mesh->add_ui_button((ui_button_t*)&ele);
                 break;
 
             case UI_ELEMENT_TYPE_CANVAS:
-                spk_assert(!"yo dawg how this shit happen, this is not accessible");
+                spk_assert(!"a canvas within a canvas is not allowed");
                 break;
 
             default:
@@ -304,9 +76,6 @@ namespace spk {
 
             return false;
         });
-
-        ctx->button_render.render(ctx->ibo, canvas_);
-        ctx->font_render.render(ctx->ibo, font, canvas_);
     }
 
     void ui_render_system_resize(flecs::iter& iter) {
@@ -361,17 +130,21 @@ namespace spk {
     void ui_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
         ui_canvas_comp_init(world);
 
-        world.component<ui_system_ctx_t>();
-        spk_register_component(world, ui_render_system_ctx_t);
+        auto ui_ctx        = ctx_alloc.allocate_ctx<ui_system_ctx_t>();
+        auto ui_meshes     = ctx_alloc.allocate_ctx<ui_meshes_t>();
+        auto font_renderer = ctx_alloc.allocate_ctx<font_renderer_t>();
+        auto btn_renderer  = ctx_alloc.allocate_ctx<button_renderer_t>();
 
-        auto ui_ctx = ctx_alloc.allocate_ctx<ui_system_ctx_t>();
-        auto ui_render_ctx = ctx_alloc.allocate_ctx<ui_render_system_ctx_t>();
+        // ORDER MATTERS HERE, buttons will render first, then the font renderer
+        state.get_current_renderer()->rp_add_renderer(0, (base_renderer_t*)btn_renderer);
+        state.get_current_renderer()->rp_add_renderer(0, (base_renderer_t*)font_renderer);
+
+        ui_meshes->font_mesh = &font_renderer->mesh;
+        ui_meshes->btn_mesh  = &btn_renderer->mesh;
 
         world.system<ui_comp_canvas_t>()
-            .term_at(1).with<ui_tag_current_canvas_t>()
-            .kind(on_render)
-            .ctx(ui_render_ctx)
-            .iter(ui_render_system_update).add<tag_render_system_t>();
+            .term<ui_tag_current_canvas_t>()
+            .kind(on_mesh).ctx(ui_meshes).iter(ui_render_system_update).add<tag_render_system_t>();
         
         world.observer().event<event_window_size_t>().term<tag_events_t>()
             .iter(ui_render_system_resize);

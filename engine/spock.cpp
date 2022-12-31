@@ -41,7 +41,8 @@ namespace spk {
                     .with(flecs::Phase).cascade(flecs::DependsOn)
                     .without(flecs::Disabled).up(flecs::DependsOn)
                     .without(flecs::Disabled).up(flecs::ChildOf) 
-                .without<tag_render_system_t>().build();
+                .without<tag_render_system_t>()
+                .without<tag_renderer_t>().build();
 
             state.set_current_game_pipeline(game_pipeline);
         }
@@ -63,7 +64,7 @@ namespace spk {
             render_cs_init(ctx_alloc, world);
 
             // render systems
-            sprite_render_cs_init(ctx_alloc, world);
+            sprite_cs_init(ctx_alloc, world);
             primitive_render_cs_init(ctx_alloc, world);
             ui_cs_init(ctx_alloc, world);
             rsrc_mng.init();
