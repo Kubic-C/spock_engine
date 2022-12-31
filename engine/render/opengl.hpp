@@ -5,11 +5,7 @@
 
 #define BGFX_HANDLE_VALID(handle) (handle.idx != bgfx::kInvalidHandle)
 
-// utility render shit
-
 #define SFK_MAX_VERTEX_LAYOUT_ATTRIBUTES 8
-
-// todo: rendering abstraction/utility
 
 namespace spk {
     uint32_t create_shader_from_src(uint32_t shader_type, const char* src, int* size);

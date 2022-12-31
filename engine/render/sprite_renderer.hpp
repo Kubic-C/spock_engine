@@ -14,7 +14,7 @@ namespace spk {
         void add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset = {0.0f, 0.0f});
 
         struct atlas_mesh_t {
-            static_list<sprite_vertex_t, 1024> mesh;
+            std::vector<sprite_vertex_t> mesh;
             uint32_t sprites;
         } meshes[SPK_MAX_ATLAS];
 
@@ -24,6 +24,7 @@ namespace spk {
         void init();
         void free();
 
+        void resize_mesh_if_need(size_t atlas);
         void subdata(uint32_t atlas);
     };
 

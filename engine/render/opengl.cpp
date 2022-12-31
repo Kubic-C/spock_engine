@@ -112,7 +112,7 @@ namespace spk {
         glBufferData(type, size, data, usage);
     }
 
-    void vertex_buffer_t::buffer_sub_data(size_t offset, size_t size, void* data) {
+    void vertex_buffer_t::buffer_sub_data(size_t offset, size_t size, void* data){
         bind();
         glBufferSubData(type, offset, size, data);
     }

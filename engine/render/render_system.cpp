@@ -45,9 +45,12 @@ namespace spk {
         // setup utilities
         quad_index_buffer.init(GL_ELEMENT_ARRAY_BUFFER);
         quad_index_buffer.generate_quad_indexes(1000);
+
+        copy_buffer.init(GL_ARRAY_BUFFER);
     }
 
     void render_system_t::free() {
+        copy_buffer.free();
         quad_index_buffer.free();
         render_passes.free();
         framebuffers.free();

@@ -29,6 +29,74 @@ void main() {
 })###";
 
 namespace spk {
+    void sprite_batch_mesh_t::init() {
+        m_init();
+        max_vertexes = 1024;
+
+        vertex_buffer.buffer_data(sizeof(sprite_vertex_t) * indexes_per_sprite * max_vertexes, nullptr, GL_DYNAMIC_DRAW);
+
+        for(auto& mesh : meshes)  {
+            mesh.mesh.resize(max_vertexes);
+        }       
+    }
+
+    void sprite_batch_mesh_t::free() {
+        m_free();
+    }
+    
+    void sprite_batch_mesh_t::add_sprite_mesh(comp_sprite_t& sprite, const glm::vec2& _1, const glm::vec2& _2, const glm::vec2& _3, const glm::vec2& _4) { 
+        if(sprite.atlas_id == UINT32_MAX)
+            return;
+        
+        resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
+        
+        const uint32_t atlas_id = sprite.atlas_id;
+        sprite_atlas_t* atlas = rsrc_mng->get_atlas(atlas_id);
+        uint32_t index = meshes[atlas_id].sprites * indexes_per_sprite;
+        std::array<glm::vec2, 4> tex_coords = atlas->gen_tex_coords(sprite.tax, sprite.tay);
+
+        meshes[atlas_id].sprites += 1;
+        resize_mesh_if_need(atlas_id);
+
+        meshes[atlas_id].mesh[index + 0] = {_1,  tex_coords[0]};
+        meshes[atlas_id].mesh[index + 1] = {_2,  tex_coords[1]};
+        meshes[atlas_id].mesh[index + 2] = {_3,  tex_coords[2]};
+        meshes[atlas_id].mesh[index + 3] = {_4,  tex_coords[3]};
+    }
+
+    void sprite_batch_mesh_t::add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset) {
+        add_sprite_mesh(sprite, 
+            spk::to_glm_vec2(body->GetWorldPoint((b2Vec2){-sprite.size.x, -sprite.size.y} + spk::to_box_vec2(offset))),
+            spk::to_glm_vec2(body->GetWorldPoint((b2Vec2){ sprite.size.x, -sprite.size.y} + spk::to_box_vec2(offset))),
+            spk::to_glm_vec2(body->GetWorldPoint((b2Vec2){ sprite.size.x,  sprite.size.y} + spk::to_box_vec2(offset))),
+            spk::to_glm_vec2(body->GetWorldPoint((b2Vec2){-sprite.size.x,  sprite.size.y} + spk::to_box_vec2(offset))));
+    }
+
+    void sprite_batch_mesh_t::resize_mesh_if_need(size_t atlas) {
+        size_t sprite_vertex_count = meshes[atlas].sprites * indexes_per_sprite;
+
+        if(sprite_vertex_count > meshes[atlas].mesh.size()) {
+            meshes[atlas].mesh.resize(sprite_vertex_count * 2);
+            log.log("%u | resize mesh: %u", sprite_vertex_count, meshes[atlas].mesh.size());
+        }
+    }
+
+    void sprite_batch_mesh_t::subdata(uint32_t atlas) {
+        size_t sprite_vertex_count = meshes[atlas].sprites * indexes_per_sprite;
+
+        if(sprite_vertex_count > max_vertexes) {
+            resize(sizeof(sprite_vertex_t), sprite_vertex_count * 2, meshes[atlas].mesh.data());
+            
+            max_vertexes = sprite_vertex_count * 2;
+            
+            log.log("%u | resize: %u", sprite_vertex_count, max_vertexes);
+
+            return;
+        }
+
+        vertex_buffer.buffer_sub_data(0, sprite_vertex_count * sizeof(sprite_vertex_t), meshes[atlas].mesh.data());
+    }
+
     void sprite_renderer_t::init() {
         b_init();
 
@@ -79,43 +147,4 @@ namespace spk {
 
     }
         
-    void sprite_batch_mesh_t::init() {
-        m_init();
-
-        vertex_buffer.buffer_data(sizeof(sprite_vertex_t) * indexes_per_sprite * 1024, nullptr, GL_DYNAMIC_DRAW);
-    }
-
-    void sprite_batch_mesh_t::free() {
-        m_free();
-    }
-    
-    void sprite_batch_mesh_t::add_sprite_mesh(comp_sprite_t& sprite, const glm::vec2& _1, const glm::vec2& _2, const glm::vec2& _3, const glm::vec2& _4) { 
-        if(sprite.atlas_id == UINT32_MAX)
-            return;
-        
-        resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
-        
-        const uint32_t atlas_id = sprite.atlas_id;
-        sprite_atlas_t* atlas = rsrc_mng->get_atlas(atlas_id);
-        uint32_t index = meshes[atlas_id].sprites * indexes_per_sprite;
-        std::array<glm::vec2, 4> tex_coords = atlas->gen_tex_coords(sprite.tax, sprite.tay);
-
-        meshes[atlas_id].mesh[index + 0] = {_1,  tex_coords[0]};
-        meshes[atlas_id].mesh[index + 1] = {_2,  tex_coords[1]};
-        meshes[atlas_id].mesh[index + 2] = {_3,  tex_coords[2]};
-        meshes[atlas_id].mesh[index + 3] = {_4,  tex_coords[3]};
-        meshes[atlas_id].sprites += 1;
-    }
-
-    void sprite_batch_mesh_t::add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset) {
-        add_sprite_mesh(sprite, 
-            spk::to_glm_vec2(body->GetWorldPoint((b2Vec2){-sprite.size.x, -sprite.size.y} + spk::to_box_vec2(offset))),
-            spk::to_glm_vec2(body->GetWorldPoint((b2Vec2){ sprite.size.x, -sprite.size.y} + spk::to_box_vec2(offset))),
-            spk::to_glm_vec2(body->GetWorldPoint((b2Vec2){ sprite.size.x,  sprite.size.y} + spk::to_box_vec2(offset))),
-            spk::to_glm_vec2(body->GetWorldPoint((b2Vec2){-sprite.size.x,  sprite.size.y} + spk::to_box_vec2(offset))));
-    }
-
-    void sprite_batch_mesh_t::subdata(uint32_t atlas) {
-        vertex_buffer.buffer_sub_data(0, meshes[atlas].sprites * indexes_per_sprite * sizeof(sprite_vertex_t), meshes[atlas].mesh.data());
-    }
 }

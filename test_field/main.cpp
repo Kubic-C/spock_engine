@@ -152,7 +152,7 @@ MAIN {
     }   
 
     auto start_ = [&]() -> void {
-        for(uint32_t i = 0; i < 10; i++) {
+        for(uint32_t i = 0; i < 100; i++) {
             test = engine.world.entity();
             test.set([&](spk::comp_particles_t& ps){
                 ps.flags |= spk::PARTICLES_FLAGS_WORLD_DIRECTION | 
@@ -163,7 +163,7 @@ MAIN {
                 ps.speed_step = -0.1f;
                 ps.base_speed = 10.0f;
                 ps.particle.id = 3;
-                ps.base_lifetime = 2.0f;
+                ps.base_lifetime = 1.0f;
                 ps.dir = {0.0f, 1.0f};
             });
             test.add<spk::comp_sprite_t>();

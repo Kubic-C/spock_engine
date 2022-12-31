@@ -25,6 +25,7 @@ namespace spk {
         static const size_t max_render_passes  = 8; 
 
         static_index_buffer_t quad_index_buffer;
+        vertex_buffer_t       copy_buffer;
 
         void init() override;
         void free() override;
