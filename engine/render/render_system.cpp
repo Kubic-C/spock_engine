@@ -44,7 +44,7 @@ namespace spk {
 
         // setup utilities
         quad_index_buffer.init(GL_ELEMENT_ARRAY_BUFFER);
-        quad_index_buffer.generate_quad_indexes(1000);
+        quad_index_buffer.generate_quad_indexes(100000);
 
         copy_buffer.init(GL_ARRAY_BUFFER);
     }

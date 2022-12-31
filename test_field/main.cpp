@@ -37,7 +37,6 @@ MAIN {
     SPK_DEBUG_ENABLE(spk::DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME);
 
     engine.init();
-    engine.set_target_tps(100);
 
     srand(1);
 
@@ -157,10 +156,10 @@ MAIN {
             test.set([&](spk::comp_particles_t& ps){
                 ps.flags |= spk::PARTICLES_FLAGS_WORLD_DIRECTION | 
                             spk::PARTICLES_FLAGS_WORLD_POSITION;
-                ps.funnel = spk::PARTICLES_FUNNEL_LINE;
+                ps.funnel = spk::PARTICLES_FUNNEL_FUNNEL;
                 ps.base_cycle = 0.1;
                 ps.max = 100;
-                ps.speed_step = -0.1f;
+                ps.speed_step = 0.01f;
                 ps.base_speed = 10.0f;
                 ps.particle.id = 3;
                 ps.base_lifetime = 1.0f;
@@ -283,7 +282,7 @@ MAIN {
                     
                     b2Vec2 dir = spk::to_box_vec2(mouse_click) - position;
                     dir.Normalize();
-                    dir *= 2000.0f;
+                    dir *= 20000.0f;
 
                     body.body->ApplyForceToCenter(dir, true);
                     body.body->SetAwake(true);
@@ -293,6 +292,13 @@ MAIN {
 
     engine.user_state.tick = 
         [&](spk::engine_t& engine){
+            auto stats_ = engine.get_stats();
+            stats->text.set(std::string("stats: FPS: ") + 
+                            std::to_string(stats_.fps) + " | TPS: " + 
+                            std::to_string(stats_.tps) + " | DT: " +
+                            std::to_string(stats_.average_delta_time) + " | FT: " +
+                            std::to_string(stats_.frame_time), 0.5f, {1.0f, 1.0f, 1.0f});
+
             switch(my_state) {
             case STATE_LOAD:
                 play_btn->flags &= ~spk::UI_ELEMENT_FLAGS_ENABLED;
@@ -303,14 +309,10 @@ MAIN {
                 my_state = STATE_PLAY;
                 
                 spk::log.log("loading state");
+                engine.set_target_fps(1000);
                 break;
 
             case STATE_PLAY: {
-                auto stats_ = engine.get_stats();
-                stats->text.set(std::string("stats: FPS: ") + 
-                                std::to_string(stats_.fps) + " | TPS: " + 
-                                std::to_string(stats_.tps) + " | DT: " +
-                                std::to_string(stats_.average_delta_time), 0.5f, {1.0f, 1.0f, 1.0f});
 
                 test.set([&](spk::comp_tilebody_t& body, spk::comp_particles_t& particles) {
                     glm::vec2 velocity = spk::to_glm_vec2(body.body->GetLinearVelocity());
@@ -340,6 +342,7 @@ MAIN {
             } break;
 
             case STATE_EXIT_PLAY:
+                engine.set_target_fps(60);
                 play_btn->flags |= spk::UI_ELEMENT_FLAGS_ENABLED;
                 exit_btn->flags |= spk::UI_ELEMENT_FLAGS_ENABLED;
                 exit_play_btn->flags &= ~spk::UI_ELEMENT_FLAGS_ENABLED;

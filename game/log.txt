@@ -1,32 +1,66 @@
-|SPOCK: 0.000687> [32m INFO [0m info_logger_init
-|SPOCK: 0.022329> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
-|SPOCK: 0.026970> [32m INFO [0m current render pipeline changed to: (id)541
-|SPOCK: 0.027767> [32m INFO [0m current game pipeline changed to: (id)548
-|SPOCK: 0.028121> [32m INFO [0m current event system changed to: (id)555
-|SPOCK: 0.501831> [32m INFO [0m current window changed to: (id)572
-|SPOCK: 0.504203> [32m INFO [0m current box2D world changed to: (id)573
-|SPOCK: 0.504910> [32m INFO [0m current camera changed to: (id)577
-|SPOCK: 0.507112> [32m INFO [0m current renderer changed to: 000001e821ba9050
-|SPOCK: 0.516219> [32m INFO [0m current canvas changed to: (id)616
-|SPOCK: 0.516488> [32m INFO [0m SDL Version 3.0.0
-|SPOCK: 0.516637> [32m INFO [0m OGL Version 4.3.14761 Core Profile/Debug Context 21.30.02 30.0.13002.23
-|SPOCK: 0.516773> [32m INFO [0m target tps changed to: 100.000000
-|SPOCK: 0.516896> [32m INFO [0m [1m[31m this text is red and emphasized [0m 
-|SPOCK: 0.517009> [32m INFO [0m [3m[34m this text is italic and blue [0m
-|SPOCK: 0.517137> [32m INFO [0m [1m #===# [0m <- this is a recursive rule -> [1m #===# [0m
-|SPOCK: 0.517337> [32m INFO [0m target fps changed to: 10000.000000
-|SPOCK: 0.517453> [32m INFO [0m current VSYNC setting changed to: VSYNC_DISABLED
-|SPOCK: 0.563835> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
-|SPOCK: 22.172107> [32m INFO [0m loading state
-|SPOCK: 22.213431> [32m INFO [0m 1028 | resize mesh: 2056
-|SPOCK: 22.214178> [32m INFO [0m 1212 | resize: 2424
-|SPOCK: 22.283832> [32m INFO [0m 2060 | resize mesh: 4120
-|SPOCK: 22.403845> [32m INFO [0m 3636 | resize: 7272
-|SPOCK: 22.522475> [32m INFO [0m 4124 | resize mesh: 8248
-|SPOCK: 22.853197> [32m INFO [0m 8252 | resize mesh: 16504
-|SPOCK: 22.854261> [32m INFO [0m 8484 | resize: 16968
-|SPOCK: 71.870354> [32m INFO [0m ending sim
-|SPOCK: 71.870609> [32m INFO [0m exiting play
-|SPOCK: 71.971231> [32m INFO [0m exiting app
-|SPOCK: 71.973780> [32m INFO [0m exiting with code; 0
-|SPOCK: 71.973996> [32m INFO [0m [1m #===# [0m[31m ENGINE FREE [0m[1m #===# [0m
+|SPOCK: 0.000726> [32m INFO [0m info_logger_init
+|SPOCK: 0.030645> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
+|SPOCK: 0.037886> [32m INFO [0m current render pipeline changed to: (id)541
+|SPOCK: 0.038736> [32m INFO [0m current game pipeline changed to: (id)548
+|SPOCK: 0.039003> [32m INFO [0m current event system changed to: (id)555
+|SPOCK: 0.530331> [32m INFO [0m current window changed to: (id)572
+|SPOCK: 0.534033> [32m INFO [0m current box2D world changed to: (id)573
+|SPOCK: 0.534623> [32m INFO [0m current camera changed to: (id)577
+|SPOCK: 0.539842> [32m INFO [0m current renderer changed to: 0000018d53469050
+|SPOCK: 0.549910> [32m INFO [0m current canvas changed to: (id)616
+|SPOCK: 0.550187> [32m INFO [0m SDL Version 3.0.0
+|SPOCK: 0.550404> [32m INFO [0m OGL Version 4.3.14761 Core Profile/Debug Context 21.30.02 30.0.13002.23
+|SPOCK: 0.550620> [32m INFO [0m [1m[31m this text is red and emphasized [0m 
+|SPOCK: 0.550832> [32m INFO [0m [3m[34m this text is italic and blue [0m
+|SPOCK: 0.550988> [32m INFO [0m [1m #===# [0m <- this is a recursive rule -> [1m #===# [0m
+|SPOCK: 0.551197> [32m INFO [0m target fps changed to: 10000.000000
+|SPOCK: 0.551338> [32m INFO [0m current VSYNC setting changed to: VSYNC_DISABLED
+|SPOCK: 0.596939> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
+|SPOCK: 1.053086> [32m INFO [0m loading state
+|SPOCK: 1.053310> [32m INFO [0m target fps changed to: 1000.000000
+|SPOCK: 11.184272> [32m INFO [0m target fps changed to: 60.000000
+|SPOCK: 11.184475> [32m INFO [0m ending sim
+|SPOCK: 11.184716> [32m INFO [0m exiting play
+|SPOCK: 11.386498> [32m INFO [0m loading state
+|SPOCK: 11.386692> [32m INFO [0m target fps changed to: 1000.000000
+|SPOCK: 13.033347> [32m INFO [0m target fps changed to: 60.000000
+|SPOCK: 13.033542> [32m INFO [0m ending sim
+|SPOCK: 13.033702> [32m INFO [0m exiting play
+|SPOCK: 13.218407> [32m INFO [0m loading state
+|SPOCK: 13.218604> [32m INFO [0m target fps changed to: 1000.000000
+|SPOCK: 14.067232> [32m INFO [0m target fps changed to: 60.000000
+|SPOCK: 14.067473> [32m INFO [0m ending sim
+|SPOCK: 14.067718> [32m INFO [0m exiting play
+|SPOCK: 14.219865> [32m INFO [0m loading state
+|SPOCK: 14.220117> [32m INFO [0m target fps changed to: 1000.000000
+|SPOCK: 14.667079> [32m INFO [0m target fps changed to: 60.000000
+|SPOCK: 14.667428> [32m INFO [0m ending sim
+|SPOCK: 14.667676> [32m INFO [0m exiting play
+|SPOCK: 14.869813> [32m INFO [0m loading state
+|SPOCK: 14.870002> [32m INFO [0m target fps changed to: 1000.000000
+|SPOCK: 15.169220> [32m INFO [0m target fps changed to: 60.000000
+|SPOCK: 15.169458> [32m INFO [0m ending sim
+|SPOCK: 15.169594> [32m INFO [0m exiting play
+|SPOCK: 15.501950> [32m INFO [0m loading state
+|SPOCK: 15.502258> [32m INFO [0m target fps changed to: 1000.000000
+|SPOCK: 16.011007> [32m INFO [0m target fps changed to: 60.000000
+|SPOCK: 16.011221> [32m INFO [0m ending sim
+|SPOCK: 16.011645> [32m INFO [0m exiting play
+|SPOCK: 16.377016> [32m INFO [0m loading state
+|SPOCK: 16.377225> [32m INFO [0m target fps changed to: 1000.000000
+|SPOCK: 16.987711> [32m INFO [0m target fps changed to: 60.000000
+|SPOCK: 16.988002> [32m INFO [0m ending sim
+|SPOCK: 16.988250> [32m INFO [0m exiting play
+|SPOCK: 17.886667> [32m INFO [0m loading state
+|SPOCK: 17.886882> [32m INFO [0m target fps changed to: 1000.000000
+|SPOCK: 199.333345> [32m INFO [0m target fps changed to: 60.000000
+|SPOCK: 199.333695> [32m INFO [0m ending sim
+|SPOCK: 199.333951> [32m INFO [0m exiting play
+|SPOCK: 204.251609> [32m INFO [0m loading state
+|SPOCK: 204.251826> [32m INFO [0m target fps changed to: 1000.000000
+|SPOCK: 212.167219> [32m INFO [0m target fps changed to: 60.000000
+|SPOCK: 212.167508> [32m INFO [0m ending sim
+|SPOCK: 212.167767> [32m INFO [0m exiting play
+|SPOCK: 212.284082> [32m INFO [0m exiting app
+|SPOCK: 212.291988> [32m INFO [0m exiting with code; 0
+|SPOCK: 212.292193> [32m INFO [0m [1m #===# [0m[31m ENGINE FREE [0m[1m #===# [0m

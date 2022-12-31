@@ -81,9 +81,10 @@ namespace spk {
         double frame_time = 0.0;
         double delta_time = 0.0;
 
-        double ticks_to_do = 0.0;
-        double last_frame = 0.0;
-        double last_tick = 0.0;
+        double ticks_to_do  = 0.0;
+        double last_frame   = 0.0;
+        double last_tick    = 0.0;
+        double frames_to_do = 0.0;
 
         // render pipeline contains Window events 
         world.run_pipeline(state.get_current_render_pipeline(), frame_time);
@@ -92,14 +93,6 @@ namespace spk {
         while(!state.is_exit()) {
             double current_frame = spk::time.get_time();
             frame_time = current_frame - last_frame;
-
-            // frame_time is (basically) how often a render occurs
-            // determing the amount of ticks is simple.
-            // if the ticks per seconds is 60, and if the frame_time is 0.1, 
-            // 60 * 0.1 is 6 ticks. because the amount of ticks that can
-            // occur in 0.1 seconds is 6. Math proof: ~0.0166 * 6 = 0.1,
-            // 1 / 60, 1 repersents the time in seconds, and 60 is the amount of ticks.
-            // 1 / 60 repersents in seconds the amount of one tick which is ~0.0166
             ticks_to_do += frame_time * state.get_target_tps(false);
             last_frame = current_frame;
 
@@ -120,11 +113,21 @@ namespace spk {
                 world.frame_end();
             }
 
-            // one update
-            if(user_state.update)
-                user_state.update(*this);
+            // when there is tps lag, frame_time will be longer as well
+            // in doing so, frames_to_do will also be longer.
+            // We dont need to render more than once per tick reasonably,
+            // so we only render once when frames_to_do exceeds 1.0
+            // even though it may be more then 2.0 (telling us to render two or more times)
+            frames_to_do += frame_time * state.get_target_fps(false);
+            if(frames_to_do >= 1.0f) {
+                frames_to_do = 0.0f;
 
-            world.run_pipeline(state.get_current_render_pipeline(), frame_time);
+                if(user_state.update)
+                    user_state.update(*this);
+
+                world.run_pipeline(state.get_current_render_pipeline(), frame_time);
+                stats.frame_time = frame_time;
+            }
 
             // exit conditions:
             if(world.should_quit())

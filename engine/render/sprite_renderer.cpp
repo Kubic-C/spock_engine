@@ -77,7 +77,6 @@ namespace spk {
 
         if(sprite_vertex_count > meshes[atlas].mesh.size()) {
             meshes[atlas].mesh.resize(sprite_vertex_count * 2);
-            log.log("%u | resize mesh: %u", sprite_vertex_count, meshes[atlas].mesh.size());
         }
     }
 
@@ -85,13 +84,10 @@ namespace spk {
         size_t sprite_vertex_count = meshes[atlas].sprites * indexes_per_sprite;
 
         if(sprite_vertex_count > max_vertexes) {
-            resize(sizeof(sprite_vertex_t), sprite_vertex_count * 2, meshes[atlas].mesh.data());
+            resize(sizeof(sprite_vertex_t), sprite_vertex_count * 2, 0);
             
             max_vertexes = sprite_vertex_count * 2;
             
-            log.log("%u | resize: %u", sprite_vertex_count, max_vertexes);
-
-            return;
         }
 
         vertex_buffer.buffer_sub_data(0, sprite_vertex_count * sizeof(sprite_vertex_t), meshes[atlas].mesh.data());
