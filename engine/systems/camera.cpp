@@ -12,20 +12,12 @@ namespace spk {
         camera->recalculate();
     }
 
-    void camera_system(flecs::iter& iter, comp_camera_t* cameras) {
-        for(auto i : iter) {
-
-        }
-    }
-
     void camera_cs_init(system_ctx_allocater_t& allocater, flecs::world& world) {
         camera_comp_init(world);
         
         auto ctx = allocater.allocate_ctx<camera_system_ctx_t>();
-        flecs::entity camera = world.entity().add<comp_camera_t>().add<tag_current_camera_t>(); // the default camera
 
-        world.system<comp_camera_t>().kind(flecs::PreUpdate).interval(state.get_target_fps())
-            .iter(camera_system);
+        world.entity().add<comp_camera_t>().add<tag_current_camera_t>(); // the default camera
 
         world.observer().term<tag_events_t>().event<event_window_size_t>().ctx(ctx)
             .iter(camera_resize);

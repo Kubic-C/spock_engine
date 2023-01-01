@@ -24,6 +24,7 @@ namespace spk {
     class primitive_renderer_t : public base_renderer_t {
     public:
         void init() override;
+        void draw() override;
         void free() override;
 
         void render_box(glm::mat4& vp, static_index_buffer_t& ind, comp_body_prim_t* info, const comp_box_t* box);

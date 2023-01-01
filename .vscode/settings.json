@@ -103,6 +103,8 @@
         "format": "cpp",
         "xlocbuf": "cpp",
         "xloctime": "cpp",
-        "shared_mutex": "cpp"
+        "shared_mutex": "cpp",
+        "xlocmes": "cpp",
+        "xlocmon": "cpp"
     }
 }

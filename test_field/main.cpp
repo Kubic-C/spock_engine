@@ -23,14 +23,13 @@ void exit_play_game(spk::engine_t& engine, spk::ui_button_t& button) {
 MAIN {
     int exit_code = 0;
     spk::engine_t engine;
-    flecs::entity e;
     flecs::entity canvas_e;
     spk::ui_button_t* exit_btn;
     spk::ui_button_t* play_btn;
     spk::ui_button_t* exit_play_btn;
     spk::ui_text_t* stats;
     current_state_e my_state;
-    flecs::entity test, bottom;
+    flecs::entity test, player;
     flecs::entity cam1, cam2;
 
     SPK_DEBUG_ENABLE(spk::DEBUG_FLAGS_ENABLE_STATE_CHANGE);
@@ -66,7 +65,7 @@ MAIN {
         engine.set_current_window_size(700, 700);
 
         b2World* world = engine.get_current_b2World();
-        world->SetGravity(b2Vec2(0.0f, -0.0f));
+        world->SetGravity(b2Vec2(0, 0));
     }
 
     // resource management 
@@ -142,96 +141,54 @@ MAIN {
         spk::tile_dictionary_t& td = engine.rsrc_mng.get_tile_dictionary();
         
         td[1].sprite.tax = 0;
+        td[1].restitution = 1.1f;
+        td[1].friction = 0.0f;
 
         td[2].sprite.tax = 2;
-        td[2].density = 5.0f;
+        td[2].density = 50.0f;
+        td[2].friction = 1000.0f;
+        td[2].restitution = 0.0f;
+
+        td[4].sprite.tax    = 4;
+        td[4].default_flags = 0;
 
         td[3].sprite.atlas_id = 1;
         td[3].sprite.tax = 0;
     }   
 
     auto start_ = [&]() -> void {
-        for(uint32_t i = 0; i < 100; i++) {
-            test = engine.world.entity();
-            test.set([&](spk::comp_particles_t& ps){
-                ps.flags |= spk::PARTICLES_FLAGS_WORLD_DIRECTION | 
-                            spk::PARTICLES_FLAGS_WORLD_POSITION;
-                ps.funnel = spk::PARTICLES_FUNNEL_FUNNEL;
-                ps.base_cycle = 0.1;
-                ps.max = 100;
-                ps.speed_step = 0.01f;
-                ps.base_speed = 10.0f;
-                ps.particle.id = 3;
-                ps.base_lifetime = 1.0f;
-                ps.dir = {0.0f, 1.0f};
-            });
-            test.add<spk::comp_sprite_t>();
-            test.set([&](spk::comp_b2Body_t& body){
-                b2World* world = engine.get_current_b2World();
-
-                b2BodyDef body_def;
-                body_def.type = b2_dynamicBody;
-                body_def.position = { 10.0f, 0.0f };
-                body.body = world->CreateBody(&body_def);
-
-                b2PolygonShape shape;
-                shape.SetAsBox(SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE);
-
-                b2FixtureDef fix_def;
-                fix_def.shape = & shape;
-                fix_def.density = 1.0f;
-                body.body->CreateFixture(&fix_def);
-            });
-        }
+        player = engine.world.entity();
+        player.set([&](spk::comp_sprite_t& sprite){
+            sprite.tax = 4;
+        });
 
         test = engine.world.entity();
         test.add<spk::comp_body_prim_t>();
         test.set([&](spk::comp_particles_t& ps){
-            ps.flags |= spk::PARTICLES_FLAGS_WORLD_DIRECTION | 
-                        spk::PARTICLES_FLAGS_WORLD_POSITION;
-            ps.funnel = spk::PARTICLES_FUNNEL_LINE;
-            ps.base_cycle = 0.1;
-            ps.max = UINT32_MAX;
-            ps.particle.id = 3;
-            ps.base_lifetime = 1.0f;
+            ps.base_speed = 100.0f;
+            ps.dir = {1.0f, 0.0f};
         });
         test.set([&](spk::comp_tilebody_t& comp){
-            uint32_t id = (rand() % 2) + 1;
-
-            comp.tilemap.tiles =
-                { std::vector<spk::tile_t>({0, 0, 0, 0, 2, 0, 0, 0, 0, 0}), 
-                    std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 0}),  
-                    std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 0}), 
-                    std::vector<spk::tile_t>({0, 0, 0, 1, 1, 1, 0, 0, 0, 0}), 
-                    std::vector<spk::tile_t>({2, 1, 1, 1, 1, 1, 1, 1, 2, 0}), 
-                    std::vector<spk::tile_t>({0, 0, 0, 1, 1, 1, 0, 0, 0, 0}),
-                    std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 0}),
-                    std::vector<spk::tile_t>({0, 0, 0, 0, 1, 0, 0, 0, 0, 0}), 
-                    std::vector<spk::tile_t>({0, 0, 0, 0, 2, 0, 0, 0, 0, 0}), 
-                    std::vector<spk::tile_t>({0, 0, 0, 0, 0, 0, 0, 0, 0, 0}), 
-                };
-
-            comp.add_fixtures();
-            comp.body->SetType(b2_dynamicBody);
-            comp.body->SetTransform(b2Vec2(0.0f, 0.0f), 0.0f);
-            comp.body->SetBullet(true);   
-        });
-
-        bottom = engine.world.entity();
-        bottom.set([&](spk::comp_tilebody_t& comp){
             for(uint32_t x = 0; x < comp.tilemap.size.x; x++) {
-                comp.tilemap.tiles[x][0].id = (rand() % 2) + 1;
+                for(uint32_t y = 0; y < comp.tilemap.size.y; y++) {
+                    if(x != 0 && x != (comp.tilemap.size.x - 1) &&
+                       y != 0 && y != (comp.tilemap.size.y - 1)) {
+                        comp.tilemap.tiles[x][y].id = 4;
+                    } else {
+                        comp.tilemap.tiles[x][y].id = 2;
+                    }
+                }
             }
 
+            //comp.body->SetType(b2_dynamicBody);
             comp.add_fixtures();
-            comp.body->SetTransform(b2Vec2(0.0f, -10.0f), 0.0f);
         });
     };
 
     auto end_ = [&](){
         spk::log.log("ending sim");
         test.destruct();
-        bottom.destruct();
+        player.destruct();
     };
 
     engine.world.observer().event<spk::event_keyboard_t>().term<spk::tag_events_t>()
@@ -297,7 +254,9 @@ MAIN {
                             std::to_string(stats_.fps) + " | TPS: " + 
                             std::to_string(stats_.tps) + " | DT: " +
                             std::to_string(stats_.average_delta_time) + " | FT: " +
-                            std::to_string(stats_.frame_time), 0.5f, {1.0f, 1.0f, 1.0f});
+                            std::to_string(stats_.frame_time) + " | Physics bodies: " +
+                            std::to_string(engine.world.count<spk::comp_b2Body_t>() + 
+                                           engine.world.count<spk::comp_tilebody_t>()), 0.4f, {1.0f, 1.0f, 1.0f});
 
             switch(my_state) {
             case STATE_LOAD:
@@ -313,29 +272,33 @@ MAIN {
                 break;
 
             case STATE_PLAY: {
-
-                test.set([&](spk::comp_tilebody_t& body, spk::comp_particles_t& particles) {
-                    glm::vec2 velocity = spk::to_glm_vec2(body.body->GetLinearVelocity());
-                    glm::vec2 dir = glm::normalize(-velocity);
-                    particles.dir = dir;
-                    particles.base_speed = glm::length(velocity);
-                });
-
                 auto cam = engine.get_current_camera();
-                float speed = 1.0f;
+                float speed = 10.0f;
 
-                if(engine.is_pressed(SDL_SCANCODE_A)) {
-                    cam->pos.x += speed;                     
-                }
-                if(engine.is_pressed(SDL_SCANCODE_D)) {
-                    cam->pos.x -= speed;
-                } 
-                if(engine.is_pressed(SDL_SCANCODE_S)) {
-                    cam->pos.y += speed;
-                }
-                if(engine.is_pressed(SDL_SCANCODE_W)) {
-                    cam->pos.y -= speed;
-                }
+                // test.set([&](spk::comp_tilebody_t& body, spk::comp_particles_t& particles) {
+                //     glm::vec2 velocity = spk::to_glm_vec2(body.body->GetLinearVelocity());
+                //     glm::vec2 dir = glm::normalize(-velocity);
+                //     particles.dir = dir;
+                //     particles.base_speed = glm::length(velocity);
+
+                //     cam->pos = -spk::to_glm_vec2(body.body->GetPosition());
+                // });
+
+                // if(engine.is_pressed(SDL_SCANCODE_A)) {
+                //     cam->pos.x += speed;                     
+                // }
+                // if(engine.is_pressed(SDL_SCANCODE_D)) {
+                //     cam->pos.x -= speed;
+                // } 
+                // if(engine.is_pressed(SDL_SCANCODE_S)) {
+                //     cam->pos.y += speed;
+                // }
+                // if(engine.is_pressed(SDL_SCANCODE_W)) {
+                //     cam->pos.y -= speed;
+                // }
+                // if(engine.is_pressed(SDL_SCANCODE_R)) {
+                //     cam->pos = {0.0f, 0.0f};
+                // }
 
                 cam->recalculate();
                 

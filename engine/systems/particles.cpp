@@ -24,7 +24,8 @@ namespace spk {
         if(!(ps.flags & PARTICLES_FLAGS_ACTIVE))
             return;
 
-        /* now just a thought (JUST A THOUGHT), what if every particle was a entity*/
+        /* now just a thought (JUST A THOUGHT), what if every particle was a entity and collidable?
+            may be a todo in the future */
 
         // update the lifetime of every particle, remove those outdated
         bool erase = false;
@@ -126,18 +127,6 @@ namespace spk {
         }
     }
 
-    void particles_system_tick(flecs::iter& iter, comp_b2Body_t* bodies, comp_particles_t* particles) {
-        for(auto i : iter) {
-            process_particle_system(bodies[i].body, stats.delta_time, particles[i]);
-        }
-    }
-
-    void particles_system_tile_body_tick(flecs::iter& iter, comp_tilebody_t* bodies, comp_particles_t* particles) {
-        for(auto i : iter) {
-            process_particle_system(bodies[i].body, stats.delta_time, particles[i]);
-        }
-    }
-
     void add_particles(sprite_batch_mesh_t* ctx, b2Body* body, comp_particles_t& ps) {
         tile_metadata_t& tmd = state.engine->rsrc_mng.get_tile_dictionary()[ps.particle.id];
        
@@ -161,16 +150,13 @@ namespace spk {
         }         
     }
 
-    void particles_system_update(flecs::iter& iter, comp_b2Body_t* bodies, comp_particles_t* particles) {
-        auto ctx = SPK_GET_CTX(iter, sprite_batch_mesh_t);
-
+    void particles_system_tick(flecs::iter& iter, comp_b2Body_t* bodies, comp_particles_t* particles) {
         for(auto i : iter) {
-            add_particles(ctx, bodies[i].body, particles[i]);            
+            process_particle_system(bodies[i].body, stats.delta_time, particles[i]);
         }
     }
 
-
-    void particles_system_tilebody_update(flecs::iter& iter, comp_tilebody_t* bodies, comp_particles_t* particles) {
+    void particles_system_update(flecs::iter& iter, comp_b2Body_t* bodies, comp_particles_t* particles) {
         auto ctx = SPK_GET_CTX(iter, sprite_batch_mesh_t);
 
         for(auto i : iter) {
@@ -182,11 +168,6 @@ namespace spk {
         particles_comp_init(world);
 
         world.system<comp_b2Body_t, comp_particles_t>().iter(particles_system_tick);
-        world.system<comp_tilebody_t, comp_particles_t>().iter(particles_system_tile_body_tick);
-
-        world.system<comp_b2Body_t, comp_particles_t>()
-            .kind(on_mesh).ctx(ctx).iter(particles_system_update);  
-        world.system<comp_tilebody_t, comp_particles_t>()
-            .kind(on_mesh).ctx(ctx).iter(particles_system_tilebody_update);  
+        world.system<comp_b2Body_t, comp_particles_t>().kind(on_mesh).ctx(ctx).iter(particles_system_update);  
     } 
 }

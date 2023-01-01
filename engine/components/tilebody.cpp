@@ -24,21 +24,26 @@ namespace spk {
     void comp_tilebody_t::add_fixtures() {
         auto& dictionary = state.engine->rsrc_mng.get_tile_dictionary();
 
-        tilemap.find_colliding_tiles();
+        tilemap.compute_colliders();
 
         for(auto& tile_collider : tilemap.colliding_tiles) {
-            auto& tile = tilemap.tiles[tile_collider.index.x][tile_collider.index.y];
-
             b2FixtureDef def;
-            def.density = dictionary[tile.id].density;
-            def.friction = dictionary[tile.id].friction;
-            def.restitution = dictionary[tile.id].restitution;
-            def.shape = &tile_collider.shape;
+            def.density     = dictionary[tile_collider.id].density;
+            def.friction    = dictionary[tile_collider.id].friction;
+            def.restitution = dictionary[tile_collider.id].restitution;
+            def.shape       = &tile_collider.shape;
             body->CreateFixture(&def);
         }
+
+        b2MassData md;
+        md.center = to_box_vec2(tilemap.center);
+        md.mass   = tilemap.mass;
+        md.I      = 0.0f;
+
+        body->SetMassData(&md);
     }
 
     void tile_comp_init(flecs::world& world) {
-        spk_register_component(world, comp_tilebody_t);
+        spk_register_component(world, comp_tilebody_t).is_a<comp_b2Body_t>();
     }
 }

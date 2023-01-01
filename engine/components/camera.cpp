@@ -27,8 +27,8 @@ namespace spk {
         // 1/2 of the world size to correctly offset the qoutient. 
         // Simply put we are doing the reverse of VP
         glm::vec2 world_coords = 
-            { (screen_coords.x - size.x / 2.0f - pos.x), 
-              (        world_y - size.y / 2.0f - pos.y)};
+            { (screen_coords.x - size.x / 2.0f - (pos.x * state.get_ppm() * scale)), 
+              (        world_y - size.y / 2.0f - (pos.y * state.get_ppm() * scale))};
  
         return world_coords / (state.get_ppm() * scale);
     }
@@ -38,7 +38,7 @@ namespace spk {
         float half_height = (float)size.y / 2;
         
         view = glm::identity<glm::mat4>();
-        view = glm::translate(view, glm::vec3(pos, z));
+        view = glm::translate(view, glm::vec3(pos * state.get_ppm() * scale, z));
         view = glm::scale(view, glm::vec3(state.get_ppm() * scale));
  
         proj = glm::ortho(-half_width, 

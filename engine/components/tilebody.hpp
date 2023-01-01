@@ -2,11 +2,11 @@
 
 #include "data/tilemap.hpp"
 #include "debug.hpp"
+#include "box2D.hpp"
 
 namespace spk {
-    struct comp_tilebody_t {
+    struct comp_tilebody_t : public comp_b2Body_t {
         tilemap_t tilemap;
-        b2Body* body;
 
         void init();
         void free();

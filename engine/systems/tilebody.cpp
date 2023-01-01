@@ -4,12 +4,15 @@
 #include "spock.hpp"
 
 namespace spk {
-    void sprite_render_system_tilebody_update(flecs::iter& iter, comp_tilebody_t* tilebodies) {
+    void sprite_render_system_tilebody_mesh(flecs::iter& iter, comp_tilebody_t* tilebodies) {
         auto ctx = SPK_GET_CTX(iter, sprite_batch_mesh_t);
         resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
 
         for(auto i : iter) {
             comp_tilebody_t& tilebody = tilebodies[i];
+
+            spk_assert(tilebody.tilemap.tiles.size() == tilebody.tilemap.size.x &&
+                       tilebody.tilemap.tiles[0].size() == tilebody.tilemap.size.y);
 
             for(uint32_t x = 0; x < tilebody.tilemap.size.x; x++) {
                 for(uint32_t y = 0; y < tilebody.tilemap.size.y; y++) {
@@ -22,11 +25,12 @@ namespace spk {
                 }
             }
         }
+
     }
 
     void _tilebody_cs_init(sprite_batch_mesh_t* ctx, flecs::world& world) {
         tile_comp_init(world);
 
-        world.system<comp_tilebody_t>().kind(on_mesh).ctx(ctx).iter(sprite_render_system_tilebody_update);
+        world.system<comp_tilebody_t>().kind(on_mesh).ctx(ctx).iter(sprite_render_system_tilebody_mesh);
     }
 }

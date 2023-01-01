@@ -1,5 +1,6 @@
 #include "primitive_renderer.hpp"
 #include "state.hpp"
+#include "spock.hpp"
 #include <glm/gtx/rotate_vector.hpp> 
 
 const char* vs_colliders = R"###(
@@ -112,13 +113,12 @@ namespace spk {
     void primitive_renderer_t::render_edge(glm::mat4& vp, comp_body_prim_t* ri, b2Body* body, b2EdgeShape* edge) {
         uint32_t vertices = 2;
 
-        mesh[0] = { spk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex0)) };
-        mesh[1] = { spk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex1)) };
+        mesh[0] = { spk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex1)) };
+        mesh[1] = { spk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex2)) };
     
         vertex_buffer.buffer_sub_data(0, vertices * sizeof(prim_vertex_t), mesh.data());
         vertex_array.bind();
 
-        program.set_vec3("color", ri->color);
         draw_buffer(ri->color, vp, vertices);
     }
 
@@ -134,6 +134,13 @@ namespace spk {
         spk_assert(ret && "primitive render shaders invalid");
     
         mesh.resize(100 * 3);
+    }
+
+    void primitive_renderer_t::draw() {
+        auto world = state.engine->get_current_b2World();
+
+        // should probably add this but im lazzzyy
+        world->DebugDraw();
     }
 
     void primitive_renderer_t::free() {

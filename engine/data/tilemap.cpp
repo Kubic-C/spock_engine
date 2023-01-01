@@ -1,10 +1,11 @@
 #include "tilemap.hpp"
-
+#include "state.hpp"
+#include "spock.hpp"
 
 namespace spk {
     void tilemap_t::init() {
-        size.x = 10;
-        size.y = 10;
+        size.x = 100;
+        size.y = 100;
 
         tiles.resize(size.x);
         for(uint32_t i = 0; i < size.y; i++) {
@@ -22,69 +23,88 @@ namespace spk {
     void tilemap_t::free() {
 
     }
-
-    void tilemap_t::iterate_colliadable(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
+    
+    void tilemap_t::iterate_map(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
         for(uint32_t x = 0; x < size.x; x++) {
             for(uint32_t y = 0; y < size.y; y++) {
-                if(tile_is_colliadable(x, y)) {
-                    clbk(x, y);
-                }
+                clbk(x, y);
             }
         }
     }
 
-    bool tilemap_t::tile_is_colliadable(uint32_t x, uint32_t y) {
+    void tilemap_t::iterate_colliadable(std::function<void(uint32_t x, uint32_t y, tile_is_coll_info_t&)>&& clbk) {
+        iterate_map([&](uint32_t x, uint32_t y) {
+            tile_is_coll_info_t tile_info = tile_is_colliadable(x, y);
+            
+            if(tile_info.is_colliadable()) {
+                clbk(x, y, tile_info);
+            }
+         });
+    }
+    
+    void tilemap_t::iterate_non_zero(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
+        iterate_map([&](uint32_t x, uint32_t y) {
+            if(!is_tile_empty(tiles[x][y])) {
+                clbk(x, y);
+            }
+        });
+    }
+
+    tile_is_coll_info_t tilemap_t::tile_is_colliadable(uint32_t x, uint32_t y) {
+        tile_is_coll_info_t info;
+
         if(spk::is_tile_empty(tiles[x][y])) // if its empty it can't collide
-            return false;
+            return info;
 
         // check left tile
         if(x - 1 != UINT32_MAX) {
             if(spk::is_tile_empty(tiles[x - 1][y])) {
-                return true;
+                info.left = true;
             }
         } else { // edge tiles are colliadable
-            return true;
+            info.left = true;
         }
 
         // check right tile
         if(x + 1 != size.x) {
             if(spk::is_tile_empty(tiles[x + 1][y])) {
-                return true;
+                info.right = true;
             }
         } else { // edge tiles are colliadable
-            return true;
+            info.right = true;
         }
 
         // check top tiles
         if(y - 1 != UINT32_MAX) {
             if(spk::is_tile_empty(tiles[x][y - 1])) {
-                return true;
+                info.top = true;
             }
         } else { // edge tiles are colliadable
-            return true;
+            info.top = true;
         }
 
         // check bottom tiles
         if(y + 1 != size.y) {
             if(spk::is_tile_empty(tiles[x][y + 1])) {
-                return true;
+                info.bottom = true;
             }
         } else { // edge tiles are colliadable
-            return true;
+            info.bottom = true;
         }
 
-        return false;
+        return info;
     }
 
-    void tilemap_t::find_colliding_tiles() {
+    
+    void tilemap_t::compute_colliders() {
         float half_width = (float)size.x;
         float half_height = (float)size.y / 2.0f;
 
-        find_center();
+        compute_centroid();
         colliding_tiles.clear();
 
-        iterate_colliadable([&](uint32_t x, uint32_t y){
-            colliding_tiles.push_back((tile_collider_t){.index = {x, y}});
+        iterate_colliadable([&](uint32_t x, uint32_t y, tile_is_coll_info_t& info){
+            colliding_tiles.push_back((tile_collider_t){.id = tiles[x][y].id});
             auto& shape = colliding_tiles.back().shape;
 
             shape.SetAsBox(SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE);
@@ -93,15 +113,25 @@ namespace spk {
             shape.m_vertices[2] += (b2Vec2){(float)x, (float)y} - spk::to_box_vec2(center);
             shape.m_vertices[3] += (b2Vec2){(float)x, (float)y} - spk::to_box_vec2(center);
         });
+
+        iterate_non_zero([&](uint32_t x, uint32_t y) {
+            tile_t& tile = tiles[x][y];
+            tile_metadata_t& md = state.engine->rsrc_mng.get_tile_dictionary()[tile.id];
+            
+            // Compute the mass for a given tile
+            const float area = SPK_TILE_HALF_SIZE * SPK_TILE_HALF_SIZE; // in sqaure meters
+            mass += area * md.density;
+        });
     }
 
-    void tilemap_t::find_center() {
-        uint32_t left_most   = UINT32_MAX, 
-                 right_most  = 0, 
-                 top_most    = 0, 
-                 bottom_most = UINT32_MAX;
 
-        iterate_colliadable([&](uint32_t x, uint32_t y){
+    void tilemap_t::compute_centroid() {
+        float left_most   = std::numeric_limits<float>().max(), 
+              right_most  = 0, 
+              top_most    = 0, 
+              bottom_most = std::numeric_limits<float>().max();
+
+        iterate_colliadable([&](uint32_t x, uint32_t y, tile_is_coll_info_t&){
             if(x < left_most) { // x is more left
                 left_most = x;
             } else if(x > right_most) { // x is more right
@@ -115,8 +145,8 @@ namespace spk {
             }
         });
 
-        // dividing by the half distance to find the center
-        center.x = left_most   + (float)(right_most - left_most) / 2.0f; 
-        center.y = bottom_most + (float)(top_most - bottom_most) / 2.0f; 
+        // adding by the half distance to find the center
+        center.x = left_most   + (right_most - left_most) / 2.0f; 
+        center.y = bottom_most + (top_most - bottom_most) / 2.0f; 
     }
 } 
