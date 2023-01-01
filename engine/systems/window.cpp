@@ -3,7 +3,7 @@
 
 namespace spk {
     void window_system_update(flecs::iter& iter, comp_window_t* c_window) {
-        auto ctx = SPK_GET_CTX_REF(iter, window_system_ctx_t);
+        auto ctx = SPK_GET_CTX(iter, window_system_ctx_t);
         uint64_t cur_win_i = 0;
 
         for(auto i : iter) {

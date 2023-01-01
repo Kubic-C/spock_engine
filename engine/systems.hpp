@@ -5,7 +5,7 @@
 
 /* handling of systems with FLECS */
 
-#define SPK_GET_CTX_REF(iter, type) static_cast<type*>(iter.ctx())
+#define SPK_GET_CTX(iter, type) static_cast<type*>(iter.ctx())
 #define SPK_NOT_A_TAG  uint8_t ___not_a_tag;
 
 namespace spk {

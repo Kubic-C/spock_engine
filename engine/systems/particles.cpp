@@ -162,7 +162,7 @@ namespace spk {
     }
 
     void particles_system_update(flecs::iter& iter, comp_b2Body_t* bodies, comp_particles_t* particles) {
-        auto ctx = SPK_GET_CTX_REF(iter, sprite_batch_mesh_t);
+        auto ctx = SPK_GET_CTX(iter, sprite_batch_mesh_t);
 
         for(auto i : iter) {
             add_particles(ctx, bodies[i].body, particles[i]);            
@@ -171,7 +171,7 @@ namespace spk {
 
 
     void particles_system_tilebody_update(flecs::iter& iter, comp_tilebody_t* bodies, comp_particles_t* particles) {
-        auto ctx = SPK_GET_CTX_REF(iter, sprite_batch_mesh_t);
+        auto ctx = SPK_GET_CTX(iter, sprite_batch_mesh_t);
 
         for(auto i : iter) {
             add_particles(ctx, bodies[i].body, particles[i]);            

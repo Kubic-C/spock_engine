@@ -4,7 +4,7 @@
 
 namespace spk {
     void camera_resize(flecs::iter& iter) {
-        auto ctx = SPK_GET_CTX_REF(iter, camera_system_ctx_t);
+        auto ctx = SPK_GET_CTX(iter, camera_system_ctx_t);
         auto camera = state.get_current_camera().get_ref<comp_camera_t>();    
         event_window_size_t* size = iter.param<event_window_size_t>();
 

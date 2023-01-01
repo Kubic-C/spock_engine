@@ -4,7 +4,7 @@
 
 namespace spk {
     void sprite_render_pre_mesh(flecs::iter& iter) {
-        auto sprite_renderer = SPK_GET_CTX_REF(iter, sprite_batch_mesh_t);
+        auto sprite_renderer = SPK_GET_CTX(iter, sprite_batch_mesh_t);
 
         for(auto& mesh : sprite_renderer->meshes) {
             mesh.sprites = 0;
@@ -12,7 +12,7 @@ namespace spk {
     }
 
     void sprite_render_system_update(flecs::iter& iter, comp_b2Body_t* bodies, comp_sprite_t* sprites) {
-        auto sprite_renderer = SPK_GET_CTX_REF(iter, sprite_batch_mesh_t);
+        auto sprite_renderer = SPK_GET_CTX(iter, sprite_batch_mesh_t);
         resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
 
         for(auto i : iter) {

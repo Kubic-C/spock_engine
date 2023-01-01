@@ -6,7 +6,7 @@ namespace spk {
     void primitive_render_system_update(flecs::iter& iter, comp_body_prim_t* c_primi_render) {
         auto render_ctx = (render_system_t*)state.get_current_renderer();
         auto camera     = state.get_current_camera().get_ref<comp_camera_t>();
-        auto ctx        = SPK_GET_CTX_REF(iter, primitive_renderer_t);
+        auto ctx        = SPK_GET_CTX(iter, primitive_renderer_t);
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
