@@ -8,6 +8,10 @@ namespace spk {
     struct comp_b2World_t {
         b2World* world;
 
+        operator b2World*() {
+            return world;
+        }
+
         void init();
         void free();
     };
@@ -21,6 +25,14 @@ namespace spk {
 
         glm::vec2 get_world_point(float x, float y) {
             return to_glm_vec2(body->GetWorldPoint((b2Vec2){x, y}));
+        }
+
+        operator b2Body*() const {
+            return body;
+        }
+
+        operator const b2Body*() const {
+            return body;
         }
 
         void init();

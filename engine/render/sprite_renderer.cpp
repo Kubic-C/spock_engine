@@ -4,7 +4,7 @@
 
 const char* vs_sprite = R"###(
 #version 330 core
-layout(location = 0) in vec2 a_pos;
+layout(location = 0) in vec3 a_pos;
 layout(location = 1) in vec2 a_tex_coords;
 
 out vec2 v_tex_coords;
@@ -12,7 +12,7 @@ out vec2 v_tex_coords;
 uniform mat4 u_vp;
 
 void main() {
-    gl_Position = u_vp * vec4(a_pos, 0.0, 1.0);
+    gl_Position = u_vp * vec4(a_pos, 1.0);
     v_tex_coords = a_tex_coords;
 })###";
 
@@ -44,7 +44,13 @@ namespace spk {
         m_free();
     }
     
-    void sprite_batch_mesh_t::add_sprite_mesh(comp_sprite_t& sprite, const glm::vec2& _1, const glm::vec2& _2, const glm::vec2& _3, const glm::vec2& _4) { 
+    void sprite_batch_mesh_t::add_sprite_mesh(
+            comp_sprite_t& sprite, 
+            const glm::vec2& _1, 
+            const glm::vec2& _2, 
+            const glm::vec2& _3, 
+            const glm::vec2& _4) { 
+
         if(sprite.atlas_id == UINT32_MAX)
             return;
         
@@ -58,10 +64,10 @@ namespace spk {
         meshes[atlas_id].sprites += 1;
         resize_mesh_if_need(atlas_id);
 
-        meshes[atlas_id].mesh[index + 0] = {_1,  tex_coords[0]};
-        meshes[atlas_id].mesh[index + 1] = {_2,  tex_coords[1]};
-        meshes[atlas_id].mesh[index + 2] = {_3,  tex_coords[2]};
-        meshes[atlas_id].mesh[index + 3] = {_4,  tex_coords[3]};
+        meshes[atlas_id].mesh[index + 0] = {{_1, sprite.z},  tex_coords[0]};
+        meshes[atlas_id].mesh[index + 1] = {{_2, sprite.z},  tex_coords[1]};
+        meshes[atlas_id].mesh[index + 2] = {{_3, sprite.z},  tex_coords[2]};
+        meshes[atlas_id].mesh[index + 3] = {{_4, sprite.z},  tex_coords[3]};
     }
 
     void sprite_batch_mesh_t::add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset) {
@@ -87,7 +93,6 @@ namespace spk {
             resize(sizeof(sprite_vertex_t), sprite_vertex_count * 2, 0);
             
             max_vertexes = sprite_vertex_count * 2;
-            
         }
 
         vertex_buffer.buffer_sub_data(0, sprite_vertex_count * sizeof(sprite_vertex_t), meshes[atlas].mesh.data());
@@ -97,8 +102,8 @@ namespace spk {
         b_init();
 
         sprites.init();
-        vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, 0, 0);
-        vertex_layout.add(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, sizeof(float) * 2, 0);
+        vertex_layout.add(0, 3, GL_FLOAT, GL_FALSE, sizeof(sprite_vertex_t), 0, 0);
+        vertex_layout.add(1, 2, GL_FLOAT, GL_FALSE, sizeof(sprite_vertex_t), sizeof(glm::vec3), 0);
 
         program.load_shader_str(vs_sprite, fs_sprite);
     }
@@ -140,7 +145,5 @@ namespace spk {
         }
 
         glDisable(GL_BLEND);
-
-    }
-        
+    }   
 }

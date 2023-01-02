@@ -16,7 +16,7 @@ namespace spk {
 #ifndef NDEBUG
     extern debug_t debug;
     #define SPK_DEBUG_EXPR_IF(expr, flag) \
-        if(debug.flags & flag) { (expr); }
+        if(::spk::debug.flags & flag) { (expr); }
     #define SPK_DEBUG_LOG_IF(flag, ...) \
         SPK_DEBUG_EXPR_IF(::spk::log.log(__VA_ARGS__), flag)
     #define SPK_DEBUG_ENABLE(flag) (::spk::debug.flags |= flag)

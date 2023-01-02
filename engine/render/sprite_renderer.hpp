@@ -5,12 +5,12 @@
 
 namespace spk {
     struct sprite_vertex_t {
-        glm::vec2 pos;
+        glm::vec3 pos;
         glm::vec2 tex_coords;
     };
 
     struct sprite_batch_mesh_t : public mesh_t {
-        void add_sprite_mesh( comp_sprite_t& sprite, const glm::vec2& _1, const glm::vec2& _2, const glm::vec2& _3, const glm::vec2& _4);
+        void add_sprite_mesh(comp_sprite_t& sprite, const glm::vec2& _1, const glm::vec2& _2, const glm::vec2& _3, const glm::vec2& _4);
         void add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset = {0.0f, 0.0f});
 
         struct atlas_mesh_t {

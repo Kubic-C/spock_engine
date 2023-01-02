@@ -10,7 +10,7 @@ layout(location = 0) in vec2 a_pos;
 uniform mat4 u_vp;
 
 void main() {
-    gl_Position = u_vp * vec4(a_pos, 0.0, 1.0);
+    gl_Position = u_vp * vec4(a_pos, 100.0, 1.0);
 })###";
 
 const char* fs_colliders = R"###(
@@ -25,7 +25,42 @@ void main() {
 })###";
 
 namespace spk {
-    void primitive_renderer_t::draw_indexed_buffer(glm::vec3 color, static_index_buffer_t& ind, glm::mat4& vp, uint32_t count) { 
+    void polygon_batch_mesh_t::init() {
+        m_init();
+
+        count = 0;
+        max_vertexes = 0xfff;
+
+        buffer.resize(max_vertexes);
+        vertex_buffer.buffer_data(sizeof(prim_vertex_t) * max_vertexes, nullptr, GL_DYNAMIC_DRAW);
+    }
+
+    void polygon_batch_mesh_t::zero() {
+        count = 0;
+    }
+
+    void polygon_batch_mesh_t::free() {
+        m_free();
+    }
+
+    void polygon_batch_mesh_t::subdata() {
+        vertex_buffer.buffer_sub_data(0, buffer.size() * sizeof(prim_vertex_t), buffer.data());
+    }
+
+    void polygon_batch_mesh_t::add_polygon(const b2Body* body, b2PolygonShape* polygon) {
+        // this will get the amount of vertexes to use, so if quad has 4 verts: 4 / 2 = 2 -> 2 * 3 = 6 (vertexes)
+        int32_t  vertex_count = (polygon->m_count / 2) * 3; // special case: 3 works because of integer division black magic
+        uint32_t offset       = buffer.size();
+
+        for(int32 j = 0; j < polygon->m_count; j++)  {
+            buffer[offset + j].pos = { 
+                body->GetWorldPoint(polygon->m_vertices[j]).x, body->GetWorldPoint(polygon->m_vertices[j]).y };
+        }
+
+        count += vertex_count; 
+    }
+    
+    void primitive_renderer_t::draw_indexed_buffer(static_index_buffer_t& ind, glm::mat4& vp, uint32_t count) { 
         ind.bind();
         program.use();
         program.set_mat4("u_vp", vp);
@@ -33,46 +68,15 @@ namespace spk {
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);   
     }
 
-    void primitive_renderer_t::draw_buffer(glm::vec3 color, glm::mat4& vp, uint32_t count) { 
+    void primitive_renderer_t::draw_buffer(glm::mat4& vp, uint32_t count) { 
         program.use();
         program.set_mat4("u_vp", vp);
         program.set_vec3("color", color);
         glDrawArrays(GL_TRIANGLES, 0, count);   
     }
 
-    void primitive_renderer_t::render_box(glm::mat4& vp, spk::static_index_buffer_t& ind, 
-        comp_body_prim_t* ri, const comp_box_t* box) {
-        const uint32_t quad_vert_count = 4;
-        const uint32_t quad_index_count = 6;
-        
-        mesh[0].pos = { box->position.x,               box->position.y };
-        mesh[1].pos = { box->position.x + box->size.x, box->position.y };
-        mesh[2].pos = { box->position.x + box->size.x, box->position.y + box->size.y };
-        mesh[3].pos = { box->position.x,               box->position.y + box->size.y };
 
-        vertex_buffer.buffer_sub_data(0, quad_vert_count * sizeof(prim_vertex_t), mesh.data());
-        vertex_array.bind();
-
-        draw_indexed_buffer(ri->color, ind, vp, quad_index_count);
-    }
-
-    void primitive_renderer_t::render_polygon(glm::mat4& vp, spk::static_index_buffer_t& ind, 
-        comp_body_prim_t* ri, b2Body* body, b2PolygonShape* polygon) {
-        // this will get the amount of indexes to use, so if quad has 4 verts: 4 / 2 = 2 -> 2 * 3 = 6 (indexes)
-        int32_t index_count = (polygon->m_count / 2) * 3; // special case: 3 works because of integer division black magic
-
-        for(int32 j = 0; j < polygon->m_count; j++)  {
-            mesh[j].pos = { 
-                body->GetWorldPoint(polygon->m_vertices[j]).x, body->GetWorldPoint(polygon->m_vertices[j]).y };
-        }
-
-        vertex_buffer.buffer_sub_data(0, polygon->m_count * sizeof(prim_vertex_t), mesh.data());
-        vertex_array.bind();
-        
-        draw_indexed_buffer(ri->color, ind, vp, index_count);
-    }
-
-    void primitive_renderer_t::render_circle(glm::mat4& vp, comp_body_prim_t* ri, b2Body* body, b2CircleShape* circle) {
+    void primitive_renderer_t::render_circle(glm::mat4& vp, const b2Body* body, b2CircleShape* circle) {
         const glm::vec2 position = spk::to_glm_vec2(body->GetPosition());
         const uint32_t steps = 8;
         const float r = circle->m_radius;
@@ -107,10 +111,10 @@ namespace spk {
         vertex_buffer.buffer_sub_data(0, vertices * sizeof(prim_vertex_t), mesh.data());
         vertex_array.bind();
 
-        draw_buffer(ri->color, vp, vertices);
+        draw_buffer(vp, vertices);
     }
 
-    void primitive_renderer_t::render_edge(glm::mat4& vp, comp_body_prim_t* ri, b2Body* body, b2EdgeShape* edge) {
+    void primitive_renderer_t::render_edge(glm::mat4& vp, const b2Body* body, b2EdgeShape* edge) {
         uint32_t vertices = 2;
 
         mesh[0] = { spk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex1)) };
@@ -119,11 +123,13 @@ namespace spk {
         vertex_buffer.buffer_sub_data(0, vertices * sizeof(prim_vertex_t), mesh.data());
         vertex_array.bind();
 
-        draw_buffer(ri->color, vp, vertices);
+        draw_buffer(vp, vertices);
     }
 
     void primitive_renderer_t::init() {
         b_init();
+
+        poly_mesh.init();
 
         vertex_buffer.init(GL_ARRAY_BUFFER);
         vertex_buffer.buffer_data(sizeof(prim_vertex_t) * 4 * 100, nullptr, GL_DYNAMIC_DRAW);
@@ -136,14 +142,27 @@ namespace spk {
         mesh.resize(100 * 3);
     }
 
+    void primitive_renderer_t::free() {
+        poly_mesh.free();
+        b_free();
+    }
+
     void primitive_renderer_t::draw() {
         auto world = state.engine->get_current_b2World();
+        render_system_t*     renderer = state.get_current_renderer();
+        const comp_camera_t* camera   = state.get_current_camera().get<comp_camera_t>();
+        
+        vertex_layout.set_buffer(0, poly_mesh.vertex_buffer);
+        vertex_array.bind_layout(vertex_layout);
+
+        vertex_array.bind();
+        renderer->quad_index_buffer.bind();
+        program.use();
+        program.set_mat4("u_vp", camera->vp);
+        program.set_vec3("color", color);
+        glDrawElements(GL_TRIANGLES, poly_mesh.count, GL_UNSIGNED_INT, nullptr);   
 
         // should probably add this but im lazzzyy
         world->DebugDraw();
-    }
-
-    void primitive_renderer_t::free() {
-        b_free();
     }
 }

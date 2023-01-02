@@ -11,7 +11,14 @@ namespace spk {
     };
 
     struct tile_metadata_t {
-        comp_sprite_t sprite = { .size = {SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE}, };
+        comp_sprite_t sprite = { 
+            .atlas_id = 0, 
+            .tax = 0, 
+            .tay = 0, 
+            .size = {SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE}, 
+            .z = 0.0f 
+        };
+        
         uint8_t default_flags = TILE_FLAGS_COLLIADABLE;
         float density     = 1.0f;
         float friction    = 0.2f;

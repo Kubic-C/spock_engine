@@ -28,8 +28,8 @@ namespace spk {
     }
 
     void box2d_comp_init(flecs::world& world) {
-        spk_register_component(world, comp_b2Body_t);
         spk_register_component(world, comp_b2World_t);
+        spk_register_component(world, comp_b2Body_t);
 
         world.observer<comp_b2World_t, tag_current_box2d_world_t>("OnAdd Current b2World tag observer")
             .event(flecs::OnAdd).each(box2d_world_tag_on_add);

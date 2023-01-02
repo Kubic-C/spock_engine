@@ -1,6 +1,5 @@
 #include "particles.hpp"
 #include "utility/ui.hpp"
-#include "components/tilebody.hpp"
 #include <glm/gtx/vector_angle.hpp>
 #include "sprite.hpp"
 #include "state.hpp"

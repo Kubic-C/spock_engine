@@ -158,8 +158,14 @@ MAIN {
 
     auto start_ = [&]() -> void {
         player = engine.world.entity();
-        player.set([&](spk::comp_sprite_t& sprite){
-            sprite.tax = 4;
+        player.set([&](spk::comp_b2Body_t& body, spk::comp_sprite_t& sprite){
+            sprite.tax = 2;
+            sprite.z = 0.2f;
+
+            b2BodyDef body_def;
+            body_def.type = b2_dynamicBody;
+            body.body = engine.get_current_b2World()->CreateBody(&body_def);
+            sprite.add_fixture(body, 1.0f, 0.2f, 0.5f);
         });
 
         test = engine.world.entity();
@@ -168,20 +174,23 @@ MAIN {
             ps.base_speed = 100.0f;
             ps.dir = {1.0f, 0.0f};
         });
-        test.set([&](spk::comp_tilebody_t& comp){
-            for(uint32_t x = 0; x < comp.tilemap.size.x; x++) {
-                for(uint32_t y = 0; y < comp.tilemap.size.y; y++) {
-                    if(x != 0 && x != (comp.tilemap.size.x - 1) &&
-                       y != 0 && y != (comp.tilemap.size.y - 1)) {
-                        comp.tilemap.tiles[x][y].id = 4;
+        test.set([&](spk::comp_b2Body_t& body, spk::comp_tilemap_t& comp){
+            b2BodyDef def;
+            body.body = engine.get_current_b2World()->CreateBody(&def);
+
+            for(uint32_t x = 0; x < comp.size.x; x++) {
+                for(uint32_t y = 0; y < comp.size.y; y++) {
+                    if(x != 0 && x != (comp.size.x - 1) &&
+                       y != 0 && y != (comp.size.y - 1)) {
+                        //comp.tiles[x][y].id = 4;
                     } else {
-                        comp.tilemap.tiles[x][y].id = 2;
+                        comp.tiles[x][y].id = 2;
                     }
                 }
             }
 
             //comp.body->SetType(b2_dynamicBody);
-            comp.add_fixtures();
+            comp.add_fixtures(body.body);
         });
     };
 
@@ -233,8 +242,8 @@ MAIN {
 
             glm::vec2 mouse_click = camera->get_world_position((glm::vec2){(float)event->x, (float)event->y});
           
-            if(test.is_alive() && test.has<spk::comp_tilebody_t>()) {
-                test.set([&](spk::comp_tilebody_t& body) {
+            if(test.is_alive() && test.has<spk::comp_b2Body_t>()) {
+                test.set([&](spk::comp_b2Body_t& body) {
                     b2Vec2 position = body.body->GetPosition();
                     
                     b2Vec2 dir = spk::to_box_vec2(mouse_click) - position;
@@ -256,7 +265,7 @@ MAIN {
                             std::to_string(stats_.average_delta_time) + " | FT: " +
                             std::to_string(stats_.frame_time) + " | Physics bodies: " +
                             std::to_string(engine.world.count<spk::comp_b2Body_t>() + 
-                                           engine.world.count<spk::comp_tilebody_t>()), 0.4f, {1.0f, 1.0f, 1.0f});
+                                           engine.world.count<spk::comp_tilemap_t>()), 0.4f, {1.0f, 1.0f, 1.0f});
 
             switch(my_state) {
             case STATE_LOAD:
@@ -275,14 +284,14 @@ MAIN {
                 auto cam = engine.get_current_camera();
                 float speed = 10.0f;
 
-                // test.set([&](spk::comp_tilebody_t& body, spk::comp_particles_t& particles) {
-                //     glm::vec2 velocity = spk::to_glm_vec2(body.body->GetLinearVelocity());
-                //     glm::vec2 dir = glm::normalize(-velocity);
-                //     particles.dir = dir;
-                //     particles.base_speed = glm::length(velocity);
+                player.set([&](spk::comp_b2Body_t& body, spk::comp_particles_t& particles) {
+                    glm::vec2 velocity = spk::to_glm_vec2(body.body->GetLinearVelocity());
+                    glm::vec2 dir = glm::normalize(-velocity);
+                    particles.dir = dir;
+                    particles.base_speed = glm::length(velocity);
 
-                //     cam->pos = -spk::to_glm_vec2(body.body->GetPosition());
-                // });
+                    cam->pos = -spk::to_glm_vec2(body.body->GetPosition());
+                });
 
                 // if(engine.is_pressed(SDL_SCANCODE_A)) {
                 //     cam->pos.x += speed;                     

@@ -5,7 +5,7 @@
 
 namespace spk { 
     void comp_camera_t::init() {
-        z = -1.0f;
+        z = 100.5f;
         pos  = { 0.0f, 0.0f };
         size = { 0.0f, 0.0f };
         scale = 1.0f;
@@ -44,7 +44,7 @@ namespace spk {
         proj = glm::ortho(-half_width, 
                            half_width, 
                           -half_height, 
-                           half_height);
+                           half_height, 0.1f, 1000.0f);
  
         vp = proj * view;
     }

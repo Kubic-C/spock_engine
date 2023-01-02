@@ -3,7 +3,7 @@
 #include "spock.hpp"
 
 namespace spk {
-    void tilemap_t::init() {
+    void comp_tilemap_t::init() {
         size.x = 100;
         size.y = 100;
 
@@ -20,11 +20,11 @@ namespace spk {
         }
     }
 
-    void tilemap_t::free() {
+    void comp_tilemap_t::free() {
 
     }
     
-    void tilemap_t::iterate_map(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
+    void comp_tilemap_t::iterate_map(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
         for(uint32_t x = 0; x < size.x; x++) {
             for(uint32_t y = 0; y < size.y; y++) {
                 clbk(x, y);
@@ -32,7 +32,7 @@ namespace spk {
         }
     }
 
-    void tilemap_t::iterate_colliadable(std::function<void(uint32_t x, uint32_t y, tile_is_coll_info_t&)>&& clbk) {
+    void comp_tilemap_t::iterate_colliadable(std::function<void(uint32_t x, uint32_t y, tile_is_coll_info_t&)>&& clbk) {
         iterate_map([&](uint32_t x, uint32_t y) {
             tile_is_coll_info_t tile_info = tile_is_colliadable(x, y);
             
@@ -42,7 +42,7 @@ namespace spk {
          });
     }
     
-    void tilemap_t::iterate_non_zero(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
+    void comp_tilemap_t::iterate_non_zero(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
         iterate_map([&](uint32_t x, uint32_t y) {
             if(!is_tile_empty(tiles[x][y])) {
                 clbk(x, y);
@@ -50,7 +50,7 @@ namespace spk {
         });
     }
 
-    tile_is_coll_info_t tilemap_t::tile_is_colliadable(uint32_t x, uint32_t y) {
+    tile_is_coll_info_t comp_tilemap_t::tile_is_colliadable(uint32_t x, uint32_t y) {
         tile_is_coll_info_t info;
 
         if(spk::is_tile_empty(tiles[x][y])) // if its empty it can't collide
@@ -96,7 +96,7 @@ namespace spk {
     }
 
     
-    void tilemap_t::compute_colliders() {
+    void comp_tilemap_t::compute_colliders() {
         float half_width = (float)size.x;
         float half_height = (float)size.y / 2.0f;
 
@@ -125,7 +125,7 @@ namespace spk {
     }
 
 
-    void tilemap_t::compute_centroid() {
+    void comp_tilemap_t::compute_centroid() {
         float left_most   = std::numeric_limits<float>().max(), 
               right_most  = 0, 
               top_most    = 0, 
@@ -149,4 +149,30 @@ namespace spk {
         center.x = left_most   + (right_most - left_most) / 2.0f; 
         center.y = bottom_most + (top_most - bottom_most) / 2.0f; 
     }
-} 
+
+    void comp_tilemap_t::add_fixtures(b2Body* body) {
+        auto& dictionary = state.engine->rsrc_mng.get_tile_dictionary();
+
+        compute_colliders();
+
+        for(auto& tile_collider : colliding_tiles) {
+            b2FixtureDef def;
+            def.density     = dictionary[tile_collider.id].density;
+            def.friction    = dictionary[tile_collider.id].friction;
+            def.restitution = dictionary[tile_collider.id].restitution;
+            def.shape       = &tile_collider.shape;
+            body->CreateFixture(&def);
+        }
+
+        b2MassData md;
+        md.center = to_box_vec2(center);
+        md.mass   = mass;
+        md.I      = 0.0f;
+
+        body->SetMassData(&md);
+    }
+
+    void tile_comp_init(flecs::world& world) {
+        spk_register_component(world, comp_tilemap_t).is_a<comp_b2Body_t>();
+    }
+}

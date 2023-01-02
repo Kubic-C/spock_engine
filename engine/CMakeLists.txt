@@ -20,6 +20,16 @@ target_sources(spock_engine PRIVATE
     "debug.hpp" "debug.cpp"
     "logger.hpp" "logger.cpp")
 
+    
+target_sources(spock_engine PRIVATE
+    "components/window.hpp" "components/window.cpp"
+    "components/box2D.hpp" "components/box2D.cpp"
+    "components/ui.hpp" "components/ui.cpp"
+    "components/sprite.hpp" "components/sprite.cpp"
+    "components/tilemap.hpp" "components/tilemap.cpp"
+    "components/camera.hpp" "components/camera.cpp"
+    "components/particles.hpp" "components/particles.cpp")
+    
 target_sources(spock_engine PRIVATE
     "systems/window.hpp" "systems/window.cpp"
     "systems/render.hpp" "systems/render.cpp"
@@ -30,16 +40,7 @@ target_sources(spock_engine PRIVATE
     "systems/ui.hpp" "systems/ui.cpp"
     "systems/camera.hpp" "systems/camera.cpp"
     "systems/particles.hpp" "systems/particles.cpp"
-    "systems/tilebody.hpp" "systems/tilebody.cpp")
-
-target_sources(spock_engine PRIVATE
-    "components/window.hpp" "components/window.cpp"
-    "components/box2D.hpp" "components/box2D.cpp"
-    "components/ui.hpp" "components/ui.cpp"
-    "components/sprite.hpp" "components/sprite.cpp"
-    "components/tilebody.hpp" "components/tilebody.cpp"
-    "components/camera.hpp" "components/camera.cpp"
-    "components/particles.hpp" "components/particles.cpp")
+    "systems/tilemap.hpp" "systems/tilemap.cpp")
 
 target_sources(spock_engine PRIVATE
     "utility/ui.hpp" "utility/ui.cpp"
@@ -51,8 +52,7 @@ target_sources(spock_engine PRIVATE
     "data/text.hpp" "data/text.cpp"
     "data/resource_manager.hpp" "data/resource_manager.cpp"
     "data/atlas.hpp" "data/atlas.cpp"
-    "data/tiles.hpp" "data/tiles.cpp"
-    "data/tilemap.hpp" "data/tilemap.cpp")    
+    "data/tiles.hpp" "data/tiles.cpp")
 
 target_sources(spock_engine PRIVATE
     "render/opengl.hpp" "render/opengl.cpp"

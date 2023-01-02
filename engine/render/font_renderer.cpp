@@ -14,7 +14,7 @@ out vec3 v_color;
 uniform mat4 u_vp;
 
 void main() {
-    gl_Position = u_vp * vec4(a_pos, -0.4f, 1.0);
+    gl_Position = u_vp * vec4(a_pos, 0.2f, 1.0);
     v_tex_coords = a_tex_coords;
     v_color = a_color;
 }

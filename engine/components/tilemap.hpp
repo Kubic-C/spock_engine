@@ -1,8 +1,8 @@
 #pragma once
 
-#include "tiles.hpp"
-
-#define SPK_TILE_EMPTY(tile) (tile.id == 0 ||  !(tiles[x][y].flags & TILE_FLAGS_COLLIADABLE))
+#include "data/tiles.hpp"
+#include "debug.hpp"
+#include "box2D.hpp"
 
 namespace spk {
     struct tile_is_coll_info_t {
@@ -16,8 +16,7 @@ namespace spk {
         }
     };
 
-    struct tilemap_t {
-
+    struct comp_tilemap_t {
         struct tile_collider_t {
             b2PolygonShape shape;
             uint32_t id;
@@ -36,6 +35,7 @@ namespace spk {
         void init();
         void free();
 
+        void add_fixtures(b2Body* body);
         void iterate_map(std::function<void(uint32_t x, uint32_t y)>&& clbk);
         void iterate_non_zero(std::function<void(uint32_t x, uint32_t y)>&& clbk);
         void iterate_colliadable(std::function<void(uint32_t x, uint32_t y, tile_is_coll_info_t&)>&& clbk);
@@ -43,4 +43,6 @@ namespace spk {
         void compute_colliders();
         void compute_centroid();
     };
+
+    void tile_comp_init(flecs::world& world);
 }

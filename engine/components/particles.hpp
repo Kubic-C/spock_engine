@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base.hpp"
-#include "tilebody.hpp"
+#include "data/tiles.hpp"
 
 namespace spk {
     enum particles_funnel_e: uint16_t {

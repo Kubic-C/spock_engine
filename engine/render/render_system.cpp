@@ -42,6 +42,8 @@ namespace spk {
         rp_init();
         rp_set_fb(0, 0);
 
+        glEnable(GL_DEPTH_TEST);
+
         // setup utilities
         quad_index_buffer.init(GL_ELEMENT_ARRAY_BUFFER);
         quad_index_buffer.generate_quad_indexes(100000);
@@ -99,7 +101,7 @@ namespace spk {
     void render_system_t::fb_default_init() {
         framebuffer_t fb;
         fb.attachments.init();
-        fb.clear_bits  = GL_COLOR_BUFFER_BIT;
+        fb.clear_bits  = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
         fb.clear_color = {0.0f, 0.0f, 0.0f, 1.0f};
         fb.framebuffer = 0;        
 
