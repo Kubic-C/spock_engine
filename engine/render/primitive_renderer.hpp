@@ -17,6 +17,7 @@ namespace spk {
 
         glm::mat4 vp;
 
+        uint32_t buffer_count;
         uint32_t count;
 
         void init();

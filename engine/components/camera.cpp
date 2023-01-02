@@ -5,7 +5,7 @@
 
 namespace spk { 
     void comp_camera_t::init() {
-        z = 100.5f;
+        z = 10.0f;
         pos  = { 0.0f, 0.0f };
         size = { 0.0f, 0.0f };
         scale = 1.0f;
@@ -18,6 +18,8 @@ namespace spk {
     }
 
     glm::vec2 comp_camera_t::get_world_position(const glm::vec2& screen_coords) {
+        const float total_scale = state.get_ppm() * scale;
+
         // screen camera size -> world camera size
         // SDL Window's positive Y is oppisote of Box2D's postive Y
         float world_y = size.y - screen_coords.y; // flip the y
@@ -27,25 +29,26 @@ namespace spk {
         // 1/2 of the world size to correctly offset the qoutient. 
         // Simply put we are doing the reverse of VP
         glm::vec2 world_coords = 
-            { (screen_coords.x - size.x / 2.0f - (pos.x * state.get_ppm() * scale)), 
-              (        world_y - size.y / 2.0f - (pos.y * state.get_ppm() * scale))};
+            { (screen_coords.x - (size.x / 2.0f)), 
+              (        world_y - (size.y / 2.0f)) };
  
-        return world_coords / (state.get_ppm() * scale);
+        world_coords /= total_scale;
+        world_coords += pos; // position is already in world coordinates
+
+        return world_coords;
     }
 
     void comp_camera_t::recalculate() {
-        float half_width  = (float)size.x / 2;
-        float half_height = (float)size.y / 2;
-        
+        const float width  = size.x / 2.0f;
+        const float height = size.y / 2.0f;
+
         view = glm::identity<glm::mat4>();
-        view = glm::translate(view, glm::vec3(pos * state.get_ppm() * scale, z));
-        view = glm::scale(view, glm::vec3(state.get_ppm() * scale));
- 
-        proj = glm::ortho(-half_width, 
-                           half_width, 
-                          -half_height, 
-                           half_height, 0.1f, 1000.0f);
- 
+        view = glm::scale(view, glm::vec3(state.get_ppm() * scale, state.get_ppm() * scale, 1.0f));
+        // flipping the coordinates must be done because Ortho flips everything
+        view = glm::translate(view, glm::vec3(-pos, -z)); 
+
+        proj = glm::ortho(-width, width, -height, height, 0.001f, 300.0f);
+
         vp = proj * view;
     }
 

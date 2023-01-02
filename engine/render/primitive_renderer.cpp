@@ -10,7 +10,7 @@ layout(location = 0) in vec2 a_pos;
 uniform mat4 u_vp;
 
 void main() {
-    gl_Position = u_vp * vec4(a_pos, 100.0, 1.0);
+    gl_Position = u_vp * vec4(a_pos, 9.0f, 1.0);
 })###";
 
 const char* fs_colliders = R"###(
@@ -28,8 +28,9 @@ namespace spk {
     void polygon_batch_mesh_t::init() {
         m_init();
 
-        count = 0;
-        max_vertexes = 0xfff;
+        zero();
+
+        max_vertexes = 0xffff;
 
         buffer.resize(max_vertexes);
         vertex_buffer.buffer_data(sizeof(prim_vertex_t) * max_vertexes, nullptr, GL_DYNAMIC_DRAW);
@@ -37,6 +38,7 @@ namespace spk {
 
     void polygon_batch_mesh_t::zero() {
         count = 0;
+        buffer_count = 0;
     }
 
     void polygon_batch_mesh_t::free() {
@@ -44,13 +46,13 @@ namespace spk {
     }
 
     void polygon_batch_mesh_t::subdata() {
-        vertex_buffer.buffer_sub_data(0, buffer.size() * sizeof(prim_vertex_t), buffer.data());
+        vertex_buffer.buffer_sub_data(0, buffer_count * sizeof(prim_vertex_t), buffer.data());
     }
 
     void polygon_batch_mesh_t::add_polygon(const b2Body* body, b2PolygonShape* polygon) {
         // this will get the amount of vertexes to use, so if quad has 4 verts: 4 / 2 = 2 -> 2 * 3 = 6 (vertexes)
         int32_t  vertex_count = (polygon->m_count / 2) * 3; // special case: 3 works because of integer division black magic
-        uint32_t offset       = buffer.size();
+        uint32_t offset       = buffer_count;
 
         for(int32 j = 0; j < polygon->m_count; j++)  {
             buffer[offset + j].pos = { 
@@ -58,6 +60,7 @@ namespace spk {
         }
 
         count += vertex_count; 
+        buffer_count += polygon->m_count;
     }
     
     void primitive_renderer_t::draw_indexed_buffer(static_index_buffer_t& ind, glm::mat4& vp, uint32_t count) { 
@@ -74,7 +77,6 @@ namespace spk {
         program.set_vec3("color", color);
         glDrawArrays(GL_TRIANGLES, 0, count);   
     }
-
 
     void primitive_renderer_t::render_circle(glm::mat4& vp, const b2Body* body, b2CircleShape* circle) {
         const glm::vec2 position = spk::to_glm_vec2(body->GetPosition());
@@ -152,6 +154,8 @@ namespace spk {
         render_system_t*     renderer = state.get_current_renderer();
         const comp_camera_t* camera   = state.get_current_camera().get<comp_camera_t>();
         
+        poly_mesh.subdata();
+
         vertex_layout.set_buffer(0, poly_mesh.vertex_buffer);
         vertex_array.bind_layout(vertex_layout);
 
@@ -160,7 +164,10 @@ namespace spk {
         program.use();
         program.set_mat4("u_vp", camera->vp);
         program.set_vec3("color", color);
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glDrawElements(GL_TRIANGLES, poly_mesh.count, GL_UNSIGNED_INT, nullptr);   
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         // should probably add this but im lazzzyy
         world->DebugDraw();

@@ -22,7 +22,7 @@ namespace spk {
         const glm::ivec2 tsize = texture.get_size();
 
         texture.bind();
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glGenerateMipmap(GL_TEXTURE_2D);
 

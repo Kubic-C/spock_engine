@@ -22,6 +22,7 @@ namespace spk {
             sprite_renderer->add_sprite_mesh(body.body, sprite);
         }
     }
+    
     void sprite_cs_init(system_ctx_allocater_t& allocater, flecs::world& world) {
         sprite_comp_init(world);
 

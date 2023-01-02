@@ -31,9 +31,18 @@ out vec4 color;
 
 void main()
 {    
-    color = vec4(v_color, texture(font, v_tex_coords).r);
-}
-)###";
+    float blend = texture(font, v_tex_coords).r;
+
+    // if a pixel's alpha is too transparent
+    // dont render it all. this will result in
+    // a more consistent look throughout the font
+    if(blend < 0.2f) {
+        discard;
+    }
+
+    // multiplying it will give a more clear look
+    color = vec4(v_color, blend * 2.0f);
+})###";
 
 namespace spk {
     void font_batch_mesh_t::init() {

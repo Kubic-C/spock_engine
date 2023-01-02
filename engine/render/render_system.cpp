@@ -62,10 +62,11 @@ namespace spk {
     key_t render_system_t::atch_init() {
         attachment_t atch;
         atch.attachment      = UINT32_MAX;
-        atch.data_format     = UINT32_MAX;
+        atch.pixel_format    = UINT32_MAX;
+        atch.pixel_type      = UINT32_MAX;
         atch.internal_format = UINT32_MAX;
 
-        glGenTextures(1, &atch.attachment);        
+        glGenTextures(1, &atch.texture);        
 
         attachments.push_back(atch);
 
@@ -75,14 +76,23 @@ namespace spk {
     void render_system_t::resize(uint32_t width, uint32_t height) {
         for(attachment_t& atch : attachments) {
             glBindTexture(GL_TEXTURE_2D, atch.texture);
-            glTexImage2D(GL_TEXTURE_2D, 0, atch.internal_format, width, height, 0, atch.data_format, GL_UNSIGNED_BYTE, nullptr);
+            glTexImage2D(GL_TEXTURE_2D, 0, atch.internal_format, width, height, 0, atch.pixel_format, atch.pixel_type, nullptr);
         }
 
         glViewport(0, 0, width, height);
     }
+    void render_system_t::atch_set(key_t atch_id, uint32_t type, uint32_t internal_format, uint32_t pixel_format, uint32_t pixel_type) {
+        attachment_t& atch = attachments[atch_id];
+        
+        atch.attachment      = type;
+        atch.internal_format = internal_format;
+        atch.pixel_format    = pixel_format;
+        atch.pixel_type      = pixel_type;
 
-    void render_system_t::atch_set(key_t atch_id, uint32_t type, uint32_t internal_format, uint32_t data_format) {
-        attachments[atch_id] = {type, internal_format, data_format};
+        glBindTexture(GL_TEXTURE_2D, atch.texture);
+        glTexImage2D(GL_TEXTURE_2D, 0, internal_format, 100, 100, 0, pixel_format, pixel_type, nullptr);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
     
     attachment_t& render_system_t::atch_get(key_t atch_id) {
@@ -102,7 +112,7 @@ namespace spk {
         framebuffer_t fb;
         fb.attachments.init();
         fb.clear_bits  = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
-        fb.clear_color = {0.0f, 0.0f, 0.0f, 1.0f};
+        fb.clear_color = {0.3f, 0.3f, 0.3f, 1.0f};
         fb.framebuffer = 0;        
 
         framebuffers.push_back(fb);
@@ -137,7 +147,7 @@ namespace spk {
         framebuffers[fb_id].attachments.push_back(atch_id);
 
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffers[fb_id].framebuffer);
-        glFramebufferTexture(GL_FRAMEBUFFER, attachments[atch_id].attachment, attachments[atch_id].texture, 0);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, attachments[atch_id].attachment, GL_TEXTURE_2D, attachments[atch_id].texture, 0);
     }
 
     void render_system_t::_fb_free(key_t fb_id) {
@@ -171,6 +181,10 @@ namespace spk {
     void  render_system_t::rp_add_renderer(key_t rp_id, base_renderer_t* renderer) {
         render_passes[rp_id].renderer.push_back(renderer);
     }
+    
+    void render_system_t::rp_set_fb_renderer(key_t rp_id, base_framebuffer_renderer_t* renderer) {
+        render_passes[rp_id].fb_renderer = renderer;
+    }
 
     void  render_system_t::_rp_free(key_t rp_id) {
         render_passes[rp_id].renderer.free();
@@ -191,7 +205,7 @@ namespace spk {
 
             glBindFramebuffer(GL_FRAMEBUFFER, fb->framebuffer);
             glClearColor(fb->clear_color.r, fb->clear_color.g, fb->clear_color.b, fb->clear_color.a);
-            glClear(fb->clear_bits);
+            glClear(fb->clear_bits); 
 
             for(auto renderer : rp.renderer) {
                 for(auto& system : renderer->systems) {

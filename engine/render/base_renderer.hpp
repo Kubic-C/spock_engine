@@ -28,7 +28,7 @@ namespace spk {
 
     };
 
-    class base_framebuffer_renderer_t {
+    class base_framebuffer_renderer_t : public system_t {
     public:
         virtual void draw(render_system_t* rs, key_t current) {}
     };

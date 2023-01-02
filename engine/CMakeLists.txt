@@ -62,7 +62,8 @@ target_sources(spock_engine PRIVATE
     "render/button_renderer.hpp" "render/button_renderer.cpp"
     "render/font_renderer.hpp" "render/font_renderer.cpp"
     "render/sprite_renderer.hpp" "render/sprite_renderer.cpp"
-    "render/primitive_renderer.hpp" "render/primitive_renderer.cpp")
+    "render/primitive_renderer.hpp" "render/primitive_renderer.cpp"
+    "render/ui_fb_renderer.hpp" "render/ui_fb_renderer.cpp")
 
 target_sources(spock_engine PRIVATE
     "external/stb_image.h" "external/stb_image.c")

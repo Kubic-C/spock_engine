@@ -5,6 +5,7 @@
 
 #include "render/font_renderer.hpp"
 #include "render/button_renderer.hpp"
+#include "render/ui_fb_renderer.hpp"
 #include "render/render_system.hpp"
 
 namespace spk {

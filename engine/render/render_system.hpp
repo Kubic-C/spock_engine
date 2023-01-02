@@ -6,7 +6,8 @@ namespace spk {
     struct attachment_t {
         uint32_t texture;
         uint32_t internal_format;
-        uint32_t data_format;
+        uint32_t pixel_format;
+        uint32_t pixel_type;
         uint32_t attachment;
     };
 
@@ -34,7 +35,7 @@ namespace spk {
 
         key_t         atch_init();
         attachment_t& atch_get(key_t atch_id);
-        void          atch_set(key_t atch_id, uint32_t type, uint32_t internal_format, uint32_t data_format);
+        void          atch_set(key_t atch_id, uint32_t type, uint32_t internal_format, uint32_t pixel_format, uint32_t pixel_type);
         void          _atch_free(key_t atch_id);
         void          atch_remove(key_t atch_id);
 
@@ -52,6 +53,7 @@ namespace spk {
         render_pass_t& rp_get(key_t rp_id);
         void           rp_set_fb(key_t rp_id, key_t fb_id);
         void           rp_add_renderer(key_t rp_id, base_renderer_t* renderer);
+        void           rp_set_fb_renderer(key_t rp_id, base_framebuffer_renderer_t* renderer);
         void           _rp_free(key_t rp_id);
         void           rp_remove(key_t fb_id);
 

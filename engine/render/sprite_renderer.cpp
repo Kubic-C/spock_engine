@@ -33,7 +33,7 @@ namespace spk {
         m_init();
         max_vertexes = 1024;
 
-        vertex_buffer.buffer_data(sizeof(sprite_vertex_t) * indexes_per_sprite * max_vertexes, nullptr, GL_DYNAMIC_DRAW);
+        vertex_buffer.buffer_data(sizeof(sprite_vertex_t) * max_vertexes, nullptr, GL_DYNAMIC_DRAW);
 
         for(auto& mesh : meshes)  {
             mesh.mesh.resize(max_vertexes);
@@ -44,30 +44,23 @@ namespace spk {
         m_free();
     }
     
-    void sprite_batch_mesh_t::add_sprite_mesh(
-            comp_sprite_t& sprite, 
-            const glm::vec2& _1, 
-            const glm::vec2& _2, 
-            const glm::vec2& _3, 
-            const glm::vec2& _4) { 
-
+    void sprite_batch_mesh_t::add_sprite_mesh(comp_sprite_t& sprite, const glm::vec2& _1, const glm::vec2& _2, const glm::vec2& _3, const glm::vec2& _4) { 
         if(sprite.atlas_id == UINT32_MAX)
             return;
         
-        resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
-        
-        const uint32_t atlas_id = sprite.atlas_id;
-        sprite_atlas_t* atlas = rsrc_mng->get_atlas(atlas_id);
-        uint32_t index = meshes[atlas_id].sprites * indexes_per_sprite;
+        resource_manager_t*      rsrc_mng   = &state.engine->rsrc_mng;
+        const uint32_t           atlas_id   = sprite.atlas_id;
+        sprite_atlas_t*          atlas      = rsrc_mng->get_atlas(atlas_id);
+        uint32_t                 index      = meshes[atlas_id].sprites * indexes_per_sprite;
         std::array<glm::vec2, 4> tex_coords = atlas->gen_tex_coords(sprite.tax, sprite.tay);
 
         meshes[atlas_id].sprites += 1;
         resize_mesh_if_need(atlas_id);
 
-        meshes[atlas_id].mesh[index + 0] = {{_1, sprite.z},  tex_coords[0]};
-        meshes[atlas_id].mesh[index + 1] = {{_2, sprite.z},  tex_coords[1]};
-        meshes[atlas_id].mesh[index + 2] = {{_3, sprite.z},  tex_coords[2]};
-        meshes[atlas_id].mesh[index + 3] = {{_4, sprite.z},  tex_coords[3]};
+        meshes[atlas_id].mesh[index + 0] = {glm::vec3(_1, sprite.z),  tex_coords[0]};
+        meshes[atlas_id].mesh[index + 1] = {glm::vec3(_2, sprite.z),  tex_coords[1]};
+        meshes[atlas_id].mesh[index + 2] = {glm::vec3(_3, sprite.z),  tex_coords[2]};
+        meshes[atlas_id].mesh[index + 3] = {glm::vec3(_4, sprite.z),  tex_coords[3]};
     }
 
     void sprite_batch_mesh_t::add_sprite_mesh(b2Body* body, comp_sprite_t& sprite, glm::vec2 offset) {
@@ -95,7 +88,7 @@ namespace spk {
             max_vertexes = sprite_vertex_count * 2;
         }
 
-        vertex_buffer.buffer_sub_data(0, sprite_vertex_count * sizeof(sprite_vertex_t), meshes[atlas].mesh.data());
+        vertex_buffer.buffer_sub_data(0, sizeof(sprite_vertex_t) * sprite_vertex_count, meshes[atlas].mesh.data());
     }
 
     void sprite_renderer_t::init() {
