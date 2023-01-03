@@ -41,7 +41,7 @@ void main()
     }
 
     // multiplying it will give a more clear look
-    color = vec4(v_color, blend * 2.0f);
+    color = vec4(v_color, 1.0f);
 })###";
 
 namespace spk {

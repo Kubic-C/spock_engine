@@ -5,6 +5,7 @@
 #include "render/sprite_renderer.hpp"
 #include "systems/particles.hpp"
 #include "systems/tilemap.hpp"
+#include "systems/character_controller.hpp"
 
 namespace spk {
     void sprite_cs_init(system_ctx_allocater_t& allocater, flecs::world& world);

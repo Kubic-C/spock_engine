@@ -146,8 +146,8 @@ MAIN {
 
         td[2].sprite.tax = 2;
         td[2].density = 50.0f;
-        td[2].friction = 1000.0f;
-        td[2].restitution = 0.0f;
+        td[2].friction = 0.0f;
+        td[2].restitution = 1.1f;
 
         td[4].sprite.tax    = 4;
         td[4].sprite.z      = -5.0f;
@@ -159,15 +159,15 @@ MAIN {
 
     auto start_ = [&]() -> void {
         player = engine.world.entity();
-        player.set([&](spk::comp_b2Body_t& body, spk::comp_sprite_t& sprite){
-            sprite.tax = 2;
-            sprite.z = -0.2f;
+        player.set([&](spk::comp_b2Body_t& body, spk::comp_character_controller_t& cc){
+            cc.sprite.tax = 2;
+            cc.sprite.z = -3.0f;
 
             b2BodyDef body_def;
             body_def.type = b2_dynamicBody;
             body.body = engine.get_current_b2World()->CreateBody(&body_def);
 
-            sprite.add_fixture(body, 1.0f, 0.2f, 0.5f);
+            cc.add_fixture(body);
         });
 
         test = engine.world.entity();
@@ -201,25 +201,6 @@ MAIN {
         player.destruct();
     };
 
-    engine.world.observer().event<spk::event_keyboard_t>().term<spk::tag_events_t>()
-        .iter([&](flecs::iter& iter){
-            auto event = iter.param<spk::event_keyboard_t>();
-            auto camera = engine.get_current_camera();
-
-            if(event->type == SDL_KEYDOWN || event->repeat) {
-                switch(event->keysym.scancode) {
-                case SDL_SCANCODE_1:
-                    engine.set_current_camera(cam1);
-                    break;
-                case SDL_SCANCODE_2: 
-                    engine.set_current_camera(cam2);
-                    break;
-                default:
-                    break;
-                }
-            }
-        });
-
     engine.world.observer().event<spk::event_mouse_wheel_t>().term<spk::tag_events_t>()
         .iter([&](flecs::iter& iter){
             auto event = iter.param<spk::event_mouse_wheel_t>();
@@ -230,28 +211,6 @@ MAIN {
                 camera->scale -= scale;
             } else if(event->y > 0) {
                 camera->scale += scale;
-            }
-        });
-
-    engine.world.observer().event<spk::event_window_mouse_click_t>().term<spk::tag_events_t>()
-        .iter([&](flecs::iter& iter){
-            auto event = iter.param<spk::event_window_mouse_click_t>();
-            auto box_world = engine.get_current_b2World();
-            auto camera = engine.get_current_camera();
-
-            glm::vec2 mouse_click = camera->get_world_position((glm::vec2){(float)event->x, (float)event->y});
-          
-            if(player.is_alive() && player.has<spk::comp_b2Body_t>()) {
-                player.set([&](spk::comp_b2Body_t& body) {
-                    b2Vec2 position = body.body->GetPosition();
-
-                    b2Vec2 dir = spk::to_box_vec2(mouse_click) - position;
-                    dir.Normalize();
-                    dir *= 200.0f;
-
-                    body.body->ApplyForceToCenter(dir, true);
-                    body.body->SetAwake(true);
-                });
             }
         });
 
@@ -275,32 +234,13 @@ MAIN {
                 my_state = STATE_PLAY;
                 
                 spk::log.log("loading state");
-                engine.set_target_fps(1000);
+                engine.set_target_fps(60);
                 break;
 
             case STATE_PLAY: {
                 auto cam = engine.get_current_camera();
-                float speed = 10.0f;
+                float speed = 2.5f;
 
-                player.set([&](spk::comp_b2Body_t& body) {
-                    cam->pos = spk::to_glm_vec2(body.body->GetPosition());
-                });
-
-                // if(engine.is_pressed(SDL_SCANCODE_A)) {
-                //     cam->pos.x += speed;                     
-                // }
-                // if(engine.is_pressed(SDL_SCANCODE_D)) {
-                //     cam->pos.x -= speed;
-                // } 
-                // if(engine.is_pressed(SDL_SCANCODE_S)) {
-                //     cam->pos.y += speed;
-                // }
-                // if(engine.is_pressed(SDL_SCANCODE_W)) {
-                //     cam->pos.y -= speed;
-                // }
-                // if(engine.is_pressed(SDL_SCANCODE_R)) {
-                //     cam->pos = {0.0f, 0.0f};
-                // }
             } break;
 
             case STATE_EXIT_PLAY:

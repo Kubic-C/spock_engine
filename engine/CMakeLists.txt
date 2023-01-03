@@ -28,7 +28,8 @@ target_sources(spock_engine PRIVATE
     "components/sprite.hpp" "components/sprite.cpp"
     "components/tilemap.hpp" "components/tilemap.cpp"
     "components/camera.hpp" "components/camera.cpp"
-    "components/particles.hpp" "components/particles.cpp")
+    "components/particles.hpp" "components/particles.cpp"
+    "components/character_controller.hpp" "components/character_controller.cpp")
     
 target_sources(spock_engine PRIVATE
     "systems/window.hpp" "systems/window.cpp"
@@ -40,7 +41,8 @@ target_sources(spock_engine PRIVATE
     "systems/ui.hpp" "systems/ui.cpp"
     "systems/camera.hpp" "systems/camera.cpp"
     "systems/particles.hpp" "systems/particles.cpp"
-    "systems/tilemap.hpp" "systems/tilemap.cpp")
+    "systems/tilemap.hpp" "systems/tilemap.cpp"
+    "systems/character_controller.hpp" "systems/character_controller.cpp")
 
 target_sources(spock_engine PRIVATE
     "utility/ui.hpp" "utility/ui.cpp"

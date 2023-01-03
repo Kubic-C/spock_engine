@@ -36,6 +36,7 @@ namespace spk {
             .ctx(&sr->sprites).iter(sprite_render_system_update);
 
         _particles_cs_init(&sr->sprites, world);        
-        _tilemap_cs_init(&sr->sprites, world); 
+        _tilemap_cs_init(&sr->sprites, world);
+        _character_controller_cs_init(&sr->sprites, world); 
     }
 }
