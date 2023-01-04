@@ -3,7 +3,7 @@
 
 namespace spk {
     void ps_tracker_system_tick(flecs::iter& iter) {
-        auto ctx = SPK_GET_CTX(iter, ps_tracker_ctx_t);
+        auto ctx = get_ctx<ps_tracker_ctx_t>(iter);
 
         ctx->tps++;
         ctx->average_delta_time += time.get_time() - ctx->last_tick;
@@ -11,13 +11,13 @@ namespace spk {
     }
 
     void ps_tracker_system_update(flecs::iter& iter) {
-        auto ctx = SPK_GET_CTX(iter, ps_tracker_ctx_t);
+        auto ctx = get_ctx<ps_tracker_ctx_t>(iter);
         
         ctx->fps++;
     }
 
     void ps_tracker_system_update_sec(flecs::iter& iter) {
-        auto ctx = SPK_GET_CTX(iter, ps_tracker_ctx_t);
+        auto ctx = get_ctx<ps_tracker_ctx_t>(iter);
 
         ctx->average_delta_time /= ctx->tps;
 

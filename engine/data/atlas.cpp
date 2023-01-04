@@ -72,7 +72,7 @@ namespace spk {
     }
 
     sprite_atlas_t* atlas_manager_t::get_atlas(uint32_t index) {
-        spk_assert(in_use[index]);
+        spk_assert(atlas_is_in_use(index));
 
         return &atlases[index];
     }

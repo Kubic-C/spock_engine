@@ -2,6 +2,7 @@
 
 #include "text.hpp"
 #include "atlas.hpp"
+#include "sprite_array.hpp"
 #include "tiles.hpp"
 
 // the loading and managing resources external the program
@@ -10,7 +11,7 @@
 namespace spk {
     class resource_manager_t : 
         public font_manager_t, public atlas_manager_t,
-        public tile_dictionary_manager_t {
+        public sprite_array_manager_t, public tile_dictionary_manager_t {
     public:
         bool init();
         void free();

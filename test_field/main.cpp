@@ -1,4 +1,5 @@
 #include "spock.hpp"
+#include "utility/image_loader.hpp"
 
 enum current_state_e: uint32_t {
     STATE_MENU,
@@ -77,6 +78,17 @@ MAIN {
             return -100;
         }
         
+        engine.rsrc_mng.sprite_array_init(0);
+        engine.rsrc_mng.sprite_array_start(0, 32, 32, 5);
+        engine.rsrc_mng.sprite_array_load(0, "./texture_array/image1.png", 0);
+        engine.rsrc_mng.sprite_array_load(0, "./texture_array/image2.png", 1);
+        engine.rsrc_mng.sprite_array_finish(0);
+
+        engine.rsrc_mng.sprite_array_init(1);
+        engine.rsrc_mng.sprite_array_start(1, 32, 32, 5);
+        engine.rsrc_mng.sprite_array_load(1, "./texture_array/image3.png", 0);
+        engine.rsrc_mng.sprite_array_finish(1);
+
         engine.rsrc_mng.atlas_init(1, 8, 8);
         if(!engine.rsrc_mng.atlas_load_from_path(1, "./firetexture.png")) {
             spk::log.log("failed to load fire texture");
@@ -140,53 +152,57 @@ MAIN {
     { // game setup
         spk::tile_dictionary_t& td = engine.rsrc_mng.get_tile_dictionary();
         
-        td[1].sprite.tax = 0;
+        td[1].sprite.z      = -5.0f;
         td[1].restitution = 1.1f;
         td[1].friction = 0.0f;
 
-        td[2].sprite.tax = 2;
+        td[2].sprite.index = 1;
         td[2].density = 50.0f;
         td[2].friction = 0.0f;
-        td[2].restitution = 1.1f;
+        td[2].restitution = 0.0f;
 
-        td[4].sprite.tax    = 4;
-        td[4].sprite.z      = -5.0f;
+        td[4].sprite.array_id = 1;
+        td[4].sprite.index = 0;
         td[4].default_flags = 0;
-
-        td[3].sprite.atlas_id = 1;
-        td[3].sprite.tax = 0;
     }   
 
     auto start_ = [&]() -> void {
-        player = engine.world.entity();
-        player.set([&](spk::comp_b2Body_t& body, spk::comp_character_controller_t& cc){
-            cc.sprite.tax = 2;
-            cc.sprite.z = -3.0f;
+        for(uint32_t i = 0; i < 100; i++) {
+            player = engine.world.entity();
+            player.set([&](spk::comp_b2Body_t& body, spk::comp_character_controller_t& cc){
+                cc.sprite.tax = 2;
+                cc.sprite.z = -3.0f;
 
-            b2BodyDef body_def;
-            body_def.type = b2_dynamicBody;
-            body.body = engine.get_current_b2World()->CreateBody(&body_def);
+                b2BodyDef body_def;
+                body_def.type = b2_dynamicBody;
+                body_def.position = {(float)(rand() % 80) - 40.0f, 0.0f};
+                body_def.bullet = false;
+                body.body = engine.get_current_b2World()->CreateBody(&body_def);
 
-            cc.add_fixture(body);
-        });
+                cc.add_fixture(body);
+            });
+        }
 
         test = engine.world.entity();
         test.add<spk::comp_body_prim_t>();
         test.set([&](spk::comp_particles_t& ps){
             ps.base_speed = 100.0f;
             ps.dir = {1.0f, 0.0f};
+            ps.particle.id = 4;
         });
         test.set([&](spk::comp_b2Body_t& body, spk::comp_tilemap_t& comp){
             b2BodyDef def;
             body.body = engine.get_current_b2World()->CreateBody(&def);
 
-            for(uint32_t x = 0; x < comp.size.x; x++) {
-                for(uint32_t y = 0; y < comp.size.y; y++) {
-                    if(x != 0 && x != (comp.size.x - 1) &&
-                       y != 0 && y != (comp.size.y - 1)) {
-                        comp.tiles[x][y].id = 4;
+            for(uint32_t x = 0; x < 100; x++) {
+                for(uint32_t y = 0; y < 100; y++) {
+                    if(x != 0 && x != (100 - 1) &&
+                       y != 0 && y != (100 - 1) && y != 4) {
+                        comp.tiles[x][y].id = 1;
+                        comp.tiles[x][y].flags = 0;
                     } else {
                         comp.tiles[x][y].id = 2;
+                        comp.tiles[x][y].flags = spk::TILE_FLAGS_COLLIADABLE;
                     }
                 }
             }
@@ -234,13 +250,16 @@ MAIN {
                 my_state = STATE_PLAY;
                 
                 spk::log.log("loading state");
-                engine.set_target_fps(60);
+                engine.set_target_fps(1000000);
                 break;
 
             case STATE_PLAY: {
                 auto cam = engine.get_current_camera();
                 float speed = 2.5f;
 
+                player.set([&](spk::comp_b2Body_t& body) {
+                    cam->pos = body.get_pos();
+                });
             } break;
 
             case STATE_EXIT_PLAY:

@@ -1,11 +1,10 @@
 #include "character_controller.hpp"
-#include "sprite.hpp"
 #include "state.hpp"
 #include "spock.hpp"
 
 namespace spk {
     void cc_mesh(flecs::iter& iter, comp_b2Body_t* bodies, comp_character_controller_t* ccs) {
-        auto mesh = SPK_GET_CTX(iter, sprite_batch_mesh_t);
+        auto mesh = get_ctx<sprite_atlasd_batch_mesh_t>(iter);
 
         for(auto i : iter) {
             comp_b2Body_t*               body = &bodies[i];
@@ -38,7 +37,7 @@ namespace spk {
         }
     }
 
-    void _character_controller_cs_init(sprite_batch_mesh_t* mesh, flecs::world& world) {
+    void _character_controller_cs_init(mesh_t* mesh, flecs::world& world) {
         character_controller_comp_init(world);
 
         world.system<comp_b2Body_t, comp_character_controller_t>().iter(cc_tick);

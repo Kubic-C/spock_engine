@@ -65,16 +65,16 @@ namespace spk {
     
     void primitive_renderer_t::draw_indexed_buffer(static_index_buffer_t& ind, glm::mat4& vp, uint32_t count) { 
         ind.bind();
-        program.use();
-        program.set_mat4("u_vp", vp);
-        program.set_vec3("color", color);
+        prim_ctx.program.use();
+        prim_ctx.program.set_mat4("u_vp", vp);
+        prim_ctx.program.set_vec3("color", color);
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);   
     }
 
     void primitive_renderer_t::draw_buffer(glm::mat4& vp, uint32_t count) { 
-        program.use();
-        program.set_mat4("u_vp", vp);
-        program.set_vec3("color", color);
+        prim_ctx.program.use();
+        prim_ctx.program.set_mat4("u_vp", vp);
+        prim_ctx.program.set_vec3("color", color);
         glDrawArrays(GL_TRIANGLES, 0, count);   
     }
 
@@ -111,7 +111,7 @@ namespace spk {
         }
 
         vertex_buffer.buffer_sub_data(0, vertices * sizeof(prim_vertex_t), mesh.data());
-        vertex_array.bind();
+        prim_ctx.vertex_array.bind();
 
         draw_buffer(vp, vertices);
     }
@@ -123,7 +123,7 @@ namespace spk {
         mesh[1] = { spk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex2)) };
     
         vertex_buffer.buffer_sub_data(0, vertices * sizeof(prim_vertex_t), mesh.data());
-        vertex_array.bind();
+        prim_ctx.vertex_array.bind();
 
         draw_buffer(vp, vertices);
     }
@@ -135,16 +135,19 @@ namespace spk {
 
         vertex_buffer.init(GL_ARRAY_BUFFER);
         vertex_buffer.buffer_data(sizeof(prim_vertex_t) * 4 * 100, nullptr, GL_DYNAMIC_DRAW);
-        vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0, vertex_buffer);
-        vertex_array.bind_layout(vertex_layout);
+        
+        prim_ctx.init();
+        prim_ctx.vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0, vertex_buffer);
+        prim_ctx.vertex_array.bind_layout(prim_ctx.vertex_layout);
 
-        bool ret = program.load_shader_str(vs_colliders, fs_colliders);
+        bool ret = prim_ctx.program.load_shader_str(vs_colliders, fs_colliders);
         spk_assert(ret && "primitive render shaders invalid");
     
         mesh.resize(100 * 3);
     }
 
     void primitive_renderer_t::free() {
+        prim_ctx.free();
         poly_mesh.free();
         b_free();
     }
@@ -156,14 +159,14 @@ namespace spk {
         
         poly_mesh.subdata();
 
-        vertex_layout.set_buffer(0, poly_mesh.vertex_buffer);
-        vertex_array.bind_layout(vertex_layout);
+        prim_ctx.vertex_layout.set_buffer(0, poly_mesh.vertex_buffer);
+        prim_ctx.vertex_array.bind_layout(prim_ctx.vertex_layout);
 
-        vertex_array.bind();
         renderer->quad_index_buffer.bind();
-        program.use();
-        program.set_mat4("u_vp", camera->vp);
-        program.set_vec3("color", color);
+        prim_ctx.vertex_array.bind();
+        prim_ctx.program.use();
+        prim_ctx.program.set_mat4("u_vp", camera->vp);
+        prim_ctx.program.set_vec3("color", color);
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glDrawElements(GL_TRIANGLES, poly_mesh.count, GL_UNSIGNED_INT, nullptr);   

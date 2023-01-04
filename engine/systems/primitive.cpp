@@ -4,7 +4,7 @@
 
 namespace spk {
     void primitive_pre_mesh(flecs::iter& iter) {
-        auto poly_mesh = SPK_GET_CTX(iter, polygon_batch_mesh_t);
+        auto poly_mesh = get_ctx<polygon_batch_mesh_t>(iter);
 
         poly_mesh->zero();
     }
@@ -12,7 +12,7 @@ namespace spk {
     void primitive_mesh(flecs::iter& iter, comp_b2Body_t* bodies) {
         auto render_ctx = (render_system_t*)state.get_current_renderer();
         auto camera     = state.get_current_camera().get_ref<comp_camera_t>();
-        auto poly_mesh  = SPK_GET_CTX(iter, polygon_batch_mesh_t);
+        auto poly_mesh  = get_ctx<polygon_batch_mesh_t>(iter);
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         

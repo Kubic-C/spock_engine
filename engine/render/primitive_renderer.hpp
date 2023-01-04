@@ -42,6 +42,7 @@ namespace spk {
         glm::vec3            color;
 
     private:
+        render_ctx_t               prim_ctx;
         vertex_buffer_t            vertex_buffer;
         std::vector<prim_vertex_t> mesh;
     };

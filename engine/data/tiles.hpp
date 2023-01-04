@@ -11,13 +11,7 @@ namespace spk {
     };
 
     struct tile_metadata_t {
-        comp_sprite_t sprite = { 
-            .atlas_id = 0, 
-            .tax = 0, 
-            .tay = 0, 
-            .size = {SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE}, 
-            .z = 0.0f 
-        };
+        comp_sprite_arrayd_t sprite = {.size = {SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE}};
         
         uint8_t default_flags = TILE_FLAGS_COLLIADABLE;
         float density     = 1.0f;
@@ -28,8 +22,18 @@ namespace spk {
     struct tile_t {
         uint32_t id   = 0;
         uint8_t flags = TILE_FLAGS_COLLIADABLE;
+        uint32_t sizey = 1;
+        uint32_t sizex = 1;
 
-        tile_t() {}
+        struct {
+            uint32_t sizex;
+            uint32_t sizey;
+        } _;
+
+        tile_t() {
+            _.sizex = sizex;
+            _.sizey = sizey;
+        }
 
         tile_t(uint32_t id)
             : id(id) {

@@ -37,5 +37,8 @@ namespace spk {
         void draw() override;
     
         font_batch_mesh_t mesh;
+
+    private:
+        render_ctx_t font_ctx;
     };
 }

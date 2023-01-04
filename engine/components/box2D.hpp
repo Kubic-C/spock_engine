@@ -8,6 +8,8 @@ namespace spk {
     struct comp_b2World_t {
         b2World* world;
 
+        
+
         operator b2World*() {
             return world;
         }

@@ -73,13 +73,14 @@ namespace spk {
     }    
     
     void button_renderer_t::init() {
-        b_init();
+        b_init(); 
         mesh.init();
 
-        vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 3), 0, 0);
-        vertex_layout.add(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 3), sizeof(float) * 2, 0);
+        btn_ctx.init();
+        btn_ctx.vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 3), 0, 0);
+        btn_ctx.vertex_layout.add(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 3), sizeof(float) * 2, 0);
         
-        bool ret = program.load_shader_str(vs_button, fs_button);
+        bool ret = btn_ctx.program.load_shader_str(vs_button, fs_button);
         spk_assert(ret);
     }
 
@@ -94,14 +95,14 @@ namespace spk {
 
         mesh.subdata();
 
-        vertex_layout.set_buffer(0, mesh.vertex_buffer);
-        vertex_layout.set_buffer(1, mesh.vertex_buffer);
-        vertex_array.bind_layout(vertex_layout);
+        btn_ctx.vertex_layout.set_buffer(0, mesh.vertex_buffer);
+        btn_ctx.vertex_layout.set_buffer(1, mesh.vertex_buffer);
+        btn_ctx.vertex_array.bind_layout(btn_ctx.vertex_layout);
 
-        vertex_array.bind();
+        btn_ctx.vertex_array.bind();
         state.get_current_renderer()->quad_index_buffer.bind();
-        program.use();
-        program.set_mat4("u_vp", mesh.vp);
+        btn_ctx.program.use();
+        btn_ctx.program.set_mat4("u_vp", mesh.vp);
 
         glDrawElements(GL_TRIANGLES, mesh.vertices, GL_UNSIGNED_INT, nullptr);
     }

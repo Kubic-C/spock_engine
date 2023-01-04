@@ -48,16 +48,19 @@ target_sources(spock_engine PRIVATE
     "utility/ui.hpp" "utility/ui.cpp"
     "utility/entity.hpp" "utility/entity.cpp"
     "utility/structure.hpp" "utility/structure.cpp"
-    "utility/memory.hpp" "utility/memory.cpp")
+    "utility/memory.hpp" "utility/memory.cpp"
+    "utility/image_loader.hpp" "utility/image_loader.cpp")
 
 target_sources(spock_engine PRIVATE
     "data/text.hpp" "data/text.cpp"
     "data/resource_manager.hpp" "data/resource_manager.cpp"
     "data/atlas.hpp" "data/atlas.cpp"
+    "data/sprite_array.hpp" "data/sprite_array.cpp"
     "data/tiles.hpp" "data/tiles.cpp")
 
 target_sources(spock_engine PRIVATE
     "render/opengl.hpp" "render/opengl.cpp"
+    "render/texture_array.hpp" "render/texture_array.cpp"
     "render/render_system.hpp" "render/render_system.cpp"
     "render/meshes.hpp" "render/meshes.cpp"
     "render/base_renderer.hpp" "render/base_renderer.cpp"

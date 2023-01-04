@@ -1,7 +1,6 @@
 #include "particles.hpp"
 #include "utility/ui.hpp"
 #include <glm/gtx/vector_angle.hpp>
-#include "sprite.hpp"
 #include "state.hpp"
 #include "spock.hpp"
 
@@ -126,7 +125,7 @@ namespace spk {
         }
     }
 
-    void add_particles(sprite_batch_mesh_t* ctx, b2Body* body, comp_particles_t& ps) {
+    void add_particles(sprite_arrayd_batch_mesh_t* ctx, b2Body* body, comp_particles_t& ps) {
         tile_metadata_t& tmd = state.engine->rsrc_mng.get_tile_dictionary()[ps.particle.id];
        
         for(uint32_t j = 0; j < ps.particles.size(); j++) {
@@ -156,14 +155,14 @@ namespace spk {
     }
 
     void particles_system_update(flecs::iter& iter, comp_b2Body_t* bodies, comp_particles_t* particles) {
-        auto ctx = SPK_GET_CTX(iter, sprite_batch_mesh_t);
+        auto ctx = get_ctx<sprite_batch_mesh_t<sprite_arrayd_vertex_t, comp_sprite_arrayd_t>>(iter);
 
         for(auto i : iter) {
             add_particles(ctx, bodies[i].body, particles[i]);            
         }
     }
 
-    void _particles_cs_init(sprite_batch_mesh_t* ctx, flecs::world& world) {
+    void _particles_cs_init(mesh_t* ctx, flecs::world& world) {
         particles_comp_init(world);
 
         world.system<comp_b2Body_t, comp_particles_t>().iter(particles_system_tick);

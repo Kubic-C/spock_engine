@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base.hpp"
+#include "texture_array.hpp"
 #include "external/stb_image.h"
 
 #define BGFX_HANDLE_VALID(handle) (handle.idx != bgfx::kInvalidHandle)
@@ -182,4 +183,9 @@ namespace spk {
     private:
         uint32_t id;
     };
+
+    void tex_param_blurry(uint32_t target);
+    void tex_param_clear(uint32_t target);
+    void tex_param_wrap_repeat(uint32_t target);
+    void tex_param_wrap_clamp_to_edge(uint32_t target);
 }

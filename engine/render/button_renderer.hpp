@@ -33,5 +33,8 @@ namespace spk {
         void free() override;
 
         button_batch_mesh_t mesh;
+
+    private:
+        render_ctx_t btn_ctx; 
     };
 }

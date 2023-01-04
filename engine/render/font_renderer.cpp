@@ -114,15 +114,17 @@ namespace spk {
         b_init();
         mesh.init();
 
-        vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), 0, 0);
-        vertex_layout.add(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), sizeof(float) * 2, 0);
-        vertex_layout.add(2, 3, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), sizeof(float) * 4, 0);
+        font_ctx.init();
+        font_ctx.vertex_layout.add(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), 0, 0);
+        font_ctx.vertex_layout.add(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), sizeof(float) * 2, 0);
+        font_ctx.vertex_layout.add(2, 3, GL_FLOAT, GL_FALSE, sizeof(float) * (2 + 2 + 3), sizeof(float) * 4, 0);
         
-        bool ret = program.load_shader_str(vs_font, fs_font);
+        bool ret = font_ctx.program.load_shader_str(vs_font, fs_font);
         spk_assert(ret);
     }
 
     void font_renderer_t::free() {
+        font_ctx.free();
         mesh.free();
         b_free();
     }
@@ -133,16 +135,16 @@ namespace spk {
 
         mesh.subdata();
 
-        vertex_layout.set_buffer(0, mesh.vertex_buffer);
-        vertex_layout.set_buffer(1, mesh.vertex_buffer);
-        vertex_layout.set_buffer(2, mesh.vertex_buffer);
-        vertex_array.bind_layout(vertex_layout);
+        font_ctx.vertex_layout.set_buffer(0, mesh.vertex_buffer);
+        font_ctx.vertex_layout.set_buffer(1, mesh.vertex_buffer);
+        font_ctx.vertex_layout.set_buffer(2, mesh.vertex_buffer);
+        font_ctx.vertex_array.bind_layout(font_ctx.vertex_layout);
 
         state.get_current_renderer()->quad_index_buffer.bind();
-        vertex_array.bind();
-        program.use();
-        program.set_mat4("u_vp", mesh.vp);
-        program.set_int("font", 0);
+        font_ctx.vertex_array.bind();
+        font_ctx.program.use();
+        font_ctx.program.set_mat4("u_vp", mesh.vp);
+        font_ctx.program.set_int("font", 0);
         mesh.font->texture.active_texture(GL_TEXTURE0);
 
         glEnable(GL_BLEND);

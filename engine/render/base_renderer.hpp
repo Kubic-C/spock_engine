@@ -13,6 +13,15 @@ namespace spk {
         glm::vec4             clear_color;
     };
 
+    struct render_ctx_t {
+        void init();
+        void free();
+
+        vertex_layout_t               vertex_layout;
+        vertex_array_t                vertex_array;
+        program_t                     program;
+    };
+
     class base_renderer_t : public system_t {
     public:
         void b_init();
@@ -22,10 +31,6 @@ namespace spk {
 
         static_list<flecs::entity, 8> systems;  
     protected:
-        vertex_layout_t               vertex_layout;
-        vertex_array_t                vertex_array;
-        program_t                     program;
-
     };
 
     class base_framebuffer_renderer_t : public system_t {

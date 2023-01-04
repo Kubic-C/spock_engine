@@ -6,7 +6,7 @@
 
 namespace spk {
     void ui_render_system_update(flecs::iter& iter, ui_comp_canvas_t* canvas_) {
-        auto ctx = SPK_GET_CTX(iter, ui_meshes_t);
+        auto ctx = get_ctx<ui_meshes_t>(iter);
         ui_comp_canvas_t& canvas = *canvas_;
         font_t* font = canvas.font;
         float xmax = canvas.abs_size.x;

@@ -3,7 +3,8 @@
 #include "components/character_controller.hpp"
 
 namespace spk {
-    struct sprite_batch_mesh_t;
+    struct mesh_t;
 
-    void _character_controller_cs_init(sprite_batch_mesh_t* mesh, flecs::world& world);
+    // character controller cs init will be called in sprite cs init
+    void _character_controller_cs_init(mesh_t* mesh, flecs::world& world);
 }

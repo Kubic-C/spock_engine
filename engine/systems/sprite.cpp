@@ -3,23 +3,33 @@
 #include "spock.hpp"
 
 namespace spk {
-    void sprite_render_pre_mesh(flecs::iter& iter) {
-        auto sprite_renderer = SPK_GET_CTX(iter, sprite_batch_mesh_t);
+    void sprite_atlas_mesh_pre_mesh(flecs::iter& iter) {
+        auto sprite_mesh = get_ctx<sprite_atlasd_batch_mesh_t>(iter);
 
-        for(auto& mesh : sprite_renderer->meshes) {
+        for(auto& mesh : sprite_mesh->meshes) {
             mesh.sprites = 0;
         }
     }
 
-    void sprite_render_system_update(flecs::iter& iter, comp_b2Body_t* bodies, comp_sprite_t* sprites) {
-        auto sprite_renderer = SPK_GET_CTX(iter, sprite_batch_mesh_t);
+    void sprite_array_mesh_pre_mesh(flecs::iter& iter) {
+        auto sprite_mesh = get_ctx<sprite_arrayd_batch_mesh_t>(iter);
+
+        for(auto& mesh : sprite_mesh->meshes) {
+            if(mesh.sprites)
+                log.log("array meshs: %u", mesh.sprites);
+            mesh.sprites = 0;
+        }
+    }
+
+    void sprite_render_system_update(flecs::iter& iter, comp_b2Body_t* bodies, comp_sprite_atlasd_t* sprites) {
+        auto sprite_mesh = get_ctx<sprite_atlasd_batch_mesh_t>(iter);
         resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
 
         for(auto i : iter) {
             comp_b2Body_t&  body = bodies[i];
-            comp_sprite_t&  sprite = sprites[i];
+            comp_sprite_atlasd_t&  sprite = sprites[i];
 
-            sprite_renderer->add_sprite_mesh(body.body, sprite);
+            sprite_mesh->add_sprite_mesh(body.body, sprite);
         }
     }
     
@@ -30,13 +40,18 @@ namespace spk {
 
         state.get_current_renderer()->rp_add_renderer(0, (base_renderer_t*)sr);
 
+        // pre mesh
         world.system().kind(on_pre_mesh)
-            .ctx(&sr->sprites).iter(sprite_render_pre_mesh);
-        world.system<comp_b2Body_t, comp_sprite_t>().kind(on_mesh)
-            .ctx(&sr->sprites).iter(sprite_render_system_update);
+            .ctx(&sr->atlasd_sprites).iter(sprite_atlas_mesh_pre_mesh);
+        world.system().kind(on_pre_mesh)
+            .ctx(&sr->arrayd_sprites).iter(sprite_array_mesh_pre_mesh);
 
-        _particles_cs_init(&sr->sprites, world);        
-        _tilemap_cs_init(&sr->sprites, world);
-        _character_controller_cs_init(&sr->sprites, world); 
+        // on mesh
+        world.system<comp_b2Body_t, comp_sprite_atlasd_t>().kind(on_mesh)
+            .ctx(&sr->atlasd_sprites).iter(sprite_render_system_update);
+
+        _particles_cs_init(&sr->arrayd_sprites, world);        
+        _tilemap_cs_init(&sr->arrayd_sprites, world);
+        _character_controller_cs_init(&sr->atlasd_sprites, world); 
     }
 }

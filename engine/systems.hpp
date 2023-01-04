@@ -5,10 +5,14 @@
 
 /* handling of systems with FLECS */
 
-#define SPK_GET_CTX(iter, type) static_cast<type*>(iter.ctx())
 #define SPK_NOT_A_TAG  uint8_t ___not_a_tag;
 
 namespace spk {
+    template<typename T>
+    T* get_ctx(flecs::iter& iter) {
+        return static_cast<T*>(iter.ctx());
+    }
+
     class system_t {
     public:
         virtual void init() {}
