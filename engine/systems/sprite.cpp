@@ -15,8 +15,6 @@ namespace spk {
         auto sprite_mesh = get_ctx<sprite_arrayd_batch_mesh_t>(iter);
 
         for(auto& mesh : sprite_mesh->meshes) {
-            if(mesh.sprites)
-                log.log("array meshs: %u", mesh.sprites);
             mesh.sprites = 0;
         }
     }
