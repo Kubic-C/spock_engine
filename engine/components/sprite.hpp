@@ -14,7 +14,7 @@ namespace spk {
         glm::vec2 size     = {0.5f, 0.5f}; // the size of the sprite to render
         float     z        = 0.0f; // z coordinate, positive z is towards the camera
 
-        b2Fixture* add_fixture(b2Body* body, float density, float friction, float restitution);
+        b2Fixture* add_fixture(b2Body* body, float density, float friction, float restitution, int group_index = 0);
     };
 
     // comp_sprite_arrayd_t is stored within a Texture Array rather then a Texture atlas.
@@ -27,7 +27,7 @@ namespace spk {
         glm::vec2 size     = {0.5f, 0.5f};
         float     z        = 0.0f; // z coordinate, positive z is towards the camera
 
-        b2Fixture* add_fixture(b2Body* body, float density, float friction, float restitution);
+        b2Fixture* add_fixture(b2Body* body, float density, float friction, float restitution, int group_index = 0);
     };
 
     void sprite_comp_init(flecs::world& world);

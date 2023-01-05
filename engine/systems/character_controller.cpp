@@ -3,17 +3,6 @@
 #include "spock.hpp"
 
 namespace spk {
-    void cc_mesh(flecs::iter& iter, comp_b2Body_t* bodies, comp_character_controller_t* ccs) {
-        auto mesh = get_ctx<sprite_atlasd_batch_mesh_t>(iter);
-
-        for(auto i : iter) {
-            comp_b2Body_t*               body = &bodies[i];
-            comp_character_controller_t* cc   = &ccs[i];            
-
-            mesh->add_sprite_mesh(body->body, cc->sprite);
-        }
-    }
-
     void cc_tick(flecs::iter& iter, comp_b2Body_t* bodies, comp_character_controller_t* ccs) {
         for(auto i : iter) {
             comp_b2Body_t*               body  = &bodies[i];
@@ -41,6 +30,5 @@ namespace spk {
         character_controller_comp_init(world);
 
         world.system<comp_b2Body_t, comp_character_controller_t>().iter(cc_tick);
-        world.system<comp_b2Body_t, comp_character_controller_t>().ctx(mesh).kind(on_mesh).iter(cc_mesh);
     }
 }

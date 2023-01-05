@@ -82,7 +82,8 @@ namespace spk {
 
     void sprite_renderer_t::free() {
         atlasd_ctx.free();
-        atlasd_sprites.free();        
+        atlasd_sprites.free();       
+        arrayd_sprites.free(); 
         b_free();
     }
 

@@ -19,13 +19,26 @@ namespace spk {
         }
     }
 
-    void sprite_render_system_update(flecs::iter& iter, comp_b2Body_t* bodies, comp_sprite_atlasd_t* sprites) {
+    void sprite_atlas_mesh(flecs::iter& iter, comp_b2Body_t* bodies, comp_sprite_atlasd_t* sprites) {
         auto sprite_mesh = get_ctx<sprite_atlasd_batch_mesh_t>(iter);
         resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
 
         for(auto i : iter) {
             comp_b2Body_t&  body = bodies[i];
             comp_sprite_atlasd_t&  sprite = sprites[i];
+
+            sprite_mesh->add_sprite_mesh(body.body, sprite);
+        }
+    }
+
+    
+    void sprite_array_mesh(flecs::iter& iter, comp_b2Body_t* bodies, comp_sprite_arrayd_t* sprites) {
+        auto sprite_mesh = get_ctx<sprite_arrayd_batch_mesh_t>(iter);
+        resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
+
+        for(auto i : iter) {
+            comp_b2Body_t&  body = bodies[i];
+            comp_sprite_arrayd_t&  sprite = sprites[i];
 
             sprite_mesh->add_sprite_mesh(body.body, sprite);
         }
@@ -46,7 +59,9 @@ namespace spk {
 
         // on mesh
         world.system<comp_b2Body_t, comp_sprite_atlasd_t>().kind(on_mesh)
-            .ctx(&sr->atlasd_sprites).iter(sprite_render_system_update);
+            .ctx(&sr->atlasd_sprites).iter(sprite_atlas_mesh);
+        world.system<comp_b2Body_t, comp_sprite_arrayd_t>().kind(on_mesh)
+            .ctx(&sr->arrayd_sprites).iter(sprite_array_mesh);
 
         _particles_cs_init(&sr->arrayd_sprites, world);        
         _tilemap_cs_init(&sr->arrayd_sprites, world);

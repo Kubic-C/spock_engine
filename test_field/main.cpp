@@ -167,11 +167,13 @@ MAIN {
     }   
 
     auto start_ = [&]() -> void {
-        for(uint32_t i = 0; i < 100; i++) {
+        for(uint32_t i = 0; i < 10; i++) {
             player = engine.world.entity();
-            player.set([&](spk::comp_b2Body_t& body, spk::comp_character_controller_t& cc){
-                cc.sprite.tax = 2;
-                cc.sprite.z = -3.0f;
+            player.set([&](
+                spk::comp_b2Body_t& body, 
+                spk::comp_character_controller_t& cc,
+                spk::comp_tilemap_t& tm){
+                cc.speed = 100.0f;
 
                 b2BodyDef body_def;
                 body_def.type = b2_dynamicBody;
@@ -179,25 +181,23 @@ MAIN {
                 body_def.bullet = false;
                 body.body = engine.get_current_b2World()->CreateBody(&body_def);
 
-                cc.add_fixture(body);
+                tm.tiles.get(0, 0).id = 2;
+                tm.tiles.get(1, 0).id = 2;
+                tm.tiles.get(0, 1).id = 2;
+                tm.tiles.get(1, 1).id = 2;
+                tm.add_fixtures(body);
             });
         }
 
         test = engine.world.entity();
-        test.add<spk::comp_body_prim_t>();
-        test.set([&](spk::comp_particles_t& ps){
-            ps.base_speed = 100.0f;
-            ps.dir = {1.0f, 0.0f};
-            ps.particle.id = 4;
-        });
         test.set([&](spk::comp_b2Body_t& body, spk::comp_tilemap_t& comp){
             b2BodyDef def;
             body.body = engine.get_current_b2World()->CreateBody(&def);
 
-            for(uint32_t x = 0; x < comp.size.x - 1; x++) {
-                for(uint32_t y = 0; y < comp.size.y - 1; y++) {
-                    if(x != 0 && x != (comp.size.x - 1) &&
-                       y != 0 && y != (comp.size.y - 1) && y != 4) {
+            for(uint32_t x = 0; x < comp.tiles.get_width(); x++) {
+                for(uint32_t y = 0; y < comp.tiles.get_height(); y++) {
+                    if(x != 0 && x != (comp.tiles.get_width() - 1) &&
+                       y != 0 && y != (comp.tiles.get_height() - 1)) {
                         comp.tiles.get(x, y).id = 1;
                         comp.tiles.get(x, y).flags = 0;
                     } else {
