@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base.hpp"
-#include "utility/structure.hpp"
+#include "utility/structures.hpp"
 
 /* handling of systems with FLECS */
 

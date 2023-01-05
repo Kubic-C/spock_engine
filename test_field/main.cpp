@@ -194,15 +194,15 @@ MAIN {
             b2BodyDef def;
             body.body = engine.get_current_b2World()->CreateBody(&def);
 
-            for(uint32_t x = 0; x < 100; x++) {
-                for(uint32_t y = 0; y < 100; y++) {
-                    if(x != 0 && x != (100 - 1) &&
-                       y != 0 && y != (100 - 1) && y != 4) {
-                        comp.tiles[x][y].id = 1;
-                        comp.tiles[x][y].flags = 0;
+            for(uint32_t x = 0; x < comp.size.x - 1; x++) {
+                for(uint32_t y = 0; y < comp.size.y - 1; y++) {
+                    if(x != 0 && x != (comp.size.x - 1) &&
+                       y != 0 && y != (comp.size.y - 1) && y != 4) {
+                        comp.tiles.get(x, y).id = 1;
+                        comp.tiles.get(x, y).flags = 0;
                     } else {
-                        comp.tiles[x][y].id = 2;
-                        comp.tiles[x][y].flags = spk::TILE_FLAGS_COLLIADABLE;
+                        comp.tiles.get(x, y).id = 2;
+                        comp.tiles.get(x, y).flags = spk::TILE_FLAGS_COLLIADABLE;
                     }
                 }
             }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "utility/array2D.hpp"
 #include "data/tiles.hpp"
 #include "debug.hpp"
 #include "box2D.hpp"
@@ -27,7 +28,7 @@ namespace spk {
 
         glm::vec2 offset; // its local offset to its tilebody's, or body's world position
         glm::uvec2 size;
-        std::vector<std::vector<tile_t>> tiles;
+        array2D_t<tile_t> tiles;
 
         // tiles that should have an active collider on them
         std::vector<tile_collider_t> colliding_tiles;

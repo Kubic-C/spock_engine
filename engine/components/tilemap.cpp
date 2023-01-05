@@ -4,24 +4,21 @@
 
 namespace spk {
     void comp_tilemap_t::init() {
-        size.x = 100;
-        size.y = 100;
+        size.x = 10;
+        size.y = 10;
 
-        tiles.resize(size.x);
-        for(uint32_t i = 0; i < size.y; i++) {
-            tiles[i].resize(size.y);
-        }
+        tiles.init(size.x, size.y);
 
         for(uint32_t x = 0; x < size.x; x++) {
             for(uint32_t y = 0; y < size.y; y++) {
-                tiles[x][y].id = 0;
-                tiles[x][y].flags = TILE_FLAGS_COLLIADABLE;
+                tiles.get(x, y).id = 0;
+                tiles.get(x, y).flags = TILE_FLAGS_COLLIADABLE;
             }
         }
     }
 
     void comp_tilemap_t::free() {
-
+        tiles.free();
     }
     
     void comp_tilemap_t::iterate_map(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
@@ -44,7 +41,7 @@ namespace spk {
     
     void comp_tilemap_t::iterate_non_zero(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
         iterate_map([&](uint32_t x, uint32_t y) {
-            if(!is_tile_empty(tiles[x][y])) {
+            if(!is_tile_empty(tiles.get(x, y))) {
                 clbk(x, y);
             }
         });
@@ -53,12 +50,12 @@ namespace spk {
     tile_is_coll_info_t comp_tilemap_t::tile_is_colliadable(uint32_t x, uint32_t y) {
         tile_is_coll_info_t info;
 
-        if(spk::is_tile_empty(tiles[x][y])) // if its empty it can't collide
+        if(spk::is_tile_empty(tiles.get(x, y))) // if its empty it can't collide
             return info;
 
         // check left tile
         if(x - 1 != UINT32_MAX) {
-            if(spk::is_tile_empty(tiles[x - 1][y])) {
+            if(spk::is_tile_empty(tiles.get(x - 1, y))) {
                 info.left = true;
             }
         } else { // edge tiles are colliadable
@@ -67,7 +64,7 @@ namespace spk {
 
         // check right tile
         if(x + 1 != size.x) {
-            if(spk::is_tile_empty(tiles[x + 1][y])) {
+            if(spk::is_tile_empty(tiles.get(x  + 1, y))) {
                 info.right = true;
             }
         } else { // edge tiles are colliadable
@@ -76,7 +73,7 @@ namespace spk {
 
         // check top tiles
         if(y - 1 != UINT32_MAX) {
-            if(spk::is_tile_empty(tiles[x][y - 1])) {
+            if(spk::is_tile_empty(tiles.get(x, y - 1))) {
                 info.top = true;
             }
         } else { // edge tiles are colliadable
@@ -85,7 +82,7 @@ namespace spk {
 
         // check bottom tiles
         if(y + 1 != size.y) {
-            if(spk::is_tile_empty(tiles[x][y + 1])) {
+            if(spk::is_tile_empty(tiles.get(x, y + 1))) {
                 info.bottom = true;
             }
         } else { // edge tiles are colliadable
@@ -104,7 +101,7 @@ namespace spk {
         colliding_tiles.clear();
 
         iterate_colliadable([&](uint32_t x, uint32_t y, tile_is_coll_info_t& info){
-            colliding_tiles.push_back((tile_collider_t){.id = tiles[x][y].id});
+            colliding_tiles.push_back((tile_collider_t){.id = tiles.get(x, y).id});
             auto& shape = colliding_tiles.back().shape;
 
             shape.SetAsBox(SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE);
@@ -115,7 +112,7 @@ namespace spk {
         });
 
         iterate_non_zero([&](uint32_t x, uint32_t y) {
-            tile_t& tile = tiles[x][y];
+            tile_t& tile = tiles.get(x, y);
             tile_metadata_t& md = state.engine->rsrc_mng.get_tile_dictionary()[tile.id];
             
             // Compute the mass for a given tile

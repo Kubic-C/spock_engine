@@ -1,7 +1,7 @@
 #pragma once
 
 #include "opengl.hpp"
-#include "utility/structure.hpp"
+#include "utility/static_list.hpp"
 
 namespace spk {
     struct mesh_t {

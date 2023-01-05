@@ -47,7 +47,9 @@ target_sources(spock_engine PRIVATE
 target_sources(spock_engine PRIVATE
     "utility/ui.hpp" "utility/ui.cpp"
     "utility/entity.hpp" "utility/entity.cpp"
-    "utility/structure.hpp" "utility/structure.cpp"
+    "utility/structures.hpp" "utility/structures.cpp"
+    "utility/static_list.hpp" "utility/static_list.cpp"
+    "utility/array2D.hpp" "utility/array2D.cpp"
     "utility/memory.hpp" "utility/memory.cpp"
     "utility/image_loader.hpp" "utility/image_loader.cpp")
 
