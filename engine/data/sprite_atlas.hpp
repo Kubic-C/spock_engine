@@ -21,28 +21,28 @@ namespace spk {
         texture2D_t texture;
     };
 
-    class atlas_manager_t {
+    class sprite_atlas_manager_t {
     public:
         bool am_init();
         void am_free();
-        bool atlas_is_in_use(uint32_t index);
-        void atlas_in_use(uint32_t index);
+        bool sprite_atlas_is_in_use(uint32_t index);
+        void sprite_atlas_in_use(uint32_t index);
         sprite_atlas_t* get_atlas(uint32_t index);
 
-        void atlas_init(uint32_t index, uint32_t sprites_per_row, uint32_t sprites_per_column) {
-            spk_assert(!atlas_is_in_use(index));
+        void sprite_atlas_init(uint32_t index, uint32_t sprites_per_row, uint32_t sprites_per_column) {
+            spk_assert(!sprite_atlas_is_in_use(index));
 
-            atlases[index].init(sprites_per_row, sprites_per_column);
-            atlas_in_use(index);
+            sprite_atlases[index].init(sprites_per_row, sprites_per_column);
+            sprite_atlas_in_use(index);
         }
 
-        bool atlas_load_from_path(uint32_t index, const char* path) {
-            spk_assert(atlas_is_in_use(index));
+        bool sprite_atlas_load_from_path(uint32_t index, const char* path) {
+            spk_assert(sprite_atlas_is_in_use(index));
 
-            return atlases[index].load_from_path(path);
+            return sprite_atlases[index].load_from_path(path);
         }
     private:
         std::bitset<SPK_MAX_ATLAS> in_use;
-        std::array<sprite_atlas_t, SPK_MAX_ATLAS> atlases;
+        std::array<sprite_atlas_t, SPK_MAX_ATLAS> sprite_atlases;
     };
 }

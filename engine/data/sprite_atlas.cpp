@@ -1,4 +1,4 @@
-#include "atlas.hpp"
+#include "sprite_atlas.hpp"
 
 namespace spk {
     bool sprite_atlas_t::init(uint32_t sprites_per_row, uint32_t sprites_per_column) {
@@ -50,30 +50,30 @@ namespace spk {
         texture.free();
     }
 
-    bool atlas_manager_t::am_init() {
+    bool sprite_atlas_manager_t::am_init() {
         return true;
     }
 
-    void atlas_manager_t::am_free() {
+    void sprite_atlas_manager_t::am_free() {
         for(uint32_t i = 0; i < SPK_MAX_ATLAS; i++) {
             if(in_use[i]) {
-                atlases[i].free();
+                sprite_atlases[i].free();
             }
         }
     }
 
-    bool atlas_manager_t::atlas_is_in_use(uint32_t index) {
+    bool sprite_atlas_manager_t::sprite_atlas_is_in_use(uint32_t index) {
         return in_use[index];        
     }
 
-    void atlas_manager_t::atlas_in_use(uint32_t index) {
+    void sprite_atlas_manager_t::sprite_atlas_in_use(uint32_t index) {
         if(!in_use[index])
             in_use.set(index, true);
     }
 
-    sprite_atlas_t* atlas_manager_t::get_atlas(uint32_t index) {
-        spk_assert(atlas_is_in_use(index));
+    sprite_atlas_t* sprite_atlas_manager_t::get_atlas(uint32_t index) {
+        spk_assert(sprite_atlas_is_in_use(index));
 
-        return &atlases[index];
+        return &sprite_atlases[index];
     }
 }

@@ -56,7 +56,7 @@ target_sources(spock_engine PRIVATE
 target_sources(spock_engine PRIVATE
     "data/text.hpp" "data/text.cpp"
     "data/resource_manager.hpp" "data/resource_manager.cpp"
-    "data/atlas.hpp" "data/atlas.cpp"
+    "data/sprite_atlas.hpp" "data/sprite_atlas.cpp"
     "data/sprite_array.hpp" "data/sprite_array.cpp"
     "data/tiles.hpp" "data/tiles.cpp")
 

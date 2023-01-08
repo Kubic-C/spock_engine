@@ -1,7 +1,7 @@
 #pragma once
 
 #include "box2D.hpp"
-#include "data/atlas.hpp"
+#include "data/sprite_atlas.hpp"
 
 namespace spk {
     struct comp_sprite_atlasd_t {

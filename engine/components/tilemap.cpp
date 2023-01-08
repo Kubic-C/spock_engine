@@ -113,7 +113,7 @@ namespace spk {
         if(spk::is_tile_empty(tiles.get(x, y))) // if its empty it can't collide
             return info;
 
-        // check left tile
+       //  check left tile
         if(x - 1 != UINT32_MAX) {
             if(spk::is_tile_empty(tiles.get(x - 1, y))) {
                 info.left = true;
@@ -154,32 +154,39 @@ namespace spk {
 
     
     void comp_tilemap_t::compute_colliders() {
-        float half_width  = (float)tiles.get_width()  / 2.0f;
-        float half_height = (float)tiles.get_height() / 2.0f;
-
         compute_greedy_mesh();
         compute_centroid();
         colliding_tiles.clear();
 
-        iterate_colliadable([&](uint32_t x, uint32_t y, tile_is_coll_info_t& info){
-            colliding_tiles.push_back((tile_collider_t){.id = tiles.get(x, y).id});
-            auto& shape = colliding_tiles.back().shape;
+        for(auto& pair : tile_groups) {
+            glm::uvec2   coords = tiles.get_2D_from_1D(pair.first);
+            tile_group_t tile   = pair.second;
+            uint32_t     id     = tiles.get(coords.x, coords.y).id;
 
-            shape.SetAsBox(SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE);
-            shape.m_vertices[0] += (b2Vec2){(float)x, (float)y} - spk::to_box_vec2(center);
-            shape.m_vertices[1] += (b2Vec2){(float)x, (float)y} - spk::to_box_vec2(center);
-            shape.m_vertices[2] += (b2Vec2){(float)x, (float)y} - spk::to_box_vec2(center);
-            shape.m_vertices[3] += (b2Vec2){(float)x, (float)y} - spk::to_box_vec2(center);
-        });
+            if(is_tile_empty(tiles.get(coords.x, coords.y)))
+               continue;
 
-        iterate_non_zero([&](uint32_t x, uint32_t y) {
-            tile_t& tile = tiles.get(x, y);
-            tile_metadata_t& md = state.engine->rsrc_mng.get_tile_dictionary()[tile.id];
-            
-            // Compute the mass for a given tile
-            const float area = SPK_TILE_HALF_SIZE * SPK_TILE_HALF_SIZE; // in sqaure meters
-            mass += area * md.density;
-        });
+            {
+                float  half_width    = tile.x / 2.0f;
+                float  half_height   = tile.y / 2.0f;
+                float  offset_width  = (coords.x + SPK_TILE_HALF_SIZE) - (float)tile.x  / 2.0f - center.x;
+                float  offset_height = (coords.y + SPK_TILE_HALF_SIZE) - (float)tile.y  / 2.0f - center.y; 
+                b2Vec2 offset        = { offset_width, offset_height };
+
+                colliding_tiles.emplace_back();
+                tile_collider_t& tile = colliding_tiles.back();
+
+                b2Vec2 vertices[4] = {
+                    b2Vec2(-half_width, -half_height) + offset,
+                    b2Vec2(half_width, -half_height) + offset,
+                    b2Vec2(half_width, half_height) + offset,
+                    b2Vec2(-half_width, half_height) + offset
+                };
+
+                tile.shape.Set(vertices, 4);
+                tile.id = id;
+            }
+        }
     }
 
 
@@ -203,9 +210,12 @@ namespace spk {
             }
         });
 
+        width  = (right_most - left_most) + 1;
+        height = (top_most - bottom_most) + 1;
+
         // adding by the half distance to find the center
-        center.x = left_most   + (right_most - left_most) / 2.0f; 
-        center.y = bottom_most + (top_most - bottom_most) / 2.0f; 
+        center.x = left_most   + width / 2.0f; 
+        center.y = bottom_most + height / 2.0f; 
     }
 
     void comp_tilemap_t::add_fixtures(b2Body* body) {
@@ -221,13 +231,6 @@ namespace spk {
             def.shape       = &tile_collider.shape;
             body->CreateFixture(&def);
         }
-
-        b2MassData md = body->GetMassData();
-        md.center = to_box_vec2(center);
-        md.mass   = mass;
-        //md.I      = 1.0f;
-
-        body->SetMassData(&md);
     }
 
     void tile_comp_init(flecs::world& world) {

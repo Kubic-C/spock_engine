@@ -66,14 +66,14 @@ MAIN {
         engine.set_current_window_size(700, 700);
 
         b2World* world = engine.get_current_b2World();
-        world->SetGravity(b2Vec2(0, -5.0f));
+        world->SetGravity(b2Vec2(0.0f, 0.0f));
     }
 
     // resource management 
     {
         engine.rsrc_mng.font_load_ascii("./Anonymous.ttf");
-        engine.rsrc_mng.atlas_init(0, 16, 16);
-        if(!engine.rsrc_mng.atlas_load_from_path(0, "./test_atlas.png")) {
+        engine.rsrc_mng.sprite_atlas_init(0, 16, 16);
+        if(!engine.rsrc_mng.sprite_atlas_load_from_path(0, "./test_atlas.png")) {
             spk::log.log("failed to load atlas");
             return -100;
         }
@@ -89,8 +89,8 @@ MAIN {
         engine.rsrc_mng.sprite_array_load(1, "./texture_array/image3.png", 0);
         engine.rsrc_mng.sprite_array_finish(1);
 
-        engine.rsrc_mng.atlas_init(1, 8, 8);
-        if(!engine.rsrc_mng.atlas_load_from_path(1, "./firetexture.png")) {
+        engine.rsrc_mng.sprite_atlas_init(1, 8, 8);
+        if(!engine.rsrc_mng.sprite_atlas_load_from_path(1, "./firetexture.png")) {
             spk::log.log("failed to load fire texture");
             return -101;
         }
@@ -163,12 +163,14 @@ MAIN {
 
         td[4].sprite.array_id = 1;
         td[4].sprite.index = 0;
+        td[4].density = -5.0f;
         td[4].default_flags = 0;
     }   
 
     auto start_ = [&]() -> void {
-        for(uint32_t i = 0; i < 10; i++) {
+        for(uint32_t i = 0; i < 100; i++) {
             player = engine.world.entity();
+            player.add<spk::comp_body_prim_t>();
             player.set([&](
                 spk::comp_b2Body_t& body, 
                 spk::comp_character_controller_t& cc,
@@ -177,14 +179,18 @@ MAIN {
 
                 b2BodyDef body_def;
                 body_def.type = b2_dynamicBody;
-                body_def.position = {(float)(rand() % 80) - 40.0f, 0.0f};
+                body_def.position = {(float)(rand() % 80) - 40.0f, (float)(rand() % 80) - 40.0f};
                 body_def.bullet = false;
                 body.body = engine.get_current_b2World()->CreateBody(&body_def);
 
                 tm.tiles.get(0, 0).id = 2;
-                tm.tiles.get(1, 0).id = 2;
                 tm.tiles.get(0, 1).id = 2;
-                tm.tiles.get(1, 1).id = 2;
+                tm.tiles.get(0, 2).id = 2;
+
+                tm.tiles.get(1, 0).id = 2;
+                tm.tiles.get(1, 1).id = 4;
+                tm.tiles.get(1, 2).id = 2;
+
                 tm.add_fixtures(body);
             });
         }

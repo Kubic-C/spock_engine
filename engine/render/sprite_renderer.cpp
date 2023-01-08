@@ -101,7 +101,7 @@ namespace spk {
             atlasd_ctx.vertex_array.bind_layout(atlasd_ctx.vertex_layout);
 
             for(uint32_t i = 0; i < SPK_MAX_ATLAS; i++) {
-                if(!rsrc_mng->atlas_is_in_use(i))
+                if(!rsrc_mng->sprite_atlas_is_in_use(i))
                     continue;
 
                 auto&           atlas_mesh = atlasd_sprites.meshes[i];
