@@ -9,7 +9,7 @@ namespace spk {
     public:
         void init() override;
         void free() override;
-        void draw(render_system_t* rs, key_t current) override;
+        void draw(render_system_t* rs, id_t current) override;
 
     private:
         program_t        program;

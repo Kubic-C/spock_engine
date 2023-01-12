@@ -119,6 +119,9 @@ namespace spk {
             case LOG_TYPE_MISC:
                 return "[yellow] MSIC [reset]";
 
+            case LOG_TYPE_TRACE:
+                return "[yellow, em] TRACE [reset]";
+
             default:
                 return "[red, em, it] UNKOWN [reset]";
         };
@@ -159,8 +162,13 @@ namespace spk {
             fwrite(msg_begin, sizeof(char), strlen(msg_begin) + 1, pipe);
         }
 
-        if(type == LOG_TYPE_ERROR) {
-            log(LOG_TYPE_INFO, "full unsafe exit due to error");
+        if(type == LOG_TYPE_ERROR || type == LOG_TYPE_ASSERT) {
+            log(LOG_TYPE_INFO, "[red] Quick exit due to error [reset]");
+
+            for(auto& str : trace_list) {
+                log(LOG_TYPE_TRACE, str.c_str());
+            }
+
             exit(EXIT_FAILURE);
         }
 
@@ -171,9 +179,21 @@ namespace spk {
         printf("%s", buf.data());
     }
 
+    void info_logger_t::trace(const char* file, const char* func, int line) {
+        trace_list.push_back(
+                "file(" + std::string(file) + ") - " + std::string(func) + " - line(" + std::to_string(line) + ")");
+    }
+
     void _assert(const char* file, const char* func, int line, const char* expr, const char* message) {
         log.log(LOG_TYPE_ASSERT, "\n\t# file(%s),\n \t| func(%s),\n \t| line(%i),\n \t| expr(%s)\n \t| %s", 
                                     file, func, line, expr, message);
-        abort();
+    }
+
+    trace_t::trace_t(const char* file, const char* func, int line) {
+        log.trace(file, func, line);
+    }
+
+    trace_t::~trace_t() {
+        log.trace_list.pop_back();
     }
 }

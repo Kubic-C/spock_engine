@@ -33,12 +33,10 @@ namespace spk {
 
     }
 
-    void ui_comp_canvas_t::init() {
+    void ui_comp_canvas_t::init(flecs::entity entity) {
 
-        SPK_DEBUG_VALUE(bool, ret =) texts.init();
-        spk_assert(ret);
-        SPK_DEBUG_EXPR(ret =) btns.init();
-        spk_assert(ret);
+        texts.column_capacity(10);
+        btns.column_capacity(10);
 
         font = nullptr;
 
@@ -47,6 +45,10 @@ namespace spk {
 
         size = { std::nanf("nan"), std::nanf("nan") };
         pos = { std::nanf("nan"), std::nanf("nan") };
+    }
+
+    void ui_comp_canvas_t::free(flecs::entity entity) {
+
     }
 
     void ui_comp_canvas_t::resize_callback(int width, int height) {
@@ -59,11 +61,6 @@ namespace spk {
         vp = proj * view;
  
         abs_size = { (float)width, (float)height };
-    }
-
-    void ui_comp_canvas_t::free() {
-        texts.free();
-        btns.free();
     }
 
     void ui_tag_current_canvas_on_add(flecs::entity e, ui_comp_canvas_t& canvas) {

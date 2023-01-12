@@ -2,7 +2,7 @@
 
 #include "base.hpp"
 #include "render/opengl.hpp"
-#include "utility/memory.hpp"
+#include "utility/structures.hpp"
 
 /*
 
@@ -37,7 +37,7 @@ namespace spk {
 
         FT_Face face; 
 
-        hashmap_t<character_t, UCHAR_MAX, 2, 0, u_char> char_map;
+        hashmap_t<u_char, character_t> char_map;
     };
 
     class font_manager_t {
@@ -48,7 +48,7 @@ namespace spk {
         font_t* get_first_font();
 
     private:
-        memory_pool_t<font_t, 8, 4> font_pool;
+        memory_pool_t<font_t, 8> font_pool;
         FT_Library ft_lib; 
     };
 

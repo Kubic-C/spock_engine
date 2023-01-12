@@ -282,14 +282,14 @@ namespace spk {
         glDeleteProgram(id);
     }
 
-    void tex_param_blurry(uint32_t target) {
-        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    void tex_param_nearest(uint32_t target) {
+        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
         glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     }
 
-    void tex_param_clear(uint32_t target) {
-        glTexParameteri(target, GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-        glTexParameteri(target, GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+    void tex_param_linear(uint32_t target) {
+        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     }
 
     void tex_param_wrap_repeat(uint32_t target) {

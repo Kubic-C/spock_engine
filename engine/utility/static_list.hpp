@@ -6,17 +6,22 @@ namespace spk {
     template<typename T, size_t capacity>
     class static_list {
     public:
-        void init();
-        void free();
+        static_list();
+        ~static_list();
         
         void push_back(const T& obj);
         void erase(size_t start, size_t end);
         void erase(size_t index);
         void pop_back();
         T&   emplace_back();
+
+        void clear() {
+            del(0, size);
+            size = 0;
+        }
     
-        size_t size() {
-            return count;
+        size_t get_size() {
+            return size;
         }
 
         T* begin() {
@@ -24,7 +29,7 @@ namespace spk {
         }
 
         T* end() {
-            return data() + count;
+            return data() + size;
         }
 
         T* data() { 
@@ -32,7 +37,7 @@ namespace spk {
         }
 
         T* back() { 
-            return &list[count - 1]; 
+            return &list[size - 1]; 
         }
 
         T* front() { 
@@ -43,59 +48,68 @@ namespace spk {
             return list[index];
         }
     private:
+        void del(size_t start, size_t end) {
+            for(size_t i = start; i < end; i++) {
+                dtor(&list[i]);
+            }
+        }
+
         std::array<T, capacity> list;
-        size_t count;
+        size_t size;
     };
 
     template<typename T, size_t capacity>
-    void static_list<T, capacity>::init() {
-        count = 0;
+    static_list<T, capacity>::static_list() 
+        : size(0) {
     }
 
     template<typename T, size_t capacity>
-    void static_list<T, capacity>::free() {
+    static_list<T, capacity>::~static_list() {
+        del(0, size);
     }
 
     template<typename T, size_t capacity>
     void static_list<T, capacity>::push_back(const T& obj) {
-        spk_assert(count < capacity);
+        spk_assert(size < capacity);
         
-        count++;
-        list[count - 1] = obj;
+        size++;
+        list[size - 1] = obj;
     }
 
     template<typename T, size_t capacity>
     T& static_list<T, capacity>::emplace_back() {
-        spk_assert(count < capacity);
+        spk_assert(size < capacity);
 
-        new(&list[count - 1])T();
+        size++;
+        new(&list[size - 1])T();
         return *back();
     }
 
     template<typename T, size_t capacity>
     void static_list<T, capacity>::erase(size_t start, size_t end) {
         spk_assert(start < end);
+        spk_assert(end < size);
 
-        count = (count - end) + start;
+        size = (size - end) + start;
         
-        memcpy(data() + start, data() + count, sizeof(T) * count);
+        memcpy(data() + start, data() + size, sizeof(T) * size);
     }
 
 
     template<typename T, size_t capacity>
     void static_list<T, capacity>::erase(size_t index) {
-        spk_assert(index < count);
+        spk_assert(index < size);
 
-        uint32_t amount_after_index = count - (index + 1);
+        uint32_t amount_after_index = size - (index + 1);
 
         // shifting all the elements down by 1
         memcpy(data() + index, data() + amount_after_index, sizeof(T) * amount_after_index);
-        count--;    
+        size--;    
     }
 
     template<typename T, size_t capacity>
     void static_list<T, capacity>::pop_back() {
-        count--;
+        size--;
     }
 
 }

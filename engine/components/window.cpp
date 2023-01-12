@@ -2,7 +2,9 @@
 #include "state.hpp"
 
 namespace spk {
-    void comp_window_t::init() {
+    void comp_window_t::init(flecs::entity entity) {
+        spk_trace();
+        
         win = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 500, 
             SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE); 
         if(win == nullptr) {
@@ -15,11 +17,13 @@ namespace spk {
         }
     }
 
-    void comp_window_t::free() {
+    void comp_window_t::free(flecs::entity entity) {
         SDL_DestroyWindow(win);
     }
 
     void tag_current_gl_ctx_on_add(flecs::entity e, comp_window_t& window, tag_current_window_t c_ctx) {
+        spk_trace();
+
         // check state if a window is already currently active if so, we cannot have multiple windows with current_gl_ctx
 
         if(state.get_current_window().id() != UINT64_MAX) {

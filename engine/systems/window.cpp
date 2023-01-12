@@ -3,6 +3,8 @@
 
 namespace spk {
     void window_system_update(flecs::iter& iter, comp_window_t* c_window) {
+        spk_trace();
+        
         auto ctx = get_ctx<window_system_ctx_t>(iter);
         uint64_t cur_win_i = 0;
 
@@ -80,6 +82,8 @@ namespace spk {
     }
 
     void window_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
+        spk_trace();
+
         window_system_ctx_t* ctx = ctx_alloc.allocate_ctx<window_system_ctx_t>();
 
         window_component_init(world);

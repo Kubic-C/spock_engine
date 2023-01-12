@@ -1,26 +1,5 @@
-|SPOCK: 0.000493> [32m INFO [0m info_logger_init
-|SPOCK: 0.019206> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
-|SPOCK: 0.024360> [32m INFO [0m current render pipeline changed to: (id)541
-|SPOCK: 0.024842> [32m INFO [0m current game pipeline changed to: (id)548
-|SPOCK: 0.025063> [32m INFO [0m current event system changed to: (id)555
-|SPOCK: 0.856559> [32m INFO [0m current window changed to: (id)572
-|SPOCK: 0.858713> [32m INFO [0m current box2D world changed to: (id)573
-|SPOCK: 0.859254> [32m INFO [0m current camera changed to: (id)577
-|SPOCK: 0.863120> [32m INFO [0m current renderer changed to: 000001e645213c70
-|SPOCK: 0.875053> [32m INFO [0m current canvas changed to: (id)624
-|SPOCK: 0.875320> [32m INFO [0m SDL Version 3.0.0
-|SPOCK: 0.875667> [32m INFO [0m OGL Version 4.3.14761 Core Profile/Debug Context 21.30.02 30.0.13002.23
-|SPOCK: 0.875878> [32m INFO [0m [1m[31m this text is red and emphasized [0m 
-|SPOCK: 0.876023> [32m INFO [0m [3m[34m this text is italic and blue [0m
-|SPOCK: 0.876220> [32m INFO [0m [1m #===# [0m <- this is a recursive rule -> [1m #===# [0m
-|SPOCK: 0.876470> [32m INFO [0m target fps changed to: 10000.000000
-|SPOCK: 0.876652> [32m INFO [0m current VSYNC setting changed to: VSYNC_DISABLED
-|SPOCK: 0.939726> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
-|SPOCK: 1.918380> [32m INFO [0m loading state
-|SPOCK: 1.918642> [32m INFO [0m target fps changed to: 1000000.000000
-|SPOCK: 181.050313> [32m INFO [0m target fps changed to: 60.000000
-|SPOCK: 181.050742> [32m INFO [0m ending sim
-|SPOCK: 181.051177> [32m INFO [0m exiting play
-|SPOCK: 181.300614> [32m INFO [0m exiting app
-|SPOCK: 181.302106> [32m INFO [0m exiting with code; 0
-|SPOCK: 181.302299> [32m INFO [0m [1m #===# [0m[31m ENGINE FREE [0m[1m #===# [0m
+|SPOCK: 612621.887429> [32m INFO [0m info_logger_init
+|SPOCK: 0.427725> [32m INFO [0m [31m Quick exit due to error [0m
+|SPOCK: 0.427884> [33m[1m TRACE [0m file(main.cpp) - int WinMain(HINSTANCE, HINSTANCE, LPSTR, int) - line(14)
+|SPOCK: 0.428069> [33m[1m TRACE [0m file(spock.cpp) - void spk::engine_t::init() - line(8)
+|SPOCK: 0.428231> [33m[1m TRACE [0m file(resource_manager.cpp) - bool spk::resource_manager_t::init() - line(5)

@@ -2,13 +2,9 @@
 
 namespace spk {
       bool font_t::init() {
-        if(!char_map.init(spk::xor_int_hash<u_char>))
-            return false;
-
         if(!texture.init()) {
-            char_map.free();
             return false;
-            }
+        }
 
         return true;
     }
@@ -30,10 +26,6 @@ namespace spk {
         for(u_char c = 0; c < UCHAR_MAX; c++) {
             character_t* ch = nullptr;
 
-            SPK_DEBUG_VALUE(bool, ret =) char_map.register_key(c); 
-            /* this should never happen */
-            spk_assert(ret);
-        
             if(FT_Load_Char(face, c, FT_LOAD_RENDER)) {
                 continue;
             }
@@ -95,13 +87,13 @@ namespace spk {
     }
 
     void font_t::free() {
-        char_map.free();
         texture.free();
     }
 
     bool font_manager_t::fm_init() {
-        if(!font_pool.init())
-            return false;
+        spk_trace();
+
+        font_pool.column_capacity(10);
 
         if(FT_Init_FreeType(&ft_lib)) {
             return false;
@@ -111,7 +103,7 @@ namespace spk {
     }
 
     font_t* font_manager_t::font_load_ascii(const char* file_path, int f_width, int f_height) {
-        font_t* font = font_pool.malloc();
+        font_t* font = font_pool.alloc();
         if(!font)
             return nullptr;
 
@@ -135,7 +127,7 @@ namespace spk {
     font_t* font_manager_t::get_first_font() {
         font_t* font[1];
 
-        uint32_t found = font_pool.get_valid_blocks(font, 1);
+        uint32_t found = font_pool.find_blocks(font, 1);
         if(!found)
             return nullptr;
 
@@ -143,7 +135,8 @@ namespace spk {
     }
 
     void font_manager_t::fm_free() {
+        spk_trace();
+        
         FT_Done_FreeType(ft_lib);
-        font_pool.free();
     }
 }

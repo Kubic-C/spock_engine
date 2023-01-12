@@ -5,24 +5,27 @@ namespace spk {
     extern stats_t stats;
 
     void engine_t::init() {
+        spk_trace();
+
         SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "[emt][red] ENGINE INIT [reset][emt]");
 
         state.engine = this;
 
+        { // SDL
+            if(SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO) < 0) {
+                log.log(LOG_TYPE_ERROR, "could not load SDL2 video. %s", SDL_GetError());
+            }
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
-        if(SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO) < 0) {
-            log.log(spk::LOG_TYPE_ERROR, "could not load SDL2 video. %s", SDL_GetError());
+            SPK_DEBUG_EXPR({
+                int code;
+                SDL_GL_GetAttribute(SDL_GL_CONTEXT_FLAGS, &code);
+                code |= SDL_GL_CONTEXT_DEBUG_FLAG;
+                SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, code);
+            })
         }
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-
-        SPK_DEBUG_EXPR({
-            int code;
-            SDL_GL_GetAttribute(SDL_GL_CONTEXT_FLAGS, &code);
-            code |= SDL_GL_CONTEXT_DEBUG_FLAG;
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, code);
-        })
 
         { // pipeline
             init_phases(world);
@@ -58,7 +61,7 @@ namespace spk {
             // renderers need a working Gl context, so we initialize them after we add a window with a 
             // working GL context
             world.entity().add<comp_window_t>().add<tag_current_window_t>();
-            world.entity().add<comp_b2World_t>().add<tag_current_box2d_world_t>();
+            // world.entity().add<comp_b2World_t>().add<tag_current_box2d_world_t>();
 
             camera_cs_init(ctx_alloc, world);
             render_cs_init(ctx_alloc, world);
@@ -72,7 +75,7 @@ namespace spk {
             world.entity().add<ui_comp_canvas_t>().add<ui_tag_current_canvas_t>();
         }
 
-        SPK_DEBUG_EXPR(print_debug_stats());
+        SPK_DEBUG_EXPR(print_deps_versions());
     }
 
     int engine_t::run() {
@@ -174,9 +177,9 @@ namespace spk {
         state.get_current_window().get_ref<comp_window_t>()->set_title(title);
     }
 
-    b2World* engine_t::get_current_b2World() {
-        return state.get_current_box2D_world().get<comp_b2World_t>()->world;
-    }
+    // b2World* engine_t::get_current_b2World() {
+    //     return state.get_current_box2D_world().get<comp_b2World_t>()->world;
+    // }
 
     void engine_t::set_target_fps(double target_fps) {
         state.set_target_fps(target_fps);
@@ -193,15 +196,15 @@ namespace spk {
         SDL_GL_SetSwapInterval(option);
     }
 
-    void engine_t::print_debug_stats() {
+    void engine_t::print_deps_versions() {
         SDL_version sdl_ver;
         const unsigned char* ogl_ver;
 
         SDL_GetVersion(&sdl_ver);
         ogl_ver = glGetString(GL_VERSION);
 
+        log.log(spk::LOG_TYPE_INFO, "OGL Version %s", ogl_ver); 
         log.log(spk::LOG_TYPE_INFO, "SDL Version %u.%u.%u", sdl_ver.major, sdl_ver.minor, sdl_ver.patch);
-        log.log(spk::LOG_TYPE_INFO, "OGL Version %s", ogl_ver);
     }
 
     void engine_t::set_ppm(float ppm) {

@@ -1,7 +1,7 @@
 #include "character_controller.hpp"
 
 namespace spk {
-    void comp_character_controller_t::init() {
+    void comp_character_controller_t::init(flecs::entity entity) {
         speed       = 1.0f;
     
         left  = SDL_SCANCODE_A;
@@ -10,7 +10,7 @@ namespace spk {
         down  = SDL_SCANCODE_S;
     }
     
-    void comp_character_controller_t::free() {
+    void comp_character_controller_t::free(flecs::entity entity) {
     }
 
     void character_controller_comp_init(flecs::world& world) {

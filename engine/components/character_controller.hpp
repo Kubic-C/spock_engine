@@ -8,8 +8,8 @@ namespace spk {
 
         float speed;
 
-        void init();
-        void free();
+        void init(flecs::entity entity);
+        void free(flecs::entity entity);
     }; 
 
     void character_controller_comp_init(flecs::world& world);

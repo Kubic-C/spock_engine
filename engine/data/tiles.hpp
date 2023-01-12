@@ -13,26 +13,17 @@ namespace spk {
     struct tile_metadata_t {
         comp_sprite_arrayd_t sprite = {.size = {SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE}};
         
-        uint8_t default_flags = TILE_FLAGS_COLLIADABLE;
         float density     = 1.0f;
         float friction    = 0.2f;
 		float restitution = 0.0f;
     };
 
     struct tile_t {
-        uint32_t id   = 0;
-        uint8_t flags = TILE_FLAGS_COLLIADABLE;
-        uint32_t sizey = 1;
-        uint32_t sizex = 1;
-
-        struct {
-            uint32_t sizex;
-            uint32_t sizey;
-        } _;
+        uint32_t id    = 0;
+        uint8_t  flags = TILE_FLAGS_COLLIADABLE;
+        float    hp    = 100.0f;  
 
         tile_t() {
-            _.sizex = sizex;
-            _.sizey = sizey;
         }
 
         tile_t(uint32_t id)

@@ -1,4 +1,4 @@
-#include "memory.hpp"
+#include "hashmap.hpp"
 
 namespace spk {
     

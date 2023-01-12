@@ -49,84 +49,84 @@ namespace spk {
         vertex_buffer.buffer_sub_data(0, buffer_count * sizeof(prim_vertex_t), buffer.data());
     }
 
-    void polygon_batch_mesh_t::add_polygon(const b2Body* body, b2PolygonShape* polygon) {
-        // this will get the amount of vertexes to use, so if quad has 4 verts: 4 / 2 = 2 -> 2 * 3 = 6 (vertexes)
-        int32_t  vertex_count = (polygon->m_count / 2) * 3; // special case: 3 works because of integer division black magic
-        uint32_t offset       = buffer_count;
+    // void polygon_batch_mesh_t::add_polygon(const b2Body* body, b2PolygonShape* polygon) {
+    //     // this will get the amount of vertexes to use, so if quad has 4 verts: 4 / 2 = 2 -> 2 * 3 = 6 (vertexes)
+    //     int32_t  vertex_count = (polygon->m_count / 2) * 3; // special case: 3 works because of integer division black magic
+    //     uint32_t offset       = buffer_count;
 
-        for(int32 j = 0; j < polygon->m_count; j++)  {
-            buffer[offset + j].pos = { 
-                body->GetWorldPoint(polygon->m_vertices[j]).x, body->GetWorldPoint(polygon->m_vertices[j]).y };
-        }
+    //     for(int32 j = 0; j < polygon->m_count; j++)  {
+    //         buffer[offset + j].pos = { 
+    //             body->GetWorldPoint(polygon->m_vertices[j]).x, body->GetWorldPoint(polygon->m_vertices[j]).y };
+    //     }
 
-        count += vertex_count; 
-        buffer_count += polygon->m_count;
-    }
+    //     count += vertex_count; 
+    //     buffer_count += polygon->m_count;
+    // }
     
-    void primitive_renderer_t::draw_indexed_buffer(static_index_buffer_t& ind, glm::mat4& vp, uint32_t count) { 
-        ind.bind();
-        prim_ctx.program.use();
-        prim_ctx.program.set_mat4("u_vp", vp);
-        prim_ctx.program.set_vec3("color", color);
-        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);   
-    }
+    // void primitive_renderer_t::draw_indexed_buffer(static_index_buffer_t& ind, glm::mat4& vp, uint32_t count) { 
+    //     ind.bind();
+    //     prim_ctx.program.use();
+    //     prim_ctx.program.set_mat4("u_vp", vp);
+    //     prim_ctx.program.set_vec3("color", color);
+    //     glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);   
+    // }
 
-    void primitive_renderer_t::draw_buffer(glm::mat4& vp, uint32_t count) { 
-        prim_ctx.program.use();
-        prim_ctx.program.set_mat4("u_vp", vp);
-        prim_ctx.program.set_vec3("color", color);
-        glDrawArrays(GL_TRIANGLES, 0, count);   
-    }
+    // void primitive_renderer_t::draw_buffer(glm::mat4& vp, uint32_t count) { 
+    //     prim_ctx.program.use();
+    //     prim_ctx.program.set_mat4("u_vp", vp);
+    //     prim_ctx.program.set_vec3("color", color);
+    //     glDrawArrays(GL_TRIANGLES, 0, count);   
+    // }
 
-    void primitive_renderer_t::render_circle(glm::mat4& vp, const b2Body* body, b2CircleShape* circle) {
-        const glm::vec2 position = spk::to_glm_vec2(body->GetPosition());
-        const uint32_t steps = 8;
-        const float r = circle->m_radius;
-        const float c = 2.0f * r * b2_pi;
-        const float c_sect = (2.0f * b2_pi) / steps; // returns in radians how much we should rotate
-        float body_angle = body->GetAngle();
-        float angle = c_sect;
+    // void primitive_renderer_t::render_circle(glm::mat4& vp, const b2Body* body, b2CircleShape* circle) {
+    //     const glm::vec2 position = spk::to_glm_vec2(body->GetPosition());
+    //     const uint32_t steps = 8;
+    //     const float r = circle->m_radius;
+    //     const float c = 2.0f * r * b2_pi;
+    //     const float c_sect = (2.0f * b2_pi) / steps; // returns in radians how much we should rotate
+    //     float body_angle = body->GetAngle();
+    //     float angle = c_sect;
 
-        // we are starting from the right of the circle, so cos = r
-        // the Y will equal 0 when cos = r
-        glm::vec2 prev = (glm::vec2){ r, 0.0f };
-        prev = glm::rotate(prev, body_angle) + position;
+    //     // we are starting from the right of the circle, so cos = r
+    //     // the Y will equal 0 when cos = r
+    //     glm::vec2 prev = (glm::vec2){ r, 0.0f };
+    //     prev = glm::rotate(prev, body_angle) + position;
 
-        uint32_t vertices = steps * 3; // steps is the amount of triangles, each TRI-angle has three vertices
+    //     uint32_t vertices = steps * 3; // steps is the amount of triangles, each TRI-angle has three vertices
 
-        prim_vertex_t* section = mesh.data();
-        for(uint32_t i = 0; i < steps; i++) {
-            glm::vec2 next = (glm::vec2){ (cos(angle) * r), (sin(angle) * r) };
+    //     prim_vertex_t* section = mesh.data();
+    //     for(uint32_t i = 0; i < steps; i++) {
+    //         glm::vec2 next = (glm::vec2){ (cos(angle) * r), (sin(angle) * r) };
 
-            // add rotation
-            next = glm::rotate(next, body_angle) + position;
+    //         // add rotation
+    //         next = glm::rotate(next, body_angle) + position;
 
-            section[0] = { position }; // center
-            section[1] = { prev     };
-            section[2] = { next     };
+    //         section[0] = { position }; // center
+    //         section[1] = { prev     };
+    //         section[2] = { next     };
 
-            angle += c_sect;
-            prev = next;
-            section += 3;
-        }
+    //         angle += c_sect;
+    //         prev = next;
+    //         section += 3;
+    //     }
 
-        vertex_buffer.buffer_sub_data(0, vertices * sizeof(prim_vertex_t), mesh.data());
-        prim_ctx.vertex_array.bind();
+    //     vertex_buffer.buffer_sub_data(0, vertices * sizeof(prim_vertex_t), mesh.data());
+    //     prim_ctx.vertex_array.bind();
 
-        draw_buffer(vp, vertices);
-    }
+    //     draw_buffer(vp, vertices);
+    // }
 
-    void primitive_renderer_t::render_edge(glm::mat4& vp, const b2Body* body, b2EdgeShape* edge) {
-        uint32_t vertices = 2;
+    // void primitive_renderer_t::render_edge(glm::mat4& vp, const b2Body* body, b2EdgeShape* edge) {
+    //     uint32_t vertices = 2;
 
-        mesh[0] = { spk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex1)) };
-        mesh[1] = { spk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex2)) };
+    //     mesh[0] = { spk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex1)) };
+    //     mesh[1] = { spk::to_glm_vec2(body->GetWorldPoint(edge->m_vertex2)) };
     
-        vertex_buffer.buffer_sub_data(0, vertices * sizeof(prim_vertex_t), mesh.data());
-        prim_ctx.vertex_array.bind();
+    //     vertex_buffer.buffer_sub_data(0, vertices * sizeof(prim_vertex_t), mesh.data());
+    //     prim_ctx.vertex_array.bind();
 
-        draw_buffer(vp, vertices);
-    }
+    //     draw_buffer(vp, vertices);
+    // }
 
     void primitive_renderer_t::init() {
         b_init();
@@ -153,7 +153,6 @@ namespace spk {
     }
 
     void primitive_renderer_t::draw() {
-        auto world = state.engine->get_current_b2World();
         render_system_t*     renderer = state.get_current_renderer();
         const comp_camera_t* camera   = state.get_current_camera().get<comp_camera_t>();
         
@@ -171,8 +170,5 @@ namespace spk {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glDrawElements(GL_TRIANGLES, poly_mesh.count, GL_UNSIGNED_INT, nullptr);   
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-        // should probably add this but im lazzzyy
-        world->DebugDraw();
     }
 }

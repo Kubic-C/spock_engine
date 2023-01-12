@@ -153,46 +153,46 @@ namespace spk {
         glDisable(GL_BLEND);
     }   
 
-    glm::vec3 get_world_point(b2Body* body, glm::vec3 local_point) {
-        return (glm::vec3){spk::to_glm_vec2(body->GetWorldPoint(b2Vec2(local_point.x, local_point.y))), local_point.z};
-    }
+    // glm::vec3 get_world_point(b2Body* body, glm::vec3 local_point) {
+    //     return (glm::vec3){spk::to_glm_vec2(body->GetWorldPoint(b2Vec2(local_point.x, local_point.y))), local_point.z};
+    // }
 
-    template<>
-    void sprite_batch_mesh_t<sprite_arrayd_vertex_t, comp_sprite_arrayd_t>::add_sprite_mesh(
-        b2Body* body, 
-        comp_sprite_arrayd_t& sprite,
-        uint32_t sprites_x,
-        uint32_t sprites_y,
-        const glm::vec2& offset) {
-        if(sprite.array_id == UINT32_MAX)
-            return;
+    // template<>
+    // void sprite_batch_mesh_t<sprite_arrayd_vertex_t, comp_sprite_arrayd_t>::add_sprite_mesh(
+    //     b2Body* body, 
+    //     comp_sprite_arrayd_t& sprite,
+    //     uint32_t sprites_x,
+    //     uint32_t sprites_y,
+    //     const glm::vec2& offset) {
+    //     if(sprite.array_id == UINT32_MAX)
+    //         return;
         
-        float                    half_width  = (float)sprites_x / 2.0f;
-        float                    half_height = (float)sprites_y / 2.0f;
-        resource_manager_t*      rsrc_mng   = &state.engine->rsrc_mng;
-        const uint32_t           array_id   = sprite.array_id;
-        sprite_array_t*          atlas      = rsrc_mng->sprite_array_get(array_id);
-        uint32_t                 index      = meshes[array_id].sprites * indexes_per_sprite;
+    //     float                    half_width  = (float)sprites_x / 2.0f;
+    //     float                    half_height = (float)sprites_y / 2.0f;
+    //     resource_manager_t*      rsrc_mng   = &state.engine->rsrc_mng;
+    //     const uint32_t           array_id   = sprite.array_id;
+    //     sprite_array_t*          atlas      = rsrc_mng->sprite_array_get(array_id);
+    //     uint32_t                 index      = meshes[array_id].sprites * indexes_per_sprite;
 
-        meshes[array_id].sprites += 1;
-        resize_mesh_if_need(array_id);
+    //     meshes[array_id].sprites += 1;
+    //     resize_mesh_if_need(array_id);
 
-        meshes[array_id].mesh[index + 0] = 
-            { get_world_point(body, (glm::vec3){ glm::vec2(-half_width, -half_height) + offset, sprite.z}), 
-              glm::vec3(0.0f, 0.0f, sprite.index) };
+    //     meshes[array_id].mesh[index + 0] = 
+    //         { get_world_point(body, (glm::vec3){ glm::vec2(-half_width, -half_height) + offset, sprite.z}), 
+    //           glm::vec3(0.0f, 0.0f, sprite.index) };
 
-        meshes[array_id].mesh[index + 1] = 
-            { get_world_point(body, (glm::vec3){ glm::vec2(half_width, -half_height) + offset, sprite.z}),
-              glm::vec3(1.0f * sprites_x, 0.0f, sprite.index) };
+    //     meshes[array_id].mesh[index + 1] = 
+    //         { get_world_point(body, (glm::vec3){ glm::vec2(half_width, -half_height) + offset, sprite.z}),
+    //           glm::vec3(1.0f * sprites_x, 0.0f, sprite.index) };
 
-        meshes[array_id].mesh[index + 2] = 
-            { get_world_point(body, (glm::vec3){ glm::vec2(half_width, half_height) + offset, sprite.z}),  
-              glm::vec3(1.0f * sprites_x, 1.0f * sprites_y, sprite.index) };
+    //     meshes[array_id].mesh[index + 2] = 
+    //         { get_world_point(body, (glm::vec3){ glm::vec2(half_width, half_height) + offset, sprite.z}),  
+    //           glm::vec3(1.0f * sprites_x, 1.0f * sprites_y, sprite.index) };
 
-        meshes[array_id].mesh[index + 3] = 
-            { get_world_point(body, (glm::vec3){ glm::vec2(-half_width, half_height) + offset, sprite.z}),  
-              glm::vec3(0.0f, 1.0f * sprites_y, sprite.index)};
-    }
+    //     meshes[array_id].mesh[index + 3] = 
+    //         { get_world_point(body, (glm::vec3){ glm::vec2(-half_width, half_height) + offset, sprite.z}),  
+    //           glm::vec3(0.0f, 1.0f * sprites_y, sprite.index)};
+    // }
 
     template<>
     void sprite_batch_mesh_t<sprite_arrayd_vertex_t, comp_sprite_arrayd_t>::add_sprite_mesh(

@@ -4,7 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk { 
-    void comp_camera_t::init() {
+    void comp_camera_t::init(flecs::entity entity) {
         z = 10.0f;
         pos  = { 0.0f, 0.0f };
         size = { 0.0f, 0.0f };
@@ -13,7 +13,7 @@ namespace spk {
         proj = glm::identity<glm::mat4>();        
     }
 
-    void comp_camera_t::free() {
+    void comp_camera_t::free(flecs::entity entity) {
 
     }
 
@@ -66,6 +66,8 @@ namespace spk {
     } 
 
     void camera_comp_init(flecs::world& world) {
+        spk_trace();
+        
         spk_register_component(world, comp_camera_t);
     
         world.observer<comp_camera_t, tag_current_camera_t>()

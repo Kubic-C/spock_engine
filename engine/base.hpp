@@ -7,7 +7,6 @@
 #include <SDL3/SDL.h>
 #include <glm/glm.hpp>
 #include <glad/gl.h>
-#include <box2d/box2d.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -60,23 +59,35 @@ _In_ int nShowCmd \
 
 #define null NULL
 
-#define spk_register_component(world, type)\
+#define spk_register_component(world, type) \
         world.component<type>() \
-            .on_add([](type& comp) { \
+            .on_add([](flecs::entity _entity, type& _comp) { \
+                spk_trace(); \
                 SPK_DEBUG_EXPR_IF(log.log("on add hook | " #type), spk::DEBUG_FLAGS_ENABLE_HOOK); \
-                comp.init(); \
+                _comp.init(_entity); \
             }) \
-            .on_set([](type& comp) { \
+            .on_set([](type& _comp) { \
+                spk_trace(); \
                 SPK_DEBUG_EXPR_IF(log.log("on set hook | " #type), spk::DEBUG_FLAGS_ENABLE_HOOK); \
             }) \
-            .on_remove([](type& comp){  \
+            .on_remove([](flecs::entity _entity, type& _comp){ \
+                spk_trace(); \
                 SPK_DEBUG_EXPR_IF(log.log("on remove hook | " #type), spk::DEBUG_FLAGS_ENABLE_HOOK); \
-                comp.free(); \
+                _comp.free(_entity); \
             }) 
 
 namespace spk {
-    inline glm::vec2 to_glm_vec2(b2Vec2 vec2) { return (glm::vec2){vec2.x, vec2.y}; }
-    inline b2Vec2 to_box_vec2(glm::vec2 vec2) { return (b2Vec2){vec2.x, vec2.y}; }
+    template<typename T>
+    T&   ctor(T* obj) {
+        new(obj)T();
+
+        return *obj;
+    }
+
+    template<typename T>
+    void dtor(T* obj) {
+        obj->~T();
+    }
 
     // double are used for high defenition time keeping
     struct time_t {

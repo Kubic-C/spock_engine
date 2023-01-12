@@ -54,7 +54,7 @@ namespace spk {
         vertex_array.free();
     }
 
-    void ui_framebuffer_renderer_t::draw(render_system_t* rs, key_t current) {
+    void ui_framebuffer_renderer_t::draw(render_system_t* rs, id_t current) {
         framebuffer_t& fb = rs->fb_get(current);
         attachment_t&  color = rs->atch_get(fb.attachments[0]);
 

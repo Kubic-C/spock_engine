@@ -51,10 +51,14 @@ namespace spk {
     }
 
     bool sprite_atlas_manager_t::am_init() {
+        spk_trace();
+
         return true;
     }
 
     void sprite_atlas_manager_t::am_free() {
+        spk_trace();
+        
         for(uint32_t i = 0; i < SPK_MAX_ATLAS; i++) {
             if(in_use[i]) {
                 sprite_atlases[i].free();

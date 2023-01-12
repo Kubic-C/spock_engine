@@ -1,7 +1,6 @@
 #pragma once
 
 #include "base_renderer.hpp"
-#include "components/box2D.hpp"
 
 /* quick and dirty debug rendering for Box2D shapes or primitive shapes */
 
@@ -25,7 +24,7 @@ namespace spk {
         void subdata();
         void zero();
         
-        void add_polygon(const b2Body* body, b2PolygonShape* polygon);
+        // void add_polygon(const b2Body* body, b2PolygonShape* polygon);
     };
     class primitive_renderer_t : public base_renderer_t {
     public:
@@ -33,8 +32,8 @@ namespace spk {
         void draw() override;
         void free() override;
 
-        void render_circle(glm::mat4& vp, const b2Body* body, b2CircleShape* circle);
-        void render_edge(glm::mat4& vp, const b2Body* body, b2EdgeShape* circle);
+        // void render_circle(glm::mat4& vp, const b2Body* body, b2CircleShape* circle);
+        // void render_edge(glm::mat4& vp, const b2Body* body, b2EdgeShape* circle);
         void draw_indexed_buffer(static_index_buffer_t& buffer, glm::mat4& vp, uint32_t count);
         void draw_buffer(glm::mat4& vp, uint32_t count);
 

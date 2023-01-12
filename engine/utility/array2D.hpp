@@ -6,14 +6,22 @@ namespace spk {
     template<typename T>
     class array2D_t {
     public:
-        void init(uint32_t width, uint32_t height) {
-            data         = new T[width * height];
-            this->width  = width;
-            this->height = height;
+        array2D_t()
+            : width(0), height(0) {
         }
 
-        void free() {
-            delete data;
+        array2D_t(uint32_t width, uint32_t height) {
+            size(width, height);
+        }
+
+        ~array2D_t() {
+
+        }
+
+        void size(uint32_t width, uint32_t height) {
+            data.resize(width * height);
+            this->width  = width;
+            this->height = height;
         }
 
         T& get(uint32_t x, uint32_t y) {
@@ -21,14 +29,16 @@ namespace spk {
         }
 
         T* get_from_1D(uint32_t i) {
-            return data + i;
+            return &data[i];
         }
 
         T* get_from_2D(uint32_t x, uint32_t y) {
-            return data + get_1D_from_2D(x, y);
+            return &data[0] + get_1D_from_2D(x, y);
         }
 
         uint32_t get_1D_from_2D(uint32_t x, uint32_t y) {
+            spk_assert(width != 0 && height != 0);
+
             return (y * width) + x;
         }
 
@@ -52,7 +62,7 @@ namespace spk {
         }
 
     private:
-        T* data;
+        std::vector<T> data;
         uint32_t width;
         uint32_t height;
     };

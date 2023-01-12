@@ -31,14 +31,19 @@ namespace spk {
 
     void sprite_array_t::tex_params() {
         texture_array.bind();
-        tex_param_clear(GL_TEXTURE_2D_ARRAY);
+        tex_param_nearest(GL_TEXTURE_2D_ARRAY);
         tex_param_wrap_repeat(GL_TEXTURE_2D_ARRAY);
+        glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
     }
 
     void sprite_array_manager_t::sarm_init() {
+        spk_trace();
+        
     }
 
     void sprite_array_manager_t::sarm_free() {
+        spk_trace();
+
         for(uint32_t i = 0; i < SPK_MAX_SPRITE_ARRAYS; i++) {
             if(in_use[i]) {
                 sprite_arrays[i].free();

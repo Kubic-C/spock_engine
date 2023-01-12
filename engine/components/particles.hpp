@@ -22,11 +22,6 @@ namespace spk {
         glm::vec2 dir;
         float speed;
         float lifetime;
-        b2Body* body;
-
-        void init_body(tile_t id, b2World* world);
-
-        ~particle_t(); // RAII
     };
 
     struct comp_particles_t {
@@ -50,10 +45,10 @@ namespace spk {
         uint32_t max;
         std::deque<particle_t> particles;
         
-        glm::vec2 get_point(b2Body* body, glm::vec2 point);
+        // glm::vec2 get_point(b2Body* body, glm::vec2 point);
         
-        void init();
-        void free();
+        void init(flecs::entity entity);
+        void free(flecs::entity entity);
     };
 
     void particles_comp_init(flecs::world& world); 

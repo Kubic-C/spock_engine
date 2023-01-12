@@ -184,8 +184,8 @@ namespace spk {
         uint32_t id;
     };
 
-    void tex_param_blurry(uint32_t target);
-    void tex_param_clear(uint32_t target);
+    void tex_param_nearest(uint32_t target);
+    void tex_param_linear(uint32_t target);
     void tex_param_wrap_repeat(uint32_t target);
     void tex_param_wrap_clamp_to_edge(uint32_t target);
 }

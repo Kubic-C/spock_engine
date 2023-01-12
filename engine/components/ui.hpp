@@ -119,11 +119,11 @@ namespace spk {
         glm::mat4 vp;
 
         font_t* font = null;
-        memory_pool_t<ui_text_t, 32, 4> texts;
-        memory_pool_t<ui_button_t, 32, 4> btns;
+        memory_pool_t<ui_text_t, 32> texts;
+        memory_pool_t<ui_button_t, 32> btns;
 
-        void init() override;
-        void free() override;
+        void init(flecs::entity entity);
+        void free(flecs::entity entity);
 
         void resize_callback(int width, int height);
         const size_t type() override { return UI_ELEMENT_TYPE_CANVAS; }

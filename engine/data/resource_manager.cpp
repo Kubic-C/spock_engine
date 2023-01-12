@@ -12,6 +12,8 @@ namespace spk {
 
         td_init();
 
+        spk_assert(false, "dung");
+
         return true;
     }
 

@@ -6,7 +6,6 @@ namespace spk {
     struct tag_events_t {};
 
     // event types
-
     struct event_window_size_t {
         int width;
         int height;

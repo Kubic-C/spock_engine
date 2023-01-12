@@ -7,7 +7,7 @@ namespace spk {
     class render_system_t;
 
     struct framebuffer_t {
-        static_list<key_t, 8> attachments;
+        static_list<id_t, 8> attachments;
         uint32_t              framebuffer;
         uint32_t              clear_bits;
         glm::vec4             clear_color;
@@ -35,6 +35,6 @@ namespace spk {
 
     class base_framebuffer_renderer_t : public system_t {
     public:
-        virtual void draw(render_system_t* rs, key_t current) {}
+        virtual void draw(render_system_t* rs, id_t current) {}
     };
 }

@@ -15,8 +15,8 @@ namespace spk {
         glm::vec2 pos;
         float z;
 
-        void init();
-        void free();
+        void init(flecs::entity entity);
+        void free(flecs::entity entity);
         glm::vec2 get_world_position(const glm::vec2& screen_coords);
 
         void recalculate();

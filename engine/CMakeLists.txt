@@ -5,14 +5,14 @@ target_compile_definitions(flecs_static PUBLIC ecs_ftime_t=double)
 
 glad_add_library(glad_gl4_4 STATIC API gl:core=4.4)
 
-target_link_libraries(spock_engine PUBLIC
-    SDL3 glad_gl4_4 flecs_static glm box2d freetype)
+target_link_libraries(spock_engine PUBLIC 
+    SDL3 glad_gl4_4 flecs_static glm freetype)
 
 target_include_directories(spock_engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/")
 
 target_sources(spock_engine PRIVATE
-    "spock.cpp"
     "base.hpp"
+    "spock.cpp"
     "pipeline.hpp"
     "systems.hpp" "systems.cpp"
     "state.hpp" "state.cpp"
@@ -23,7 +23,6 @@ target_sources(spock_engine PRIVATE
     
 target_sources(spock_engine PRIVATE
     "components/window.hpp" "components/window.cpp"
-    "components/box2D.hpp" "components/box2D.cpp"
     "components/ui.hpp" "components/ui.cpp"
     "components/sprite.hpp" "components/sprite.cpp"
     "components/tilemap.hpp" "components/tilemap.cpp"
@@ -50,7 +49,8 @@ target_sources(spock_engine PRIVATE
     "utility/structures.hpp" "utility/structures.cpp"
     "utility/static_list.hpp" "utility/static_list.cpp"
     "utility/array2D.hpp" "utility/array2D.cpp"
-    "utility/memory.hpp" "utility/memory.cpp"
+    "utility/memory_pool.hpp" "utility/memory_pool.cpp"
+    "utility/hashmap.hpp" "utility/hashmap.cpp"
     "utility/image_loader.hpp" "utility/image_loader.cpp")
 
 target_sources(spock_engine PRIVATE
@@ -71,6 +71,13 @@ target_sources(spock_engine PRIVATE
     "render/sprite_renderer.hpp" "render/sprite_renderer.cpp"
     "render/primitive_renderer.hpp" "render/primitive_renderer.cpp"
     "render/ui_fb_renderer.hpp" "render/ui_fb_renderer.cpp")
+
+target_sources(spock_engine PRIVATE
+    "physics/transform.hpp" "physics/transform.cpp"
+    "physics/material.hpp" "physics/material.cpp"
+    "physics/body.hpp" "physics/body.cpp"
+    "physics/aabb.hpp" "physics/aabb.cpp"
+    "physics/world.hpp" "physics/world.cpp")
 
 target_sources(spock_engine PRIVATE
     "external/stb_image.h" "external/stb_image.c")

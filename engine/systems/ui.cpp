@@ -123,11 +123,13 @@ namespace spk {
             };
 
             // iterate through all blocks and use check_button lambda on them
-            canvas->btns.get_valid_blocks(nullptr, UINT32_MAX, check_button);
+            canvas->btns.find_blocks(nullptr, UINT32_MAX, check_button);
         }
     }
 
     void ui_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
+        spk_trace();
+        
         ui_canvas_comp_init(world);
 
         auto rs            = state.get_current_renderer();
@@ -138,15 +140,15 @@ namespace spk {
         auto fb_renderer   = ctx_alloc.allocate_ctx<ui_framebuffer_renderer_t>();
 
         // ORDER MATTERS HERE, buttons will render first, then the font renderer
-        key_t ui_fb = rs->fb_init();    
+        id_t ui_fb = rs->fb_init();    
         rs->fb_set_clear_bits(ui_fb, GL_COLOR_BUFFER_BIT);
         rs->fb_set_clear_color(ui_fb, 0.0f, 0.0f, 0.0f, 0.0f);
 
-        key_t color         = rs->atch_init();
+        id_t color         = rs->atch_init();
         rs->atch_set(color, GL_COLOR_ATTACHMENT0, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE);
         rs->fb_attach(ui_fb, color);
 
-        key_t rp = rs->rp_init();
+        id_t rp = rs->rp_init();
         rs->rp_set_fb(rp, ui_fb);
         rs->rp_add_renderer(rp, (base_renderer_t*)btn_renderer);
         rs->rp_add_renderer(rp, (base_renderer_t*)font_renderer);

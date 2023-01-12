@@ -26,12 +26,14 @@ namespace spk {
 
         template<typename T>
         T* allocate_ctx() {
+            spk_trace();
+            
             T*& ctx = (T*&)ctx_name_list.emplace_back();
 
             // better allocation will come later i swear
             ctx = (T*)malloc(sizeof(T));
 
-            new(ctx)T();
+            ctor(ctx);
 
             static_cast<spk::system_t*>(ctx)->init();
 

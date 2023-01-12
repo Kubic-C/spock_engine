@@ -4,9 +4,6 @@
 [submodule "dep/flecs"]
 	path = dep/flecs
 	url = https://github.com/SanderMertens/flecs
-[submodule "dep/box2d"]
-	path = dep/box2d
-	url = https://github.com/erincatto/box2d
 [submodule "dep/freetype"]
 	path = dep/freetype
 	url = https://github.com/freetype/freetype

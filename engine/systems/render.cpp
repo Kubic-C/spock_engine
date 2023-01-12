@@ -4,6 +4,8 @@
 
 namespace spk {
     void render_system_resize(flecs::iter& iter) {
+        spk_trace();
+        
         auto                 rs     = state.get_current_renderer();
         event_window_size_t* resize = iter.param<event_window_size_t>();
 
@@ -11,6 +13,7 @@ namespace spk {
     }
 
     void render_system_begin_render(flecs::iter& iter, comp_window_t* window) {
+        spk_trace();
         spk_assert(iter.count() == 1);
 
         auto rs = state.get_current_renderer();
@@ -19,6 +22,7 @@ namespace spk {
     }
 
     void render_system_render(flecs::iter& iter, comp_window_t* window) {
+        spk_trace();
         spk_assert(iter.count() == 1);
 
         auto rs = state.get_current_renderer();
@@ -27,6 +31,7 @@ namespace spk {
     }
 
     void render_system_end_render(flecs::iter& iter, comp_window_t* window) {
+        spk_trace();
         spk_assert(iter.count() == 1);
 
         auto rs = state.get_current_renderer();
@@ -35,6 +40,8 @@ namespace spk {
     }
 
     void render_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
+        spk_trace();
+
         render_system_t* ctx = ctx_alloc.allocate_ctx<render_system_t>();
 
         state.set_current_renderer(ctx);

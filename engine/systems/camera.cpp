@@ -16,6 +16,8 @@ namespace spk {
     }
 
     void camera_cs_init(system_ctx_allocater_t& allocater, flecs::world& world) {
+        spk_trace();
+        
         camera_comp_init(world);
         
         auto ctx = allocater.allocate_ctx<camera_system_ctx_t>();

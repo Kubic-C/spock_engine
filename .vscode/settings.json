@@ -105,6 +105,7 @@
         "xloctime": "cpp",
         "shared_mutex": "cpp",
         "xlocmes": "cpp",
-        "xlocmon": "cpp"
+        "xlocmon": "cpp",
+        "*.inc": "cpp"
     }
 }

@@ -3,8 +3,8 @@
 #include "spock.hpp"
 
 namespace spk {
-    void comp_tilemap_t::init() {
-        tiles.init(100, 100);
+    void comp_tilemap_t::init(flecs::entity entity) {
+        tiles.size(100, 100);
 
         for(uint32_t x = 0; x < tiles.get_width(); x++) {
             for(uint32_t y = 0; y < tiles.get_height(); y++) {
@@ -14,8 +14,7 @@ namespace spk {
         }
     }
 
-    void comp_tilemap_t::free() {
-        tiles.free();
+    void comp_tilemap_t::free(flecs::entity entity) {
     }
     
     void comp_tilemap_t::compute_greedy_mesh() {
@@ -29,8 +28,7 @@ namespace spk {
 
                 // We have to do this becuase,
                 // if a tile has no adjacent tiles on the y axis
-                // it will not be added to the map at all, causing it not to 
-                // be added to the tile groups
+                // it will not be added to the map at all
                 if(tile_groups.find(cur_index) == tile_groups.end())
                     tile_groups[cur_index] = { 1, 1 };
 
@@ -75,13 +73,13 @@ namespace spk {
             tile_groups.erase(last_tile);
             
             // the map may resize or move data around. 
-            // var 'I' could be pointing towards bad data
+            // var 'i' could be pointing towards bad data
             // so we 'reset'
             i = tile_groups.begin();
         }
     }
 
-    void comp_tilemap_t::iterate_map(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
+    void comp_tilemap_t::iterate_all(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
         for(uint32_t x = 0; x < tiles.get_width(); x++) {
             for(uint32_t y = 0; y < tiles.get_height(); y++) {
                 clbk(x, y);
@@ -90,7 +88,7 @@ namespace spk {
     }
 
     void comp_tilemap_t::iterate_colliadable(std::function<void(uint32_t x, uint32_t y, tile_is_coll_info_t&)>&& clbk) {
-        iterate_map([&](uint32_t x, uint32_t y) {
+        iterate_all([&](uint32_t x, uint32_t y) {
             tile_is_coll_info_t tile_info = tile_is_colliadable(x, y);
             
             if(tile_info.is_colliadable()) {
@@ -100,7 +98,7 @@ namespace spk {
     }
     
     void comp_tilemap_t::iterate_non_zero(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
-        iterate_map([&](uint32_t x, uint32_t y) {
+        iterate_all([&](uint32_t x, uint32_t y) {
             if(!is_tile_empty(tiles.get(x, y))) {
                 clbk(x, y);
             }
@@ -153,41 +151,41 @@ namespace spk {
     }
 
     
-    void comp_tilemap_t::compute_colliders() {
-        compute_greedy_mesh();
-        compute_centroid();
-        colliding_tiles.clear();
+    // void comp_tilemap_t::compute_colliders() {
+    //     compute_greedy_mesh();
+    //     compute_centroid();
+    //     colliding_tiles.clear();
 
-        for(auto& pair : tile_groups) {
-            glm::uvec2   coords = tiles.get_2D_from_1D(pair.first);
-            tile_group_t tile   = pair.second;
-            uint32_t     id     = tiles.get(coords.x, coords.y).id;
+    //     for(auto& pair : tile_groups) {
+    //         glm::uvec2   coords = tiles.get_2D_from_1D(pair.first);
+    //         tile_group_t tile   = pair.second;
+    //         uint32_t     id     = tiles.get(coords.x, coords.y).id;
 
-            if(is_tile_empty(tiles.get(coords.x, coords.y)))
-               continue;
+    //         if(is_tile_empty(tiles.get(coords.x, coords.y)))
+    //            continue;
 
-            {
-                float  half_width    = tile.x / 2.0f;
-                float  half_height   = tile.y / 2.0f;
-                float  offset_width  = (coords.x + SPK_TILE_HALF_SIZE) - (float)tile.x  / 2.0f - center.x;
-                float  offset_height = (coords.y + SPK_TILE_HALF_SIZE) - (float)tile.y  / 2.0f - center.y; 
-                b2Vec2 offset        = { offset_width, offset_height };
+    //         {
+    //             float  half_width    = tile.x / 2.0f;
+    //             float  half_height   = tile.y / 2.0f;
+    //             float  offset_width  = (coords.x + SPK_TILE_HALF_SIZE) - (float)tile.x  / 2.0f - center.x;
+    //             float  offset_height = (coords.y + SPK_TILE_HALF_SIZE) - (float)tile.y  / 2.0f - center.y; 
+    //             b2Vec2 offset        = { offset_width, offset_height };
 
-                colliding_tiles.emplace_back();
-                tile_collider_t& tile = colliding_tiles.back();
+    //             colliding_tiles.emplace_back();
+    //             tile_collider_t& tile = colliding_tiles.back();
 
-                b2Vec2 vertices[4] = {
-                    b2Vec2(-half_width, -half_height) + offset,
-                    b2Vec2(half_width, -half_height) + offset,
-                    b2Vec2(half_width, half_height) + offset,
-                    b2Vec2(-half_width, half_height) + offset
-                };
+    //             b2Vec2 vertices[4] = {
+    //                 b2Vec2(-half_width, -half_height) + offset,
+    //                 b2Vec2(half_width, -half_height) + offset,
+    //                 b2Vec2(half_width, half_height) + offset,
+    //                 b2Vec2(-half_width, half_height) + offset
+    //             };
 
-                tile.shape.Set(vertices, 4);
-                tile.id = id;
-            }
-        }
-    }
+    //             tile.shape.Set(vertices, 4);
+    //             tile.id = id;
+    //         }
+    //     }
+    // }
 
 
     void comp_tilemap_t::compute_centroid() {
@@ -210,30 +208,20 @@ namespace spk {
             }
         });
 
-        width  = (right_most - left_most) + 1;
-        height = (top_most - bottom_most) + 1;
+        width  = (right_most - left_most);
+        height = (top_most - bottom_most);
 
         // adding by the half distance to find the center
         center.x = left_most   + width / 2.0f; 
         center.y = bottom_most + height / 2.0f; 
     }
 
-    void comp_tilemap_t::add_fixtures(b2Body* body) {
-        auto& dictionary = state.engine->rsrc_mng.get_tile_dictionary();
-
-        compute_colliders();
-
-        for(auto& tile_collider : colliding_tiles) {
-            b2FixtureDef def;
-            def.density     = dictionary[tile_collider.id].density;
-            def.friction    = dictionary[tile_collider.id].friction;
-            def.restitution = dictionary[tile_collider.id].restitution;
-            def.shape       = &tile_collider.shape;
-            body->CreateFixture(&def);
-        }
+    void comp_tilemap_t::update_tilemap() {
+        void compute_greedy_mesh();
+        void compute_centroid();
     }
 
     void tile_comp_init(flecs::world& world) {
-        spk_register_component(world, comp_tilemap_t).is_a<comp_b2Body_t>();
+        spk_register_component(world, comp_tilemap_t);
     }
 }
