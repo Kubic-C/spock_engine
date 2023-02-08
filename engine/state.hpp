@@ -8,6 +8,7 @@
 namespace spk {
     class engine_t; // forward decloration
     class render_system_t;
+    class physics_world_t;
 
     enum vsync_setting_e {
         VSYNC_ADAPATIVE = -1,
@@ -30,7 +31,7 @@ namespace spk {
         float ppm = 8.0f;
 
         flecs::entity    window          = flecs::entity(UINT64_MAX);
-        flecs::entity    box2D_world     = flecs::entity(UINT64_MAX);
+        physics_world_t* physics_world   = nullptr;
         render_system_t* renderer        = nullptr;
         flecs::entity    event_system    = flecs::entity(UINT64_MAX);
         flecs::entity    canvas          = flecs::entity(UINT64_MAX);
@@ -50,7 +51,7 @@ namespace spk {
         double           get_target_fps(bool divide_by_second = true) const;
         double           get_target_tps(bool divide_by_second = true) const;
         flecs::entity    get_current_window() const { return window; }
-        flecs::entity    get_current_box2D_world() const { return box2D_world; }
+        physics_world_t* get_current_physics_world() const { return physics_world; }
         render_system_t* get_current_renderer() const { return renderer; }
         vsync_setting_e  get_vsync_option() const { return vsync_opt; }
         flecs::entity    get_current_event_system() const { return event_system; }
@@ -79,9 +80,9 @@ namespace spk {
             window = window_; 
         }
 
-        void set_current_box2D_world(flecs::entity world) { 
-            SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "current box2D world changed to: (id)%llu", world.id());
-            box2D_world = world; 
+        void set_current_physics_world(physics_world_t* world) { 
+            SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "current physics world changed to: %p", world);
+            physics_world = world; 
         }
 
         void set_current_renderer(render_system_t* renderer_) {             

@@ -70,7 +70,7 @@ namespace spk {
 
     template<typename T, size_t capacity>
     void static_list<T, capacity>::push_back(const T& obj) {
-        spk_assert(size < capacity);
+        spk_assert(size + 1 <= capacity);
         
         size++;
         list[size - 1] = obj;
@@ -78,7 +78,7 @@ namespace spk {
 
     template<typename T, size_t capacity>
     T& static_list<T, capacity>::emplace_back() {
-        spk_assert(size < capacity);
+        spk_assert(size + 1 <= capacity);
 
         size++;
         new(&list[size - 1])T();

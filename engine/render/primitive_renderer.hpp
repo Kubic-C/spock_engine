@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base_renderer.hpp"
+#include "physics/world.hpp"
 
 /* quick and dirty debug rendering for Box2D shapes or primitive shapes */
 
@@ -24,8 +25,9 @@ namespace spk {
         void subdata();
         void zero();
         
-        // void add_polygon(const b2Body* body, b2PolygonShape* polygon);
+        void add_aabb(const glm::vec2& pos, const aabb_t& aabb);
     };
+
     class primitive_renderer_t : public base_renderer_t {
     public:
         void init() override;

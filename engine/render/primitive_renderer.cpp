@@ -49,34 +49,20 @@ namespace spk {
         vertex_buffer.buffer_sub_data(0, buffer_count * sizeof(prim_vertex_t), buffer.data());
     }
 
-    // void polygon_batch_mesh_t::add_polygon(const b2Body* body, b2PolygonShape* polygon) {
-    //     // this will get the amount of vertexes to use, so if quad has 4 verts: 4 / 2 = 2 -> 2 * 3 = 6 (vertexes)
-    //     int32_t  vertex_count = (polygon->m_count / 2) * 3; // special case: 3 works because of integer division black magic
-    //     uint32_t offset       = buffer_count;
+    void polygon_batch_mesh_t::add_aabb(const glm::vec2& pos, const aabb_t& aabb) {
+        spk_trace();
 
-    //     for(int32 j = 0; j < polygon->m_count; j++)  {
-    //         buffer[offset + j].pos = { 
-    //             body->GetWorldPoint(polygon->m_vertices[j]).x, body->GetWorldPoint(polygon->m_vertices[j]).y };
-    //     }
+        // this will get the amount of vertexes to use, so if quad has 4 verts: 4 / 2 = 2 -> 2 * 3 = 6 (vertexes)
 
-    //     count += vertex_count; 
-    //     buffer_count += polygon->m_count;
-    // }
-    
-    // void primitive_renderer_t::draw_indexed_buffer(static_index_buffer_t& ind, glm::mat4& vp, uint32_t count) { 
-    //     ind.bind();
-    //     prim_ctx.program.use();
-    //     prim_ctx.program.set_mat4("u_vp", vp);
-    //     prim_ctx.program.set_vec3("color", color);
-    //     glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);   
-    // }
+        buffer[buffer_count + 0] = (prim_vertex_t){ {pos.x - aabb.hw,  pos.y - aabb.hh} }; // bl
+        buffer[buffer_count + 1] = (prim_vertex_t){ {pos.x + aabb.hw,  pos.y - aabb.hh} }; // br  
+        buffer[buffer_count + 2] = (prim_vertex_t){ {pos.x + aabb.hw,  pos.y + aabb.hh} }; // tr  
+        buffer[buffer_count + 3] = (prim_vertex_t){ {pos.x - aabb.hw,  pos.y + aabb.hh} }; // tl  
 
-    // void primitive_renderer_t::draw_buffer(glm::mat4& vp, uint32_t count) { 
-    //     prim_ctx.program.use();
-    //     prim_ctx.program.set_mat4("u_vp", vp);
-    //     prim_ctx.program.set_vec3("color", color);
-    //     glDrawArrays(GL_TRIANGLES, 0, count);   
-    // }
+        count += 6; 
+        buffer_count += 4;
+    }
+
 
     // void primitive_renderer_t::render_circle(glm::mat4& vp, const b2Body* body, b2CircleShape* circle) {
     //     const glm::vec2 position = spk::to_glm_vec2(body->GetPosition());
@@ -168,7 +154,10 @@ namespace spk {
         prim_ctx.program.set_vec3("color", color);
 
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glDrawElements(GL_TRIANGLES, poly_mesh.count, GL_UNSIGNED_INT, nullptr);   
+        glDisable(GL_BLEND);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 }

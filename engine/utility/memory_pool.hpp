@@ -4,12 +4,321 @@
 #include "static_list.hpp"
 
 namespace spk {
-    constexpr size_t alignment   = 8; 
+    template<typename T>
+    T* inc_by_byte(T* ptr, size_t byte) {
+        return (T*)((uint8_t*)ptr + byte);
+    }
 
+    constexpr size_t alignment   = 8; 
+    
     enum block_flags_e: uint8_t {
-        BLOCK_FLAGS_IN_USE = 1 << 0
+        BLOCK_FLAGS_FREE        = 0,
+        BLOCK_FLAGS_INITIALIZED = 1,
+        BLOCK_FLAGS_IN_USE      = 1 << 0
     };
 
+    template<typename T>
+    struct block_header_t {
+        std::bitset<8> flags;
+
+        // will be null if the block is allocated
+        block_header_t<T>* prev;
+        block_header_t<T>* next;
+
+        // the amount of bytes, including the header and its blocks it occupies
+        uint16_t total_bytes;  
+        int magic_number;
+
+        size_t block_count() const {
+            return (total_bytes - sizeof(block_header_t<T>)) / sizeof(T);
+        }
+    };
+
+    template<typename T>
+    class block_allocator_t {
+    public:
+        block_allocator_t(size_t capacity = 10, size_t resize_amount = 0) {
+            size_t alignment_offset = 0;
+
+            this->first = nullptr;
+            this->last  = nullptr;
+            this->resize_amount = 0;
+            this->capacity = (capacity * sizeof(T) + capacity * block_header_size);
+
+            this->real_ptr = (uint8_t*)malloc(this->capacity + alignment);
+            alignment_offset = alignment - ((size_t)real_ptr % alignment);
+
+            // if real_ptr % alignment returns 0 => 8 - 0 = 8, so we dont need to offset
+            // by anything- there is no real need to do this( whats done below ), BUT it may be notable
+            // when rewriting this pool in the future
+            if(alignment_offset == 8) {
+                this->aligned_ptr = real_ptr;
+            } else {
+                this->aligned_ptr = real_ptr + alignment_offset;
+            }
+
+            create_block_header(this->aligned_ptr, this->capacity);
+        }
+
+        ~block_allocator_t() {
+            if(total_blocks != freed_blocks)
+                log.log("some blocks were not free'd, %s", typeid(block_allocator_t<T>).name());
+
+            free(real_ptr);
+        }
+
+        bool full() {
+            return false;
+        }
+
+    public:
+        T* allocate(size_t size) {
+            block_header_t<T>* cur = find_header_with_at_least(size);
+
+            if(cur == nullptr) {
+                cur = try_merge_header_with_at_least(size);
+            
+                if(cur == nullptr)
+                    return nullptr;
+            }
+
+            allocate_and_append_header(size, cur);
+
+            freed_blocks--;
+
+            return (T*)((uint8_t*)cur + block_header_size);
+        }
+
+        void deallocate(T* block) {
+            block_header_t<T>* header = (block_header_t<T>*)((uint8_t*)block - block_header_size);
+
+            spk_assert(block != nullptr);
+            spk_assert(!header->flags[BLOCK_FLAGS_FREE]);
+
+            header->flags[BLOCK_FLAGS_FREE].flip();
+
+            freed_blocks++;
+
+            _push_back(header);
+        }
+
+    protected:
+        block_header_t<T>* find_header_with_at_least(size_t size) {
+            size_t total_bytes = 0;
+
+            block_header_t<T>*       header = (block_header_t<T>*)aligned_ptr;
+            const block_header_t<T>* end    = (block_header_t<T>*)(aligned_ptr + this->capacity);
+            for(; header != end; header = inc_by_byte(header, header->total_bytes)) {
+                total_bytes += header->total_bytes;
+            }
+
+            log.log("[em] total bytes in all blocks: %llu ? %llu [reset]", total_bytes, capacity);
+
+            for(block_header_t<T>* cur = first; cur != nullptr; cur = cur->prev) {
+                if(first->block_count() >= size) {
+                    return cur;
+                }
+            }
+
+            return nullptr;
+        }
+
+        block_header_t<T>* try_merge_header_with_at_least(size_t size) {
+            // we take advantage of the fact that block headers
+            // are right next to each other in memory (with some elements in between)
+            // -knowing this allows us to merge multiple headers if they are:
+            // 1. free'd and
+            // 2. contigous in memory
+
+            size_t             total_contigous_bytes = 0;
+            block_header_t<T>* free_begin            = nullptr;
+            block_header_t<T>* free_end              = nullptr;
+
+            // there is always a valid header at aligned ptr
+            block_header_t<T>*       header = (block_header_t<T>*)aligned_ptr;
+            const block_header_t<T>* end    = (block_header_t<T>*)(aligned_ptr + this->capacity);
+            for(; header != end; header = inc_by_byte(header, header->total_bytes)) {
+                size_t usable_user_memory = 0;
+
+                if(header->flags[BLOCK_FLAGS_FREE]) {
+                    total_contigous_bytes += header->total_bytes;
+
+                    if(free_begin == nullptr) {
+                        free_begin = header;
+                    }
+                } else {
+                    total_contigous_bytes = 0;
+                    free_begin = nullptr;
+                    continue;
+                }
+
+                usable_user_memory = total_contigous_bytes - block_header_size;
+                if(usable_user_memory >= sizeof(T) * size) {
+                    free_end = (block_header_t<T>*)((uint8_t*)header + header->total_bytes);
+                    break;
+                }
+            }
+
+            if(free_end == nullptr)
+                return nullptr;
+
+            // remove all headers from list
+            for(auto cur = free_begin; cur != free_end; cur = inc_by_byte(cur, cur->total_bytes)) {
+                _remove(cur);
+            }
+
+            return create_block_header((uint8_t*)free_begin, total_contigous_bytes);
+        }
+
+        // returns the appended header, size is the number of elements
+        block_header_t<T>* allocate_and_append_header(size_t size, block_header_t<T>* header) {
+            int32_t            free_bytes = 0;
+            block_header_t<T>* next       = nullptr;
+
+            spk_assert(header->flags[BLOCK_FLAGS_FREE]);
+
+            // claim the block as allocated
+            header->flags[BLOCK_FLAGS_FREE].flip();
+
+            _remove(header);
+
+            // now we figure out if we can append a new header
+            free_bytes = header->total_bytes - ((sizeof(T) * size) + block_header_size);
+
+            if(free_bytes - (int32_t)block_header_size < 0) {
+                return nullptr;
+            }
+
+            header->total_bytes = block_header_size + sizeof(T) * size;
+
+            next = (block_header_t<T>*)((uint8_t*)header + header->total_bytes);
+            return create_block_header((uint8_t*)next, free_bytes);
+        }
+
+        // size is in bytes
+        block_header_t<T>* create_block_header(uint8_t* addr, size_t size) {
+            spk_assert(((size_t)addr % 2) == 0, "address given was not aligned by 2");
+            spk_assert((int32_t)size - block_header_size >= 0);
+
+            block_header_t<T>* header = (block_header_t<T>*)addr;
+            header->magic_number = 1234;
+            header->total_bytes = size;
+
+            header->flags       = 0; 
+            header->next        = nullptr;
+            header->prev        = nullptr;
+    
+            header->flags[BLOCK_FLAGS_FREE].flip();
+
+            _push_back(header);
+
+            total_blocks++;
+            freed_blocks++;
+
+            return header;
+        }
+
+    private:
+        static constexpr size_t block_header_size = sizeof(block_header_t<T>);
+
+        size_t resize_amount;
+        size_t capacity; // in bytes
+
+        size_t          total_blocks = 0;
+        size_t          freed_blocks = 0;
+        uint8_t*        real_ptr;
+        uint8_t*        aligned_ptr;
+
+        // linked list of free blocks
+        block_header_t<T>* first;
+        block_header_t<T>* last;
+
+    protected:
+        protected:
+        // linked list operations
+        void _assign_first(block_header_t<T>* iter) {
+            spk_assert(first == nullptr && last == nullptr);
+
+            first = iter;
+            last  = iter;
+        }
+
+        void _remove(block_header_t<T>* iter) {
+            if(iter == first) {
+                first = iter->prev;
+            } 
+
+            if(iter == last) {
+                last = iter->next;
+            }
+
+            if(iter->next != nullptr) {
+                iter->next->prev = iter->prev;
+            }
+
+            if(iter->prev != nullptr) {
+                iter->prev->next = iter->next;
+            }
+
+            iter->prev = nullptr;
+            iter->next = nullptr;
+        }
+
+        void _push_back(block_header_t<T>* iter) {
+            if(first == nullptr)
+                _assign_first(iter);
+            else {
+                last->prev = iter;
+                iter->next = last;
+                last = iter;
+            }
+        }
+
+        void _push_front(block_header_t<T>* iter) {
+            if(first == nullptr)
+                _assign_first(iter);
+            else {
+                first->next = iter;
+                iter->prev = first;
+                first = iter;
+            }
+        }
+
+        void _pop_front() {
+            if(first != nullptr) {
+                block_header_t<T>* iter_prev = first->prev;
+
+                first = iter_prev;
+
+                if(iter_prev != nullptr) {
+                    iter_prev->next = nullptr;
+                }
+            }
+        }
+
+        void _pop_back() {
+            if(last != nullptr) {
+                block_header_t<T>* iter_next = last->next;
+
+                last = iter_next;
+
+                if(iter_next != nullptr) {
+                    iter_next->prev = nullptr;
+                }
+            }
+        }
+    };
+
+    //template<typename T, size_t column_max_size = 8>
+    class _memory_pool_t {
+    public:
+
+    private:
+
+    };
+}
+
+namespace spk {
     template<typename T>
     struct block_t {
         uint8_t flags = 0;
@@ -140,6 +449,10 @@ namespace spk {
         size_t get_capacity() const {
             return capacity;
         };
+
+        size_t get_size() const {
+            return size;
+        }
 
     private:
         block_t<T>* get(uint32_t index) {
@@ -275,6 +588,18 @@ namespace spk {
             }
 
             return capacity;
+        }
+
+        size_t size() {
+            spk_trace();
+
+            size_t culm_sum = 0;
+
+            for(auto& column : columns) {
+                culm_sum += column.get_size();
+            }
+
+            return culm_sum;
         }
 
     private:

@@ -2,6 +2,8 @@
 
 namespace spk {
     bool resource_manager_t::init() {
+        spk_trace();
+
         if(!fm_init())
             return false;
 
@@ -11,8 +13,6 @@ namespace spk {
         sarm_init();
 
         td_init();
-
-        spk_assert(false, "dung");
 
         return true;
     }

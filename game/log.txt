@@ -1,5 +1,0 @@
-|SPOCK: 612621.887429> [32m INFO [0m info_logger_init
-|SPOCK: 0.427725> [32m INFO [0m [31m Quick exit due to error [0m
-|SPOCK: 0.427884> [33m[1m TRACE [0m file(main.cpp) - int WinMain(HINSTANCE, HINSTANCE, LPSTR, int) - line(14)
-|SPOCK: 0.428069> [33m[1m TRACE [0m file(spock.cpp) - void spk::engine_t::init() - line(8)
-|SPOCK: 0.428231> [33m[1m TRACE [0m file(resource_manager.cpp) - bool spk::resource_manager_t::init() - line(5)

@@ -1,4 +1,5 @@
 #include "logger.hpp"
+#include <signal.h>
 
 namespace spk {
     bool should_ignore_character(char c) {
@@ -26,8 +27,6 @@ namespace spk {
                 if(str[i] == SFK_RULING_DEFAULT_SEPERATOR || str[i] == SFK_RULING_DEFAULT_TEXT_END) {
                     if(map.find(rule) != map.end()) {
                         ansi_rules += map[rule];
-                    } else {
-                        ansi_rules += "<![red]ukwn rule: " + rule + "[reset]!>";
                     }
 
                     rule = ""; 
@@ -77,6 +76,11 @@ namespace spk {
         return f.c_str();
     }
 
+    void log_sigv(int num) {
+        printf("error\n");
+        log.log(LOG_TYPE_ERROR, "seg fault");
+    }
+
     info_logger_t::info_logger_t() {
         buf.resize(4096);
         log_file.open("./log.txt");
@@ -98,7 +102,10 @@ namespace spk {
         rule_map[SFK_RULING_DEFAULT_RESET]    = SFK_ANSI_RESET;
         rule_map[SFK_RULING_DEFAULT_EPHASIS_TEXT] = SFK_OUTPUT_EMPHASIS_TEXT;
         
-        log(LOG_TYPE_INFO, "info_logger_init");
+        // in the case of unexpected termination- output to the console
+        signal(SIGSEGV, log_sigv);
+
+        trace_list.reserve(500);
     }
 
     info_logger_t::~info_logger_t() {
@@ -163,13 +170,13 @@ namespace spk {
         }
 
         if(type == LOG_TYPE_ERROR || type == LOG_TYPE_ASSERT) {
-            log(LOG_TYPE_INFO, "[red] Quick exit due to error [reset]");
+            log(LOG_TYPE_INFO, "[red] Aborting due to error [reset]");
 
             for(auto& str : trace_list) {
                 log(LOG_TYPE_TRACE, str.c_str());
             }
 
-            exit(EXIT_FAILURE);
+            abort();
         }
 
         log_file.write(buf.data(), ptr);
@@ -179,9 +186,26 @@ namespace spk {
         printf("%s", buf.data());
     }
 
-    void info_logger_t::trace(const char* file, const char* func, int line) {
+    bool info_logger_t::trace(const char* file, const char* func, int line) {
+        const size_t max_trace_list_size = 49;
+        
+        if(trace_list.size() >= max_trace_list_size + 1) {
+            return true;
+        }
+
+        // we dont want to add to the trace list more than once
+        if(trace_list.size() == max_trace_list_size) {
+            // to avoid overallocating on the heap, and causing wierd behaviour by allocating
+            // we must limit the trace list size to 50
+
+            trace_list.push_back(std::string("trace list max size reached"));
+            log(LOG_TYPE_ERROR, "trace list max size reached, may be limit recursive-ness?");
+            return true;
+        }
+        
         trace_list.push_back(
                 "file(" + std::string(file) + ") - " + std::string(func) + " - line(" + std::to_string(line) + ")");
+        return false;
     }
 
     void _assert(const char* file, const char* func, int line, const char* expr, const char* message) {
@@ -190,10 +214,11 @@ namespace spk {
     }
 
     trace_t::trace_t(const char* file, const char* func, int line) {
-        log.trace(file, func, line);
+        error = log.trace(file, func, line);
     }
 
     trace_t::~trace_t() {
-        log.trace_list.pop_back();
+        if(!error)
+            log.trace_list.pop_back();
     }
 }

@@ -8,6 +8,7 @@
 #include "systems/primitive.hpp"
 #include "systems/sprite.hpp"
 #include "systems/camera.hpp"
+#include "physics/body.hpp"
 
 #include "utility/entity.hpp"
 
@@ -55,8 +56,8 @@ namespace spk {
         // sets the title of the window
         void set_current_window_title(const std::string& title);
 
-        // // gets the box2d physics world currently in use 
-        // b2World* get_current_b2World();
+        // gets the box2d physics world currently in use 
+        physics_world_t* get_current_physics_world();
         
         // sets the target FPS for rendering
         void set_target_fps(double target_fps);

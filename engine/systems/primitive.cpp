@@ -9,45 +9,44 @@ namespace spk {
         poly_mesh->zero();
     }
 
-    // void primitive_mesh(flecs::iter& iter, comp_b2Body_t* bodies) {
-    //     auto render_ctx = (render_system_t*)state.get_current_renderer();
-    //     auto camera     = state.get_current_camera().get_ref<comp_camera_t>();
-    //     auto poly_mesh  = get_ctx<polygon_batch_mesh_t>(iter);
+    void primitive_mesh(flecs::iter& iter, comp_rigid_body_t* bodies) {
+        spk_trace();
 
-    //     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        auto render_ctx = (render_system_t*)state.get_current_renderer();
+        auto camera     = state.get_current_camera().get_ref<comp_camera_t>();
+        auto poly_mesh  = get_ctx<polygon_batch_mesh_t>(iter);
         
-    //     for(auto i : iter) {
-    //         comp_b2Body_t* body = &bodies[i];
+        for(auto i : iter) {
+            rigid_body_t& body = *bodies[i];
 
-    //         b2Fixture* fixture = body->body->GetFixtureList();
+            if(bodies[i].body == nullptr)
+                continue;
 
-    //         for(; fixture; fixture = fixture->GetNext()) {
-    //             b2Shape* shape = fixture->GetShape();
-    //             b2Shape::Type type = shape->GetType();
+            poly_mesh->add_aabb(body.transform.pos + body.max.pos, body.max.aabb);
 
-    //             switch(type) {
-    //             case b2Shape::Type::e_polygon:
-    //                 poly_mesh->add_polygon(body->body, (b2PolygonShape*)shape);
-    //                 break;
+            for(fixture_t* cur = body.fixtures; cur != nullptr; cur = cur->next) {
+                switch(cur->type) {
+                    case FIXTURE_TYPE_BOX:
+                        poly_mesh->add_aabb(cur->get_world_pos(), cur->def.box);
+                        break;
 
-    //             case b2Shape::Type::e_circle:
-    //                 spk_assert(false);
-    //                 //ctx->render_circle(camera->vp, body->body, (b2CircleShape*)shape);
-    //                 break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 
-    //             case b2Shape::Type::e_edge:
-    //                 spk_assert(false);
-    //                 //ctx->render_edge(camera->vp, body->body, (b2EdgeShape*)shape);
-    //                 break;
+    void primitive_world_mesh(flecs::iter& iter) {
+        spk_trace();
 
-    //             default:
-    //                 log.log(spk::LOG_TYPE_INFO, "unsupported collider type for render_info renderer");
-    //             };
-    //         }
-    //     }
-        
-    //     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    // }
+        auto world = state.get_current_physics_world();
+        auto poly_mesh  = get_ctx<polygon_batch_mesh_t>(iter);
+
+        world->tree.iterate([&](quad_tree_t* qt){        
+            poly_mesh->add_aabb(qt->area.pos, qt->area.aabb);
+        });
+    }
 
     void primitive_render_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
         spk_trace();
@@ -58,7 +57,9 @@ namespace spk {
 
         world.system().ctx(&primi_renderer->poly_mesh)
             .kind(on_pre_mesh).iter(primitive_pre_mesh);
-        // world.system<comp_b2Body_t>().ctx(&primi_renderer->poly_mesh)
-        //     .term<comp_body_prim_t>().kind(on_mesh).iter(primitive_mesh);
+
+        world.system<comp_rigid_body_t>().ctx(&primi_renderer->poly_mesh)
+            .term<comp_body_prim_t>().kind(on_mesh).iter(primitive_mesh);
+        world.system().ctx(&primi_renderer->poly_mesh).kind(on_mesh).iter(primitive_world_mesh);
     }
 }

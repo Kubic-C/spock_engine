@@ -51,7 +51,8 @@ target_sources(spock_engine PRIVATE
     "utility/array2D.hpp" "utility/array2D.cpp"
     "utility/memory_pool.hpp" "utility/memory_pool.cpp"
     "utility/hashmap.hpp" "utility/hashmap.cpp"
-    "utility/image_loader.hpp" "utility/image_loader.cpp")
+    "utility/image_loader.hpp" "utility/image_loader.cpp"
+    "utility/allocator.hpp" "utility/allocator.cpp")
 
 target_sources(spock_engine PRIVATE
     "data/text.hpp" "data/text.cpp"
@@ -76,8 +77,10 @@ target_sources(spock_engine PRIVATE
     "physics/transform.hpp" "physics/transform.cpp"
     "physics/material.hpp" "physics/material.cpp"
     "physics/body.hpp" "physics/body.cpp"
+    "physics/quad_tree.hpp" "physics/quad_tree.cpp"
     "physics/aabb.hpp" "physics/aabb.cpp"
-    "physics/world.hpp" "physics/world.cpp")
+    "physics/world.hpp" "physics/world.cpp"
+    "physics/solver.hpp" "physics/solver.cpp")
 
 target_sources(spock_engine PRIVATE
     "external/stb_image.h" "external/stb_image.c")

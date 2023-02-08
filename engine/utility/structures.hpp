@@ -4,6 +4,7 @@
 #include "array2D.hpp"
 #include "memory_pool.hpp"
 #include "hashmap.hpp"
+#include "allocator.hpp"
 
 namespace spk {
     template<typename T>

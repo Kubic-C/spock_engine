@@ -23,12 +23,14 @@
 #include <string>
 #include <queue>
 #include <vector>
+#include <list>
 #include <map>
 #include <thread>
 #include <array>
 #include <memory>
 #include <bitset>
 #include <algorithm> 
+#include <limits>
 
 // engine
 #include "logger.hpp"
@@ -37,6 +39,9 @@
 
 #ifdef _WIN32 
 #include <Windows.h>
+
+#define FLOAT_MAX std::numeric_limits<float>::max()
+#define FLOAT_MIN std::numeric_limits<float>::min() 
 
 #define  MAIN \
 WINAPI int WinMain( \

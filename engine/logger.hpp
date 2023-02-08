@@ -82,7 +82,7 @@ namespace spk {
         void log(log_type_e type, const char* format, ...);
 
         void spew(); // print the current buffer onto console
-        void trace(const char* file, const char* func, int line);
+        bool trace(const char* file, const char* func, int line);
 
         rule_map_t rule_map;
         std::ofstream log_file;
@@ -96,6 +96,9 @@ namespace spk {
         trace_t() = delete;
         trace_t(const char* file, const char* func, int line);
         ~trace_t();
+    
+    private:
+        bool error = false;
     };
 
     inline info_logger_t log;

@@ -61,7 +61,6 @@ namespace spk {
             // renderers need a working Gl context, so we initialize them after we add a window with a 
             // working GL context
             world.entity().add<comp_window_t>().add<tag_current_window_t>();
-            // world.entity().add<comp_b2World_t>().add<tag_current_box2d_world_t>();
 
             camera_cs_init(ctx_alloc, world);
             render_cs_init(ctx_alloc, world);
@@ -177,9 +176,9 @@ namespace spk {
         state.get_current_window().get_ref<comp_window_t>()->set_title(title);
     }
 
-    // b2World* engine_t::get_current_b2World() {
-    //     return state.get_current_box2D_world().get<comp_b2World_t>()->world;
-    // }
+    physics_world_t* engine_t::get_current_physics_world() {
+        return state.get_current_physics_world();
+    }
 
     void engine_t::set_target_fps(double target_fps) {
         state.set_target_fps(target_fps);
