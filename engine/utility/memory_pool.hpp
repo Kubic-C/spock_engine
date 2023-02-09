@@ -6,10 +6,8 @@
 namespace spk {
     template<typename T>
     T* inc_by_byte(T* ptr, size_t byte) {
-        return (T*)((uint8_t*)ptr + byte);
+        return reinterpret_cast<T*>(reinterpret_cast<uint8_t*>(ptr) + byte);
     }
-
-    constexpr size_t alignment   = 8; 
     
     enum block_flags_e: uint8_t {
         BLOCK_FLAGS_FREE        = 0,
@@ -26,32 +24,34 @@ namespace spk {
         block_header_t<T>* next;
 
         // the amount of bytes, including the header and its blocks it occupies
-        uint16_t total_bytes;  
-        int magic_number;
+        size_t total_bytes; 
 
         size_t block_count() const {
             return (total_bytes - sizeof(block_header_t<T>)) / sizeof(T);
+        }
+
+        T* get_elements() {
+            return inc_by_byte((T*)this, sizeof(*this));
         }
     };
 
     template<typename T>
     class block_allocator_t {
+        static constexpr size_t block_header_size = sizeof(block_header_t<T>);
+        static constexpr size_t alignment   = 8; 
+
     public:
-        block_allocator_t(size_t capacity = 10, size_t resize_amount = 0) {
+        block_allocator_t(size_t capacity = 10) {
             size_t alignment_offset = 0;
 
             this->first = nullptr;
             this->last  = nullptr;
-            this->resize_amount = 0;
             this->capacity = (capacity * sizeof(T) + capacity * block_header_size);
 
             this->real_ptr = (uint8_t*)malloc(this->capacity + alignment);
             alignment_offset = alignment - ((size_t)real_ptr % alignment);
 
-            // if real_ptr % alignment returns 0 => 8 - 0 = 8, so we dont need to offset
-            // by anything- there is no real need to do this( whats done below ), BUT it may be notable
-            // when rewriting this pool in the future
-            if(alignment_offset == 8) {
+            if(alignment_offset == alignment) {
                 this->aligned_ptr = real_ptr;
             } else {
                 this->aligned_ptr = real_ptr + alignment_offset;
@@ -67,26 +67,18 @@ namespace spk {
             free(real_ptr);
         }
 
-        bool full() {
-            return false;
-        }
-
-    public:
+        // size is the amount of elements you want allocated
         T* allocate(size_t size) {
-            block_header_t<T>* cur = find_header_with_at_least(size);
+            block_header_t<T>* header = get_block_with(size);
 
-            if(cur == nullptr) {
-                cur = try_merge_header_with_at_least(size);
-            
-                if(cur == nullptr)
-                    return nullptr;
+            if(header == nullptr) {
+                return nullptr;
             }
+ 
+            bisect_block(header, size);
+            set_block_as_allocated(header);
 
-            allocate_and_append_header(size, cur);
-
-            freed_blocks--;
-
-            return (T*)((uint8_t*)cur + block_header_size);
+            return header->get_elements();
         }
 
         void deallocate(T* block) {
@@ -99,10 +91,34 @@ namespace spk {
 
             freed_blocks++;
 
-            _push_back(header);
+            free_list_push_back(header);
+        }
+
+        size_t get_capacity() const {
+            return capacity;
+        }
+
+        bool ptr_in_bounds(T* ptr) const {
+            return aligned_ptr <= (uint8_t*)ptr && (uint8_t*)ptr <= aligned_ptr + capacity;
         }
 
     protected:
+        block_header_t<T>* get_block_with(size_t size) {
+            block_header_t<T>* header = nullptr;
+            
+            header = find_header_with_at_least(size);
+            if(header != nullptr) {
+                return header;
+            }
+
+            header = try_merge_header_with_at_least(size);
+            if(header != nullptr) {
+                return header;
+            }
+
+            return nullptr;
+        }
+
         block_header_t<T>* find_header_with_at_least(size_t size) {
             size_t total_bytes = 0;
 
@@ -131,8 +147,8 @@ namespace spk {
             // 2. contigous in memory
 
             size_t             total_contigous_bytes = 0;
-            block_header_t<T>* free_begin            = nullptr;
-            block_header_t<T>* free_end              = nullptr;
+            block_header_t<T>* block_begin            = nullptr;
+            block_header_t<T>* block_end              = nullptr;
 
             // there is always a valid header at aligned ptr
             block_header_t<T>*       header = (block_header_t<T>*)aligned_ptr;
@@ -143,56 +159,67 @@ namespace spk {
                 if(header->flags[BLOCK_FLAGS_FREE]) {
                     total_contigous_bytes += header->total_bytes;
 
-                    if(free_begin == nullptr) {
-                        free_begin = header;
+                    if(block_begin == nullptr) {
+                        block_begin = header;
                     }
                 } else {
                     total_contigous_bytes = 0;
-                    free_begin = nullptr;
+                    block_begin = nullptr;
                     continue;
                 }
 
                 usable_user_memory = total_contigous_bytes - block_header_size;
                 if(usable_user_memory >= sizeof(T) * size) {
-                    free_end = (block_header_t<T>*)((uint8_t*)header + header->total_bytes);
+                    block_end = (block_header_t<T>*)((uint8_t*)header + header->total_bytes);
                     break;
                 }
             }
 
-            if(free_end == nullptr)
+            if(block_end == nullptr)
                 return nullptr;
 
             // remove all headers from list
-            for(auto cur = free_begin; cur != free_end; cur = inc_by_byte(cur, cur->total_bytes)) {
-                _remove(cur);
+            for(auto cur = block_begin; cur != block_end; cur = inc_by_byte(cur, cur->total_bytes)) {
+                free_list_remove(cur);
             }
 
-            return create_block_header((uint8_t*)free_begin, total_contigous_bytes);
+            return create_block_header((uint8_t*)block_begin, total_contigous_bytes);
         }
 
-        // returns the appended header, size is the number of elements
-        block_header_t<T>* allocate_and_append_header(size_t size, block_header_t<T>* header) {
-            int32_t            free_bytes = 0;
+        /**
+         * @brief bisects a free block into two differently sized blocks
+         * 
+         * @param header the header of the block to bisect
+         * @param size the number of elements to preserve in the block
+         * @return the front block
+         */
+        block_header_t<T>* bisect_block(block_header_t<T>* header, size_t size) {
+            const size_t       back_block_new_size     = block_header_size + sizeof(T) * size;         
+            int32_t            front_block_total_bytes = 0;
             block_header_t<T>* next       = nullptr;
 
+            if(!header->flags[BLOCK_FLAGS_FREE])
+                return nullptr;
+
+            front_block_total_bytes = (int32_t)header->total_bytes - (int32_t)back_block_new_size;
+            if(front_block_total_bytes < 0)
+                return nullptr;
+
+            header->total_bytes = back_block_new_size;
+            next = inc_by_byte(header, header->total_bytes);
+
+            return create_block_header((uint8_t*)next, front_block_total_bytes);
+        }
+
+        void set_block_as_allocated(block_header_t<T>* header) {
             spk_assert(header->flags[BLOCK_FLAGS_FREE]);
 
             // claim the block as allocated
             header->flags[BLOCK_FLAGS_FREE].flip();
 
-            _remove(header);
+            free_list_remove(header);
 
-            // now we figure out if we can append a new header
-            free_bytes = header->total_bytes - ((sizeof(T) * size) + block_header_size);
-
-            if(free_bytes - (int32_t)block_header_size < 0) {
-                return nullptr;
-            }
-
-            header->total_bytes = block_header_size + sizeof(T) * size;
-
-            next = (block_header_t<T>*)((uint8_t*)header + header->total_bytes);
-            return create_block_header((uint8_t*)next, free_bytes);
+            freed_blocks--;
         }
 
         // size is in bytes
@@ -201,7 +228,6 @@ namespace spk {
             spk_assert((int32_t)size - block_header_size >= 0);
 
             block_header_t<T>* header = (block_header_t<T>*)addr;
-            header->magic_number = 1234;
             header->total_bytes = size;
 
             header->flags       = 0; 
@@ -210,7 +236,7 @@ namespace spk {
     
             header->flags[BLOCK_FLAGS_FREE].flip();
 
-            _push_back(header);
+            free_list_push_back(header);
 
             total_blocks++;
             freed_blocks++;
@@ -219,31 +245,27 @@ namespace spk {
         }
 
     private:
-        static constexpr size_t block_header_size = sizeof(block_header_t<T>);
-
-        size_t resize_amount;
         size_t capacity; // in bytes
 
-        size_t          total_blocks = 0;
-        size_t          freed_blocks = 0;
-        uint8_t*        real_ptr;
-        uint8_t*        aligned_ptr;
+        size_t   total_blocks = 0;
+        size_t   freed_blocks = 0;
+        uint8_t* real_ptr;
+        uint8_t* aligned_ptr;
 
         // linked list of free blocks
         block_header_t<T>* first;
         block_header_t<T>* last;
 
     protected:
-        protected:
         // linked list operations
-        void _assign_first(block_header_t<T>* iter) {
+        void free_list_assign_first(block_header_t<T>* iter) {
             spk_assert(first == nullptr && last == nullptr);
 
             first = iter;
             last  = iter;
         }
 
-        void _remove(block_header_t<T>* iter) {
+        void free_list_remove(block_header_t<T>* iter) {
             if(iter == first) {
                 first = iter->prev;
             } 
@@ -264,9 +286,9 @@ namespace spk {
             iter->next = nullptr;
         }
 
-        void _push_back(block_header_t<T>* iter) {
+        void free_list_push_back(block_header_t<T>* iter) {
             if(first == nullptr)
-                _assign_first(iter);
+                free_list_assign_first(iter);
             else {
                 last->prev = iter;
                 iter->next = last;
@@ -274,9 +296,9 @@ namespace spk {
             }
         }
 
-        void _push_front(block_header_t<T>* iter) {
+        void free_list_push_front(block_header_t<T>* iter) {
             if(first == nullptr)
-                _assign_first(iter);
+                free_list_assign_first(iter);
             else {
                 first->next = iter;
                 iter->prev = first;
@@ -284,7 +306,7 @@ namespace spk {
             }
         }
 
-        void _pop_front() {
+        void free_list_pop_front() {
             if(first != nullptr) {
                 block_header_t<T>* iter_prev = first->prev;
 
@@ -296,7 +318,7 @@ namespace spk {
             }
         }
 
-        void _pop_back() {
+        void free_list_pop_back() {
             if(last != nullptr) {
                 block_header_t<T>* iter_next = last->next;
 
@@ -309,12 +331,62 @@ namespace spk {
         }
     };
 
-    //template<typename T, size_t column_max_size = 8>
+    template<typename T>
     class _memory_pool_t {
     public:
+        _memory_pool_t(size_t initial_size) {
+            this->initial_size = initial_size;
+
+            allocators.emplace_back(initial_size);
+        }
+
+        T* allocate(size_t size, const void* hint = 0) {
+            T* ptr = nullptr;
+
+            for(auto& allocator : allocators) {
+                ptr = allocator.allocate(size);
+                if(ptr != nullptr) {
+                    return ptr;
+                }
+            }
+
+            initial_size += size;
+            allocators.emplace_back(initial_size);
+
+            return allocators.back().allocate(size);
+        }   
+
+        void deallocate(T* ptr, size_t n = 0) {
+            for(auto& allocator : allocators) {
+                if(allocator.ptr_in_bounds(ptr)) {
+                    allocator.deallocate(ptr);
+                    return;
+                }
+            }
+
+            spk_assert(!ptr, "cannot deallocate invalid memory");
+        }
+
+        T* address(T& x) {
+            return &x;
+        }
+
+        void construct(T* ptr, const T& tp) {
+            *ptr = tp;
+        }
+    
+        template<typename ... params>
+        void construct(T* ptr, params&& ... args) {
+            new(ptr)T(args...);
+        }
+
+        void destroy(T* ptr) {
+            ptr->~T();
+        }
 
     private:
-
+        size_t initial_size;
+        std::vector<block_allocator_t<T>> allocators;
     };
 }
 
@@ -351,6 +423,8 @@ namespace spk {
 
     template<typename T>
     class block_column_t {
+        static constexpr size_t alignment = 8;
+
     public:
         bool init(size_t capacity) {
             next_alloc = 0;

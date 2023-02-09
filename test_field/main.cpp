@@ -20,51 +20,51 @@ MAIN {
 
     spk::physics_world_t* world = engine.get_current_physics_world();
  
-    spk::block_allocator_t<uint16_t> block_allocator(10);
+    spk::_memory_pool_t<uint16_t> pool(10);
 
     {
         spk::log.log("Testing single element allocation and deallocation");
-        auto element = block_allocator.allocate(1);
+        auto element = pool.allocate(1);
 
         *element = 5;
 
-        block_allocator.deallocate(element);
+        pool.deallocate(element);
 
         spk::log.log("[green, em] no seg faults... [reset]\n");
     }
 
     {
         spk::log.log("Testing multiple element allocation and deallocation");
-        auto element = block_allocator.allocate(5);
+        auto element = pool.allocate(5);
 
         // element[4] = 5;
 
-        block_allocator.deallocate(element);
+        pool.deallocate(element);
 
         spk::log.log("[green, em] no seg faults... [reset]\n");
     }
 
     {
         spk::log.log("Testing multiple element allocation and deallocation w/ merging headers");
-        auto element = block_allocator.allocate(10);
+        auto element = pool.allocate(10);
 
         // element[9] = 5;
 
-        block_allocator.deallocate(element);
+        pool.deallocate(element);
 
         spk::log.log("[green, em] no seg faults... [reset]\n");
     }
 
     {
         spk::log.log("Testing resize element allocation and deallocation");
-        auto element = block_allocator.allocate(1000);
+        auto element = pool.allocate(1000);
 
         if(element == nullptr)
             spk::log.log(spk::LOG_TYPE_ERROR, "could not allocate");
 
         // element[99] = 5;
 
-        block_allocator.deallocate(element);        
+        pool.deallocate(element);        
 
         spk::log.log("[green, em] no seg faults... [reset]\n");
     }
