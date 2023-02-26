@@ -27,7 +27,7 @@ namespace spk {
         glm::vec2 origin;
         glm::vec2 gravity;
 
-        memory_pool_t<quad_tree_body_t> body_allocater;
-        memory_pool_t<fixture_t>    fixture_allocater;
+        object_pool_t<fixture_t>  fixture_pool;
+        std::list<quad_tree_body_t, memory_pool_t<quad_tree_body_t>> body_list;
     };
 }

@@ -58,6 +58,10 @@
 namespace spk {
     typedef std::map<std::string, const char*> rule_map_t;
 
+    struct error_t {
+        int _code = 0;
+    };
+
     enum log_type_e {
         LOG_TYPE_ERROR,
         LOG_TYPE_ASSERT,
@@ -79,7 +83,7 @@ namespace spk {
             log(spk::LOG_TYPE_INFO, format, args...);
         }
 
-        void log(log_type_e type, const char* format, ...);
+        void log(log_type_e type, const char* format, ...) ;
 
         void spew(); // print the current buffer onto console
         bool trace(const char* file, const char* func, int line);

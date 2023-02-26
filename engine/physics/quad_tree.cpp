@@ -13,6 +13,8 @@ namespace spk {
         branches[BOTTOM_RIGHT] = nullptr;
         branches[TOP_RIGHT]    = nullptr;
         branches[TOP_LEFT]     = nullptr;
+
+        culm_size = 0;
     }
 
     quad_tree_t::~quad_tree_t() {
@@ -20,7 +22,7 @@ namespace spk {
 
         for(auto branch : branches) {
             if(branch)
-                root->quad_tree_pool.letgo(branch);
+                root->quad_tree_pool.destruct(branch, 1);
         }
         
         if(type != QUAD_TREE_TYPE_ROOT) {
@@ -51,10 +53,8 @@ namespace spk {
     }
 
 
-    bool quad_tree_t::insert(memory_pool_t<quad_tree_t>& pool, const rigid_body_t* body) {
+    bool quad_tree_t::insert(object_pool_t<quad_tree_t>& pool, const rigid_body_t* body) {
         spk_trace(); 
-        
-        const rigid_body_t** list_ptr;
         
         if(!can_fit(body->get_aabb_pos()))
             return false;
@@ -77,11 +77,10 @@ namespace spk {
 
     add:
 
-        list_ptr = contained_bodies.alloc();
-        *list_ptr = body;
-
         spk_get_quad_tree_loc(body)->tree = this;
-        spk_get_quad_tree_loc(body)->ptr  = list_ptr;
+        spk_get_quad_tree_loc(body)->iter = contained_bodies.insert(contained_bodies.cend(), body);
+
+        add_size(1);
 
         return true;
     }
@@ -91,10 +90,12 @@ namespace spk {
         
         quad_tree_location_t* loc = spk_get_quad_tree_loc(body);
 
-        spk_assert(loc->ptr  != nullptr, "this body belongs to no tree; was it initialized correctly?");
         spk_assert(loc->tree == this, "cannot remove an element if it does not belong to this tree");
+        spk_assert(loc->iter != contained_bodies.end(), "this body has a invalid iterator; was it initialized correctly?");
 
-        contained_bodies.letgo(loc->ptr);
+        contained_bodies.erase(loc->iter);
+
+        add_size(-1);
     }
 
     bool quad_tree_t::relocate(const rigid_body_t* body) {
@@ -103,24 +104,6 @@ namespace spk {
         remove(body);
 
         return root->insert(body);
-    }
-
-    bool quad_tree_t::insert_to_branch(memory_pool_t<quad_tree_t>& pool, const aabb_pos_t& area, uint8_t index, const rigid_body_t* body) {
-        spk_trace(); 
-
-        if(branches[index] == nullptr) {
-            branches[index] = pool.alloc();
-            spk_assert(branches[index] != nullptr, "could not allocate branch");
-
-            branches[index]->area   = area;
-            branches[index]->type   = (quad_tree_type_e)index;
-            branches[index]->parent = this;
-            branches[index]->index  = UINT32_MAX;
-            branches[index]->depth  = depth + 1;
-            branches[index]->root   = root;
-        }
-
-        return branches[index]->insert(pool, body);
     }
 
     glm::vec2 quad_tree_t::half_size_of_half_size() const {
@@ -176,6 +159,21 @@ namespace spk {
 
         return tl_area;
     }
+    
+    bool quad_tree_t::destroy_empty() {
+        if(culm_size == 0) {
+            root->quad_tree_pool.destruct(this, 1);
+            return true;
+        }
+
+        for(auto& branch : branches) {
+            if(branch) {
+                branch->destroy_empty();
+            }
+        }
+
+        return false;
+    }
 
     float find_closest_boundry(float pos, float size) {
         const float back_offset = fmodf(pos, size);
@@ -197,10 +195,11 @@ namespace spk {
         const float  xpos = find_closest_boundry(body->transform.pos.x, whole_area.hw);
         const float  ypos = find_closest_boundry(body->transform.pos.y, whole_area.hh);
         const float  index = (ypos * magic_width) + xpos; 
-        // hashmaps cant handle (i.e. hash it) glm::vec2 so we convert it to a 1D index
+        // hashmaps cant handle glm::vec2 so we convert it to a 1D index (i.e. hash it)
 
         if(trees.find(index) == trees.end()) {
-            trees[index] = quad_tree_pool.alloc();
+            trees[index] = quad_tree_pool.create(1);
+
             spk_assert(trees[index] != nullptr, "could not allocate quad tree");
 
             trees[index]->type   = QUAD_TREE_TYPE_ROOT;
@@ -215,14 +214,8 @@ namespace spk {
         // if the body cannot be added to any tree, it must be over
         // the boundry of two or more trees
         if(!trees[index]->insert(quad_tree_pool, body)) {
-            const rigid_body_t** list_ptr = global_contained_bodies.alloc();
-            if(list_ptr == nullptr)
-                return false;
-
-            *list_ptr = body;
-
             spk_get_quad_tree_loc(body)->tree = nullptr;
-            spk_get_quad_tree_loc(body)->ptr  = list_ptr;
+            spk_get_quad_tree_loc(body)->iter = global_contained_bodies.insert(global_contained_bodies.cend(), body);
         }
 
         return true;
@@ -237,10 +230,10 @@ namespace spk {
     void world_tree_t::remove(const rigid_body_t* body) {
         quad_tree_location_t* loc = spk_get_quad_tree_loc(body);
 
-        spk_assert(loc->ptr  != nullptr, "this body belongs to no tree; was it initialized correctly?");
         spk_assert(loc->tree == nullptr, "this body does not belong to the world tree");
+        spk_assert(loc->iter != global_contained_bodies.end(), "this body belongs to no tree; was it initialized correctly?");
 
-        global_contained_bodies.letgo(loc->ptr);
+        global_contained_bodies.erase(loc->iter);
     }
 
     bool world_tree_t::relocate(const rigid_body_t* body) {

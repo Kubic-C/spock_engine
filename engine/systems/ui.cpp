@@ -98,32 +98,29 @@ namespace spk {
         y = size.y - mouse_info->y;
 
         if(mouse_info->button == SDL_BUTTON_LEFT && mouse_info->state == SDL_PRESSED) {
-            auto check_button = [&](ui_button_t& btn) {
-                    glm::vec2 corners[2] = {
-                        btn.abs_pos - btn.abs_size,
-                        btn.abs_pos + btn.abs_size
-                    };
+            // iterate through all blocks and use check_button lambda on them
 
-                    if(!(btn.flags & spk::UI_ELEMENT_FLAGS_ENABLED))
-                        return false;
+            for(auto& btn : canvas->btns) {
+                glm::vec2 corners[2] = {
+                    btn.abs_pos - btn.abs_size,
+                    btn.abs_pos + btn.abs_size
+                };
 
-                    if(corners[0].x < x && x < corners[1].x &&
-                        corners[0].y < y && y < corners[1].y) {
-                        
-                        btn.time_when_clicked = spk::time.get_time();
+                if(!(btn.flags & spk::UI_ELEMENT_FLAGS_ENABLED))
+                    continue;
 
-                        if(btn.callback) {
-                            btn.callback(*state.engine, btn);
-                        }
+                if(corners[0].x < x && x < corners[1].x &&
+                    corners[0].y < y && y < corners[1].y) {
+                    
+                    btn.time_when_clicked = spk::time.get_time();
 
-                        return true;
+                    if(btn.callback) {
+                        btn.callback(*state.engine, btn);
                     }
 
-                    return false;
-            };
-
-            // iterate through all blocks and use check_button lambda on them
-            canvas->btns.find_blocks(nullptr, UINT32_MAX, check_button);
+                    break;
+                }
+            }
         }
     }
 

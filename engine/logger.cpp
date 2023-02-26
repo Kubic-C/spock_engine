@@ -153,6 +153,8 @@ namespace spk {
         *(++msg_ptr) = '\0';
         ptr += 1; 
 
+        log_file.write(buf.data(), ptr);
+
         if(flags & LOG_FLAGS_ENABLE_STD_PIPE) {
             FILE* pipe = nullptr;
 
@@ -176,10 +178,8 @@ namespace spk {
                 log(LOG_TYPE_TRACE, str.c_str());
             }
 
-            abort();
+            throw error_t();
         }
-
-        log_file.write(buf.data(), ptr);
     }
 
     void info_logger_t::spew() {
@@ -209,8 +209,7 @@ namespace spk {
     }
 
     void _assert(const char* file, const char* func, int line, const char* expr, const char* message) {
-        log.log(LOG_TYPE_ASSERT, "\n\t# file(%s),\n \t| func(%s),\n \t| line(%i),\n \t| expr(%s)\n \t| %s", 
-                                    file, func, line, expr, message);
+        log.log(LOG_TYPE_ASSERT, "\n\t# file(%s),\n \t| func(%s),\n \t| line(%i),\n \t| expr(%s)\n \t| %s", file, func, line, expr, message);
     }
 
     trace_t::trace_t(const char* file, const char* func, int line) {

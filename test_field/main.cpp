@@ -12,97 +12,44 @@ enum current_state_e: uint32_t {
 
 MAIN {
     spk_trace();
-    
-    int           exit_code = 0;
+
+    spk::log.log("size of quad tree: %llu", sizeof(spk::quad_tree_t));
+
+    spk::log.log("running..");
+    int code = 0;
+
     spk::engine_t engine;
+
+    SPK_DEBUG_ENABLE(spk::DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME);
 
     engine.init();
 
-    spk::physics_world_t* world = engine.get_current_physics_world();
- 
-    spk::_memory_pool_t<uint16_t> pool(10);
+    spk::stats.print_ps_stats = true;
 
-    {
-        spk::log.log("Testing single element allocation and deallocation");
-        auto element = pool.allocate(1);
+    engine.set_target_tps(20);
 
-        *element = 5;
+    spk::physics_world_t* world = engine.get_current_physics_world();   
 
-        pool.deallocate(element);
+    for(size_t i = 0; i < 2000; i++) {
+        engine.world.entity().set(
+            [&](spk::comp_rigid_body_t& rb){
+                rb = world->add({fmod((float)rand(), 10.0f) - 5.0f, fmod((float)rand(), 10.0f) - 5.0f});
 
-        spk::log.log("[green, em] no seg faults... [reset]\n");
+                spk::material_t m;
+                m.density = 1.0f;
+                m.friction = 1.0f;
+                m.restitution = 0.5f;
+
+                world->add_box_fixture(rb, m, {3.0f, 0.0f}, fmod((float)rand(), 3.0f) + 0.1f, fmod((float)rand(), 3.0f) + 0.1f);
+
+                rb->velocity.x = fmod((float)rand(), 10.0f) - 5.0f;
+                rb->velocity.y = fmod((float)rand(), 10.0f) - 5.0f;
+            }).add<spk::comp_body_prim_t>();
     }
 
-    {
-        spk::log.log("Testing multiple element allocation and deallocation");
-        auto element = pool.allocate(5);
+    code = engine.run();
 
-        // element[4] = 5;
-
-        pool.deallocate(element);
-
-        spk::log.log("[green, em] no seg faults... [reset]\n");
-    }
-
-    {
-        spk::log.log("Testing multiple element allocation and deallocation w/ merging headers");
-        auto element = pool.allocate(10);
-
-        // element[9] = 5;
-
-        pool.deallocate(element);
-
-        spk::log.log("[green, em] no seg faults... [reset]\n");
-    }
-
-    {
-        spk::log.log("Testing resize element allocation and deallocation");
-        auto element = pool.allocate(1000);
-
-        if(element == nullptr)
-            spk::log.log(spk::LOG_TYPE_ERROR, "could not allocate");
-
-        // element[99] = 5;
-
-        pool.deallocate(element);        
-
-        spk::log.log("[green, em] no seg faults... [reset]\n");
-    }
-
-    // engine.world.entity().set(
-    //     [&](spk::comp_rigid_body_t& rb){
-    //         rb = world->add({1.0f, 1.0f});
-            
-    //         spk::material_t m;
-    //         m.density = 1.0f;
-    //         m.friction = 1.0f;
-    //         m.restitution = 0.5f;
-
-    //         world->add_box_fixture(rb, m, {0.0f, 0.0f}, 0.5f, 0.5f);
-    //         world->add_box_fixture(rb, m, {3.0f, 0.0f}, 0.5f, 0.5f);
-
-    //         rb->calculate_max();
-    //     }).add<spk::comp_body_prim_t>();
-
-    // engine.world.entity().set(
-    //     [&](spk::comp_rigid_body_t& rb){
-    //         rb = world->add({0.5f, 0.5f});
-    //         rb->velocity.y = 5.0f;
-    //     }).add<spk::comp_body_prim_t>();
-    
-    // engine.world.entity().set(
-    //     [&](spk::comp_rigid_body_t& rb){
-    //         rb = world->add({0.5f, 0.5f});
-    //     }).add<spk::comp_body_prim_t>();
-
-    //world->tree.search(bodies);
-
-    world->set_gravity(0.0f, -0.01f);
-
-    // spk::log.log("%llu", bodies.size());
-
-    exit_code = engine.run();
     engine.free();
 
-    return exit_code;
+    return code;
 }

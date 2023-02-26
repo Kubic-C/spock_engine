@@ -37,11 +37,11 @@
 #include "debug.hpp"
 #include "pipeline.hpp"
 
-#ifdef _WIN32 
-#include <Windows.h>
-
 #define FLOAT_MAX std::numeric_limits<float>::max()
 #define FLOAT_MIN std::numeric_limits<float>::min() 
+
+#ifdef _WIN32 
+#include <Windows.h>
 
 #define  MAIN \
 WINAPI int WinMain( \

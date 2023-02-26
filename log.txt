@@ -1,0 +1,4 @@
+|SPOCK: 0.000355> [32m INFO [0m [1m total bytes in all blocks: 432 ? 432 [0m
+|SPOCK: 0.000660> [32m INFO [0m [1m total bytes in all blocks: 432 ? 432 [0m
+|SPOCK: 0.000848> [32m INFO [0m [1m total bytes in all blocks: 432 ? 432 [0m
+|SPOCK: 0.001024> [32m INFO [0m [1m total bytes in all blocks: 432 ? 432 [0m

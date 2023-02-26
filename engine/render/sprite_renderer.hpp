@@ -84,7 +84,7 @@ namespace spk {
             const glm::vec2& _3, 
             const glm::vec2& _4_);
 
-    template<>
+    // template<>
     // void sprite_batch_mesh_t<sprite_arrayd_vertex_t, comp_sprite_arrayd_t>::add_sprite_mesh(
     //         b2Body* body, 
     //         comp_sprite_arrayd_t& sprite,

@@ -2,6 +2,10 @@
 
 #include "base.hpp"
 #include "static_list.hpp"
+#include "allocator.hpp"
+
+#define _SPK_QUICK_MEASURE(scope, name) \
+    {float start = spk::time.get_time(); scope; float end = spk::time.get_time(); spk::log.log("time: %f " name, end - start);}
 
 namespace spk {
     template<typename T>
@@ -11,7 +15,7 @@ namespace spk {
     
     enum block_flags_e: uint8_t {
         BLOCK_FLAGS_FREE        = 0,
-        BLOCK_FLAGS_INITIALIZED = 1,
+        BLOCK_FLAGS_INITIALIZED = 1, // not used
         BLOCK_FLAGS_IN_USE      = 1 << 0
     };
 
@@ -26,7 +30,7 @@ namespace spk {
         // the amount of bytes, including the header and its blocks it occupies
         size_t total_bytes; 
 
-        size_t block_count() const {
+        size_t max_block_count() const {
             return (total_bytes - sizeof(block_header_t<T>)) / sizeof(T);
         }
 
@@ -38,15 +42,18 @@ namespace spk {
     template<typename T>
     class block_allocator_t {
         static constexpr size_t block_header_size = sizeof(block_header_t<T>);
-        static constexpr size_t alignment   = 8; 
+        static constexpr size_t alignment   = 16; 
 
     public:
-        block_allocator_t(size_t capacity = 10) {
+        block_allocator_t() {}
+        ~block_allocator_t() {}
+
+        void init(size_t capacity = 10) {
             size_t alignment_offset = 0;
 
             this->first = nullptr;
             this->last  = nullptr;
-            this->capacity = (capacity * sizeof(T) + capacity * block_header_size);
+            this->capacity = (capacity * sizeof(T) + (block_header_size * capacity) / 10);
 
             this->real_ptr = (uint8_t*)malloc(this->capacity + alignment);
             alignment_offset = alignment - ((size_t)real_ptr % alignment);
@@ -57,14 +64,29 @@ namespace spk {
                 this->aligned_ptr = real_ptr + alignment_offset;
             }
 
-            create_block_header(this->aligned_ptr, this->capacity);
+            if(!create_block_header(this->aligned_ptr, this->capacity)) {
+                log.log(LOG_TYPE_ERROR, "could not create allocator");
+            }
         }
 
-        ~block_allocator_t() {
+        block_allocator_t(const block_allocator_t& other) {
+            this->aligned_ptr  = other.aligned_ptr;
+            this->real_ptr     = other.real_ptr;
+            this->capacity     = other.capacity;
+            this->first        = other.first;
+            this->last         = other.last;
+            this->total_blocks = other.total_blocks;
+            this->freed_blocks = other.freed_blocks;
+        }
+
+        void free() {
+            if(real_ptr != nullptr) {
+                ::free(real_ptr);
+                return;
+            }
+
             if(total_blocks != freed_blocks)
                 log.log("some blocks were not free'd, %s", typeid(block_allocator_t<T>).name());
-
-            free(real_ptr);
         }
 
         // size is the amount of elements you want allocated
@@ -99,7 +121,11 @@ namespace spk {
         }
 
         bool ptr_in_bounds(T* ptr) const {
-            return aligned_ptr <= (uint8_t*)ptr && (uint8_t*)ptr <= aligned_ptr + capacity;
+            return aligned_ptr <= (uint8_t*)ptr && (uint8_t*)ptr <= (aligned_ptr + capacity);
+        }
+
+        uint8_t* get_real_ptr() const {
+            return real_ptr;
         }
 
     protected:
@@ -120,18 +146,8 @@ namespace spk {
         }
 
         block_header_t<T>* find_header_with_at_least(size_t size) {
-            size_t total_bytes = 0;
-
-            block_header_t<T>*       header = (block_header_t<T>*)aligned_ptr;
-            const block_header_t<T>* end    = (block_header_t<T>*)(aligned_ptr + this->capacity);
-            for(; header != end; header = inc_by_byte(header, header->total_bytes)) {
-                total_bytes += header->total_bytes;
-            }
-
-            log.log("[em] total bytes in all blocks: %llu ? %llu [reset]", total_bytes, capacity);
-
             for(block_header_t<T>* cur = first; cur != nullptr; cur = cur->prev) {
-                if(first->block_count() >= size) {
+                if(cur->max_block_count() >= size) {
                     return cur;
                 }
             }
@@ -181,6 +197,8 @@ namespace spk {
             // remove all headers from list
             for(auto cur = block_begin; cur != block_end; cur = inc_by_byte(cur, cur->total_bytes)) {
                 free_list_remove(cur);
+                total_blocks--;
+                freed_blocks--;
             }
 
             return create_block_header((uint8_t*)block_begin, total_contigous_bytes);
@@ -202,7 +220,7 @@ namespace spk {
                 return nullptr;
 
             front_block_total_bytes = (int32_t)header->total_bytes - (int32_t)back_block_new_size;
-            if(front_block_total_bytes < 0)
+            if(front_block_total_bytes < block_header_size)
                 return nullptr;
 
             header->total_bytes = back_block_new_size;
@@ -227,13 +245,18 @@ namespace spk {
             spk_assert(((size_t)addr % 2) == 0, "address given was not aligned by 2");
             spk_assert((int32_t)size - block_header_size >= 0);
 
+            if(addr + size > (aligned_ptr + capacity) || size < block_header_size) {
+                log.log("... no");
+                return nullptr;
+            }
+
             block_header_t<T>* header = (block_header_t<T>*)addr;
             header->total_bytes = size;
 
             header->flags       = 0; 
             header->next        = nullptr;
             header->prev        = nullptr;
-    
+
             header->flags[BLOCK_FLAGS_FREE].flip();
 
             free_list_push_back(header);
@@ -245,16 +268,16 @@ namespace spk {
         }
 
     private:
-        size_t capacity; // in bytes
+        size_t capacity = 0; // in bytes
 
         size_t   total_blocks = 0;
         size_t   freed_blocks = 0;
-        uint8_t* real_ptr;
-        uint8_t* aligned_ptr;
+        uint8_t* real_ptr     = nullptr;
+        uint8_t* aligned_ptr  = nullptr;
 
         // linked list of free blocks
-        block_header_t<T>* first;
-        block_header_t<T>* last;
+        block_header_t<T>* first = nullptr;
+        block_header_t<T>* last  = nullptr;
 
     protected:
         // linked list operations
@@ -332,31 +355,62 @@ namespace spk {
     };
 
     template<typename T>
-    class _memory_pool_t {
+    class memory_pool_t : public allocator_t<T>{
     public:
-        _memory_pool_t(size_t initial_size) {
-            this->initial_size = initial_size;
+        template <typename U> 
+        struct rebind { typedef memory_pool_t<U> other; };
+    public:
+        static constexpr size_t _initial_size = 100;
 
-            allocators.emplace_back(initial_size);
+        template<typename U>
+        memory_pool_t(const memory_pool_t<U>& other) {
+            this->initial_size = other.get_initial_size();
         }
 
-        T* allocate(size_t size, const void* hint = 0) {
+        memory_pool_t() {
+            this->initial_size = _initial_size;
+        }
+
+        memory_pool_t(size_t initial_size) {
+            this->initial_size = initial_size;
+        }
+
+        memory_pool_t(const memory_pool_t<T>& other) {
+            this->initial_size = other.initial_size;
+            this->allocators = other.allocators;
+        }
+
+        memory_pool_t<T>* operator=(const memory_pool_t<T>& other) {
+            this->initial_size = other.initial_size;
+            this->allocators = other.allocators;    
+
+            return this;
+        }
+
+        ~memory_pool_t() {
+            for(auto& allocator : allocators) {
+                allocator.free();
+            }
+        }
+
+        T* allocate(size_t size, const void* hint = 0) override {
             T* ptr = nullptr;
 
-            for(auto& allocator : allocators) {
-                ptr = allocator.allocate(size);
+            for(size_t i = allocators.size() - 1; i != SIZE_MAX; i--) {
+                ptr = allocators[i].allocate(size);
                 if(ptr != nullptr) {
                     return ptr;
                 }
             }
 
             initial_size += size;
-            allocators.emplace_back(initial_size);
+            allocators.emplace_back();
+            allocators.back().init(initial_size);
 
             return allocators.back().allocate(size);
         }   
 
-        void deallocate(T* ptr, size_t n = 0) {
+        void deallocate(T* ptr, size_t n = 0) override {
             for(auto& allocator : allocators) {
                 if(allocator.ptr_in_bounds(ptr)) {
                     allocator.deallocate(ptr);
@@ -367,322 +421,68 @@ namespace spk {
             spk_assert(!ptr, "cannot deallocate invalid memory");
         }
 
-        T* address(T& x) {
-            return &x;
+        size_t get_initial_size() const {
+            return initial_size;
         }
 
-        void construct(T* ptr, const T& tp) {
-            *ptr = tp;
-        }
-    
-        template<typename ... params>
-        void construct(T* ptr, params&& ... args) {
-            new(ptr)T(args...);
+        const std::vector<block_allocator_t<T>>& get_allocators() const {
+            return allocators;
         }
 
-        void destroy(T* ptr) {
-            ptr->~T();
-        }
-
-    private:
+    protected:
         size_t initial_size;
         std::vector<block_allocator_t<T>> allocators;
     };
-}
 
-namespace spk {
+    /* destroys and creates objects upon creating and destroying */
     template<typename T>
-    struct block_t {
-        uint8_t flags = 0;
-        T object;
+    class object_pool_t : protected memory_pool_t<T> {
+    public:
+        object_pool_t() {
+            this->initial_size = this->_initial_size;
+        }
 
-        T* grab() {
-            spk_assert(is_free());
+        object_pool_t(size_t initial_size) {
+            this->initial_size = initial_size;
+        }
 
-            flags |= BLOCK_FLAGS_IN_USE; 
-            ctor(&object);
+        template<typename ... params>
+        T* create(size_t size, params&& ... args) {
+            T* elements = this->allocate(size);
         
-            return &object;
+            for(size_t i = 0; i < size; i++) {
+                this->construct(elements + i, args...);
+            }
+
+            return elements;
         }
 
-        void letgo() {
-            spk_assert(is_in_use());
+        void destruct(T* ptr, size_t size) {
+            for(size_t i = 0; i < size; i++) {
+                this->destroy(ptr + i);
+            }
 
-            flags &= ~BLOCK_FLAGS_IN_USE;
-            dtor(&object);
-        }
-
-        bool is_free() {
-            return !(flags & BLOCK_FLAGS_IN_USE);
-        }
-
-        bool is_in_use() {
-            return flags & BLOCK_FLAGS_IN_USE;
+            this->deallocate(ptr, size);
         }
     };
 
     template<typename T>
-    class block_column_t {
-        static constexpr size_t alignment = 8;
+    bool operator==(const block_allocator_t<T>& _1, const block_allocator_t<T>& _2) {
+        return _1.get_real_ptr() == _2.get_real_ptr();
+    }
 
-    public:
-        bool init(size_t capacity) {
-            next_alloc = 0;
-            size       = 0;
-            this->capacity = capacity;
+    template<typename T>
+    bool operator!=(const block_allocator_t<T>& _1, const block_allocator_t<T>& _2) {
+        return _1.get_real_ptr() != _2.get_real_ptr();
+    }
 
-            // this is the aligned block size
-            block_size = sizeof(block_t<T>) + (sizeof(block_t<T>) % alignment);
+    template<typename T>
+    bool operator==(const memory_pool_t<T>& _1, const memory_pool_t<T>& _2) {
+        return _1.get_allocators() == _2.get_allocators();
+    }
 
-            real_ptr    = (block_t<T>*)calloc(this->capacity, block_size + alignment);
-            if(real_ptr == nullptr)
-                return false;
-
-            // find the closest aligned boundry in front of real_ptr, and offset by that much
-            aligned_ptr = real_ptr + ((size_t)alignment - ((size_t)real_ptr % alignment)); 
-        
-            return true;
-        }
-
-        void free() {
-            for(size_t i = 0; i < capacity; i++) {
-                if(get(i)->is_in_use()) {
-                    get(i)->letgo();
-                }
-            }
-        }
-
-        T* alloc() {
-            if(!find_next_alloc())
-                return nullptr;
-        
-            size++;
-
-            return get(next_alloc)->grab();
-        }
-
-        bool letgo(T* ptr) {
-            block_t<T>* block = nullptr;
-
-            if(!ptr_in_bounds(ptr)) {
-                log.log(LOG_TYPE_ERROR, "letgo(): ptr invalid, outside of column's bounds T=(%s), ptr(%p)", typeid(T).name(), ptr);
-                return false;
-            }
-
-            block = (block_t<T>*)((uint8_t*)ptr - offsetof(block_t<T>, object));
-            
-            // check and throw a error if the block is already freed
-            if(block->is_free()) {
-                log.log(LOG_TYPE_ERROR, "letgo(): double free T=(%s), ptr=(%p)", typeid(T).name(), ptr);
-                return false;
-            }
-
-            size--;
-            block->letgo();
-            // convert the ptr into an index
-            last_free = ((uint8_t*)block - (uint8_t*)aligned_ptr) / block_size;
-
-            return true;
-        }
-
-        bool full() {
-            return size >= capacity;
-        }
-
-        bool ptr_in_bounds(T* ptr) {
-            return (uint8_t*)aligned_ptr <= (uint8_t*)ptr && 
-                   (uint8_t*)ptr <= (uint8_t*)aligned_ptr + (block_size * capacity);
-        }
-
-        size_t find_blocks(T** ptrs, size_t count, const std::function<void(T&)>& clbk) {
-            size_t blocks_found = 0;
-
-            // iterate through all blocks
-            // if it is valid, i.e. in use:
-            // - add it to the list of ptrs, if not null
-            // - call the callback
-
-            for(size_t i = 0; i < capacity; i++) {
-                if(get(i)->is_in_use()) {
-                    blocks_found++;
-
-                    if(blocks_found == count)
-                        return blocks_found;
-
-                    if(clbk)
-                        clbk(get(i)->object);
-
-                    if(ptrs)
-                        ptrs[blocks_found--] = &get(i)->object;
-                }
-            } 
-
-            return blocks_found;
-        }
-
-        size_t get_capacity() const {
-            return capacity;
-        };
-
-        size_t get_size() const {
-            return size;
-        }
-
-    private:
-        block_t<T>* get(uint32_t index) {
-            // sizeof(block_t<T>) is not the actual size of blocks allocated in aligned ptr
-            // block_size is the actual size
-            return (block_t<T>*)((uint8_t*)aligned_ptr + (index * block_size));
-        }
-
-        bool swap_next_alloc_if_free(size_t poss_alloc) {
-            if(get(poss_alloc)->is_free()) {
-                next_alloc = poss_alloc;
-                return true;
-            }
-
-            return false;
-        }
-
-        bool find_next_alloc() {
-            // assuming try alloc already points at a block 
-            // that is in use, find the next free block 
-
-            if(full()) {
-                next_alloc = SIZE_MAX;
-                return false;
-            }
-
-            // most likely to be a recently free block
-            if(swap_next_alloc_if_free(last_free))
-                return true;
-
-            // try behind try_alloc
-            if(next_alloc != 0) 
-                if(swap_next_alloc_if_free(next_alloc - 1)) 
-                    return true;
-
-            // try in front of try_alloc
-            if(next_alloc != capacity - 1) 
-                if(swap_next_alloc_if_free(next_alloc + 1))
-                    return true;
-
-            // worst case: iterate through all blocks to find if its free
-            for(size_t i = 0; i < capacity; i++) { 
-                if(swap_next_alloc_if_free(i))
-                    return true;
-            }
-
-            // if its not full, it will never get to this point.
-            // this is to prevent compiler complaints
-            return false;
-        }
-
-        size_t      block_size;
-        size_t      last_free;
-        size_t      next_alloc;
-        size_t      size;
-        size_t      capacity;
-        block_t<T>* real_ptr;
-        block_t<T>* aligned_ptr;
-    };
-
-    template<typename T, size_t column_max_size = 8>
-    class memory_pool_t {
-    public:
-        memory_pool_t() {
-        }
-
-        ~memory_pool_t() {
-            for(auto column : columns)
-                column.free();
-        }
-
-        T* alloc() {
-            T* ptr = nullptr;
-
-            for(auto& column : columns) {
-                if(column.full())
-                    continue;
-
-                return column.alloc();
-            }
-
-            // all columns were full
-            // a new must be allocated
-            if(ptr == nullptr) {
-                alloc_column();
-
-                ptr = columns.back()->alloc();
-            }
-
-            return ptr;
-        }
-
-        bool letgo(T* ptr) {
-            spk_assert(columns.get_size() != 0);
-            
-            for(auto& column : columns) {
-                if(column.ptr_in_bounds(ptr)) {
-                    column.letgo(ptr);
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        
-        void column_capacity(size_t size) {
-            next_capacity = size;
-        }
-
-        size_t find_blocks(T** ptrs, size_t count, const std::function<void(T&)>& clbk = nullptr) {
-            size_t blocks_found   = 0;
-
-            for(auto& column : columns) {
-                if(ptrs)
-                    ptrs += blocks_found;
-
-                blocks_found += column.find_blocks(ptrs, count - blocks_found, clbk);
-
-                if(blocks_found >= count) {
-                    return blocks_found;
-                } 
-            }
-
-            return blocks_found;
-        }
-
-        size_t capacity() const {
-            size_t capacity = 0;
-
-            for(auto& column : columns) {
-                capacity += column.get_capacity();
-            }
-
-            return capacity;
-        }
-
-        size_t size() {
-            spk_trace();
-
-            size_t culm_sum = 0;
-
-            for(auto& column : columns) {
-                culm_sum += column.get_size();
-            }
-
-            return culm_sum;
-        }
-
-    private:
-        void alloc_column() {
-            columns.emplace_back();
-            columns.back()->init(next_capacity);
-        }
-
-        size_t next_capacity = 100;
-        static_list<block_column_t<T>, column_max_size> columns;
-    };
+    template<typename T>
+    bool operator!=(const memory_pool_t<T>& _1, const memory_pool_t<T>& _2) {
+        return _1.get_allocators() != _2.get_allocators();
+    }
 }

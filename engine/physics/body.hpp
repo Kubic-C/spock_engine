@@ -17,6 +17,8 @@ namespace spk {
         size_t     fixtures_size;
         fixture_t* fixtures;
 
+        rigid_body_t() {}
+
         aabb_pos_t get_aabb_pos() const;
         void calculate_max();
     };

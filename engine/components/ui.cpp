@@ -34,10 +34,6 @@ namespace spk {
     }
 
     void ui_comp_canvas_t::init(flecs::entity entity) {
-
-        texts.column_capacity(10);
-        btns.column_capacity(10);
-
         font = nullptr;
 
         flags |= spk::UI_ELEMENT_FLAGS_ROOT |

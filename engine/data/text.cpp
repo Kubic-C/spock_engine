@@ -93,8 +93,6 @@ namespace spk {
     bool font_manager_t::fm_init() {
         spk_trace();
 
-        font_pool.column_capacity(10);
-
         if(FT_Init_FreeType(&ft_lib)) {
             return false;
         } else {
@@ -103,7 +101,7 @@ namespace spk {
     }
 
     font_t* font_manager_t::font_load_ascii(const char* file_path, int f_width, int f_height) {
-        font_t* font = font_pool.alloc();
+        font_t* font = font_pool.allocate(1);
         if(!font)
             return nullptr;
 
@@ -118,20 +116,14 @@ namespace spk {
         }
 
     failure:
-        font_pool.letgo(font);
+        font_pool.deallocate(font);
         return nullptr;
     success:    
         return font;
     }
 
     font_t* font_manager_t::get_first_font() {
-        font_t* font[1];
-
-        uint32_t found = font_pool.find_blocks(font, 1);
-        if(!found)
-            return nullptr;
-
-        return font[0];
+        return &fonts.front();
     }
 
     void font_manager_t::fm_free() {

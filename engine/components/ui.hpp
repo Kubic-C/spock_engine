@@ -118,9 +118,18 @@ namespace spk {
     struct ui_comp_canvas_t : ui_element_t {
         glm::mat4 vp;
 
-        font_t* font = null;
-        memory_pool_t<ui_text_t, 32> texts;
-        memory_pool_t<ui_button_t, 32> btns;
+        font_t* font;
+        memory_pool_t<ui_text_t> text_pool;
+        memory_pool_t<ui_button_t> btn_pool;
+        
+        std::list<ui_text_t, indirect_allocator_t<ui_text_t>> texts;
+        std::list<ui_button_t, indirect_allocator_t<ui_button_t>> btns;
+
+        ui_comp_canvas_t()
+            : texts(indirect_allocator_t<ui_text_t>(&text_pool)), 
+              btns(indirect_allocator_t<ui_button_t>(&btn_pool)) {
+            font = null;
+        }
 
         void init(flecs::entity entity);
         void free(flecs::entity entity);
