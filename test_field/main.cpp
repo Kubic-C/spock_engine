@@ -30,7 +30,7 @@ MAIN {
 
     spk::physics_world_t* world = engine.get_current_physics_world();   
 
-    for(size_t i = 0; i < 2000; i++) {
+    for(size_t i = 0; i < 7000; i++) {
         engine.world.entity().set(
             [&](spk::comp_rigid_body_t& rb){
                 rb = world->add({fmod((float)rand(), 10.0f) - 5.0f, fmod((float)rand(), 10.0f) - 5.0f});
