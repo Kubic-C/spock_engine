@@ -24,9 +24,6 @@ namespace spk {
 
     class base_renderer_t : public system_t {
     public:
-        void b_init();
-        void b_free();
-
         virtual void draw() {}
 
         static_list<flecs::entity, 8> systems;  

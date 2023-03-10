@@ -26,9 +26,8 @@ namespace spk {
             log.flags |= spk::LOG_FLAGS_ENABLE_STD_PIPE;
         }
     }
-
  
-    void render_system_t::init() {
+    render_system_t:: render_system_t() {
         spk_trace();
 
 #ifndef NDEBUG
@@ -51,7 +50,7 @@ namespace spk {
         copy_buffer.init(GL_ARRAY_BUFFER);
     }
 
-    void render_system_t::free() {
+    render_system_t::~render_system_t() {
         spk_trace();
         
         copy_buffer.free();

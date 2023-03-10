@@ -28,8 +28,8 @@ namespace spk {
         static_index_buffer_t quad_index_buffer;
         vertex_buffer_t       copy_buffer;
 
-        void init() override;
-        void free() override;
+        render_system_t();
+        ~render_system_t();
 
         void resize(uint32_t width, uint32_t height);
 

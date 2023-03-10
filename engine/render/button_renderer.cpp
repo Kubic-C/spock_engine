@@ -72,8 +72,7 @@ namespace spk {
         vertices += vertices_per_button;
     }    
     
-    void button_renderer_t::init() {
-        b_init(); 
+    button_renderer_t::button_renderer_t() {
         mesh.init();
 
         btn_ctx.init();
@@ -84,9 +83,8 @@ namespace spk {
         spk_assert(ret);
     }
 
-    void button_renderer_t::free() {
+    button_renderer_t::~button_renderer_t() {
         mesh.free();
-        b_free();
     }
 
     void button_renderer_t::draw() {

@@ -33,7 +33,7 @@ float pos[] = {
 };
 
 namespace spk {
-    void ui_framebuffer_renderer_t::init() {
+    ui_framebuffer_renderer_t::ui_framebuffer_renderer_t() {
         vertex_array.init();
 
         vertex_buffer.init(GL_ARRAY_BUFFER);
@@ -48,7 +48,7 @@ namespace spk {
         spk_assert(ret);
     }
     
-    void ui_framebuffer_renderer_t::free() {
+    ui_framebuffer_renderer_t::~ui_framebuffer_renderer_t() {
         program.free();
         vertex_buffer.free();
         vertex_array.free();

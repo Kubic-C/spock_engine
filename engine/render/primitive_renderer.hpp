@@ -1,50 +1,35 @@
 #pragma once
 
 #include "base_renderer.hpp"
-#include "physics/world.hpp"
 
-/* quick and dirty debug rendering for Box2D shapes or primitive shapes */
+/* quick and dirty debug rendering for primitive shapes */
 
 namespace spk {
     struct comp_body_prim_t {};
 
-    struct prim_vertex_t {
-        glm::vec2 pos; // position
-    };
-
-    struct polygon_batch_mesh_t : public mesh_t {        
-        std::vector<prim_vertex_t> buffer;
-
-        glm::mat4 vp;
-
-        uint32_t buffer_count;
-        uint32_t count;
-
-        void init();
-        void free();
-        void subdata();
-        void zero();
-        
-        void add_aabb(const glm::vec2& pos, const aabb_t& aabb);
-    };
-
-    class primitive_renderer_t : public base_renderer_t {
+    class primitive_renderer_t : public base_renderer_t, public b2Draw {
     public:
-        void init() override;
+        primitive_renderer_t();
+        ~primitive_renderer_t();
+
         void draw() override;
-        void free() override;
 
-        // void render_circle(glm::mat4& vp, const b2Body* body, b2CircleShape* circle);
-        // void render_edge(glm::mat4& vp, const b2Body* body, b2EdgeShape* circle);
-        void draw_indexed_buffer(static_index_buffer_t& buffer, glm::mat4& vp, uint32_t count);
-        void draw_buffer(glm::mat4& vp, uint32_t count);
-
-        polygon_batch_mesh_t poly_mesh;
-        glm::vec3            color;
+        void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
+        void DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color) override;
+        void DrawCircle(const b2Vec2& center, float radius, const b2Color& color) override;
+        void DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color) override;
+        void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) override;
+        void DrawTransform(const b2Transform& xf) override;
+        void DrawPoint(const b2Vec2& p, float size, const b2Color& color) override;
 
     private:
+        uint32_t add_polygon(const b2Vec2* vertices, int32 vertexCount);
+        uint32_t add_circle(const b2Vec2& center, float radius);
+        void draw_mesh(const b2Color& color, uint32_t vertices);
+        void draw_mesh_array(const b2Color& color, uint32_t vertices);
+
         render_ctx_t               prim_ctx;
         vertex_buffer_t            vertex_buffer;
-        std::vector<prim_vertex_t> mesh;
+        std::vector<glm::vec2> mesh;
     };
 }

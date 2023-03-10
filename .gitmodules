@@ -13,3 +13,6 @@
 [submodule "dep/glad"]
 	path = dep/glad
 	url = https://github.com/Dav1dde/glad
+[submodule "engine/spox2d"]
+	path = engine/spox2d
+	url = https://github.com/Kubic-C/spox2d

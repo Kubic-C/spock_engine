@@ -32,8 +32,9 @@ namespace spk {
 
     class font_renderer_t : public base_renderer_t {  
     public:      
-        void init() override;
-        void free() override;
+        font_renderer_t();
+        ~font_renderer_t();
+        
         void draw() override;
     
         font_batch_mesh_t mesh;

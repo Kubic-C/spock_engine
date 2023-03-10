@@ -9,7 +9,7 @@ namespace spk {
         spk_trace();
 
         for(system_t* sys : ctx_name_list) {
-            sys->free();
+            delete sys;
         }
     }
 }

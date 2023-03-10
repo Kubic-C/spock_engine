@@ -28,9 +28,9 @@ namespace spk {
 
     class button_renderer_t : public base_renderer_t {
     public:
-        void init() override;
+        button_renderer_t();
+        ~button_renderer_t();
         void draw() override;
-        void free() override;
 
         button_batch_mesh_t mesh;
 

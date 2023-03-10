@@ -10,11 +10,4 @@ namespace spk {
         program.free();
         vertex_array.free();
     }
-
-
-   void base_renderer_t::b_init() {
-   } 
-
-   void base_renderer_t::b_free() {
-   }
 }

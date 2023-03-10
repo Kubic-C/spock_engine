@@ -7,8 +7,8 @@ namespace spk {
 
     class ui_framebuffer_renderer_t : public base_framebuffer_renderer_t {
     public:
-        void init() override;
-        void free() override;
+        ui_framebuffer_renderer_t();
+        ~ui_framebuffer_renderer_t();
         void draw(render_system_t* rs, id_t current) override;
 
     private:

@@ -10,6 +10,8 @@ target_link_libraries(spock_engine PUBLIC
 
 target_include_directories(spock_engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/")
 
+add_subdirectory("spox2d")
+
 target_sources(spock_engine PRIVATE
     "base.hpp"
     "spock.cpp"
@@ -28,7 +30,8 @@ target_sources(spock_engine PRIVATE
     "components/tilemap.hpp" "components/tilemap.cpp"
     "components/camera.hpp" "components/camera.cpp"
     "components/particles.hpp" "components/particles.cpp"
-    "components/character_controller.hpp" "components/character_controller.cpp")
+    "components/character_controller.hpp" "components/character_controller.cpp"
+    "components/rigid_body.hpp" "components/rigid_body.cpp")
     
 target_sources(spock_engine PRIVATE
     "systems/window.hpp" "systems/window.cpp"
@@ -72,15 +75,6 @@ target_sources(spock_engine PRIVATE
     "render/sprite_renderer.hpp" "render/sprite_renderer.cpp"
     "render/primitive_renderer.hpp" "render/primitive_renderer.cpp"
     "render/ui_fb_renderer.hpp" "render/ui_fb_renderer.cpp")
-
-target_sources(spock_engine PRIVATE
-    "physics/transform.hpp" "physics/transform.cpp"
-    "physics/material.hpp" "physics/material.cpp"
-    "physics/body.hpp" "physics/body.cpp"
-    "physics/quad_tree.hpp" "physics/quad_tree.cpp"
-    "physics/aabb.hpp" "physics/aabb.cpp"
-    "physics/world.hpp" "physics/world.cpp"
-    "physics/solver.hpp" "physics/solver.cpp")
 
 target_sources(spock_engine PRIVATE
     "external/stb_image.h" "external/stb_image.c")

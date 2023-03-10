@@ -29,13 +29,13 @@ namespace spk {
     }
 
 
-    // glm::vec2 comp_particles_t::get_point(b2Body* body, glm::vec2 point) {
-    //     if(flags & PARTICLES_FLAGS_WORLD_POSITION) {
-    //         return spk::to_glm_vec2(body->GetPosition()) + pos + point;
-    //     } else {
-    //         return spk::to_glm_vec2(body->GetWorldPoint(spk::to_box_vec2(pos + point)));
-    //     }
-    // }
+    glm::vec2 comp_particles_t::get_point(b2Body* body, glm::vec2 point) {
+        if(flags & PARTICLES_FLAGS_WORLD_POSITION) {
+            return body->GetPosition() + pos + point;
+        } else {
+            return body->GetWorldPoint(pos + point);
+        }
+    }
 
     void particles_comp_init(flecs::world& world) {
         spk_register_component(world, comp_particles_t);

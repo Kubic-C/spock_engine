@@ -36,8 +36,8 @@ namespace spk {
 
     class tile_dictionary_manager_t {
     public:
-        void td_init();
-        void td_free();
+        tile_dictionary_manager_t();
+        ~tile_dictionary_manager_t();
 
         tile_dictionary_t& get_tile_dictionary() {
             return dictionary;

@@ -42,8 +42,9 @@ namespace spk {
 
     class font_manager_t {
     public:
-        bool fm_init();
-        void fm_free();
+        font_manager_t();
+        ~font_manager_t();
+        
         font_t* font_load_ascii(const char* file_path, int f_width = 0, int f_height = 32);
         font_t* get_first_font();
 

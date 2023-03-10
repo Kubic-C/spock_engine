@@ -110,8 +110,7 @@ namespace spk {
         vertices += vertices_per_letter * text->text.ssize();
     }
     
-    void font_renderer_t::init() {
-        b_init();
+    font_renderer_t::font_renderer_t() {
         mesh.init();
 
         font_ctx.init();
@@ -123,10 +122,9 @@ namespace spk {
         spk_assert(ret);
     }
 
-    void font_renderer_t::free() {
+    font_renderer_t::~font_renderer_t() {
         font_ctx.free();
         mesh.free();
-        b_free();
     }
 
     void font_renderer_t::draw() {

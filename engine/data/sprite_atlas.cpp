@@ -50,13 +50,11 @@ namespace spk {
         texture.free();
     }
 
-    bool sprite_atlas_manager_t::am_init() {
+    sprite_atlas_manager_t::sprite_atlas_manager_t() {
         spk_trace();
-
-        return true;
     }
 
-    void sprite_atlas_manager_t::am_free() {
+    sprite_atlas_manager_t::~sprite_atlas_manager_t() {
         spk_trace();
         
         for(uint32_t i = 0; i < SPK_MAX_ATLAS; i++) {

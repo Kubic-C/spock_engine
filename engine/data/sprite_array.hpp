@@ -20,8 +20,8 @@ namespace spk {
 
     class sprite_array_manager_t {
     public:
-        void sarm_init();
-        void sarm_free();
+        sprite_array_manager_t();
+        ~sprite_array_manager_t();
 
         bool            sprite_array_is_in_use(uint32_t index);
         void            sprite_array_in_use(uint32_t index);

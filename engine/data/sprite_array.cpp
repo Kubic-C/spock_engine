@@ -36,12 +36,11 @@ namespace spk {
         glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
     }
 
-    void sprite_array_manager_t::sarm_init() {
-        spk_trace();
-        
+    sprite_array_manager_t::sprite_array_manager_t() {
+        spk_trace();    
     }
 
-    void sprite_array_manager_t::sarm_free() {
+    sprite_array_manager_t::~sprite_array_manager_t() {
         spk_trace();
 
         for(uint32_t i = 0; i < SPK_MAX_SPRITE_ARRAYS; i++) {

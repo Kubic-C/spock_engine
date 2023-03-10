@@ -15,8 +15,8 @@ namespace spk {
 
     class system_t {
     public:
-        virtual void init() {}
-        virtual void free() {}
+        system_t() {}
+        virtual ~system_t() {}
     };
 
     class system_ctx_allocater_t {
@@ -31,11 +31,7 @@ namespace spk {
             T*& ctx = (T*&)ctx_name_list.emplace_back();
 
             // better allocation will come later i swear
-            ctx = (T*)malloc(sizeof(T));
-
-            ctor(ctx);
-
-            static_cast<spk::system_t*>(ctx)->init();
+            ctx = new T;
 
             return ctx;
         }

@@ -3,6 +3,7 @@
 #define SPOCK_ENGINE 1
 
 // dependencies 
+#include <box2d/box2d.h>
 #include <flecs.h>
 #include <SDL3/SDL.h>
 #include <glm/glm.hpp>

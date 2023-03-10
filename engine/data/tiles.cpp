@@ -1,12 +1,12 @@
 #include "tiles.hpp"
 
 namespace spk { 
-    void tile_dictionary_manager_t::td_init() {
+    tile_dictionary_manager_t::tile_dictionary_manager_t() {
         spk_trace();
 
     }
 
-    void tile_dictionary_manager_t::td_free() {
+    tile_dictionary_manager_t::~tile_dictionary_manager_t() {
         spk_trace();
     }
 }

@@ -90,14 +90,18 @@ namespace spk {
         texture.free();
     }
 
-    bool font_manager_t::fm_init() {
+    font_manager_t::font_manager_t() {
         spk_trace();
 
         if(FT_Init_FreeType(&ft_lib)) {
-            return false;
-        } else {
-            return true;
+            log.log(LOG_TYPE_ERROR, "could not load freetype");   
         }
+    }
+
+    font_manager_t::~font_manager_t() {
+        spk_trace();
+        
+        FT_Done_FreeType(ft_lib);
     }
 
     font_t* font_manager_t::font_load_ascii(const char* file_path, int f_width, int f_height) {
@@ -124,11 +128,5 @@ namespace spk {
 
     font_t* font_manager_t::get_first_font() {
         return &fonts.front();
-    }
-
-    void font_manager_t::fm_free() {
-        spk_trace();
-        
-        FT_Done_FreeType(ft_lib);
     }
 }

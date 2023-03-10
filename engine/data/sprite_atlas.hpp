@@ -23,8 +23,9 @@ namespace spk {
 
     class sprite_atlas_manager_t {
     public:
-        bool am_init();
-        void am_free();
+        sprite_atlas_manager_t();
+        ~sprite_atlas_manager_t();
+
         bool sprite_atlas_is_in_use(uint32_t index);
         void sprite_atlas_in_use(uint32_t index);
         sprite_atlas_t* get_atlas(uint32_t index);

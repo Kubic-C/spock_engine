@@ -58,7 +58,7 @@ namespace spk {
     
         void bind();
         void buffer_data(size_t size, void* data, size_t usage);
-        void buffer_sub_data(size_t offset, size_t size, void* data);
+        void buffer_sub_data(size_t offset, size_t size, const void* data);
 
         operator uint32_t() {
             return id;

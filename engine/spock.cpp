@@ -69,7 +69,6 @@ namespace spk {
             sprite_cs_init(ctx_alloc, world);
             primitive_render_cs_init(ctx_alloc, world);
             ui_cs_init(ctx_alloc, world);
-            rsrc_mng.init();
 
             world.entity().add<ui_comp_canvas_t>().add<ui_tag_current_canvas_t>();
         }
@@ -144,7 +143,6 @@ namespace spk {
     void engine_t::free() {
         SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "[emt, red] ENGINE FREE [reset, emt]");  
         
-        rsrc_mng.free();
         SDL_Quit();
         ctx_alloc.free();
     }
@@ -176,7 +174,7 @@ namespace spk {
         state.get_current_window().get_ref<comp_window_t>()->set_title(title);
     }
 
-    physics_world_t* engine_t::get_current_physics_world() {
+    b2World* engine_t::get_current_physics_world() {
         return state.get_current_physics_world();
     }
 
