@@ -1,5 +1,6 @@
 #pragma once
 
+#include "systems/components.hpp"
 #include "systems/window.hpp"
 #include "systems/physics.hpp"
 #include "systems/ps_tracker.hpp"
@@ -83,7 +84,11 @@ namespace spk {
         flecs::ref<comp_camera_t> get_current_camera();
         void set_current_camera(flecs::entity e);
 
-        flecs::world world;
+        // debug rendering of box2d
+        void set_box2d_draw_flags(uint32_t flags);
+        bool get_box2d_draw_flags();
+
+        flecs::world* world;
         system_ctx_allocater_t ctx_alloc;
         resource_manager_t rsrc_mng;
         user_state_t user_state;

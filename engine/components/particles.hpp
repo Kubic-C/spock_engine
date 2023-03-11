@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base.hpp"
+#include "components.hpp"
 #include "data/tiles.hpp"
 
 namespace spk {
@@ -24,7 +24,7 @@ namespace spk {
         float lifetime;
     };
 
-    struct comp_particles_t {
+    struct comp_particles_t : component_t {
         uint8_t flags;
 
         tile_t particle;

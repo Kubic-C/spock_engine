@@ -27,10 +27,14 @@ namespace spk {
             })
         }
 
-        { // pipeline
-            init_phases(world);
+        {
+            world = new flecs::world;
+        }
 
-            flecs::entity render_pipeline = world.pipeline()
+        { // pipeline
+            init_phases(*world);
+
+            flecs::entity render_pipeline = world->pipeline()
                 .with(flecs::System)
                     .with(flecs::Phase).cascade(flecs::DependsOn)
                     .without(flecs::Disabled).up(flecs::DependsOn)
@@ -39,7 +43,7 @@ namespace spk {
 
             state.set_current_render_pipeline(render_pipeline);
 
-            flecs::entity game_pipeline = world.pipeline()
+            flecs::entity game_pipeline = world->pipeline()
                 .with(flecs::System)
                     .with(flecs::Phase).cascade(flecs::DependsOn)
                     .without(flecs::Disabled).up(flecs::DependsOn)
@@ -53,24 +57,26 @@ namespace spk {
         { // engine setup and state setup
             ctx_alloc.init();
             
-            state.set_current_event_system(world.entity().add<tag_events_t>());
-            ps_tracker_system_init(ctx_alloc, world);
-            window_cs_init(ctx_alloc, world);
-            physics_cs_init(ctx_alloc, world);
+            state.set_current_event_system(world->entity().add<tag_events_t>());
+
+            component_cs_init(ctx_alloc, *world);
+            ps_tracker_system_init(ctx_alloc, *world);
+            window_cs_init(ctx_alloc, *world);
+            physics_cs_init(ctx_alloc, *world);
 
             // renderers need a working Gl context, so we initialize them after we add a window with a 
             // working GL context
-            world.entity().add<comp_window_t>().add<tag_current_window_t>();
+            world->entity().add<comp_window_t>().add<tag_current_window_t>();
 
-            camera_cs_init(ctx_alloc, world);
-            render_cs_init(ctx_alloc, world);
+            camera_cs_init(ctx_alloc, *world);
+            render_cs_init(ctx_alloc, *world);
 
             // render systems
-            sprite_cs_init(ctx_alloc, world);
-            primitive_render_cs_init(ctx_alloc, world);
-            ui_cs_init(ctx_alloc, world);
+            sprite_cs_init(ctx_alloc, *world);
+            primitive_render_cs_init(ctx_alloc, *world);
+            ui_cs_init(ctx_alloc, *world);
 
-            world.entity().add<ui_comp_canvas_t>().add<ui_tag_current_canvas_t>();
+            world->entity().add<ui_comp_canvas_t>().add<ui_tag_current_canvas_t>();
         }
 
         SPK_DEBUG_EXPR(print_deps_versions());
@@ -88,8 +94,8 @@ namespace spk {
         double frames_to_do = 0.0;
 
         // render pipeline contains Window events 
-        world.run_pipeline(state.get_current_render_pipeline(), frame_time);
-        world.run_pipeline(state.get_current_game_pipeline(), delta_time);
+        world->run_pipeline(state.get_current_render_pipeline(), frame_time);
+        world->run_pipeline(state.get_current_game_pipeline(), delta_time);
 
         while(!state.is_exit()) {
             double current_frame = spk::time.get_time();
@@ -107,11 +113,11 @@ namespace spk {
                 stats.delta_time = delta_time;
 
                 // one tick
-               world.frame_begin(0.0);
+               world->frame_begin(0.0);
                 if(user_state.tick)
                     user_state.tick(*this);
-                world.run_pipeline(state.get_current_game_pipeline(), delta_time);
-                world.frame_end();
+                world->run_pipeline(state.get_current_game_pipeline(), delta_time);
+                world->frame_end();
             }
 
             // when there is tps lag, frame_time will be longer as well
@@ -126,12 +132,12 @@ namespace spk {
                 if(user_state.update)
                     user_state.update(*this);
 
-                world.run_pipeline(state.get_current_render_pipeline(), frame_time);
+                world->run_pipeline(state.get_current_render_pipeline(), frame_time);
                 stats.frame_time = frame_time;
             }
 
             // exit conditions:
-            if(world.should_quit())
+            if(world->should_quit())
                 state.exit(0);
         }
 
@@ -143,8 +149,13 @@ namespace spk {
     void engine_t::free() {
         SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "[emt, red] ENGINE FREE [reset, emt]");  
         
-        SDL_Quit();
+        // deletion order matters here, do not swap around
+
         ctx_alloc.free();
+
+        delete world;
+
+        SDL_Quit();
     }
 
     const state_t& engine_t::get_state() {
@@ -229,5 +240,13 @@ namespace spk {
 
     bool engine_t::is_pressed(SDL_Scancode sc) {
         return state.keys[sc];
+    }
+
+    void engine_t::set_box2d_draw_flags(uint32_t flags) {
+        state.set_box2d_draw_flags(flags);
+    }
+
+    bool engine_t::get_box2d_draw_flags() {
+        return state.get_box2d_draw_flags();
     }
 }

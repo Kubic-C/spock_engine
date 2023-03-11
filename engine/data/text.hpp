@@ -49,8 +49,7 @@ namespace spk {
         font_t* get_first_font();
 
     private:
-        memory_pool_t<font_t> font_pool;
-        std::list<font_t, indirect_allocator_t<font_t>> fonts{indirect_allocator_t<font_t>(&font_pool)};
+        std::list<font_t, memory_pool_t<font_t>> fonts;
 
         FT_Library ft_lib; 
     };

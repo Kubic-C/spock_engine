@@ -1,15 +1,18 @@
 #pragma once
 
-#include "base.hpp"
+#include "components.hpp"
 
 namespace spk {
-    struct comp_rigid_body_t {
+    struct comp_rigid_body_t : component_t {
         b2Body* body;
 
-        void init(flecs::entity entity) {}
+        void init(flecs::entity entity);
+
         void free(flecs::entity entity) {
             if(body) {
-                body->GetWorld()->DestroyBody(body);
+                b2World* world = body->GetWorld();
+
+                world->DestroyBody(body);
             }
         }
 

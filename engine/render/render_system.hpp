@@ -33,7 +33,7 @@ namespace spk {
 
         void resize(uint32_t width, uint32_t height);
 
-        id_t         atch_init();
+        id_t          atch_init();
         attachment_t& atch_get(id_t atch_id);
         void          atch_set(id_t atch_id, uint32_t type, uint32_t internal_format, uint32_t pixel_format, uint32_t pixel_type);
         void          _atch_free(id_t atch_id);
@@ -41,7 +41,7 @@ namespace spk {
 
     
         void           fb_default_init();
-        id_t          fb_init();
+        id_t           fb_init();
         framebuffer_t& fb_get(id_t fb_id);
         void           fb_set_clear_bits(id_t fb_id, uint32_t bits);
         void           fb_set_clear_color(id_t fb_id, float r, float g, float b, float a);
@@ -49,7 +49,7 @@ namespace spk {
         void           _fb_free(id_t fb_id);
         void           fb_remove(id_t fb_id);
 
-        id_t          rp_init();
+        id_t           rp_init();
         render_pass_t& rp_get(id_t rp_id);
         void           rp_set_fb(id_t rp_id, id_t fb_id);
         void           rp_add_renderer(id_t rp_id, base_renderer_t* renderer);

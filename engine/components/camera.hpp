@@ -1,11 +1,11 @@
 #pragma once
 
-#include "base.hpp"
+#include "components.hpp"
 
 namespace spk {
     struct tag_current_camera_t {};
 
-    struct comp_camera_t { 
+    struct comp_camera_t : component_t { 
         glm::mat4 vp;
         glm::mat4 view;
         glm::mat4 proj;

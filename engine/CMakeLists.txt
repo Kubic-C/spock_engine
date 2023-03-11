@@ -24,6 +24,7 @@ target_sources(spock_engine PRIVATE
 
     
 target_sources(spock_engine PRIVATE
+    "components/components.hpp" "components/components.cpp"
     "components/window.hpp" "components/window.cpp"
     "components/ui.hpp" "components/ui.cpp"
     "components/sprite.hpp" "components/sprite.cpp"
@@ -34,6 +35,7 @@ target_sources(spock_engine PRIVATE
     "components/rigid_body.hpp" "components/rigid_body.cpp")
     
 target_sources(spock_engine PRIVATE
+    "systems/components.hpp" "systems/components.cpp"
     "systems/window.hpp" "systems/window.cpp"
     "systems/render.hpp" "systems/render.cpp"
     "systems/physics.hpp" "systems/physics.cpp"
@@ -75,6 +77,9 @@ target_sources(spock_engine PRIVATE
     "render/sprite_renderer.hpp" "render/sprite_renderer.cpp"
     "render/primitive_renderer.hpp" "render/primitive_renderer.cpp"
     "render/ui_fb_renderer.hpp" "render/ui_fb_renderer.cpp")
+
+target_sources(spock_engine PRIVATE
+    "physics/collision_listener.hpp" "physics/collision_listener.cpp")
 
 target_sources(spock_engine PRIVATE
     "external/stb_image.h" "external/stb_image.c")

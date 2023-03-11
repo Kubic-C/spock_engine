@@ -1,8 +1,10 @@
 #pragma once
+
+#include "components.hpp"
 #include "data/sprite_atlas.hpp"
 
 namespace spk {
-    struct comp_sprite_atlasd_t {
+    struct comp_sprite_atlasd_t : component_t {
         void init(flecs::entity entity) {}
         void free(flecs::entity entity) {}
 
@@ -14,7 +16,7 @@ namespace spk {
     };
 
     // comp_sprite_arrayd_t is stored within a Texture Array rather then a Texture atlas.
-    struct comp_sprite_arrayd_t {
+    struct comp_sprite_arrayd_t : component_t {
         void init(flecs::entity entity) {}
         void free(flecs::entity entity) {}
       

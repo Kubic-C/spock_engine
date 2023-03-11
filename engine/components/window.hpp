@@ -1,5 +1,6 @@
 #pragma once
 
+#include "components.hpp"
 #include "events.hpp"
 
 namespace spk {
@@ -7,7 +8,7 @@ namespace spk {
 
     struct tag_mouse_t {};
 
-    struct comp_window_t {
+    struct comp_window_t : component_t {
         SDL_Window* win;
         SDL_GLContext gl_ctx;
 

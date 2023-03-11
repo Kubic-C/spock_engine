@@ -1,5 +1,6 @@
 #pragma once
 
+#include "components.hpp"
 #include "utility/ui.hpp"
 #include "data/resource_manager.hpp"
 
@@ -119,15 +120,10 @@ namespace spk {
         glm::mat4 vp;
 
         font_t* font;
-        memory_pool_t<ui_text_t> text_pool;
-        memory_pool_t<ui_button_t> btn_pool;
-        
-        std::list<ui_text_t, indirect_allocator_t<ui_text_t>> texts;
-        std::list<ui_button_t, indirect_allocator_t<ui_button_t>> btns;
+        std::list<ui_text_t, memory_pool_t<ui_text_t>> texts;
+        std::list<ui_button_t, memory_pool_t<ui_button_t>> btns;
 
-        ui_comp_canvas_t()
-            : texts(indirect_allocator_t<ui_text_t>(&text_pool)), 
-              btns(indirect_allocator_t<ui_button_t>(&btn_pool)) {
+        ui_comp_canvas_t() {
             font = null;
         }
 

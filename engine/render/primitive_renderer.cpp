@@ -14,7 +14,7 @@ uniform mat4 u_vp;
 uniform vec4 color;
 
 void main() {
-    gl_Position = u_vp * vec4(a_pos, color.a, 1.0);
+    gl_Position = u_vp * vec4(a_pos, 9.0 - color.a, 1.0);
     v_color = color;
 })###";
 
@@ -25,7 +25,7 @@ in vec4 v_color;
 out vec4 fragment_color;
 
 void main() {
-    fragment_color = v_color;
+    fragment_color = vec4(v_color.rgb, v_color.a / 2.0f);
 })###";
 
 namespace spk {
@@ -43,9 +43,6 @@ namespace spk {
         spk_assert(ret && "primitive render shaders invalid");
     
         mesh.resize(max_size * 3);
-
-        // b2Draw flags
-        SetFlags(e_shapeBit);
     }
 
     primitive_renderer_t::~primitive_renderer_t() {
@@ -87,6 +84,7 @@ namespace spk {
     void primitive_renderer_t::draw() {
         b2World*             world    = state.get_current_physics_world();
         
+        SetFlags(state.get_box2d_draw_flags());
         world->SetDebugDraw(dynamic_cast<b2Draw*>(this));
         world->DebugDraw();
     }
@@ -152,6 +150,7 @@ namespace spk {
 
     void primitive_renderer_t::DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color) {
         draw_mesh_array(color, add_circle(center, radius));
+        DrawSegment(center, axis + center, {0.0f, 0.0f, 0.0f, 1.0f});
     }
 
     void primitive_renderer_t::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) {

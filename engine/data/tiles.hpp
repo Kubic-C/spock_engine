@@ -11,7 +11,11 @@ namespace spk {
     };
 
     struct tile_metadata_t {
-        comp_sprite_arrayd_t sprite = {.size = {SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE}};
+        tile_metadata_t() {
+            sprite.size = {SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE};
+        }
+
+        comp_sprite_arrayd_t sprite;
         
         float density     = 1.0f;
         float friction    = 0.2f;

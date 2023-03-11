@@ -22,6 +22,7 @@ namespace spk {
         occur to it should be logged as way to track global-state related bugs */
     class state_t {
     private:
+        uint32_t box2d_draw_flags = 0;
         bool exit_ = false;
         int exit_code_ = 0;
         double target_fps_ = 120.0;
@@ -46,6 +47,7 @@ namespace spk {
         int get_exit_code() { return exit_code_; }
         bool is_exit() { return exit_; }
 
+        uint32_t         get_box2d_draw_flags() const { return box2d_draw_flags; }
         float            get_ppm() const { return ppm; }
         double           get_target_fps(bool divide_by_second = true) const;
         double           get_target_tps(bool divide_by_second = true) const;
@@ -58,6 +60,11 @@ namespace spk {
         flecs::entity    get_current_camera() const { return camera; }; 
         flecs::entity    get_current_render_pipeline() const { return render_pipeline; }
         flecs::entity    get_current_game_pipeline() const { return game_pipeline; }
+
+        void set_box2d_draw_flags(uint32_t flags) {
+            SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "box2d draw flags set to: %i", flags);
+            this->box2d_draw_flags = flags;
+        }
 
         void set_ppm(float ppm) { 
             SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_STATE_CHANGE, "pixels per meter(PPM) changed to: %f", ppm);

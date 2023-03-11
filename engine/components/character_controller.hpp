@@ -1,9 +1,10 @@
 #pragma once
 
+#include "components.hpp"
 #include "sprite.hpp"
 
 namespace spk {
-    struct comp_character_controller_t {
+    struct comp_character_controller_t : component_t {
         SDL_Scancode left, right, up, down;
 
         float speed;

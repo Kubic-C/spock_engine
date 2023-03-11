@@ -105,25 +105,18 @@ namespace spk {
     }
 
     font_t* font_manager_t::font_load_ascii(const char* file_path, int f_width, int f_height) {
-        font_t* font = font_pool.allocate(1);
-        if(!font)
-            return nullptr;
+        font_t* font = &fonts.emplace_back();
 
         if(!font->init()) {
-            goto failure;
+            fonts.pop_back();
+            return nullptr;
         } else {
             if(!font->load_ascii_font(ft_lib, f_width, f_height, file_path)) {
-                goto failure;
+                return nullptr;
             } else {
-                goto success;
+                return font;
             }
         }
-
-    failure:
-        font_pool.deallocate(font);
-        return nullptr;
-    success:    
-        return font;
     }
 
     font_t* font_manager_t::get_first_font() {

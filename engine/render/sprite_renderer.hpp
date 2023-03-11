@@ -33,8 +33,8 @@ namespace spk {
         void add_sprite_mesh(b2Body* body, St& sprite, glm::vec2 offset = {0.0f, 0.0f});
 
         struct atlas_mesh_t {
-            std::vector<Vt> mesh;
-            uint32_t sprites;
+            std::vector<Vt> mesh = {};
+            size_t sprites = 0;
         } meshes[SPK_MAX_ATLAS];
 
         static const uint32_t vertexes_per_sprite = 6;

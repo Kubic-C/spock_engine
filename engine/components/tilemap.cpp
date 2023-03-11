@@ -151,42 +151,41 @@ namespace spk {
     }
 
     
-    // void comp_tilemap_t::compute_colliders() {
-    //     compute_greedy_mesh();
-    //     compute_centroid();
-    //     colliding_tiles.clear();
+    void comp_tilemap_t::compute_colliders() {
+        compute_greedy_mesh();
+        compute_centroid();
+        colliding_tiles.clear();
 
-    //     for(auto& pair : tile_groups) {
-    //         glm::uvec2   coords = tiles.get_2D_from_1D(pair.first);
-    //         tile_group_t tile   = pair.second;
-    //         uint32_t     id     = tiles.get(coords.x, coords.y).id;
+        for(auto& pair : tile_groups) {
+            glm::uvec2   coords = tiles.get_2D_from_1D(pair.first);
+            tile_group_t tile   = pair.second;
+            uint32_t     id     = tiles.get(coords.x, coords.y).id;
 
-    //         if(is_tile_empty(tiles.get(coords.x, coords.y)))
-    //            continue;
+            if(is_tile_empty(tiles.get(coords.x, coords.y)))
+               continue;
 
-    //         {
-    //             float  half_width    = tile.x / 2.0f;
-    //             float  half_height   = tile.y / 2.0f;
-    //             float  offset_width  = (coords.x + SPK_TILE_HALF_SIZE) - (float)tile.x  / 2.0f - center.x;
-    //             float  offset_height = (coords.y + SPK_TILE_HALF_SIZE) - (float)tile.y  / 2.0f - center.y; 
-    //             b2Vec2 offset        = { offset_width, offset_height };
+            {
+                float  half_width    = tile.x / 2.0f;
+                float  half_height   = tile.y / 2.0f;
+                float  offset_width  = (coords.x + SPK_TILE_HALF_SIZE) - (float)tile.x  / 2.0f - center.x;
+                float  offset_height = (coords.y + SPK_TILE_HALF_SIZE) - (float)tile.y  / 2.0f - center.y; 
+                b2Vec2 offset        = { offset_width, offset_height };
 
-    //             colliding_tiles.emplace_back();
-    //             tile_collider_t& tile = colliding_tiles.back();
+                colliding_tiles.emplace_back();
+                tile_collider_t& tile = colliding_tiles.back();
 
-    //             b2Vec2 vertices[4] = {
-    //                 b2Vec2(-half_width, -half_height) + offset,
-    //                 b2Vec2(half_width, -half_height) + offset,
-    //                 b2Vec2(half_width, half_height) + offset,
-    //                 b2Vec2(-half_width, half_height) + offset
-    //             };
+                b2Vec2 vertices[4] = {
+                    b2Vec2(-half_width, -half_height) + offset,
+                    b2Vec2(half_width, -half_height) + offset,
+                    b2Vec2(half_width, half_height) + offset,
+                    b2Vec2(-half_width, half_height) + offset
+                };
 
-    //             tile.shape.Set(vertices, 4);
-    //             tile.id = id;
-    //         }
-    //     }
-    // }
-
+                tile.shape.Set(vertices, 4);
+                tile.id = id;
+            }
+        }
+    }
 
     void comp_tilemap_t::compute_centroid() {
         float left_most   = std::numeric_limits<float>().max(), 
@@ -219,6 +218,22 @@ namespace spk {
     void comp_tilemap_t::update_tilemap() {
         void compute_greedy_mesh();
         void compute_centroid();
+    }
+
+    void comp_tilemap_t::add_fixtures(b2Body* body) {
+        auto& dictionary = state.engine->rsrc_mng.get_tile_dictionary();
+
+        update_tilemap();
+        compute_colliders();
+
+        for(auto& tile_collider : colliding_tiles) {
+            b2FixtureDef def;
+            def.density     = dictionary[tile_collider.id].density;
+            def.friction    = dictionary[tile_collider.id].friction;
+            def.restitution = dictionary[tile_collider.id].restitution;
+            def.shape       = &tile_collider.shape;
+            body->CreateFixture(&def);
+        }
     }
 
     void tile_comp_init(flecs::world& world) {
