@@ -20,7 +20,7 @@ typedef std::function<void(int cool_paremeter)> function_t;
 // for long named variable types use auto
 auto my_var = a_really_long_name<with_c_plus_plus_templates_too>();
 
-// when many variables declerations are next to eachtoher
+// when many variables declarations are next to eachtoher
 // indent them in such a way that their '=' sign all on the same column:
 int                  a_var = 0;
 uint32_t  a_secondary_name = 4096;
@@ -31,7 +31,7 @@ int a_var = 0;
 uint32_t a_secondary_name = 4096;
 int32_t third_name_in_row = -1;
 
-// if one name variable decleration is too long to reasonably read then dont indent:
+// if the name of one variable declaration is too long to reasonably read then dont indent:
 int a_nice_name = 0;
 std::vector<really_long_typename_t>::iterator long_iterator_name;
 
