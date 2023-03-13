@@ -1,12 +1,11 @@
 #include "rigid_body.hpp"
-#include "state.hpp"
-#include "spock.hpp"
+#include "core/internal.hpp"
 
 namespace spk { 
     void comp_rigid_body_t::init(flecs::entity entity) {
         b2BodyDef def;
         
-        body = state.get_current_physics_world()->CreateBody(&def);
+        body = internal->scene.physics_world->CreateBody(&def);
 
         auto& ud = body->GetUserData();
         ud.entity = entity;

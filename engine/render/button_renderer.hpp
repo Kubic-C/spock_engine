@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base_renderer.hpp"
-#include "components/ui.hpp"
+#include "core/ui.hpp"
 
 namespace spk {
     struct button_vertex_t {

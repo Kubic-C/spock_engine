@@ -23,17 +23,16 @@ namespace spk {
         sprite_array_manager_t();
         ~sprite_array_manager_t();
 
-        bool            sprite_array_is_in_use(uint32_t index);
-        void            sprite_array_in_use(uint32_t index);
-
-        void            sprite_array_init(uint32_t index);
-        void            sprite_array_start(uint32_t index, uint32_t width, uint32_t height, uint32_t sprites);
-        bool            sprite_array_load(uint32_t index, const char* path, uint32_t sprite_index);
-        void            sprite_array_finish(uint32_t index);
-        sprite_array_t* sprite_array_get(uint32_t index);
+        bool            is_in_use(uint32_t index);
+        void            in_use(uint32_t index);
+        void            init(uint32_t index);
+        void            start(uint32_t index, uint32_t width, uint32_t height, uint32_t sprites);
+        bool            load(uint32_t index, const char* path, uint32_t sprite_index);
+        void            finish(uint32_t index);
+        sprite_array_t* get(uint32_t index);
 
     private:
-        std::bitset<SPK_MAX_SPRITE_ARRAYS> in_use;
+        std::bitset<SPK_MAX_SPRITE_ARRAYS> in_use_bits;
         std::array<sprite_array_t, SPK_MAX_SPRITE_ARRAYS> sprite_arrays;
     };
 }

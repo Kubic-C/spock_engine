@@ -26,24 +26,24 @@ namespace spk {
         sprite_atlas_manager_t();
         ~sprite_atlas_manager_t();
 
-        bool sprite_atlas_is_in_use(uint32_t index);
-        void sprite_atlas_in_use(uint32_t index);
+        bool is_in_use(uint32_t index); // returns true if the sprite atlas at index is IN USE
+        void in_use(uint32_t index); // marks the sprite atlas at index as IN USE
         sprite_atlas_t* get_atlas(uint32_t index);
 
-        void sprite_atlas_init(uint32_t index, uint32_t sprites_per_row, uint32_t sprites_per_column) {
-            spk_assert(!sprite_atlas_is_in_use(index));
+        void init(uint32_t index, uint32_t sprites_per_row, uint32_t sprites_per_column) {
+            spk_assert(!is_in_use(index));
 
             sprite_atlases[index].init(sprites_per_row, sprites_per_column);
-            sprite_atlas_in_use(index);
+            in_use(index);
         }
 
-        bool sprite_atlas_load_from_path(uint32_t index, const char* path) {
-            spk_assert(sprite_atlas_is_in_use(index));
+        bool load_from_path(uint32_t index, const char* path) {
+            spk_assert(is_in_use(index));
 
             return sprite_atlases[index].load_from_path(path);
         }
     private:
-        std::bitset<SPK_MAX_ATLAS> in_use;
+        std::bitset<SPK_MAX_ATLAS> in_use_bits;
         std::array<sprite_atlas_t, SPK_MAX_ATLAS> sprite_atlases;
     };
 }

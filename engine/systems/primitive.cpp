@@ -1,14 +1,14 @@
 #include "primitive.hpp"
-#include "state.hpp"
-#include "spock.hpp"
 #include "physics.hpp"
+#include "core/internal.hpp"
+#include "render/render_system.hpp"
 
 namespace spk {
-    void primitive_render_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
+    void primitive_render_cs_init(flecs::world& world) {
         spk_trace();
         
-        auto primi_renderer = ctx_alloc.allocate_ctx<primitive_renderer_t>();
+        auto primitive_renderer = internal->allocators.stack.push<primitive_renderer_t>();
 
-        state.get_current_renderer()->rp_add_renderer(0, (base_renderer_t*)primi_renderer);
+        internal->scene.renderer->rp_add_renderer(0, (base_renderer_t*)primitive_renderer);
     }
 }

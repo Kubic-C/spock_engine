@@ -1,18 +1,18 @@
 #include "tilemap.hpp"
-#include "state.hpp"
-#include "spock.hpp"
+#include "core/internal.hpp"
+#include "components/rigid_body.hpp"
+#include "sprite.hpp"
 
 namespace spk {
     void tilemap_mesh(
         sprite_arrayd_batch_mesh_t* mesh, 
         b2Body*                     body, 
-        comp_tilemap_t&             tilemap, 
-        resource_manager_t*         rsrc_mng) {
+        comp_tilemap_t&             tilemap) {
 
         for(auto& pair : tilemap.tile_groups) {
             glm::uvec2   coords = tilemap.tiles.get_2D_from_1D(pair.first);
             tile_group_t tile   = pair.second;
-            auto&        sprite = rsrc_mng->get_tile_dictionary()[tilemap.tiles.get(coords.x, coords.y).id].sprite;
+            auto&        sprite = internal->resources.tile_dictionary[tilemap.tiles.get(coords.x, coords.y).id].sprite;
             float        offset_width;
             float        offset_height;
 
@@ -28,13 +28,12 @@ namespace spk {
 
     void sprite_render_system_tilebody_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_tilemap_t* tilemaps) {
         auto ctx = get_ctx<sprite_arrayd_batch_mesh_t>(iter);
-        resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
 
         for(auto i : iter) {
             comp_rigid_body_t&  body     = bodies[i];
             comp_tilemap_t& tilemap = tilemaps[i];
 
-            tilemap_mesh(ctx, body, tilemap, rsrc_mng);
+            tilemap_mesh(ctx, body, tilemap);
         }
     }
 

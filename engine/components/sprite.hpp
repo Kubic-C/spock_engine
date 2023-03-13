@@ -1,7 +1,8 @@
 #pragma once
 
 #include "components.hpp"
-#include "data/sprite_atlas.hpp"
+#include "core/sprite_array.hpp"
+#include "core/sprite_atlas.hpp"
 
 namespace spk {
     struct comp_sprite_atlasd_t : component_t {

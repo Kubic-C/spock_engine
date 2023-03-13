@@ -1,5 +1,5 @@
 #include "ui.hpp"
-#include "state.hpp"
+#include "internal.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk {
@@ -33,7 +33,7 @@ namespace spk {
 
     }
 
-    void ui_comp_canvas_t::init(flecs::entity entity) {
+    ui_canvas_t::ui_canvas_t() {
         font = nullptr;
 
         flags |= spk::UI_ELEMENT_FLAGS_ROOT |
@@ -43,11 +43,19 @@ namespace spk {
         pos = { std::nanf("nan"), std::nanf("nan") };
     }
 
-    void ui_comp_canvas_t::free(flecs::entity entity) {
+    ui_canvas_t::~ui_canvas_t() {
 
     }
 
-    void ui_comp_canvas_t::resize_callback(int width, int height) {
+    void ui_canvas_t::make_current() {
+        if(internal->scene.canvas != nullptr) {
+            // do something, here for future use
+        }
+
+        internal->scene.canvas = this;
+    }
+
+    void ui_canvas_t::resize_callback(int width, int height) {
         glm::mat4 view, proj;
 
         view = glm::identity<glm::mat4>();
@@ -57,20 +65,5 @@ namespace spk {
         vp = proj * view;
  
         abs_size = { (float)width, (float)height };
-    }
-
-    void ui_tag_current_canvas_on_add(flecs::entity e, ui_comp_canvas_t& canvas) {
-        if(state.get_current_canvas().id() != UINT64_MAX) {
-            state.get_current_canvas().remove<ui_tag_current_canvas_t>();
-        }
-
-        state.set_current_canvas(e);
-    }
-
-    void ui_canvas_comp_init(flecs::world& world) {
-        spk_register_component(world, ui_comp_canvas_t);
-
-        world.observer<ui_comp_canvas_t>().term<ui_tag_current_canvas_t>()
-            .event(flecs::OnAdd).each(ui_tag_current_canvas_on_add);
     }
 }

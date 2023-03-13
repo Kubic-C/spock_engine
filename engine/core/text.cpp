@@ -104,7 +104,7 @@ namespace spk {
         FT_Done_FreeType(ft_lib);
     }
 
-    font_t* font_manager_t::font_load_ascii(const char* file_path, int f_width, int f_height) {
+    font_t* font_manager_t::load_ascii(const char* file_path, int f_width, int f_height) {
         font_t* font = &fonts.emplace_back();
 
         if(!font->init()) {

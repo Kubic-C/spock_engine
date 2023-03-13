@@ -38,20 +38,6 @@ namespace spk {
 
     typedef std::unordered_map<uint32_t, tile_metadata_t> tile_dictionary_t;
 
-    class tile_dictionary_manager_t {
-    public:
-        tile_dictionary_manager_t();
-        ~tile_dictionary_manager_t();
-
-        tile_dictionary_t& get_tile_dictionary() {
-            return dictionary;
-        }
-
-    private:
-        tile_dictionary_t dictionary;
-
-    };
-
     inline bool is_tile_empty(const tile_t& tile) {
         return (tile.id == 0 ||  !(tile.flags & TILE_FLAGS_COLLIADABLE));
     }

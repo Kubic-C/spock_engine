@@ -1,12 +1,10 @@
 #include "camera.hpp"
-#include "events.hpp"
-#include "state.hpp"
+#include "core/internal.hpp"
 
 namespace spk {
     void camera_resize(flecs::iter& iter) {
-        auto ctx = get_ctx<camera_system_ctx_t>(iter);
-        auto camera = state.get_current_camera().get_ref<comp_camera_t>();    
-        event_window_size_t* size = iter.param<event_window_size_t>();
+        auto                 camera = internal->scene.camera.get_ref<comp_camera_t>();    
+        event_window_size_t* size   = iter.param<event_window_size_t>();
 
         camera->size = { static_cast<float>(size->width), static_cast<float>(size->height) };
     }
@@ -15,19 +13,16 @@ namespace spk {
         camera.recalculate();
     }
 
-    void camera_cs_init(system_ctx_allocater_t& allocater, flecs::world& world) {
+    void camera_cs_init(flecs::world& world) {
         spk_trace();
         
         camera_comp_init(world);
-        
-        auto ctx = allocater.allocate_ctx<camera_system_ctx_t>();
 
         world.entity().add<comp_camera_t>().add<tag_current_camera_t>(); // the default camera
 
         world.system<comp_camera_t>().term<tag_current_camera_t>().kind(on_render_begin)
             .each(camera_system_update).add<tag_render_system_t>();
 
-        world.observer().term<tag_events_t>().event<event_window_size_t>().ctx(ctx)
-            .iter(camera_resize);
+        world.observer().term<tag_events_t>().event<event_window_size_t>().iter(camera_resize);
     }
 }

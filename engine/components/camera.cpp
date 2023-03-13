@@ -1,6 +1,5 @@
 #include "camera.hpp"
-#include "state.hpp"
-#include "spock.hpp"
+#include "core/internal.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace spk { 
@@ -18,7 +17,7 @@ namespace spk {
     }
 
     glm::vec2 comp_camera_t::get_world_position(const glm::vec2& screen_coords) {
-        const float total_scale = state.get_ppm() * scale;
+        const float total_scale = internal->settings.ppm * scale;
 
         // screen camera size -> world camera size
         // SDL Window's positive Y is oppisote of Box2D's postive Y
@@ -43,7 +42,7 @@ namespace spk {
         const float height = size.y / 2.0f;
 
         view = glm::identity<glm::mat4>();
-        view = glm::scale(view, glm::vec3(state.get_ppm() * scale, state.get_ppm() * scale, 1.0f));
+        view = glm::scale(view, glm::vec3(internal->settings.ppm * scale, internal->settings.ppm * scale, 1.0f));
         // flipping the coordinates must be done because Ortho flips everything
         view = glm::translate(view, glm::vec3(-pos, -z)); 
 
@@ -53,16 +52,16 @@ namespace spk {
     }
 
     void tag_current_camera_on_add(flecs::entity e, comp_camera_t& camera, tag_current_camera_t) {
-        if(state.get_current_camera() != UINT64_MAX) {
-            state.get_current_camera().remove<tag_current_camera_t>();
+        if(internal->scene.camera.id() != UINT64_MAX) {
+            internal->scene.camera.remove<tag_current_camera_t>();
         }
 
-        state.set_current_camera(e);
+        internal->scene.camera = e;
         
         // likely that the camera does not have its size set yet,
         // so emiting a resize event seems reasonable here
         // The size may change when changing between different cameras
-        state.get_current_window().get_ref<comp_window_t>()->force_resize_event();
+        internal->scene.window->force_resize_event();
     } 
 
     void camera_comp_init(flecs::world& world) {

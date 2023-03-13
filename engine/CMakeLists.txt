@@ -16,17 +16,11 @@ target_sources(spock_engine PRIVATE
     "base.hpp"
     "spock.cpp"
     "pipeline.hpp"
-    "systems.hpp" "systems.cpp"
-    "state.hpp" "state.cpp"
-    "events.hpp" "events.cpp"
     "debug.hpp" "debug.cpp"
     "logger.hpp" "logger.cpp")
 
-    
 target_sources(spock_engine PRIVATE
     "components/components.hpp" "components/components.cpp"
-    "components/window.hpp" "components/window.cpp"
-    "components/ui.hpp" "components/ui.cpp"
     "components/sprite.hpp" "components/sprite.cpp"
     "components/tilemap.hpp" "components/tilemap.cpp"
     "components/camera.hpp" "components/camera.cpp"
@@ -49,6 +43,7 @@ target_sources(spock_engine PRIVATE
     "systems/character_controller.hpp" "systems/character_controller.cpp")
 
 target_sources(spock_engine PRIVATE
+    "utility/stack_allocator.hpp" "utility/stack_allocator.cpp"
     "utility/ui.hpp" "utility/ui.cpp"
     "utility/entity.hpp" "utility/entity.cpp"
     "utility/structures.hpp" "utility/structures.cpp"
@@ -59,12 +54,7 @@ target_sources(spock_engine PRIVATE
     "utility/image_loader.hpp" "utility/image_loader.cpp"
     "utility/allocator.hpp" "utility/allocator.cpp")
 
-target_sources(spock_engine PRIVATE
-    "data/text.hpp" "data/text.cpp"
-    "data/resource_manager.hpp" "data/resource_manager.cpp"
-    "data/sprite_atlas.hpp" "data/sprite_atlas.cpp"
-    "data/sprite_array.hpp" "data/sprite_array.cpp"
-    "data/tiles.hpp" "data/tiles.cpp")
+target_sources(spock_engine PRIVATE)
 
 target_sources(spock_engine PRIVATE
     "render/opengl.hpp" "render/opengl.cpp"
@@ -77,6 +67,17 @@ target_sources(spock_engine PRIVATE
     "render/sprite_renderer.hpp" "render/sprite_renderer.cpp"
     "render/primitive_renderer.hpp" "render/primitive_renderer.cpp"
     "render/ui_fb_renderer.hpp" "render/ui_fb_renderer.cpp")
+    
+target_sources(spock_engine PRIVATE
+    "core/data.hpp" "core/internal.cpp"
+    "core/internal.hpp" "core/internal.cpp"
+    "core/events.hpp" "core/events.cpp"
+    "core/window.hpp" "core/window.cpp"
+    "core/ui.hpp" "core/ui.cpp"    
+    "core/text.hpp" "core/text.cpp"
+    "core/sprite_atlas.hpp" "core/sprite_atlas.cpp"
+    "core/sprite_array.hpp" "core/sprite_array.cpp"
+    "core/tiles.hpp" "core/tiles.cpp")
 
 target_sources(spock_engine PRIVATE
     "physics/collision_listener.hpp" "physics/collision_listener.cpp")

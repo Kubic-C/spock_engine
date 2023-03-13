@@ -19,7 +19,7 @@ namespace spk {
         base_framebuffer_renderer_t*                 fb_renderer;
     };
 
-    class render_system_t : public system_t {
+    class render_system_t {
     public:
         static const size_t max_framebuffers   = 8;
         static const size_t max_attachments    = 8;

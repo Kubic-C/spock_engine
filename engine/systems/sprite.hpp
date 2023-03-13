@@ -8,5 +8,5 @@
 #include "systems/character_controller.hpp"
 
 namespace spk {
-    void sprite_cs_init(system_ctx_allocater_t& allocater, flecs::world& world);
+    void sprite_cs_init(flecs::world& world);
 }

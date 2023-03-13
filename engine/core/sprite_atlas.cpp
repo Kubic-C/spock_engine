@@ -58,23 +58,23 @@ namespace spk {
         spk_trace();
         
         for(uint32_t i = 0; i < SPK_MAX_ATLAS; i++) {
-            if(in_use[i]) {
+            if(in_use_bits[i]) {
                 sprite_atlases[i].free();
             }
         }
     }
 
-    bool sprite_atlas_manager_t::sprite_atlas_is_in_use(uint32_t index) {
-        return in_use[index];        
+    bool sprite_atlas_manager_t::is_in_use(uint32_t index) {
+        return in_use_bits[index];        
     }
 
-    void sprite_atlas_manager_t::sprite_atlas_in_use(uint32_t index) {
-        if(!in_use[index])
-            in_use.set(index, true);
+    void sprite_atlas_manager_t::in_use(uint32_t index) {
+        if(!in_use_bits[index])
+            in_use_bits.set(index, true);
     }
 
     sprite_atlas_t* sprite_atlas_manager_t::get_atlas(uint32_t index) {
-        spk_assert(sprite_atlas_is_in_use(index));
+        spk_assert(is_in_use(index));
 
         return &sprite_atlases[index];
     }

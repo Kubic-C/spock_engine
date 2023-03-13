@@ -2,8 +2,7 @@
 
 #include "components.hpp"
 #include "utility/array2D.hpp"
-#include "data/tiles.hpp"
-#include "debug.hpp"
+#include "core/tiles.hpp"
 
 namespace spk {
     struct tile_is_coll_info_t {

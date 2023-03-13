@@ -10,87 +10,48 @@
 #include "systems/sprite.hpp"
 #include "systems/camera.hpp"
 
+#include "core/data.hpp"
+
 #include "utility/entity.hpp"
 
 #include "pipeline.hpp"
 
-#define _SPK_NO_DEF_STATE
-#include "state.hpp"
-#undef _SPK_NO_DEF_STATE
-
 namespace spk {
-    typedef std::function<void(engine_t& engine)> user_tick_t;
-    typedef std::function<void(engine_t& engine)> user_update_t;
-    
-    struct user_state_t {
-        void* user_data      = nullptr;
-        user_tick_t tick     = nullptr;
-        user_update_t update = nullptr;
-    };
+    /**
+     * @brief initializes the engine. Creates a default window, camera, 
+     * and rendering system. Should only be called once in the entire
+     * lifetime of the application.
+     * 
+     */
+    void init();
 
-    class engine_t {
-    public: 
-        void init();
-        int run();
-        void free();
+    /**
+     * @brief runs the main loop, this is where the majority of the application's
+     * runtime will be in. Essentially a while loop that ends when the current window's
+     * exit button is hit or if exit() is called
+     * 
+     * @return an exit code, if non-zero some anomaly or error has occurred.
+     */
+    int  run();
 
-        // outputs the version (if able to) of every library
-        // that spock is dependent on 
-        void print_deps_versions();
+    /**
+     * @brief free's all of the engines resources
+     * 
+     */
+    void free();
 
-        // state
-        const state_t& get_state();
+    /**
+     * @brief prints the version numbers of most of the external libraries 
+     * spock uses
+     * 
+     */
+    void print_deps_versions();
 
-        // stats
-        const stats_t get_stats();
+    // all self explanatory
 
-        // sets the current size of the window 
-        void set_current_window_size(int w, int h);
-
-        // gets the current size of the window in ivec2 format 
-        glm::ivec2 get_current_window_size();
-
-        // gets the current size of the window by using output parameters
-        void get_current_window_size(int& w, int& h);
-
-        // sets the title of the window
-        void set_current_window_title(const std::string& title);
-
-        // gets the box2d physics world currently in use 
-        b2World* get_current_physics_world();
-        
-        // sets the target FPS for rendering
-        void set_target_fps(double target_fps);
-
-        // sets the target TPS in flecs
-        void set_target_tps(double target_tps); 
-
-        // sets the vertical sync (V-sync) type
-        void set_vsync_opt(vsync_setting_e option);
-        
-        // sets pixels per meter
-        void set_ppm(float ppm);
-
-        // gets ppm
-        float get_ppm();
-
-        // signal the engine to end
-        void exit(int code);
-
-        // get the state of a key
-        bool is_pressed(SDL_Scancode sc);
-
-        // camera
-        flecs::ref<comp_camera_t> get_current_camera();
-        void set_current_camera(flecs::entity e);
-
-        // debug rendering of box2d
-        void set_box2d_draw_flags(uint32_t flags);
-        bool get_box2d_draw_flags();
-
-        flecs::world* world;
-        system_ctx_allocater_t ctx_alloc;
-        resource_manager_t rsrc_mng;
-        user_state_t user_state;
-    };
+    settings_t&   get_settings();
+    statistics_t& get_statistics();
+    scene_t&      get_scene();
+    resources_t&  get_resources();
+    allocators_t& get_allocators();
 }

@@ -1,5 +1,5 @@
 #include "sprite_renderer.hpp"
-#include "state.hpp"
+#include "core/internal.hpp"
 #include "spock.hpp"
 
 const char* vs_sprite = R"###(
@@ -85,9 +85,8 @@ namespace spk {
     }
 
     void sprite_renderer_t::draw() {        
-        auto                rs       = (render_system_t*)state.get_current_renderer();
-        auto                camera   = state.get_current_camera().get_ref<comp_camera_t>();
-        resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
+        auto rs       = internal->scene.renderer;
+        auto camera   = internal->scene.camera.get_ref<comp_camera_t>();
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -98,11 +97,11 @@ namespace spk {
             atlasd_ctx.vertex_array.bind_layout(atlasd_ctx.vertex_layout);
 
             for(uint32_t i = 0; i < SPK_MAX_ATLAS; i++) {
-                if(!rsrc_mng->sprite_atlas_is_in_use(i))
+                if(!internal->resources.sprite_atlases.is_in_use(i))
                     continue;
 
                 auto&           atlas_mesh = atlasd_sprites.meshes[i];
-                sprite_atlas_t* atlas = rsrc_mng->get_atlas(i);
+                sprite_atlas_t* atlas      = internal->resources.sprite_atlases.get_atlas(i);
 
                 if(0 < atlas_mesh.sprites) {
                     atlasd_sprites.subdata(i);
@@ -124,11 +123,11 @@ namespace spk {
             arrayd_ctx.vertex_array.bind_layout(arrayd_ctx.vertex_layout);
 
             for(uint32_t i = 0; i < SPK_MAX_SPRITE_ARRAYS; i++) {
-                if(!rsrc_mng->sprite_array_is_in_use(i))
+                if(!internal->resources.sprite_arrays.is_in_use(i))
                     continue;
 
                 auto&           array_mesh = arrayd_sprites.meshes[i];
-                sprite_array_t* array      = rsrc_mng->sprite_array_get(i);
+                sprite_array_t* array      = internal->resources.sprite_arrays.get(i);
 
                 if(0 < array_mesh.sprites) {
                     arrayd_sprites.subdata(i);
@@ -166,9 +165,7 @@ namespace spk {
         
         float                    half_width  = (float)sprites_x / 2.0f;
         float                    half_height = (float)sprites_y / 2.0f;
-        resource_manager_t*      rsrc_mng   = &state.engine->rsrc_mng;
         const uint32_t           array_id   = sprite.array_id;
-        sprite_array_t*          atlas      = rsrc_mng->sprite_array_get(array_id);
         uint32_t                 index      = meshes[array_id].sprites * indexes_per_sprite;
 
         meshes[array_id].sprites += 1;
@@ -201,9 +198,7 @@ namespace spk {
         if(sprite.array_id == UINT32_MAX)
             return;
         
-        resource_manager_t*      rsrc_mng   = &state.engine->rsrc_mng;
         const uint32_t           array_id   = sprite.array_id;
-        sprite_array_t*          atlas      = rsrc_mng->sprite_array_get(array_id);
         uint32_t                 index      = meshes[array_id].sprites * indexes_per_sprite;
 
         meshes[array_id].sprites += 1;
@@ -225,9 +220,8 @@ namespace spk {
         if(sprite.atlas_id == UINT32_MAX)
             return;
         
-        resource_manager_t*      rsrc_mng   = &state.engine->rsrc_mng;
         const uint32_t           atlas_id   = sprite.atlas_id;
-        sprite_atlas_t*          atlas      = rsrc_mng->get_atlas(atlas_id);
+        sprite_atlas_t*          atlas      = internal->resources.sprite_atlases.get_atlas(atlas_id);
         uint32_t                 index      = meshes[atlas_id].sprites * indexes_per_sprite;
         std::array<glm::vec2, 4> tex_coords = atlas->gen_tex_coords(sprite.tax, sprite.tay);
 

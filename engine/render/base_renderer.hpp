@@ -1,9 +1,11 @@
 #pragma once
 
 #include "meshes.hpp"
-#include "systems.hpp"
+#include "utility/stack_allocator.hpp"
 
 namespace spk {
+    typedef uint32_t id_t;
+
     class render_system_t;
 
     struct framebuffer_t {
@@ -22,7 +24,7 @@ namespace spk {
         program_t                     program;
     };
 
-    class base_renderer_t : public system_t {
+    class base_renderer_t {
     public:
         virtual void draw() {}
 
@@ -30,7 +32,7 @@ namespace spk {
     protected:
     };
 
-    class base_framebuffer_renderer_t : public system_t {
+    class base_framebuffer_renderer_t {
     public:
         virtual void draw(render_system_t* rs, id_t current) {}
     };

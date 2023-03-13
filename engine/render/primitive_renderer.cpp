@@ -1,6 +1,7 @@
 #include "primitive_renderer.hpp"
-#include "state.hpp"
-#include "spock.hpp"
+#include "core/internal.hpp"
+#include "components/camera.hpp"
+#include "render_system.hpp"
 #include <glm/gtx/vector_angle.hpp>
 #include <glm/gtx/rotate_vector.hpp> 
 
@@ -50,8 +51,8 @@ namespace spk {
     }
 
     void primitive_renderer_t::draw_mesh(const b2Color& color, uint32_t vertices) {
-        render_system_t*     renderer = state.get_current_renderer();
-        const comp_camera_t* camera   = state.get_current_camera().get<comp_camera_t>();
+        render_system_t*     renderer = internal->scene.renderer;
+        const comp_camera_t* camera   = internal->scene.camera.get<comp_camera_t>();
 
         prim_ctx.vertex_array.bind();
         prim_ctx.program.use();
@@ -67,8 +68,8 @@ namespace spk {
     }
     
     void primitive_renderer_t::draw_mesh_array(const b2Color& color, uint32_t vertices) {
-        render_system_t*     renderer = state.get_current_renderer();
-        const comp_camera_t* camera   = state.get_current_camera().get<comp_camera_t>();
+        render_system_t*     renderer = internal->scene.renderer;
+        const comp_camera_t* camera   = internal->scene.camera.get<comp_camera_t>();
 
         prim_ctx.vertex_array.bind();
         prim_ctx.program.use();
@@ -82,9 +83,9 @@ namespace spk {
     }
 
     void primitive_renderer_t::draw() {
-        b2World*             world    = state.get_current_physics_world();
+        b2World*             world    = internal->scene.physics_world;
         
-        SetFlags(state.get_box2d_draw_flags());
+        SetFlags(internal->settings.box2d_draw_flags);
         world->SetDebugDraw(dynamic_cast<b2Draw*>(this));
         world->DebugDraw();
     }

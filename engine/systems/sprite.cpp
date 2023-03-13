@@ -1,6 +1,6 @@
 #include "sprite.hpp"
-#include "state.hpp"
-#include "spock.hpp"
+#include "core/internal.hpp"
+#include "components/rigid_body.hpp"
 
 namespace spk {
     void sprite_atlas_mesh_pre_mesh(flecs::iter& iter) {
@@ -21,7 +21,6 @@ namespace spk {
 
     void sprite_atlas_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_sprite_atlasd_t* sprites) {
         auto sprite_mesh = get_ctx<sprite_atlasd_batch_mesh_t>(iter);
-        resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
 
         for(auto i : iter) {
             comp_rigid_body_t&  body = bodies[i];
@@ -34,7 +33,6 @@ namespace spk {
     
     void sprite_array_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_sprite_arrayd_t* sprites) {
         auto sprite_mesh = get_ctx<sprite_arrayd_batch_mesh_t>(iter);
-        resource_manager_t* rsrc_mng = &state.engine->rsrc_mng;
 
         for(auto i : iter) {
             comp_rigid_body_t&  body = bodies[i];
@@ -44,12 +42,12 @@ namespace spk {
         }
     }
     
-    void sprite_cs_init(system_ctx_allocater_t& allocater, flecs::world& world) {
+    void sprite_cs_init(flecs::world& world) {
         sprite_comp_init(world);
 
-        auto sr = allocater.allocate_ctx<sprite_renderer_t>();
+        auto sr = internal->allocators.stack.push<sprite_renderer_t>();
 
-        state.get_current_renderer()->rp_add_renderer(0, (base_renderer_t*)sr);
+        internal->scene.renderer->rp_add_renderer(0, (base_renderer_t*)sr);
 
         // pre mesh
         world.system().kind(on_pre_mesh)

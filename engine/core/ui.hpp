@@ -1,13 +1,13 @@
 #pragma once
 
-#include "components.hpp"
+#include "text.hpp"
 #include "utility/ui.hpp"
-#include "data/resource_manager.hpp"
+#include "utility/stack_allocator.hpp"
 
 namespace spk {
     struct engine_t;
     struct ui_button_t;
-    typedef std::function<void(engine_t&, ui_button_t&)> button_callback_t;
+    typedef std::function<void(ui_button_t&)> button_callback_t;
 
     struct ui_tag_current_canvas_t {};
 
@@ -116,23 +116,18 @@ namespace spk {
         const size_t type() override { return UI_ELEMENT_TYPE_BUTTON; }
     };
 
-    struct ui_comp_canvas_t : ui_element_t {
+    struct ui_canvas_t : ui_element_t {
         glm::mat4 vp;
 
-        font_t* font;
-        std::list<ui_text_t, memory_pool_t<ui_text_t>> texts;
+        font_t* font = nullptr;
+        std::list<ui_text_t, memory_pool_t<ui_text_t>>     texts;
         std::list<ui_button_t, memory_pool_t<ui_button_t>> btns;
 
-        ui_comp_canvas_t() {
-            font = null;
-        }
+        ui_canvas_t();
+        ~ui_canvas_t();
 
-        void init(flecs::entity entity);
-        void free(flecs::entity entity);
-
+        void make_current();
         void resize_callback(int width, int height);
         const size_t type() override { return UI_ELEMENT_TYPE_CANVAS; }
     };
-
-    void ui_canvas_comp_init(flecs::world& world);
 }

@@ -1,8 +1,9 @@
 #include "particles.hpp"
 #include "utility/ui.hpp"
+#include "render/sprite_renderer.hpp"
+#include "core/internal.hpp"
+#include "components/rigid_body.hpp"
 #include <glm/gtx/vector_angle.hpp>
-#include "state.hpp"
-#include "spock.hpp"
 
 namespace spk {
     float random_positive_float(float min, float max) {
@@ -121,7 +122,7 @@ namespace spk {
     }
 
     void add_particles(sprite_arrayd_batch_mesh_t* ctx, b2Body* body, comp_particles_t& ps) {
-        tile_metadata_t& tmd = state.engine->rsrc_mng.get_tile_dictionary()[ps.particle.id];
+        tile_metadata_t& tmd = internal->resources.tile_dictionary[ps.particle.id];
        
         for(uint32_t j = 0; j < ps.particles.size(); j++) {
             particle_t& particle = ps.particles[j];
@@ -145,12 +146,12 @@ namespace spk {
 
     void particles_system_tick(flecs::iter& iter, comp_rigid_body_t* bodies, comp_particles_t* particles) {
         for(auto i : iter) {
-            process_particle_system(bodies[i], stats.delta_time, particles[i]);
+            process_particle_system(bodies[i], iter.delta_time(), particles[i]);
         }
     }
 
     void particles_system_update(flecs::iter& iter, comp_rigid_body_t* bodies, comp_particles_t* particles) {
-        auto ctx = get_ctx<sprite_batch_mesh_t<sprite_arrayd_vertex_t, comp_sprite_arrayd_t>>(iter);
+        auto ctx = get_ctx<sprite_arrayd_batch_mesh_t>(iter);
 
         for(auto i : iter) {
             add_particles(ctx, bodies[i], particles[i]);            

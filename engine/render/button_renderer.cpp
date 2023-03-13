@@ -1,5 +1,5 @@
 #include "button_renderer.hpp"
-#include "state.hpp"
+#include "core/internal.hpp"
 #include "render_system.hpp"
 
 const char* vs_button = R"###(
@@ -98,7 +98,7 @@ namespace spk {
         btn_ctx.vertex_array.bind_layout(btn_ctx.vertex_layout);
 
         btn_ctx.vertex_array.bind();
-        state.get_current_renderer()->quad_index_buffer.bind();
+        internal->scene.renderer->quad_index_buffer.bind();
         btn_ctx.program.use();
         btn_ctx.program.set_mat4("u_vp", mesh.vp);
 

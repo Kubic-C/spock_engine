@@ -1,4 +1,3 @@
-#include "state.hpp"
 #include "spock.hpp"
 #include "utility/image_loader.hpp"
 
@@ -16,35 +15,38 @@ MAIN {
     spk::log.log("running..");
     int code = 0;
 
-    spk::engine_t engine;
-
     SPK_DEBUG_ENABLE(spk::DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME);
 
-    engine.init();
-    engine.set_box2d_draw_flags(b2Draw::e_centerOfMassBit);
+    spk::init();
 
-    b2World* world = engine.get_current_physics_world();
+    spk::settings_t&  settings   = spk::get_settings();
+    spk::resources_t& resources = spk::get_resources();
+    spk::scene_t&     scene     = spk::get_scene();
+
+    settings.box2d_draw_flags = b2Draw::e_centerOfMassBit;
+
+    b2World* world = scene.physics_world;
 
     {
-        engine.rsrc_mng.font_load_ascii("./Anonymous.ttf");
-        engine.rsrc_mng.sprite_atlas_init(0, 16, 16);
-        if(!engine.rsrc_mng.sprite_atlas_load_from_path(0, "./test_atlas.png")) {
+        resources.fonts.load_ascii("./Anonymous.ttf");
+        resources.sprite_atlases.init(0, 16, 16);
+        if(!resources.sprite_atlases.load_from_path(0, "./test_atlas.png")) {
             spk::log.log("failed to load atlas");
             return -100;
         }
         
-        engine.rsrc_mng.sprite_array_init(0);
-        engine.rsrc_mng.sprite_array_start(0, 32, 32, 5);
-        engine.rsrc_mng.sprite_array_load(0, "./texture_array/image1.png", 0);
-        engine.rsrc_mng.sprite_array_load(0, "./texture_array/image2.png", 1);
-        engine.rsrc_mng.sprite_array_finish(0);
+        resources.sprite_arrays.init(0);
+        resources.sprite_arrays.start(0, 32, 32, 5);
+        resources.sprite_arrays.load(0, "./texture_array/image1.png", 0);
+        resources.sprite_arrays.load(0, "./texture_array/image2.png", 1);
+        resources.sprite_arrays.finish(0);
 
-        engine.rsrc_mng.sprite_array_init(1);
-        engine.rsrc_mng.sprite_array_start(1, 32, 32, 5);
-        engine.rsrc_mng.sprite_array_load(1, "./texture_array/image3.png", 0);
-        engine.rsrc_mng.sprite_array_finish(1);
+        resources.sprite_arrays.init(1);
+        resources.sprite_arrays.start(1, 32, 32, 5);
+        resources.sprite_arrays.load(1, "./texture_array/image3.png", 0);
+        resources.sprite_arrays.finish(1);
 
-        spk::tile_dictionary_t& td = engine.rsrc_mng.get_tile_dictionary();
+        spk::tile_dictionary_t& td = resources.tile_dictionary;
         
         td[1].sprite.z      = -5.0f;
         td[1].restitution = 1.1f;
@@ -61,7 +63,7 @@ MAIN {
     }
 
     for(size_t i = 0; i < 100; i++) {
-        engine.world->entity().set([&](spk::comp_rigid_body_t& rb) {
+        scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb) {
             float random = rand();
             random *= 0.01f;
 
@@ -80,7 +82,7 @@ MAIN {
         });
     }
     
-    flecs::entity wall = engine.world->entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_tilemap_t& tm){
+    flecs::entity wall = scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_tilemap_t& tm){
         rb->SetType(b2_staticBody);
 
         for(uint32_t x = 0; x < tm.tiles.get_width(); x++) {
@@ -99,7 +101,7 @@ MAIN {
         tm.add_fixtures(rb);
     });
 
-    flecs::entity character = engine.world->entity().set([&](
+    flecs::entity character = scene.ecs_world.entity().set([&](
             spk::comp_rigid_body_t& rb, 
             spk::comp_character_controller_t& cc, 
             spk::comp_contact_callback_t& callbacks,
@@ -146,17 +148,17 @@ MAIN {
         };
     });
 
-    engine.get_current_camera()->scale = 1.5f;
+    scene.camera.get_ref<spk::comp_camera_t>()->scale = 1.5f;
 
-    engine.user_state.update = [&](spk::engine_t& engine){
+    scene.user_data.update = [&](){
         character.set([&](spk::comp_rigid_body_t& rb){
-            engine.get_current_camera()->pos = rb->GetPosition();
+            scene.camera.get_ref<spk::comp_camera_t>()->pos = rb->GetPosition();
         });
     };  
 
-    code = engine.run();
+    code = spk::run();
 
-    engine.free();
+    spk::free();
 
     return code;
 }

@@ -44,49 +44,49 @@ namespace spk {
         spk_trace();
 
         for(uint32_t i = 0; i < SPK_MAX_SPRITE_ARRAYS; i++) {
-            if(in_use[i]) {
+            if(in_use_bits[i]) {
                 sprite_arrays[i].free();
             }
         }
     }
 
 
-    void sprite_array_manager_t::sprite_array_init(uint32_t index) {
-        spk_assert(!sprite_array_is_in_use(index));
+    void sprite_array_manager_t::init(uint32_t index) {
+        spk_assert(!is_in_use(index));
 
         sprite_arrays[index].init();
-        sprite_array_in_use(index);
+        in_use(index);
     }
 
-    bool sprite_array_manager_t::sprite_array_is_in_use(uint32_t index) {
-        return in_use[index];
+    bool sprite_array_manager_t::is_in_use(uint32_t index) {
+        return in_use_bits[index];
     }
 
-    void sprite_array_manager_t::sprite_array_in_use(uint32_t index) {
-        if(!in_use[index])
-            in_use.set(index, true);
+    void sprite_array_manager_t::in_use(uint32_t index) {
+        if(!in_use_bits[index])
+            in_use_bits.set(index, true);
     }
     
-    sprite_array_t* sprite_array_manager_t::sprite_array_get(uint32_t index) {
-        spk_assert(sprite_array_is_in_use(index));
+    sprite_array_t* sprite_array_manager_t::get(uint32_t index) {
+        spk_assert(is_in_use(index));
 
         return &sprite_arrays[index];
     }
 
-    void sprite_array_manager_t::sprite_array_start(uint32_t index, uint32_t width, uint32_t height, uint32_t sprites) {
-        spk_assert(sprite_array_is_in_use(index));
+    void sprite_array_manager_t::start(uint32_t index, uint32_t width, uint32_t height, uint32_t sprites) {
+        spk_assert(is_in_use(index));
 
         sprite_arrays[index].storage(width, height, sprites);
     }
 
-    bool sprite_array_manager_t::sprite_array_load(uint32_t index, const char* path, uint32_t sprite_index) {
-        spk_assert(sprite_array_is_in_use(index));
+    bool sprite_array_manager_t::load(uint32_t index, const char* path, uint32_t sprite_index) {
+        spk_assert(is_in_use(index));
         
         return sprite_arrays[index].image(path, sprite_index);
     }
 
-    void sprite_array_manager_t::sprite_array_finish(uint32_t index) {
-        spk_assert(sprite_array_is_in_use(index));      
+    void sprite_array_manager_t::finish(uint32_t index) {
+        spk_assert(is_in_use(index));      
 
         sprite_arrays[index].tex_params();
     }

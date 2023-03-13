@@ -1,22 +1,21 @@
 #include "ui.hpp"
-#include "state.hpp"
 #include "utility/ui.hpp"
 #include "window.hpp"
-#include "spock.hpp"
+#include "core/internal.hpp"
 
 namespace spk {
-    void ui_render_system_update(flecs::iter& iter, ui_comp_canvas_t* canvas_) {
+    void ui_render_system_update(flecs::iter& iter) {
         auto ctx = get_ctx<ui_meshes_t>(iter);
-        ui_comp_canvas_t& canvas = *canvas_;
-        font_t* font = canvas.font;
-        float xmax = canvas.abs_size.x;
-        float ymax = canvas.abs_size.y;
+        ui_canvas_t& canvas = *internal->scene.canvas;
+        font_t*      font   = canvas.font;
+        float        xmax   = canvas.abs_size.x;
+        float        ymax   = canvas.abs_size.y;
 
         if(!(canvas.flags & UI_ELEMENT_FLAGS_ENABLED) || !canvas.in_use.any())
             return;
 
         if(!font) { // if font is null, the first font will be the default
-            font = state.engine->rsrc_mng.get_first_font();
+            font = internal->resources.fonts.get_first_font();
             spk_assert(font && "when using canvas you must load a font!");
         }
 
@@ -79,15 +78,15 @@ namespace spk {
     }
 
     void ui_render_system_resize(flecs::iter& iter) {
-        auto canvas = state.get_current_canvas().get_ref<ui_comp_canvas_t>();
+        auto                 canvas = internal->scene.canvas;
         event_window_size_t* resize = iter.param<event_window_size_t>();
 
         canvas->resize_callback(resize->width, resize->height);
     }
 
     void ui_system_mouse_callback(flecs::iter& iter) {
-        auto window = state.get_current_window().get_ref<comp_window_t>();
-        auto canvas = state.get_current_canvas().get_ref<ui_comp_canvas_t>();
+        auto window = internal->scene.window;
+        auto canvas = internal->scene.canvas;
         const event_window_mouse_click_t* mouse_info = iter.param<event_window_mouse_click_t>();
         glm::ivec2 size = window->get_size();
         float x, y;
@@ -115,7 +114,7 @@ namespace spk {
                     btn.time_when_clicked = spk::time.get_time();
 
                     if(btn.callback) {
-                        btn.callback(*state.engine, btn);
+                        btn.callback(btn);
                     }
 
                     break;
@@ -124,17 +123,14 @@ namespace spk {
         }
     }
 
-    void ui_cs_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
+    void ui_cs_init(flecs::world& world) {
         spk_trace();
-        
-        ui_canvas_comp_init(world);
 
-        auto rs            = state.get_current_renderer();
-        auto ui_ctx        = ctx_alloc.allocate_ctx<ui_system_ctx_t>();
-        auto ui_meshes     = ctx_alloc.allocate_ctx<ui_meshes_t>();
-        auto font_renderer = ctx_alloc.allocate_ctx<font_renderer_t>();
-        auto btn_renderer  = ctx_alloc.allocate_ctx<button_renderer_t>();
-        auto fb_renderer   = ctx_alloc.allocate_ctx<ui_framebuffer_renderer_t>();
+        auto rs            = internal->scene.renderer;
+        auto ui_meshes     = internal->allocators.stack.push<ui_meshes_t>();
+        auto font_renderer = internal->allocators.stack.push<font_renderer_t>();
+        auto btn_renderer  = internal->allocators.stack.push<button_renderer_t>();
+        auto fb_renderer   = internal->allocators.stack.push<ui_framebuffer_renderer_t>();
 
         // ORDER MATTERS HERE, buttons will render first, then the font renderer
         id_t ui_fb = rs->fb_init();    
@@ -154,7 +150,7 @@ namespace spk {
         ui_meshes->font_mesh = &font_renderer->mesh;
         ui_meshes->btn_mesh  = &btn_renderer->mesh;
 
-        world.system<ui_comp_canvas_t>()
+        world.system()
             .term<ui_tag_current_canvas_t>()
             .kind(on_mesh).ctx(ui_meshes).iter(ui_render_system_update).add<tag_render_system_t>();
         

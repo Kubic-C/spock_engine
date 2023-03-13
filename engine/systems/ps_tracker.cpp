@@ -1,46 +1,49 @@
 #include "ps_tracker.hpp"
-#include "state.hpp"
+#include "core/internal.hpp"
 
 namespace spk {
-    void ps_tracker_system_tick(flecs::iter& iter) {
-        auto ctx = get_ctx<ps_tracker_ctx_t>(iter);
+    /* this source-file only variables */
+    
+    // this changes every frame to count ticks, frames, delta_time etc..
+    // unlike whats in internal->statistics which is only updated per second
+    struct {
+        uint32_t fps = 0;
+        uint32_t tps = 0;
+        float average_delta_time = 0.0f;
+        float last_tick = 0.0f;
+    } stats_counter;
 
-        ctx->tps++;
-        ctx->average_delta_time += time.get_time() - ctx->last_tick;
-        ctx->last_tick = time.get_time();
+    void ps_tracker_system_tick(flecs::iter& iter) {
+        stats_counter.tps++;
+        stats_counter.average_delta_time += time.get_time() - stats_counter.last_tick;
+        stats_counter.last_tick = time.get_time();
     }
 
     void ps_tracker_system_update(flecs::iter& iter) {
-        auto ctx = get_ctx<ps_tracker_ctx_t>(iter);
-        
-        ctx->fps++;
+        stats_counter.fps++;
     }
 
     void ps_tracker_system_update_sec(flecs::iter& iter) {
-        auto ctx = get_ctx<ps_tracker_ctx_t>(iter);
+        stats_counter.average_delta_time /=stats_counter.tps;
 
-        ctx->average_delta_time /= ctx->tps;
-
-        if(stats.print_ps_stats) {
-            log.log(spk::LOG_TYPE_INFO, "FPS: %u | TPS: %u | DELTA-TIME: %f", ctx->fps, ctx->tps, ctx->average_delta_time);
+        if(internal->settings.log_statistics) {
+            log.log(spk::LOG_TYPE_INFO, "FPS: %u | TPS: %u | DELTA-TIME: %f", stats_counter.fps, stats_counter.tps, stats_counter.average_delta_time);
         }
 
-        stats.fps = ctx->fps;
-        stats.tps = ctx->tps;
-        stats.average_delta_time = ctx->average_delta_time;
+        internal->statistics.fps = stats_counter.fps;
+        internal->statistics.tps = stats_counter.tps;
+        internal->statistics.average_delta_time = stats_counter.average_delta_time;
 
-        ctx->fps = 0;
-        ctx->tps = 0;
-        ctx->average_delta_time = 0;
+        stats_counter.fps = 0;
+        stats_counter.tps = 0;
+        stats_counter.average_delta_time = 0;
     }
 
-    void ps_tracker_system_init(system_ctx_allocater_t& ctx_alloc, flecs::world& world) {
+    void ps_tracker_system_init(flecs::world& world) {
         spk_trace();
 
-        auto ctx = ctx_alloc.allocate_ctx<ps_tracker_ctx_t>();
-
-        world.system().ctx(ctx).iter(ps_tracker_system_tick);
-        world.system().ctx(ctx).kind(on_render).iter(ps_tracker_system_update).add<tag_render_system_t>();
-        world.system().ctx(ctx).interval(1.0).iter(ps_tracker_system_update_sec);
+        world.system().iter(ps_tracker_system_tick);
+        world.system().kind(on_render).iter(ps_tracker_system_update).add<tag_render_system_t>();
+        world.system().interval(1.0).iter(ps_tracker_system_update_sec);
     }
 }

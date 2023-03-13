@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base_renderer.hpp"
-#include "components/ui.hpp"
+#include "core/ui.hpp"
 
 #define SPK_MAX_LETTERS 0xfff
 

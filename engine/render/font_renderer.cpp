@@ -1,5 +1,5 @@
 #include "font_renderer.hpp"
-#include "state.hpp"
+#include "core/internal.hpp"
 #include "render_system.hpp"
 
 const char* vs_font = R"###(
@@ -138,7 +138,7 @@ namespace spk {
         font_ctx.vertex_layout.set_buffer(2, mesh.vertex_buffer);
         font_ctx.vertex_array.bind_layout(font_ctx.vertex_layout);
 
-        state.get_current_renderer()->quad_index_buffer.bind();
+        internal->scene.renderer->quad_index_buffer.bind();
         font_ctx.vertex_array.bind();
         font_ctx.program.use();
         font_ctx.program.set_mat4("u_vp", mesh.vp);

@@ -67,6 +67,11 @@ _In_ int nShowCmd \
 
 namespace spk {
     template<typename T>
+    T* get_ctx(flecs::iter& iter) {
+        return static_cast<T*>(iter.ctx());
+    }
+
+    template<typename T>
     T&   ctor(T* obj) {
         new(obj)T();
 

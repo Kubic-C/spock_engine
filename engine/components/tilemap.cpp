@@ -1,6 +1,5 @@
 #include "tilemap.hpp"
-#include "state.hpp"
-#include "spock.hpp"
+#include "core/internal.hpp"
 
 namespace spk {
     void comp_tilemap_t::init(flecs::entity entity) {
@@ -221,7 +220,7 @@ namespace spk {
     }
 
     void comp_tilemap_t::add_fixtures(b2Body* body) {
-        auto& dictionary = state.engine->rsrc_mng.get_tile_dictionary();
+        auto& dictionary = internal->resources.tile_dictionary;
 
         update_tilemap();
         compute_colliders();

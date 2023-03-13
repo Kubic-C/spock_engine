@@ -1,6 +1,5 @@
 #include "particles.hpp"
-#include "state.hpp"
-#include "spock.hpp"
+#include "core/internal.hpp"
 
 namespace spk {
     void comp_particles_t::init(flecs::entity entity) {
