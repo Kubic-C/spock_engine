@@ -7,6 +7,7 @@ spock is a game engine being developed for a game called synther, it's specifica
 ***This engine is still undergoing many changes, and it will take while to develop a stable and non changing API. ENUMs, class names, struct names, the internal structure of the engine as a whole all could change so please keep that in mind when using***
 
 Current feature list:
+- basic sound, can play mp3 and wav files
 - simple UI system, which currently includes button and 
 - simple physics world (in heavy development)
 - basic window handling and manipulation
