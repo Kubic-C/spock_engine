@@ -48,6 +48,8 @@ namespace spk {
         font_t* load_ascii(const char* file_path, int f_width = 0, int f_height = 32);
         font_t* get_first_font();
 
+        FT_Library get_freetype_library() const { return ft_lib; }
+
     private:
         std::list<font_t, memory_pool_t<font_t>> fonts;
 

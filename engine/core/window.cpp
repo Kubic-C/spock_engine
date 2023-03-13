@@ -53,7 +53,8 @@ namespace spk {
     void window_t::force_resize_event() {
         SDL_Event event;
 
-        event.type = SDL_WINDOWEVENT_SIZE_CHANGED;
+        event.type = SDL_WINDOWEVENT;
+        event.window.event = SDL_WINDOWEVENT_SIZE_CHANGED;
         event.window.data1 = 0;
         event.window.data2 = 0;
         event.window.timestamp = 0;

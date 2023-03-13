@@ -18,8 +18,8 @@
 
 namespace spk {
     /**
-     * @brief initializes the engine. Creates a default window, camera, 
-     * and rendering system. Should only be called once in the entire
+     * @brief initializes the engine. Creates a default window, camera, rendering system,
+     * opens the default audio channel, etc. . Should only be called once in the entire
      * lifetime of the application.
      * 
      */

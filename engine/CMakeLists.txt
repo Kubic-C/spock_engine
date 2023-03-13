@@ -6,7 +6,7 @@ target_compile_definitions(flecs_static PUBLIC ecs_ftime_t=double)
 glad_add_library(glad_gl4_4 STATIC API gl:core=4.4)
 
 target_link_libraries(spock_engine PUBLIC 
-    SDL3 glad_gl4_4 flecs_static glm freetype ${SPK_DEBUG_LIBS})
+    SDL2-static SDL2_mixer glad_gl4_4 flecs_static glm freetype ${SPK_DEBUG_LIBS})
 
 target_include_directories(spock_engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/")
 
@@ -69,6 +69,7 @@ target_sources(spock_engine PRIVATE
     "render/ui_fb_renderer.hpp" "render/ui_fb_renderer.cpp")
     
 target_sources(spock_engine PRIVATE
+    "core/sound.hpp" "core/sound.cpp"
     "core/data.hpp" "core/internal.cpp"
     "core/internal.hpp" "core/internal.cpp"
     "core/events.hpp" "core/events.cpp"

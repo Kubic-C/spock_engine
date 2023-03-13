@@ -1,4 +1,5 @@
-|SPOCK: 0.000355> [32m INFO [0m [1m total bytes in all blocks: 432 ? 432 [0m
-|SPOCK: 0.000660> [32m INFO [0m [1m total bytes in all blocks: 432 ? 432 [0m
-|SPOCK: 0.000848> [32m INFO [0m [1m total bytes in all blocks: 432 ? 432 [0m
-|SPOCK: 0.001024> [32m INFO [0m [1m total bytes in all blocks: 432 ? 432 [0m
+|SPOCK: 0.001913> [32m INFO [0m running..
+|SPOCK: 0.002108> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
+|SPOCK: 0.745775> [32m INFO [0m OGL Version 4.3.14761 Core Profile/Debug Context 21.30.02 30.0.13002.23
+|SPOCK: 0.745930> [32m INFO [0m SDL Version 2.26.4
+|SPOCK: 0.746133> [32m INFO [0m failed to load atlas
