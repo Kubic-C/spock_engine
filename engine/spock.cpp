@@ -2,6 +2,59 @@
 #include "core/internal.hpp"
 
 namespace spk {
+    void init_SDL2() {
+        const int audio_flags = MIX_INIT_MP3;
+
+        if(SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+            log.log(LOG_TYPE_ERROR, "could not load SDL2 video. %s", SDL_GetError());
+        }
+
+        // rendering
+
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+        SPK_DEBUG_EXPR({
+            int code;
+            SDL_GL_GetAttribute(SDL_GL_CONTEXT_FLAGS, &code);
+            code |= SDL_GL_CONTEXT_DEBUG_FLAG;
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, code);
+        })
+
+        // audio
+        if(Mix_Init(audio_flags) != audio_flags) {
+            log.log(LOG_TYPE_ERROR, "could not load SDL2_Mixer with flags %i", audio_flags);
+        }
+
+        open_audio();
+    }
+
+    void init_defualt_ecs_pipelines() {
+        flecs::world& ecs_world = internal->scene.ecs_world;
+
+        init_phases(ecs_world);
+
+        flecs::entity render_pipeline = ecs_world.pipeline()
+            .with(flecs::System)
+                .with(flecs::Phase).cascade(flecs::DependsOn)
+                .without(flecs::Disabled).up(flecs::DependsOn)
+                .without(flecs::Disabled).up(flecs::ChildOf)
+            .with<tag_render_system_t>().build();
+
+        internal->scene.render_pipeline = render_pipeline;
+
+        flecs::entity game_pipeline = ecs_world.pipeline()
+            .with(flecs::System)
+                .with(flecs::Phase).cascade(flecs::DependsOn)
+                .without(flecs::Disabled).up(flecs::DependsOn)
+                .without(flecs::Disabled).up(flecs::ChildOf) 
+            .without<tag_render_system_t>()
+            .without<tag_renderer_t>().build();
+
+        internal->scene.game_pipeline = game_pipeline;
+    }
+
     void init() {
         spk_trace();
         SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "[emt][red] ENGINE INIT [reset][emt]");
@@ -10,44 +63,8 @@ namespace spk {
 
         flecs::world& ecs_world = internal->scene.ecs_world;
 
-        { // SDL
-            if(SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO) < 0) {
-                log.log(LOG_TYPE_ERROR, "could not load SDL2 video. %s", SDL_GetError());
-            }
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-            SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-
-            SPK_DEBUG_EXPR({
-                int code;
-                SDL_GL_GetAttribute(SDL_GL_CONTEXT_FLAGS, &code);
-                code |= SDL_GL_CONTEXT_DEBUG_FLAG;
-                SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, code);
-            })
-        }
-
-        { // pipeline
-            init_phases(ecs_world);
-
-            flecs::entity render_pipeline = ecs_world.pipeline()
-                .with(flecs::System)
-                    .with(flecs::Phase).cascade(flecs::DependsOn)
-                    .without(flecs::Disabled).up(flecs::DependsOn)
-                    .without(flecs::Disabled).up(flecs::ChildOf)
-                .with<tag_render_system_t>().build();
-
-            internal->scene.render_pipeline = render_pipeline;
-
-            flecs::entity game_pipeline = ecs_world.pipeline()
-                .with(flecs::System)
-                    .with(flecs::Phase).cascade(flecs::DependsOn)
-                    .without(flecs::Disabled).up(flecs::DependsOn)
-                    .without(flecs::Disabled).up(flecs::ChildOf) 
-                .without<tag_render_system_t>()
-                .without<tag_renderer_t>().build();
-
-            internal->scene.game_pipeline = game_pipeline;
-        }
+        init_SDL2();
+        init_defualt_ecs_pipelines();
 
         { // engine setup and state setup            
             // default window
@@ -145,6 +162,7 @@ namespace spk {
 
         delete internal;
 
+        close_audio();
         SDL_Quit();
     }
 

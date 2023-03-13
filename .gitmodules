@@ -16,3 +16,6 @@
 [submodule "engine/spox2d"]
 	path = engine/spox2d
 	url = https://github.com/Kubic-C/spox2d
+[submodule "dep/SDL_mixer"]
+	path = dep/SDL_mixer
+	url = https://github.com/libsdl-org/SDL_mixer

@@ -5,7 +5,8 @@
 // dependencies 
 #include <box2d/box2d.h>
 #include <flecs.h>
-#include <SDL3/SDL.h>
+#include <SDL.h>
+#include <SDL_mixer.h>
 #include <glm/glm.hpp>
 #include <glad/gl.h>
 #include <ft2build.h>
