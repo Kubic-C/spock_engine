@@ -167,14 +167,20 @@ namespace spk {
     }
 
     void print_deps_versions() {
-        SDL_version sdl_ver;
+        int ft_major, ft_minor, ft_patch;
+        SDL_version sdl_version;
+        SDL_version mixer_version;
         const unsigned char* ogl_ver;
 
-        SDL_GetVersion(&sdl_ver);
+        FT_Library_Version(internal->resources.fonts.get_freetype_library(), &ft_major, &ft_minor, &ft_patch);
+        SDL_GetVersion(&sdl_version);
+        MIX_VERSION(&mixer_version);
         ogl_ver = glGetString(GL_VERSION);
 
-        log.log(spk::LOG_TYPE_INFO, "OGL Version %s", ogl_ver); 
-        log.log(spk::LOG_TYPE_INFO, "SDL Version %u.%u.%u", sdl_ver.major, sdl_ver.minor, sdl_ver.patch);
+        log.log("FreeType Version: %i.%i.%i", ft_major, ft_minor, ft_patch);
+        log.log("OGL Version: %s", ogl_ver); 
+        log.log("SDL Version: %u.%u.%u", sdl_version.major, sdl_version.minor, sdl_version.patch);
+        log.log("SDL_mixer Version: %u.%u.%u", mixer_version.major, mixer_version.minor, mixer_version.patch);
     }
 
     settings_t& get_settings() {

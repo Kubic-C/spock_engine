@@ -28,8 +28,8 @@ MAIN {
     b2World* world = scene.physics_world;
 
     {
-        uint32_t id = resources.sounds.load_music("smells_blood.mp3");
-        //spk::play_music(id, 1);
+        uint32_t id = resources.sounds.load_chunk("smells_blood.mp3");
+        spk::play_chunk(id, 1);
 
         resources.fonts.load_ascii("./Anonymous.ttf");
         resources.sprite_atlases.init(0, 16, 16);
