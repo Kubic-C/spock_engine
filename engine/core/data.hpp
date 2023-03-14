@@ -98,4 +98,16 @@ namespace spk {
         object_pool_t<ui_canvas_t> canvas_pool;
         stack_allocator_t          stack{4096 * 4};
     };
+
+    // gets the current ecs_world
+    flecs::world& ecs_world();
+
+    // gets the current physics world
+    b2World* physics_world();
+
+     // gets the current window
+    window_t& window();
+
+    // gets the current canvas
+    ui_canvas_t& canvas();
 }

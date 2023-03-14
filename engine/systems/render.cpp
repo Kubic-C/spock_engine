@@ -5,46 +5,39 @@
 namespace spk {
     void render_system_resize(flecs::iter& iter) {
         spk_trace();
-        
-        auto                 rs     = internal->scene.renderer;
+
         event_window_size_t* resize = iter.param<event_window_size_t>();
 
-        rs->resize(resize->width, resize->height); 
+        render_system().resize(resize->width, resize->height); 
     }
 
     void render_system_begin_render(flecs::iter& iter) {
         spk_trace();
         spk_assert(iter.count() == 0);
 
-        auto rs = internal->scene.renderer;
-
-        rs->begin_frame();
+        render_system().begin_frame();
     }
 
     void render_system_render(flecs::iter& iter) {
         spk_trace();
         spk_assert(iter.count() == 0);
 
-        auto rs = internal->scene.renderer;
-
-        rs->draw_frame();
+        render_system().draw_frame();
     }
 
     void render_system_end_render(flecs::iter& iter) {
         spk_trace();
         spk_assert(iter.count() == 0);
 
-        auto rs = internal->scene.renderer;
-
-        rs->end_frame(window().window);
+        render_system().end_frame(window().window);
     }
 
     void render_system_init(flecs::world& world) {
         spk_trace();
 
-        world.system().kind(on_render_begin).iter(render_system_begin_render).add<tag_render_system_t>();
-        world.system().kind(on_render).iter(render_system_render).add<tag_render_system_t>(); 
-        world.system().kind(on_render_end).iter(render_system_end_render).add<tag_render_system_t>();
+        world.system().kind(on_render_begin_id).iter(render_system_begin_render).add<tag_render_system_t>();
+        world.system().kind(on_render_id).iter(render_system_render).add<tag_render_system_t>(); 
+        world.system().kind(on_render_end_id).iter(render_system_end_render).add<tag_render_system_t>();
 
         world.observer().event<event_window_size_t>().term<tag_events_t>().iter(render_system_resize);
     }

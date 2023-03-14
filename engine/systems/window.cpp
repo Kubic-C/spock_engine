@@ -2,15 +2,15 @@
 #include "core/internal.hpp"
 
 namespace spk {
-    void handle_window_event(flecs::iter& iter, SDL_WindowEvent& event, window_t* window) {
+    void handle_window_event(flecs::iter& iter, SDL_WindowEvent& event) {
         switch(event.event) {
             case SDL_WINDOWEVENT_SIZE_CHANGED: {
-                if(event.windowID != SDL_GetWindowID(window->sdl_window())) {
+                if(event.windowID != window().id()) {
                     return;
                 } 
 
                 event_window_size_t resize;
-                glm::ivec2 size = window->size_get();
+                glm::ivec2 size = window().size();
 
                 resize.width = size.x;
                 resize.height = size.y;
@@ -29,7 +29,6 @@ namespace spk {
     void window_system_update(flecs::iter& iter) {
         spk_trace();
 
-        window_t* window = internal->scene.window;
         SDL_Event event;
 
         while(SDL_PollEvent(&event)) {
@@ -72,7 +71,7 @@ namespace spk {
                     break;
 
                 case SDL_WINDOWEVENT:
-                    handle_window_event(iter, event.window, window);
+                    handle_window_event(iter, event.window);
                     break;
 
                 default:
@@ -84,6 +83,6 @@ namespace spk {
     void window_cs_init(flecs::world& world) {
         spk_trace();
         
-        world.system().kind(on_render_begin).iter(window_system_update).add<tag_render_system_t>();
+        world.system().kind(on_render_begin_id).iter(window_system_update).add<tag_render_system_t>();
     }
 }

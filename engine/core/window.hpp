@@ -14,7 +14,7 @@ namespace spk {
         void size_set(int width, int height);
         void size_set(const glm::ivec2& size);
         void title_set(const std::string& title);
-        glm::ivec2 size_get();
+        glm::ivec2 size();
   
         uint32_t       id(); // the SDL Window ID
         bool           key_state_get(SDL_Scancode scancode);
@@ -23,9 +23,6 @@ namespace spk {
         SDL_Window*   window;
         SDL_GLContext opengl_context;
     };
-
-    // gets the current window
-    window_t& window();
 
     /**
      * @brief makes the window the current window, meaning all rendering operations

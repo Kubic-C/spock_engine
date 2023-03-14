@@ -164,6 +164,6 @@ namespace spk {
         particles_comp_init(world);
 
         world.system<comp_rigid_body_t, comp_particles_t>().iter(particles_system_tick);
-        world.system<comp_rigid_body_t, comp_particles_t>().kind(on_mesh).ctx(ctx).iter(particles_system_update);  
+        world.system<comp_rigid_body_t, comp_particles_t>().kind(on_mesh_id).ctx(ctx).iter(particles_system_update);  
     } 
 }

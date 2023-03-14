@@ -66,4 +66,17 @@ namespace spk {
         static_list<framebuffer_t, max_framebuffers> framebuffers;
         static_list<render_pass_t, max_render_passes> render_passes;
     };
+
+    /**
+     * @brief gets the current render system
+     * 
+     */
+    render_system_t& render_system();
+
+    /**
+     * @brief makes the passed render_system the active render system, meaning it will render every
+     * frame
+     * 
+     */
+    void render_system_make_current(render_system_t& render_system);
 }

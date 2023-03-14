@@ -47,18 +47,18 @@ namespace spk {
 
         auto sr = internal->allocators.stack.push<sprite_renderer_t>();
 
-        internal->scene.renderer->rp_add_renderer(0, (base_renderer_t*)sr);
+        render_system().rp_add_renderer(0, (base_renderer_t*)sr);
 
         // pre mesh
-        world.system().kind(on_pre_mesh)
+        world.system().kind(on_pre_mesh_id)
             .ctx(&sr->atlasd_sprites).iter(sprite_atlas_mesh_pre_mesh);
-        world.system().kind(on_pre_mesh)
+        world.system().kind(on_pre_mesh_id)
             .ctx(&sr->arrayd_sprites).iter(sprite_array_mesh_pre_mesh);
 
         // on mesh
-        world.system<comp_rigid_body_t, comp_sprite_atlasd_t>().kind(on_mesh)
+        world.system<comp_rigid_body_t, comp_sprite_atlasd_t>().kind(on_mesh_id)
             .ctx(&sr->atlasd_sprites).iter(sprite_atlas_mesh);
-        world.system<comp_rigid_body_t, comp_sprite_arrayd_t>().kind(on_mesh)
+        world.system<comp_rigid_body_t, comp_sprite_arrayd_t>().kind(on_mesh_id)
             .ctx(&sr->arrayd_sprites).iter(sprite_array_mesh);
 
         _particles_cs_init(&sr->arrayd_sprites, world);        

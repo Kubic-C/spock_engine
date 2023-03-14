@@ -41,7 +41,7 @@ namespace spk {
         size_set(size.x, size.y);
     }
 
-    glm::ivec2 window_t::size_get() {
+    glm::ivec2 window_t::size() {
         int width, height;
         SDL_GetWindowSize(window, &width, &height);
         return { width, height};
@@ -59,10 +59,6 @@ namespace spk {
         }
 
         return false;
-    }
-
-    window_t& window() {
-        return *internal->scene.window;
     }
 
     result_e window_make_current(window_t& window) {

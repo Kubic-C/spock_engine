@@ -70,7 +70,7 @@ target_sources(spock_engine PRIVATE
     
 target_sources(spock_engine PRIVATE
     "core/sound.hpp" "core/sound.cpp"
-    "core/data.hpp" "core/internal.cpp"
+    "core/data.hpp" "core/data.cpp"
     "core/internal.hpp" "core/internal.cpp"
     "core/events.hpp" "core/events.cpp"
     "core/window.hpp" "core/window.cpp"

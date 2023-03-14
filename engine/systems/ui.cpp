@@ -85,10 +85,8 @@ namespace spk {
     }
 
     void ui_system_mouse_callback(flecs::iter& iter) {
-        auto window = internal->scene.window;
-        auto canvas = internal->scene.canvas;
         const event_window_mouse_click_t* mouse_info = iter.param<event_window_mouse_click_t>();
-        glm::ivec2 size = window->size_get();
+        glm::ivec2 size = window().size();
         float x, y;
 
         // in a ui_canvas coord system, (0,0) starts at the bottom left 
@@ -99,7 +97,7 @@ namespace spk {
         if(mouse_info->button == SDL_BUTTON_LEFT && mouse_info->state == SDL_PRESSED) {
             // iterate through all blocks and use check_button lambda on them
 
-            for(auto& btn : canvas->btns) {
+            for(auto& btn : canvas().btns) {
                 glm::vec2 corners[2] = {
                     btn.abs_pos - btn.abs_size,
                     btn.abs_pos + btn.abs_size
@@ -126,33 +124,33 @@ namespace spk {
     void ui_cs_init(flecs::world& world) {
         spk_trace();
 
-        auto rs            = internal->scene.renderer;
-        auto ui_meshes     = internal->allocators.stack.push<ui_meshes_t>();
-        auto font_renderer = internal->allocators.stack.push<font_renderer_t>();
-        auto btn_renderer  = internal->allocators.stack.push<button_renderer_t>();
-        auto fb_renderer   = internal->allocators.stack.push<ui_framebuffer_renderer_t>();
+        auto& rs            = render_system();
+        auto  ui_meshes     = internal->allocators.stack.push<ui_meshes_t>();
+        auto  font_renderer = internal->allocators.stack.push<font_renderer_t>();
+        auto  btn_renderer  = internal->allocators.stack.push<button_renderer_t>();
+        auto  fb_renderer   = internal->allocators.stack.push<ui_framebuffer_renderer_t>();
 
         // ORDER MATTERS HERE, buttons will render first, then the font renderer
-        id_t ui_fb = rs->fb_init();    
-        rs->fb_set_clear_bits(ui_fb, GL_COLOR_BUFFER_BIT);
-        rs->fb_set_clear_color(ui_fb, 0.0f, 0.0f, 0.0f, 0.0f);
+        id_t ui_fb = rs.fb_init();    
+        rs.fb_set_clear_bits(ui_fb, GL_COLOR_BUFFER_BIT);
+        rs.fb_set_clear_color(ui_fb, 0.0f, 0.0f, 0.0f, 0.0f);
 
-        id_t color         = rs->atch_init();
-        rs->atch_set(color, GL_COLOR_ATTACHMENT0, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE);
-        rs->fb_attach(ui_fb, color);
+        id_t color = rs.atch_init();
+        rs.atch_set(color, GL_COLOR_ATTACHMENT0, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE);
+        rs.fb_attach(ui_fb, color);
 
-        id_t rp = rs->rp_init();
-        rs->rp_set_fb(rp, ui_fb);
-        rs->rp_add_renderer(rp, (base_renderer_t*)btn_renderer);
-        rs->rp_add_renderer(rp, (base_renderer_t*)font_renderer);
-        rs->rp_set_fb_renderer(rp, (base_framebuffer_renderer_t*)fb_renderer);
+        id_t rp = rs.rp_init();
+        rs.rp_set_fb(rp, ui_fb);
+        rs.rp_add_renderer(rp, (base_renderer_t*)btn_renderer);
+        rs.rp_add_renderer(rp, (base_renderer_t*)font_renderer);
+        rs.rp_set_fb_renderer(rp, (base_framebuffer_renderer_t*)fb_renderer);
 
         ui_meshes->font_mesh = &font_renderer->mesh;
         ui_meshes->btn_mesh  = &btn_renderer->mesh;
 
         world.system()
             .term<ui_tag_current_canvas_t>()
-            .kind(on_mesh).ctx(ui_meshes).iter(ui_render_system_update).add<tag_render_system_t>();
+            .kind(on_mesh_id).ctx(ui_meshes).iter(ui_render_system_update).add<tag_render_system_t>();
         
         world.observer().event<event_window_size_t>().term<tag_events_t>()
             .iter(ui_render_system_resize);

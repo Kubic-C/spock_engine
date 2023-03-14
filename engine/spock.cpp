@@ -69,11 +69,15 @@ namespace spk {
         { // creating default scene
             window_t*        window   = internal->allocators.stack.push<window_t>();
             ui_canvas_t*     canvas   = internal->allocators.stack.push<ui_canvas_t>();
-            render_system_t* renderer = internal->allocators.stack.push<render_system_t>();
+            render_system_t* renderer = nullptr;
 
             window_make_current(*window);
             canvas_make_current(*canvas);
 
+            // creating the renderer, MUST come after creating and making a window
+            // current. As we must need a valid OpenGL context
+            renderer = internal->allocators.stack.push<render_system_t>(); 
+            render_system_make_current(*renderer);
         }
 
         { // engine setup and state setup            
@@ -85,6 +89,7 @@ namespace spk {
             ps_tracker_system_init(ecs_world);
 
             // game components
+            character_controller_cs_init(ecs_world);
             camera_cs_init(ecs_world);
             physics_cs_init(ecs_world);
 
@@ -192,23 +197,23 @@ namespace spk {
         log.log("SDL_mixer Version: %u.%u.%u", mixer_version.major, mixer_version.minor, mixer_version.patch);
     }
 
-    settings_t& get_settings() {
+    settings_t& settings() {
         return internal->settings;
     }
 
-    statistics_t& get_statistics() {
+    statistics_t& statistics() {
         return internal->statistics;
     }
 
-    scene_t& get_scene() {
+    scene_t& scene() {
         return internal->scene;
     }
 
-    resources_t& get_resources() {
+    resources_t& resources() {
         return internal->resources;
     }
 
-    allocators_t& get_allocators() {
+    allocators_t& allocators() {
         return internal->allocators;
     }
 }

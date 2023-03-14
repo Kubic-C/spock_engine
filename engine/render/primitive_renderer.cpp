@@ -51,7 +51,6 @@ namespace spk {
     }
 
     void primitive_renderer_t::draw_mesh(const b2Color& color, uint32_t vertices) {
-        render_system_t*     renderer = internal->scene.renderer;
         const comp_camera_t* camera   = internal->scene.camera.get<comp_camera_t>();
 
         prim_ctx.vertex_array.bind();
@@ -59,7 +58,7 @@ namespace spk {
         prim_ctx.program.set_mat4("u_vp", camera->vp);
         prim_ctx.program.set_vec4("color", color);
 
-        renderer->quad_index_buffer.bind();
+        render_system().quad_index_buffer.bind();
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -68,7 +67,6 @@ namespace spk {
     }
     
     void primitive_renderer_t::draw_mesh_array(const b2Color& color, uint32_t vertices) {
-        render_system_t*     renderer = internal->scene.renderer;
         const comp_camera_t* camera   = internal->scene.camera.get<comp_camera_t>();
 
         prim_ctx.vertex_array.bind();
@@ -151,7 +149,6 @@ namespace spk {
 
     void primitive_renderer_t::DrawSolidCircle(const b2Vec2& center, float radius, const b2Vec2& axis, const b2Color& color) {
         draw_mesh_array(color, add_circle(center, radius));
-        DrawSegment(center, axis + center, {0.0f, 0.0f, 0.0f, 1.0f});
     }
 
     void primitive_renderer_t::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color) {

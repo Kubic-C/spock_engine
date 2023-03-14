@@ -117,21 +117,24 @@ namespace spk {
     };
 
     struct ui_canvas_t : ui_element_t {
-        glm::mat4 vp;
-
-        font_t* font = nullptr;
-        std::list<ui_text_t, memory_pool_t<ui_text_t>>     texts;
-        std::list<ui_button_t, memory_pool_t<ui_button_t>> btns;
-
         ui_canvas_t();
         ~ui_canvas_t();
 
         void make_current();
         void resize_callback(int width, int height);
         const size_t type() override { return UI_ELEMENT_TYPE_CANVAS; }
+   
+        glm::mat4 vp;
+
+        font_t* font = nullptr;
+        std::list<ui_text_t, memory_pool_t<ui_text_t>>     texts;
+        std::list<ui_button_t, memory_pool_t<ui_button_t>> btns;
     };
 
-    ui_canvas_t& canvas();
-
+    /**
+     * @brief sets the passed canvas as the current canvas
+     * 
+     * @param canvas the UI canvas that you want to make active
+     */
     void canvas_make_current(ui_canvas_t& canvas);
 }

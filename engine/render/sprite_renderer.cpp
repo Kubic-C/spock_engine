@@ -85,7 +85,6 @@ namespace spk {
     }
 
     void sprite_renderer_t::draw() {        
-        auto rs       = internal->scene.renderer;
         auto camera   = internal->scene.camera.get_ref<comp_camera_t>();
 
         glEnable(GL_BLEND);
@@ -106,7 +105,7 @@ namespace spk {
                 if(0 < atlas_mesh.sprites) {
                     atlasd_sprites.subdata(i);
 
-                    rs->quad_index_buffer.bind();
+                    render_system().quad_index_buffer.bind();
                     atlasd_ctx.vertex_array.bind();
                     atlasd_ctx.program.use();
                     atlasd_ctx.program.set_mat4("u_vp", camera->vp);
@@ -132,7 +131,7 @@ namespace spk {
                 if(0 < array_mesh.sprites) {
                     arrayd_sprites.subdata(i);
 
-                    rs->quad_index_buffer.bind();
+                    render_system().quad_index_buffer.bind();
                     arrayd_ctx.vertex_array.bind();
                     arrayd_ctx.program.use();
                     arrayd_ctx.program.set_mat4("u_vp", camera->vp);

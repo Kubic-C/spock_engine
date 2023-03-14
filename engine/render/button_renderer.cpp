@@ -98,7 +98,7 @@ namespace spk {
         btn_ctx.vertex_array.bind_layout(btn_ctx.vertex_layout);
 
         btn_ctx.vertex_array.bind();
-        internal->scene.renderer->quad_index_buffer.bind();
+        render_system().quad_index_buffer.bind();
         btn_ctx.program.use();
         btn_ctx.program.set_mat4("u_vp", mesh.vp);
 

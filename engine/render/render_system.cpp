@@ -256,4 +256,17 @@ namespace spk {
 
         SDL_GL_SwapWindow(window);
     }
+
+    render_system_t& render_system() {
+        return *internal->scene.renderer;
+    }
+
+    /**
+     * @brief makes the renderer the active render system, meaning it will render every
+     * frame
+     * 
+     */
+    void render_system_make_current(render_system_t& render_system) {
+        internal->scene.renderer = &render_system;
+    }
 }

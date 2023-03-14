@@ -30,11 +30,11 @@ namespace spk {
         // the amount of bytes, including the header and its blocks it occupies
         size_t total_bytes; 
 
-        size_t max_block_count() const {
+        size_t block_count_max() const {
             return (total_bytes - sizeof(block_header_t<T>)) / sizeof(T);
         }
 
-        T* get_elements() {
+        T* elements() {
             return inc_by_byte((T*)this, sizeof(*this));
         }
     };
@@ -53,9 +53,9 @@ namespace spk {
 
             this->first = nullptr;
             this->last  = nullptr;
-            this->capacity = (capacity * sizeof(T) + (block_header_size * capacity) / 10);
+            this->capacity_ = (capacity * sizeof(T) + (block_header_size * capacity) / 10);
 
-            this->real_ptr = (uint8_t*)malloc(this->capacity + alignment);
+            this->real_ptr = (uint8_t*)malloc(this->capacity_ + alignment);
             alignment_offset = alignment - ((size_t)real_ptr % alignment);
 
             if(alignment_offset == alignment) {
@@ -64,7 +64,7 @@ namespace spk {
                 this->aligned_ptr = real_ptr + alignment_offset;
             }
 
-            if(!create_block_header(this->aligned_ptr, this->capacity)) {
+            if(!create_block_header(this->aligned_ptr, this->capacity_)) {
                 log.log(LOG_TYPE_ERROR, "could not create allocator");
             }
         }
@@ -72,7 +72,7 @@ namespace spk {
         block_allocator_t(const block_allocator_t& other) {
             this->aligned_ptr  = other.aligned_ptr;
             this->real_ptr     = other.real_ptr;
-            this->capacity     = other.capacity;
+            this->capacity_     = other.capacity_;
             this->first        = other.first;
             this->last         = other.last;
             this->total_blocks = other.total_blocks;
@@ -100,7 +100,7 @@ namespace spk {
             bisect_block(header, size);
             set_block_as_allocated(header);
 
-            return header->get_elements();
+            return header->elements();
         }
 
         void deallocate(T* block) {
@@ -116,12 +116,12 @@ namespace spk {
             free_list_push_back(header);
         }
 
-        size_t get_capacity() const {
-            return capacity;
+        size_t capacity() const {
+            return capacity_;
         }
 
         bool ptr_in_bounds(T* ptr) const {
-            return aligned_ptr <= (uint8_t*)ptr && (uint8_t*)ptr <= (aligned_ptr + capacity);
+            return aligned_ptr <= (uint8_t*)ptr && (uint8_t*)ptr <= (aligned_ptr + capacity_);
         }
 
         uint8_t* get_real_ptr() const {
@@ -147,7 +147,7 @@ namespace spk {
 
         block_header_t<T>* find_header_with_at_least(size_t size) {
             for(block_header_t<T>* cur = first; cur != nullptr; cur = cur->prev) {
-                if(cur->max_block_count() >= size) {
+                if(cur->block_count_max() >= size) {
                     return cur;
                 }
             }
@@ -168,7 +168,7 @@ namespace spk {
 
             // there is always a valid header at aligned ptr
             block_header_t<T>*       header = (block_header_t<T>*)aligned_ptr;
-            const block_header_t<T>* end    = (block_header_t<T>*)(aligned_ptr + this->capacity);
+            const block_header_t<T>* end    = (block_header_t<T>*)(aligned_ptr + this->capacity_);
             for(; header != end; header = inc_by_byte(header, header->total_bytes)) {
                 size_t usable_user_memory = 0;
 
@@ -245,7 +245,7 @@ namespace spk {
             spk_assert(((size_t)addr % 2) == 0, "address given was not aligned by 2");
             spk_assert((int32_t)size - block_header_size >= 0);
 
-            if(addr + size > (aligned_ptr + capacity) || size < block_header_size) {
+            if(addr + size > (aligned_ptr + capacity_) || size < block_header_size) {
                 log.log("... no");
                 return nullptr;
             }
@@ -268,7 +268,7 @@ namespace spk {
         }
 
     private:
-        size_t capacity = 0; // in bytes
+        size_t capacity_ = 0; // in bytes
 
         size_t   total_blocks = 0;
         size_t   freed_blocks = 0;

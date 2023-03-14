@@ -19,20 +19,22 @@ MAIN {
 
     spk::init();
 
-    spk::settings_t&  settings   = spk::get_settings();
-    spk::resources_t& resources = spk::get_resources();
-    spk::scene_t&     scene     = spk::get_scene();
+    spk::settings_t&  settings  = spk::settings();
+    spk::resources_t& resources = spk::resources();
+    spk::scene_t&     scene     = spk::scene();
     uint32_t smells_blood_id, coin_sound_id;
 
-    settings.box2d_draw_flags = b2Draw::e_centerOfMassBit;
+    settings.box2d_draw_flags = b2Draw::e_shapeBit;
 
     b2World* world = scene.physics_world;
 
     {
+        spk::canvas().
+    }
+
+    {
         smells_blood_id = spk::music_load("smells_blood.mp3");
         coin_sound_id   = spk::chunk_load("coin_sound.wav");
-        
-        spk::music_play(smells_blood_id, 1);
 
         resources.fonts.load_ascii("./Anonymous.ttf");
         resources.sprite_atlases.init(0, 16, 16);
@@ -68,7 +70,7 @@ MAIN {
         td[4].density = -5.0f;
     }
 
-    for(size_t i = 0; i < 100; i++) {
+    for(size_t i = 0; i < 10; i++) {
         scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb) {
             float random = rand();
             random *= 0.01f;

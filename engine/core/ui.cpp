@@ -59,10 +59,6 @@ namespace spk {
         abs_size = { (float)width, (float)height };
     }
 
-    ui_canvas_t& canvas() {
-        return *internal->scene.canvas;
-    }
-
     void canvas_make_current(ui_canvas_t& canvas) {
         if(internal->scene.canvas != nullptr) {
             // do something, here for future use

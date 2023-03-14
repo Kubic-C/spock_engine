@@ -3,6 +3,7 @@
 #include "static_list.hpp"
 #include "array2D.hpp"
 #include "memory_pool.hpp"
+#include "stack_allocator.hpp"
 #include "hashmap.hpp"
 #include "allocator.hpp"
 

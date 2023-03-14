@@ -42,6 +42,6 @@ namespace spk {
         
         tile_comp_init(world);
 
-        world.system<comp_rigid_body_t, comp_tilemap_t>().kind(on_mesh).ctx(ctx).iter(sprite_render_system_tilebody_mesh);
+        world.system<comp_rigid_body_t, comp_tilemap_t>().kind(on_mesh_id).ctx(ctx).iter(sprite_render_system_tilebody_mesh);
     }
 }
