@@ -62,6 +62,15 @@ namespace spk {
         int _code = 0;
     };
 
+    enum result_e: uint32_t {
+        // success
+        SUCCESS = 0x0,
+
+        // an operation by another library has failed to do some operation
+        // library specific error information needed
+        ERROR_EXTERNAL_LIBRARY_FAILED,
+    };
+
     enum log_type_e {
         LOG_TYPE_ERROR,
         LOG_TYPE_ASSERT,

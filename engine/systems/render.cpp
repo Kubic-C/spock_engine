@@ -36,15 +36,11 @@ namespace spk {
 
         auto rs = internal->scene.renderer;
 
-        rs->end_frame(internal->scene.window->get_sdl_window());
+        rs->end_frame(window().window);
     }
 
-    void render_cs_init(flecs::world& world) {
+    void render_system_init(flecs::world& world) {
         spk_trace();
-
-        render_system_t* renderer = internal->allocators.stack.push<render_system_t>();
-
-        internal->scene.renderer = renderer;
 
         world.system().kind(on_render_begin).iter(render_system_begin_render).add<tag_render_system_t>();
         world.system().kind(on_render).iter(render_system_render).add<tag_render_system_t>(); 

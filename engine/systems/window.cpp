@@ -5,12 +5,12 @@ namespace spk {
     void handle_window_event(flecs::iter& iter, SDL_WindowEvent& event, window_t* window) {
         switch(event.event) {
             case SDL_WINDOWEVENT_SIZE_CHANGED: {
-                if(event.windowID != SDL_GetWindowID(window->get_sdl_window())) {
+                if(event.windowID != SDL_GetWindowID(window->sdl_window())) {
                     return;
                 } 
 
                 event_window_size_t resize;
-                glm::ivec2 size = window->get_size();
+                glm::ivec2 size = window->size_get();
 
                 resize.width = size.x;
                 resize.height = size.y;

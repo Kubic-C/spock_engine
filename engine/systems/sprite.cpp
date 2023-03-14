@@ -42,7 +42,7 @@ namespace spk {
         }
     }
     
-    void sprite_cs_init(flecs::world& world) {
+    void sprite_render_init(flecs::world& world) {
         sprite_comp_init(world);
 
         auto sr = internal->allocators.stack.push<sprite_renderer_t>();
@@ -63,6 +63,5 @@ namespace spk {
 
         _particles_cs_init(&sr->arrayd_sprites, world);        
         _tilemap_cs_init(&sr->arrayd_sprites, world);
-        _character_controller_cs_init(&sr->atlasd_sprites, world); 
     }
 }

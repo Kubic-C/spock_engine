@@ -47,14 +47,6 @@ namespace spk {
 
     }
 
-    void ui_canvas_t::make_current() {
-        if(internal->scene.canvas != nullptr) {
-            // do something, here for future use
-        }
-
-        internal->scene.canvas = this;
-    }
-
     void ui_canvas_t::resize_callback(int width, int height) {
         glm::mat4 view, proj;
 
@@ -65,5 +57,17 @@ namespace spk {
         vp = proj * view;
  
         abs_size = { (float)width, (float)height };
+    }
+
+    ui_canvas_t& canvas() {
+        return *internal->scene.canvas;
+    }
+
+    void canvas_make_current(ui_canvas_t& canvas) {
+        if(internal->scene.canvas != nullptr) {
+            // do something, here for future use
+        }
+
+        internal->scene.canvas = &canvas;
     }
 }

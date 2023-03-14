@@ -29,63 +29,29 @@ namespace spk {
         SDL_DestroyWindow(window);
     }
 
-    void window_t::make_current() {
-        if(internal->scene.window != nullptr) {
-            SDL_GL_MakeCurrent(nullptr, nullptr);
-            internal->scene.window = nullptr;
-        }
-
-        if(SDL_GL_MakeCurrent(window, opengl_context) < 0) {
-            log.log(spk::LOG_TYPE_ERROR, "failed to make the window context current: %s", SDL_GetError());
-        }
-
-        internal->scene.window = this;
-        
-        if(!gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress)) { 
-            log.log(spk::LOG_TYPE_ERROR, "failed to load OpenGL with glad");
-        }
-    }
-
-    void window_t::set_title(const std::string& title) {
+    void window_t::title_set(const std::string& title) {
         SDL_SetWindowTitle(window, title.c_str());
     }
 
-    void window_t::force_resize_event() {
-        SDL_Event event;
-
-        event.type = SDL_WINDOWEVENT;
-        event.window.event = SDL_WINDOWEVENT_SIZE_CHANGED;
-        event.window.data1 = 0;
-        event.window.data2 = 0;
-        event.window.timestamp = 0;
-        event.window.windowID = SDL_GetWindowID(window);
-
-        SDL_PushEvent(&event);
-    }
-
-    void window_t::set_size(int width, int height) {
+    void window_t::size_set(int width, int height) {
         SDL_SetWindowSize(window, width, height);
     } 
 
-    void window_t::set_size(const glm::ivec2& size) {
-        set_size(size.x, size.y);
+    void window_t::size_set(const glm::ivec2& size) {
+        size_set(size.x, size.y);
     }
 
-    glm::ivec2 window_t::get_size() {
+    glm::ivec2 window_t::size_get() {
         int width, height;
         SDL_GetWindowSize(window, &width, &height);
         return { width, height};
     }
 
-    SDL_Window* window_t::get_sdl_window() {
-        return window;
+    uint32_t window_t::id() {
+        return SDL_GetWindowID(window);
     }
 
-    SDL_GLContext* window_t::get_context() {
-        return &opengl_context;
-    }
-
-    bool window_t::get_key_state(SDL_Scancode scancode) {
+    bool window_t::key_state_get(SDL_Scancode scancode) {
         spk_assert(scancode < SDL_NUM_SCANCODES, "invalid key scancode");
 
         if(SDL_GetKeyboardFocus() == this->window) {
@@ -93,5 +59,50 @@ namespace spk {
         }
 
         return false;
+    }
+
+    window_t& window() {
+        return *internal->scene.window;
+    }
+
+    result_e window_make_current(window_t& window) {
+        if(internal->scene.window != nullptr) {
+            SDL_GL_MakeCurrent(nullptr, nullptr);
+            internal->scene.window = nullptr;
+        }
+
+        if(SDL_GL_MakeCurrent(window.window, window.opengl_context) < 0) {
+            log.log(spk::LOG_TYPE_ERROR, "failed to make the window context current: %s", SDL_GetError());
+            return ERROR_EXTERNAL_LIBRARY_FAILED;
+        }
+
+        internal->scene.window = &window;
+        
+        if(!gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress)) { 
+            log.log(spk::LOG_TYPE_ERROR, "failed to load OpenGL with glad");
+            return ERROR_EXTERNAL_LIBRARY_FAILED;
+        }
+
+        return SUCCESS;
+    }
+
+    result_e window_force_resize_event() {
+        SDL_Event event;
+        int code;
+
+        event.type             = SDL_WINDOWEVENT;
+        event.window.event     = SDL_WINDOWEVENT_SIZE_CHANGED;
+        event.window.data1     = 0;
+        event.window.data2     = 0;
+        event.window.timestamp = SDL_GetTicks();
+        event.window.windowID  = window().id();
+
+        code = SDL_PushEvent(&event);
+
+        if(code < 0) {
+            return ERROR_EXTERNAL_LIBRARY_FAILED;
+        }
+
+        return SUCCESS;
     }
 }

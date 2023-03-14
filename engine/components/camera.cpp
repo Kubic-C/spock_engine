@@ -61,7 +61,7 @@ namespace spk {
         // likely that the camera does not have its size set yet,
         // so emiting a resize event seems reasonable here
         // The size may change when changing between different cameras
-        internal->scene.window->force_resize_event();
+        window_force_resize_event();
     } 
 
     void camera_comp_init(flecs::world& world) {
