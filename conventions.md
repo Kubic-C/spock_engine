@@ -35,6 +35,13 @@ int32_t third_name_in_row = -1;
 int a_nice_name = 0;
 std::vector<really_long_typename_t>::iterator long_iterator_name;
 
+// function & method naming
+void noun_verb();
+
+// e.g.
+void tile_get();
+void music_play();
+
 ```
 
 *Do not's*:

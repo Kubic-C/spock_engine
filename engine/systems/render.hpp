@@ -5,5 +5,5 @@
 #include "render/render_system.hpp"
 
 namespace spk {
-    void render_cs_init(flecs::world& world); 
+    void render_system_init(flecs::world& world); 
 }

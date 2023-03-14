@@ -4,7 +4,7 @@
 #include "render/render_system.hpp"
 
 namespace spk {
-    void primitive_render_cs_init(flecs::world& world) {
+    void primitive_render_init(flecs::world& world) {
         spk_trace();
         
         auto primitive_renderer = internal->allocators.stack.push<primitive_renderer_t>();

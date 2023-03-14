@@ -9,6 +9,7 @@
 #include "systems/primitive.hpp"
 #include "systems/sprite.hpp"
 #include "systems/camera.hpp"
+#include "systems/character_controller.hpp"
 
 #include "core/data.hpp"
 

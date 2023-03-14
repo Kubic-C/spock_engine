@@ -88,7 +88,7 @@ namespace spk {
         auto window = internal->scene.window;
         auto canvas = internal->scene.canvas;
         const event_window_mouse_click_t* mouse_info = iter.param<event_window_mouse_click_t>();
-        glm::ivec2 size = window->get_size();
+        glm::ivec2 size = window->size_get();
         float x, y;
 
         // in a ui_canvas coord system, (0,0) starts at the bottom left 

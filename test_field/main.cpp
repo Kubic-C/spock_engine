@@ -22,14 +22,17 @@ MAIN {
     spk::settings_t&  settings   = spk::get_settings();
     spk::resources_t& resources = spk::get_resources();
     spk::scene_t&     scene     = spk::get_scene();
+    uint32_t smells_blood_id, coin_sound_id;
 
     settings.box2d_draw_flags = b2Draw::e_centerOfMassBit;
 
     b2World* world = scene.physics_world;
 
     {
-        uint32_t id = resources.sounds.load_chunk("smells_blood.mp3");
-        spk::play_chunk(id, 1);
+        smells_blood_id = spk::music_load("smells_blood.mp3");
+        coin_sound_id   = spk::chunk_load("coin_sound.wav");
+        
+        spk::music_play(smells_blood_id, 1);
 
         resources.fonts.load_ascii("./Anonymous.ttf");
         resources.sprite_atlases.init(0, 16, 16);
@@ -110,6 +113,7 @@ MAIN {
             spk::comp_contact_callback_t& callbacks,
             spk::comp_tilemap_t& tilemap) {
         rb->SetType(b2_dynamicBody);
+        rb->SetBullet(true);
 
         tilemap.tiles.get(0, 0) = 2;
         tilemap.tiles.get(1, 1) = 2;
@@ -123,6 +127,8 @@ MAIN {
         cc.speed = 100.0f;
     
        callbacks.end = [&](flecs::entity self, flecs::entity other, b2Contact* contact) {
+            spk::chunk_play(coin_sound_id, 0);
+
             if(other == wall)
                 return;
             

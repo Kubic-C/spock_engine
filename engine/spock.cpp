@@ -27,7 +27,7 @@ namespace spk {
             log.log(LOG_TYPE_ERROR, "could not load SDL2_Mixer with flags %i", audio_flags);
         }
 
-        open_audio();
+        audio_open();
     }
 
     void init_defualt_ecs_pipelines() {
@@ -66,23 +66,32 @@ namespace spk {
         init_SDL2();
         init_defualt_ecs_pipelines();
 
-        { // engine setup and state setup            
-            // default window
-            internal->allocators.stack.push<window_t>()->make_current();
-            internal->allocators.stack.push<ui_canvas_t>()->make_current();
+        { // creating default scene
+            window_t*        window   = internal->allocators.stack.push<window_t>();
+            ui_canvas_t*     canvas   = internal->allocators.stack.push<ui_canvas_t>();
+            render_system_t* renderer = internal->allocators.stack.push<render_system_t>();
 
+            window_make_current(*window);
+            canvas_make_current(*canvas);
+
+        }
+
+        { // engine setup and state setup            
             internal->scene.event_system = ecs_world.entity().add<tag_events_t>();
 
+            // misc
             component_cs_init(ecs_world);
-            ps_tracker_system_init(ecs_world);
             window_cs_init(ecs_world);
-            physics_cs_init(ecs_world);
+            ps_tracker_system_init(ecs_world);
+
+            // game components
             camera_cs_init(ecs_world);
-            render_cs_init(ecs_world);
+            physics_cs_init(ecs_world);
 
             // render systems
-            sprite_cs_init(ecs_world);
-            primitive_render_cs_init(ecs_world);
+            render_system_init(ecs_world);
+            sprite_render_init(ecs_world);
+            primitive_render_init(ecs_world);
             ui_cs_init(ecs_world);
         }
 
@@ -162,7 +171,7 @@ namespace spk {
 
         delete internal;
 
-        close_audio();
+        Mix_Quit();
         SDL_Quit();
     }
 

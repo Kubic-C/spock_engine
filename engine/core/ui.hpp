@@ -130,4 +130,8 @@ namespace spk {
         void resize_callback(int width, int height);
         const size_t type() override { return UI_ELEMENT_TYPE_CANVAS; }
     };
+
+    ui_canvas_t& canvas();
+
+    void canvas_make_current(ui_canvas_t& canvas);
 }

@@ -11,16 +11,16 @@ namespace spk {
             comp_character_controller_t* cc    = &ccs[i];
             glm::vec2                    force = {0.0f, 0.0f};
 
-            if(window->get_key_state(cc->left)) {
+            if(window->key_state_get(cc->left)) {
                 force.x -= cc->speed;
             }    
-            if(window->get_key_state(cc->right)) {
+            if(window->key_state_get(cc->right)) {
                 force.x += cc->speed;
             }    
-            if(window->get_key_state(cc->up)) {
+            if(window->key_state_get(cc->up)) {
                 force.y += cc->speed;
             }    
-            if(window->get_key_state(cc->down)) {
+            if(window->key_state_get(cc->down)) {
                 force.y -= cc->speed;
             }    
 
@@ -28,7 +28,7 @@ namespace spk {
         }
     }
 
-    void _character_controller_cs_init(mesh_t* mesh, flecs::world& world) {
+    void character_controller_cs_init(flecs::world& world) {
         spk_trace();
         
         character_controller_comp_init(world);
