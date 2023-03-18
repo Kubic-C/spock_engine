@@ -29,10 +29,6 @@ MAIN {
     b2World* world = scene.physics_world;
 
     {
-        spk::canvas().
-    }
-
-    {
         smells_blood_id = spk::music_load("smells_blood.mp3");
         coin_sound_id   = spk::chunk_load("coin_sound.wav");
 
@@ -78,9 +74,9 @@ MAIN {
             rb->SetType(b2_dynamicBody);
             rb->SetTransform((glm::vec2){fmod(random, 10.0f) - 5.0f, fmod(random, 10.0f) - 5.0f}, 0.0f);
 
-            b2CircleShape shape;
-
-            shape.m_radius = fmod(random, 1.9f) + 0.1f;
+            b2PolygonShape shape;
+            float hl = fmod(random, 1.9f) + 0.1f;
+            shape.SetAsBox(hl, hl);
 
             b2FixtureDef fdef;
             fdef.shape = &shape;

@@ -14,7 +14,7 @@ namespace spk {
         return *internal->scene.window;
     }
 
-    ui_canvas_t& canvas() {
+    canvas_t& canvas() {
         return *internal->scene.canvas;
     }
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "render/primitive_renderer.hpp"
+#include "base.hpp"
 
 namespace spk {
     void primitive_render_init(flecs::world& world);

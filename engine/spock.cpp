@@ -68,7 +68,7 @@ namespace spk {
 
         { // creating default scene
             window_t*        window   = internal->allocators.stack.push<window_t>();
-            ui_canvas_t*     canvas   = internal->allocators.stack.push<ui_canvas_t>();
+            canvas_t*     canvas   = internal->allocators.stack.push<canvas_t>();
             render_system_t* renderer = nullptr;
 
             window_make_current(*window);
