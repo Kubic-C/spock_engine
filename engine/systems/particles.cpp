@@ -18,7 +18,7 @@ namespace spk {
         return randomf;         
     };
 
-    void process_particle_system(b2Body* body, float delta_time, comp_particles_t& ps) {
+    void process_particle_system(b2Body* body, double delta_time, comp_particles_t& ps) {
         if(!(ps.flags & PARTICLES_FLAGS_ACTIVE))
             return;
 
@@ -41,7 +41,7 @@ namespace spk {
                     erase = true;
                 }
             } else { // found particle with valid lifetime
-                ps.particles[i].pos += ps.particles[i].dir * (ps.particles[i].speed * delta_time);
+                ps.particles[i].pos += ps.particles[i].dir * (ps.particles[i].speed * (float)delta_time);
 
                 ps.particles[i].speed += ps.speed_step;
 
@@ -78,7 +78,7 @@ namespace spk {
                 cycles_to_do = 1;
 
             for(; cycles_to_do >= 1.0f; cycles_to_do--) {
-                const float angle = glm::angle(ps.dir, glm::normalize((glm::vec2){0.0f, 1.0f}));
+                const float angle = glm::orientedAngle(ps.dir, glm::normalize((glm::vec2){0.0f, 1.0f}));
                 float y = 0.0f; 
 
                 while(y <= ps.length && ps.particles.size() < ps.max) {
@@ -126,7 +126,7 @@ namespace spk {
         }
     }
 
-    void _particles_cs_init(flecs::world& world) {
+    void particles_cs_init(flecs::world& world) {
         spk_trace();
         
         particles_comp_init(world);

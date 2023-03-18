@@ -28,6 +28,8 @@ MAIN {
 
     b2World* world = scene.physics_world;
 
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+
     {
         smells_blood_id = spk::music_load("smells_blood.mp3");
         coin_sound_id   = spk::chunk_load("coin_sound.wav");
@@ -68,7 +70,7 @@ MAIN {
     }
 
     for(size_t i = 0; i < 10; i++) {
-        scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_sprite_t& sprite) {
+        scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_sprite_t& sprite, spk::comp_particles_t& ps) {
             float random = rand();
             random *= 0.01f;
 
@@ -90,6 +92,16 @@ MAIN {
             sprite.array_id = 0;
             sprite.index = 1;
             sprite.z = 0.0f;
+
+            ps.funnel = spk::PARTICLES_FUNNEL_FUNNEL;
+            ps.step   = 0.2f; // fun :)
+            ps.length = 1.0f;
+            ps.base_speed = 9.0f;
+            ps.particle.id = 4;
+            ps.base_cycle = 0.1f;
+            ps.base_lifetime = 0.5f;
+            ps.max = UINT32_MAX;
+            ps.flags  = spk::PARTICLES_FLAGS_WORLD_DIRECTION | spk::PARTICLES_FLAGS_WORLD_POSITION | spk::PARTICLES_FLAGS_ACTIVE;
         });
     }
     
@@ -168,7 +180,7 @@ MAIN {
                 glm::vec2 dir_away = 
                     glm::normalize((glm::vec2)other_fixture->GetBody()->GetPosition() - (glm::vec2)self_fixture->GetBody()->GetPosition());
 
-                float strength = 100000.0f;
+                float strength = 10.0f;
 
                 other_fixture->GetBody()->ApplyLinearImpulseToCenter(-dir_away * strength, true);
             }
@@ -180,7 +192,8 @@ MAIN {
     scene.user_data.update = [&](){
         character.set([&](spk::comp_rigid_body_t& rb){
             scene.camera.get_ref<spk::comp_camera_t>()->pos = rb->GetPosition();
-            rb->ApplyTorque(1000000, true);
+
+            rb->ApplyTorque(10000, true);
         });
     };  
 

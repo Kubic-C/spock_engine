@@ -93,6 +93,7 @@ namespace spk {
             camera_cs_init(ecs_world);
             physics_cs_init(ecs_world);
             tilemap_cs_init(ecs_world);
+            particles_cs_init(ecs_world);
 
             // render systems
             render_system_init(ecs_world);

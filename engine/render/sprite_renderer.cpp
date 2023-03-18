@@ -25,6 +25,41 @@ namespace spk {
         vertexes_to_render += 6;
     }
 
+    void sprite_renderer_t::particles_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_particles_t* particles) {
+        spk_trace();
+
+        auto renderer = (sprite_renderer_t*)render_context().renderers[RENDERER_TYPE_SPRITE];
+
+        for(auto i : iter) {
+            comp_rigid_body_t& body            = bodies[i];
+            comp_particles_t&  particle_system = particles[i];
+            sprite_arrayd_t&   sprite = resources().tile_dictionary[particle_system.particle.id].sprite;
+        
+            for(uint32_t j = 0; j < particle_system.particles.size(); j++) {
+                particle_t& particle = particle_system.particles[j];
+
+                vertex_t vertices[] = { 
+                    {glm::vec3(particle.pos - sprite.size, sprite.z),
+                        glm::vec3(0.0f, 0.0f, sprite.index)}, // bl
+                    {glm::vec3((glm::vec2){particle.pos.x + sprite.size.x, particle.pos.y - sprite.size.y}, sprite.z),
+                        glm::vec3(1.0f, 0.0f, sprite.index)}, // br
+                    {glm::vec3(particle.pos + sprite.size, sprite.z),
+                        glm::vec3(1.0f, 1.0f, sprite.index)}, // tr
+                    {glm::vec3((glm::vec2){particle.pos.x - sprite.size.x, particle.pos.y + sprite.size.y}, sprite.z),
+                        glm::vec3(0.0f, 1.0f, sprite.index)} // tl
+                };
+
+                if(!(particle_system.flags & PARTICLES_FLAGS_WORLD_POSITION)) {
+                    for(vertex_t& v : vertices) {
+                        v.pos = glm::vec3(particle_system.get_point(body, glm::vec2(v.pos)), 0.0f);
+                    }
+                }
+
+                renderer->add_mesh(sprite, vertices);
+            }   
+        }  
+    }
+
     void sprite_renderer_t::tilemap_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_tilemap_t* tilemaps) {
         spk_trace();
 
