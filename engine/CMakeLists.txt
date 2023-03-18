@@ -1,4 +1,10 @@
 
+#                         MIT License
+
+#                 Copyright (c) 2023 Sawyer Porter
+
+# refer to license: https://github.com/Kubic-C/spock_engine/blob/master/LICENSE.md
+
 add_library(spock_engine STATIC "spock.hpp")
 
 target_compile_definitions(flecs_static PUBLIC ecs_ftime_t=double)
