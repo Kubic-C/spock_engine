@@ -139,5 +139,7 @@ namespace spk {
 
         // render
         glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+
+        vertex_count = 0;
     }   
 }

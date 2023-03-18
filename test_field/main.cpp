@@ -67,7 +67,7 @@ MAIN {
     }
 
     for(size_t i = 0; i < 10; i++) {
-        scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb) {
+        scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_sprite_t& sprite) {
             float random = rand();
             random *= 0.01f;
 
@@ -83,6 +83,10 @@ MAIN {
             fdef.density = 0.1f;
             fdef.restitution = 0.1f;
             rb->CreateFixture(&fdef);
+
+            sprite.size = {hl, hl};
+            sprite.array_id = 0;
+            sprite.z = 0.0f;
         });
     }
     
@@ -103,7 +107,7 @@ MAIN {
         }
 
         tm.add_fixtures(rb);
-    });
+    }).add<spk::tag_body_render_t>();
 
     flecs::entity character = scene.ecs_world.entity().set([&](
             spk::comp_rigid_body_t& rb, 
@@ -159,7 +163,7 @@ MAIN {
                 other_fixture->GetBody()->ApplyLinearImpulseToCenter(dir_away * strength, true);
             }
         };
-    });
+    }).add<spk::tag_body_render_t>();
 
     scene.camera.get_ref<spk::comp_camera_t>()->scale = 1.5f;
 

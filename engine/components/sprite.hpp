@@ -19,6 +19,7 @@ namespace spk {
         uint32_t  array_id = 0; // the sprite texture array to get sprite data from
         uint32_t  index    = 0; // the level within in the the texture array
         glm::vec2 size     = {0.5f, 0.5f};
+        glm::vec2 offset   = {0.0f, 0.0f};
         float     z        = 0.0f; // z coordinate, positive z is towards the camera
     };
 

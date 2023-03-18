@@ -1,6 +1,8 @@
 add_compile_definitions(
     ecs_ftime_t=double)
 
+set(BUILD_SHARED_LIBS OFF)
+
 add_subdirectory(flecs)
 add_subdirectory(SDL)
 

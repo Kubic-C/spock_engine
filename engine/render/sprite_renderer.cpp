@@ -1,42 +1,108 @@
 #include "sprite_renderer.hpp"
-#include "renderer.hpp"
+#include "core/data.hpp"
 
 namespace spk {
+    struct vertex_t {
+        glm::vec3 pos;
+        glm::vec3 tex;
+    };
+    
+    glm::vec3 get_world_point(b2Body* body, glm::vec3 local_point) {
+        return glm::vec3{(glm::vec2)body->GetWorldPoint(b2Vec2(local_point.x, local_point.y)), local_point.z};
+    }
+
+    void sprite_renderer_t::add_mesh(const sprite_arrayd_t& sprite, void* vertices) {
+        auto& buffer             = meshes[sprite.array_id].buffer; 
+        auto& vertexes_on_buffer = meshes[sprite.array_id].vertexes_on_buffer;
+        auto& vertexes_to_render = meshes[sprite.array_id].vertexes_to_render;
+
+        if(buffer.size() < (vertexes_on_buffer + 4) * sizeof(vertex_t)) 
+            buffer.resize((vertexes_on_buffer + 4) * sizeof(vertex_t));
+
+        buffer.bind();
+        buffer.buffer_sub_data(vertexes_on_buffer * sizeof(vertex_t), sizeof(vertex_t) * 4, vertices);
+        vertexes_on_buffer += 4;
+        vertexes_to_render += 6;
+    }
+
+    void sprite_renderer_t::tilemap_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_tilemap_t* tilemaps) {
+        spk_trace();
+
+        auto renderer = (sprite_renderer_t*)render_context().renderers[RENDERER_TYPE_SPRITE];
+
+        for(auto i : iter) {
+            comp_rigid_body_t&  body    = bodies[i];
+            comp_tilemap_t&     tilemap = tilemaps[i];
+
+            for(auto& pair : tilemap.tile_groups) {
+                glm::uvec2   coords = tilemap.tiles.get_2D_from_1D(pair.first);
+                tile_group_t tile   = pair.second;
+                auto&        sprite = resources().tile_dictionary[tilemap.tiles.get(coords.x, coords.y).id].sprite;
+                glm::vec2    offset;
+                float        half_width = tile.x / 2, 
+                             half_height = tile.y / 2;
+
+                if(tilemap.tiles.get(coords.x, coords.y).id == 0)
+                    continue;
+
+                offset.x = (coords.x + SPK_TILE_HALF_SIZE) - (float)tile.x  / 2.0f - tilemap.center.x;
+                offset.y = (coords.y + SPK_TILE_HALF_SIZE) - (float)tile.y  / 2.0f - tilemap.center.y; 
+
+                vertex_t vertices[] = {
+                    { get_world_point(body, (glm::vec3){ glm::vec2(-half_width, -half_height) + offset, sprite.z}), 
+                        glm::vec3(0.0f, 0.0f, sprite.index) },
+
+                    { get_world_point(body, (glm::vec3){ glm::vec2(half_width, -half_height) + offset, sprite.z}),
+                        glm::vec3(1.0f * tile.x, 0.0f, sprite.index) },
+
+                    { get_world_point(body, (glm::vec3){ glm::vec2(half_width, half_height) + offset, sprite.z}),  
+                        glm::vec3(1.0f * tile.x, 1.0f * tile.y, sprite.index) },
+
+                    { get_world_point(body, (glm::vec3){ glm::vec2(-half_width, half_height) + offset, sprite.z}),  
+                        glm::vec3(0.0f, 1.0f * tile.y, sprite.index)}
+                };
+
+                renderer->add_mesh(sprite, vertices);
+            }
+        }
+    }
+
     void sprite_renderer_t::sprite_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_sprite_t* sprites) {
+        spk_trace();
+
         auto renderer = (sprite_renderer_t*)render_context().renderers[RENDERER_TYPE_SPRITE];
         
         for(auto i : iter) {
             b2Body* body         = bodies[i];
             comp_sprite_t sprite = sprites[i];
-            auto& buffer = renderer->meshes[sprite.array_id].buffer; 
-            auto& vertexes_on_buffer = renderer->meshes[sprite.array_id].vertexes_on_buffer;
-            auto& vertexes_to_render = renderer->meshes[sprite.array_id].vertexes_to_render;
-
-            // resize if needed
-            if(buffer.size() < vertexes_on_buffer + 4) 
-                buffer.resize(buffer.size() + 4);
-
-            renderer->meshes[sprite.array_id].buffer.bind();
             
-            b2Vec2 vertices[] = {
-                body->GetWorldPoint(b2Vec2(-sprite.size.x, -sprite.size.y)),
-                body->GetWorldPoint(b2Vec2( sprite.size.x, -sprite.size.y)),
-                body->GetWorldPoint(b2Vec2( sprite.size.x,  sprite.size.y)),
-                body->GetWorldPoint(b2Vec2(-sprite.size.x,  sprite.size.y))
+            vertex_t vertices[] = {
+                {get_world_point(body, glm::vec3(glm::vec2(-sprite.size.x, -sprite.size.y) + sprite.offset, sprite.z)), 
+                    glm::vec3(0.0f, 0.0f, sprite.index)},
+                {get_world_point(body, glm::vec3(glm::vec2( sprite.size.x, -sprite.size.y) + sprite.offset, sprite.z)), 
+                    glm::vec3(1.0f, 0.0f, sprite.index)},
+                {get_world_point(body, glm::vec3(glm::vec2( sprite.size.x,  sprite.size.y) + sprite.offset, sprite.z)), 
+                    glm::vec3(1.0f, 1.0f, sprite.index)},
+                {get_world_point(body, glm::vec3(glm::vec2(-sprite.size.x,  sprite.size.y) + sprite.offset, sprite.z)), 
+                    glm::vec3(0.0f, 1.0f, sprite.index)}
             };
 
-            buffer.buffer_sub_data(vertexes_on_buffer * sizeof(float), sizeof(vertices), vertices);
-            vertexes_on_buffer += 4;
-            vertexes_on_buffer += 6;
+            renderer->add_mesh(sprite, vertices);
         }        
     }
 
     void sprite_renderer_t::render() {
+        spk_trace();
+
         auto& shader = render_context().shaders[SHADER_TYPE_SPRITE];
         auto& vao    = render_context().common.array;
 
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         for(uint32_t i = 0; i < SPK_MAX_SPRITE_ARRAYS; i++) {
-            spk_assert(!resources().sprite_arrays.is_in_use(i));
+            if(!resources().sprite_arrays.is_in_use(i))
+                continue;
 
             auto&           mesh = meshes[i];
             sprite_array_t* array      = resources().sprite_arrays.get(i);
@@ -44,8 +110,8 @@ namespace spk {
             if(mesh.vertexes_on_buffer > 0) {
                 vao.bind();
                 mesh.buffer.bind();
-                glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), nullptr);
-                glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)sizeof(glm::vec3));
+                glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), nullptr);
+                glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (void*)sizeof(glm::vec3));
                 glEnableVertexAttribArray(0);
                 glEnableVertexAttribArray(1);
 
@@ -63,5 +129,7 @@ namespace spk {
                 mesh.vertexes_to_render = 0;
             }
         }
+
+        glDisable(GL_BLEND);
     }
 }

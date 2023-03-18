@@ -44,6 +44,7 @@ namespace spk {
         common.buffer.buffer_data(_render_default_buffer_size, nullptr, GL_DYNAMIC_DRAW);
         common.array.init();
 
+        common.quad_indexes.init(GL_ELEMENT_ARRAY_BUFFER);
         common.quad_indexes.generate_quad_indexes(_render_max_quad_indexes);
 
         glEnable(GL_DEPTH_TEST);
@@ -73,10 +74,14 @@ namespace spk {
     }
 
     void render_context_t::frame_begin() {
+        spk_trace();
         
     }
 
     void render_context_t::frame_render() {
+        spk_trace();
+
+
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glClearColor(clear_color.r, clear_color.g, clear_color.b, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
@@ -91,6 +96,8 @@ namespace spk {
     }
 
     void render_context_t::frame_end() {
+        spk_trace();
+
         SDL_GL_SwapWindow(window().window);
     }
 }

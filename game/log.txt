@@ -1,25 +1,61 @@
-|SPOCK: 0.001911> [32m INFO [0m running..
-|SPOCK: 0.004487> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
-|SPOCK: 1.028395> [32m INFO [0m FreeType Version: 2.12.1
-|SPOCK: 1.028677> [32m INFO [0m OGL Version: 4.3.14761 Core Profile/Debug Context 21.30.02 30.0.13002.23
-|SPOCK: 1.028865> [32m INFO [0m SDL Version: 2.26.4
-|SPOCK: 1.029074> [32m INFO [0m SDL_mixer Version: 2.6.3
-|SPOCK: 1.100630> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
-|SPOCK: 1.265328> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.266168> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.268019> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.268250> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.269925> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.283021> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.283613> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.284243> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.284749> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.285286> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.285856> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.286369> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.286866> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.287392> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.287908> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.288585> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.289758> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 1.821346> [32m INFO [0m [1m #===# [0m[31m ENGINE FREE [0m[1m #===# [0m
+|SPOCK: 0.001571> [32m INFO [0m running..
+|SPOCK: 0.001800> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
+|SPOCK: 0.763731> [32m INFO [0m FreeType Version: 2.12.1
+|SPOCK: 0.763980> [32m INFO [0m OGL Version: 4.3.14761 Core Profile/Debug Context 21.30.02 30.0.13002.23
+|SPOCK: 0.764156> [32m INFO [0m SDL Version: 2.26.4
+|SPOCK: 0.764308> [32m INFO [0m SDL_mixer Version: 2.6.3
+|SPOCK: 0.814282> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
+|SPOCK: 0.959916> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.963977> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.964330> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.965554> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.966290> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.966788> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.967732> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.968392> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.969359> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.969805> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.970466> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.975749> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.987798> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 2.483382> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 2.491716> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 2.500041> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 2.508369> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 2.516863> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 2.525060> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 2.533386> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 2.541716> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.375037> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.375530> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.383714> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.391706> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.391965> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.392479> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.400405> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.408380> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.408746> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.409356> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.416704> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.416921> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.417547> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.417711> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.433376> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.433639> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.433836> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.441712> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.441952> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.458384> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.466970> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.475057> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.483396> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.508389> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.525069> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.533390> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.550048> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.558383> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.566731> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.575045> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.583369> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 8.583610> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 14.074670> [32m INFO [0m [1m #===# [0m[31m ENGINE FREE [0m[1m #===# [0m

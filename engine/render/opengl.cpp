@@ -111,8 +111,8 @@ namespace spk {
         int      size;
 
         // 1) copy data over to the copy buffer
-        glGetNamedBufferParameteriv(id, GL_BUFFER_SIZE, &size);
-
+        glBindBuffer(type, id);
+        glGetBufferParameteriv(type, GL_BUFFER_SIZE, &size);
         return size;
     }
 
@@ -120,9 +120,16 @@ namespace spk {
         uint32_t copy_buffer;
         int      old_size;
 
+
         // 1) copy data over to the copy buffer
         glBindBuffer(GL_COPY_READ_BUFFER, id);
         glGetBufferParameteriv(GL_COPY_READ_BUFFER, GL_BUFFER_SIZE, &old_size);
+
+        if(old_size == 0) {
+            glBindBuffer(type, id);
+            glBufferData(type, new_size, nullptr, GL_DYNAMIC_DRAW);
+            return;
+        }
 
         glCreateBuffers(1, &copy_buffer);
 

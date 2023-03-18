@@ -4,7 +4,6 @@
 
 #include "opengl.hpp"
 #include "utility/structures.hpp"
-#include "core/data.hpp"
 
 namespace spk {
     struct base_renderer_t {
@@ -13,11 +12,12 @@ namespace spk {
 
         // framebuffer level = 0
 
-        template<typename ... params, typename func>
-        void mesh_system_add(flecs::world& world, func&& iter) {
+        flecs::system mesh_system_add(const flecs::system& system) {
             // adding the tag_render_system, stops it from being called during ticks
-            mesh_systems.push_back(world.system<params...>().iter(iter));
-            flecs::entity(world, mesh_systems.back().id()).add<tag_render_system_t>();
+            mesh_systems.push_back(system);
+            ((flecs::entity)system).add<tag_render_system_t>();
+
+            return mesh_systems.back();
         }
     };
 }
