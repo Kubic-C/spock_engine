@@ -38,9 +38,9 @@ namespace spk {
                 glm::uvec2   coords = tilemap.tiles.get_2D_from_1D(pair.first);
                 tile_group_t tile   = pair.second;
                 auto&        sprite = resources().tile_dictionary[tilemap.tiles.get(coords.x, coords.y).id].sprite;
-                glm::vec2    offset;
-                float        half_width = tile.x / 2, 
-                             half_height = tile.y / 2;
+                glm::vec2    offset = {};
+                float        half_width  = tile.x / 2.0f, 
+                             half_height = tile.y / 2.0f;
 
                 if(tilemap.tiles.get(coords.x, coords.y).id == 0)
                     continue;
