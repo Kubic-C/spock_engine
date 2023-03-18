@@ -1,235 +1,170 @@
 #include "sprite_renderer.hpp"
-#include "core/internal.hpp"
-#include "spock.hpp"
-
-const char* vs_sprite = R"###(
-#version 330 core
-layout(location = 0) in vec3 a_pos;
-layout(location = 1) in vec2 a_tex_coords;
-
-out vec2 v_tex_coords;
-
-uniform mat4 u_vp;
-
-void main() {
-    gl_Position = u_vp * vec4(a_pos, 1.0);
-    v_tex_coords = a_tex_coords;
-})###";
-
-const char* fs_sprite = R"###(
-#version 330 core
-in vec2 v_tex_coords;
-
-uniform sampler2D atlas;
-
-out vec4 fragment_color;
-
-void main() {
-    fragment_color = texture(atlas, v_tex_coords);
-})###";
-
-const char* vs_arrayd_sprite = R"###(
-#version 330 core
-layout(location = 0) in vec3 a_pos;
-layout(location = 1) in vec3 a_tex_coords;
-
-out vec3 v_tex_coords;
-
-uniform mat4 u_vp;
-
-void main() {
-    gl_Position = u_vp * vec4(a_pos, 1.0);
-    v_tex_coords = a_tex_coords;
-})###";
-
-const char* fs_arrayd_sprite = R"###(
-#version 330 core
-in vec3 v_tex_coords;
-
-uniform sampler2DArray array;
-
-out vec4 fragment_color;
-
-void main() {
-    fragment_color = texture(array, v_tex_coords);
-})###";
+#include "core/data.hpp"
 
 namespace spk {
-    sprite_renderer_t::sprite_renderer_t() {
-        {
-            atlasd_sprites.init();
-            atlasd_ctx.init();
-            atlasd_ctx.vertex_layout.add(0, 3, GL_FLOAT, GL_FALSE, sizeof(sprite_atlasd_vertex_t), 0);
-            atlasd_ctx.vertex_layout.add(1, 2, GL_FLOAT, GL_FALSE, sizeof(sprite_atlasd_vertex_t), sizeof(glm::vec3));
-            
-            bool ret = atlasd_ctx.program.load_shader_str(vs_sprite, fs_sprite);
-            spk_assert(ret);
-        }
-
-        {
-            arrayd_sprites.init();
-            arrayd_ctx.init();
-            arrayd_ctx.vertex_layout.add(0, 3, GL_FLOAT, GL_FALSE, sizeof(sprite_arrayd_vertex_t), 0);
-            arrayd_ctx.vertex_layout.add(1, 3, GL_FLOAT, GL_FALSE, sizeof(sprite_arrayd_vertex_t), sizeof(glm::vec3));
-
-            bool ret = arrayd_ctx.program.load_shader_str(vs_arrayd_sprite, fs_arrayd_sprite);
-            spk_assert(ret);
-        }
-
-    }
-
-    sprite_renderer_t::~sprite_renderer_t() {
-        atlasd_ctx.free();
-        atlasd_sprites.free();       
-        arrayd_sprites.free(); 
-    }
-
-    void sprite_renderer_t::draw() {        
-        auto camera   = internal->scene.camera.get_ref<comp_camera_t>();
-
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        {
-            atlasd_ctx.vertex_layout.set_buffer(0, atlasd_sprites.vertex_buffer);
-            atlasd_ctx.vertex_layout.set_buffer(1, atlasd_sprites.vertex_buffer);
-            atlasd_ctx.vertex_array.bind_layout(atlasd_ctx.vertex_layout);
-
-            for(uint32_t i = 0; i < SPK_MAX_ATLAS; i++) {
-                if(!internal->resources.sprite_atlases.is_in_use(i))
-                    continue;
-
-                auto&           atlas_mesh = atlasd_sprites.meshes[i];
-                sprite_atlas_t* atlas      = internal->resources.sprite_atlases.get_atlas(i);
-
-                if(0 < atlas_mesh.sprites) {
-                    atlasd_sprites.subdata(i);
-
-                    render_system().quad_index_buffer.bind();
-                    atlasd_ctx.vertex_array.bind();
-                    atlasd_ctx.program.use();
-                    atlasd_ctx.program.set_mat4("u_vp", camera->vp);
-                    atlasd_ctx.program.set_int("atlas", 0);
-                    atlas->texture.active_texture(GL_TEXTURE0);
-                    glDrawElements(GL_TRIANGLES, atlas_mesh.sprites * atlasd_sprites.vertexes_per_sprite, GL_UNSIGNED_INT, nullptr);   
-                }
-            }
-        }
-
-        {
-            arrayd_ctx.vertex_layout.set_buffer(0, arrayd_sprites.vertex_buffer);
-            arrayd_ctx.vertex_layout.set_buffer(1, arrayd_sprites.vertex_buffer);
-            arrayd_ctx.vertex_array.bind_layout(arrayd_ctx.vertex_layout);
-
-            for(uint32_t i = 0; i < SPK_MAX_SPRITE_ARRAYS; i++) {
-                if(!internal->resources.sprite_arrays.is_in_use(i))
-                    continue;
-
-                auto&           array_mesh = arrayd_sprites.meshes[i];
-                sprite_array_t* array      = internal->resources.sprite_arrays.get(i);
-
-                if(0 < array_mesh.sprites) {
-                    arrayd_sprites.subdata(i);
-
-                    render_system().quad_index_buffer.bind();
-                    arrayd_ctx.vertex_array.bind();
-                    arrayd_ctx.program.use();
-                    arrayd_ctx.program.set_mat4("u_vp", camera->vp);
-
-                    arrayd_ctx.program.set_int("array", 0);
-                    array->texture_array.bind();
-                    glActiveTexture(GL_TEXTURE0);
-
-                    glDrawElements(GL_TRIANGLES, array_mesh.sprites * arrayd_sprites.vertexes_per_sprite, GL_UNSIGNED_INT, nullptr);   
-                }
-            }
-        }
-
-        glDisable(GL_BLEND);
-    }   
-
+    struct vertex_t {
+        glm::vec3 pos;
+        glm::vec3 tex;
+    };
+    
     glm::vec3 get_world_point(b2Body* body, glm::vec3 local_point) {
         return glm::vec3{(glm::vec2)body->GetWorldPoint(b2Vec2(local_point.x, local_point.y)), local_point.z};
     }
 
-    template<>
-    void sprite_batch_mesh_t<sprite_arrayd_vertex_t, comp_sprite_arrayd_t>::add_sprite_mesh(
-            b2Body* body, 
-            comp_sprite_arrayd_t& sprite,
-            uint32_t sprites_x,
-            uint32_t sprites_y,
-            const glm::vec2& offset) {
-        if(sprite.array_id == UINT32_MAX)
-            return;
-        
-        float                    half_width  = (float)sprites_x / 2.0f;
-        float                    half_height = (float)sprites_y / 2.0f;
-        const uint32_t           array_id   = sprite.array_id;
-        uint32_t                 index      = meshes[array_id].sprites * indexes_per_sprite;
+    void sprite_renderer_t::add_mesh(const sprite_arrayd_t& sprite, void* vertices) {
+        auto& buffer             = meshes[sprite.array_id].buffer; 
+        auto& vertexes_on_buffer = meshes[sprite.array_id].vertexes_on_buffer;
+        auto& vertexes_to_render = meshes[sprite.array_id].vertexes_to_render;
 
-        meshes[array_id].sprites += 1;
-        resize_mesh_if_need(array_id);
+        if(buffer.size() < (vertexes_on_buffer + 4) * sizeof(vertex_t)) 
+            buffer.resize((vertexes_on_buffer + 4) * sizeof(vertex_t));
 
-        meshes[array_id].mesh[index + 0] = 
-            { get_world_point(body, (glm::vec3){ glm::vec2(-half_width, -half_height) + offset, sprite.z}), 
-              glm::vec3(0.0f, 0.0f, sprite.index) };
-
-        meshes[array_id].mesh[index + 1] = 
-            { get_world_point(body, (glm::vec3){ glm::vec2(half_width, -half_height) + offset, sprite.z}),
-              glm::vec3(1.0f * sprites_x, 0.0f, sprite.index) };
-
-        meshes[array_id].mesh[index + 2] = 
-            { get_world_point(body, (glm::vec3){ glm::vec2(half_width, half_height) + offset, sprite.z}),  
-              glm::vec3(1.0f * sprites_x, 1.0f * sprites_y, sprite.index) };
-
-        meshes[array_id].mesh[index + 3] = 
-            { get_world_point(body, (glm::vec3){ glm::vec2(-half_width, half_height) + offset, sprite.z}),  
-              glm::vec3(0.0f, 1.0f * sprites_y, sprite.index)};
+        buffer.bind();
+        buffer.buffer_sub_data(vertexes_on_buffer * sizeof(vertex_t), sizeof(vertex_t) * 4, vertices);
+        vertexes_on_buffer += 4;
+        vertexes_to_render += 6;
     }
 
-    template<>
-    void sprite_batch_mesh_t<sprite_arrayd_vertex_t, comp_sprite_arrayd_t>::add_sprite_mesh(
-            comp_sprite_arrayd_t& sprite, 
-            const glm::vec2& _1, 
-            const glm::vec2& _2, 
-            const glm::vec2& _3, 
-            const glm::vec2& _4) {
-        if(sprite.array_id == UINT32_MAX)
-            return;
+    void sprite_renderer_t::particles_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_particles_t* particles) {
+        spk_trace();
+
+        auto renderer = (sprite_renderer_t*)render_context().renderers[RENDERER_TYPE_SPRITE];
+
+        for(auto i : iter) {
+            comp_rigid_body_t& body            = bodies[i];
+            comp_particles_t&  particle_system = particles[i];
+            sprite_arrayd_t&   sprite = resources().tile_dictionary[particle_system.particle.id].sprite;
         
-        const uint32_t           array_id   = sprite.array_id;
-        uint32_t                 index      = meshes[array_id].sprites * indexes_per_sprite;
+            for(uint32_t j = 0; j < particle_system.particles.size(); j++) {
+                particle_t& particle = particle_system.particles[j];
 
-        meshes[array_id].sprites += 1;
-        resize_mesh_if_need(array_id);
+                vertex_t vertices[] = { 
+                    {glm::vec3(particle.pos - sprite.size, sprite.z),
+                        glm::vec3(0.0f, 0.0f, sprite.index)}, // bl
+                    {glm::vec3((glm::vec2){particle.pos.x + sprite.size.x, particle.pos.y - sprite.size.y}, sprite.z),
+                        glm::vec3(1.0f, 0.0f, sprite.index)}, // br
+                    {glm::vec3(particle.pos + sprite.size, sprite.z),
+                        glm::vec3(1.0f, 1.0f, sprite.index)}, // tr
+                    {glm::vec3((glm::vec2){particle.pos.x - sprite.size.x, particle.pos.y + sprite.size.y}, sprite.z),
+                        glm::vec3(0.0f, 1.0f, sprite.index)} // tl
+                };
 
-        meshes[array_id].mesh[index + 0] = {glm::vec3(_1, sprite.z), glm::vec3(0.0f, 0.0f, sprite.index)};
-        meshes[array_id].mesh[index + 1] = {glm::vec3(_2, sprite.z), glm::vec3(1.0f, 0.0f, sprite.index)};
-        meshes[array_id].mesh[index + 2] = {glm::vec3(_3, sprite.z), glm::vec3(1.0f, 1.0f, sprite.index)};
-        meshes[array_id].mesh[index + 3] = {glm::vec3(_4, sprite.z), glm::vec3(0.0f, 1.0f, sprite.index)};
+                if(!(particle_system.flags & PARTICLES_FLAGS_WORLD_POSITION)) {
+                    for(vertex_t& v : vertices) {
+                        v.pos = glm::vec3(particle_system.get_point(body, glm::vec2(v.pos)), 0.0f);
+                    }
+                }
+
+                renderer->add_mesh(sprite, vertices);
+            }   
+        }  
     }
 
-    template<>
-    void sprite_batch_mesh_t<sprite_atlasd_vertex_t, comp_sprite_atlasd_t>::add_sprite_mesh(
-            comp_sprite_atlasd_t& sprite, 
-            const glm::vec2& _1, 
-            const glm::vec2& _2, 
-            const glm::vec2& _3, 
-            const glm::vec2& _4) { 
-        if(sprite.atlas_id == UINT32_MAX)
-            return;
+    void sprite_renderer_t::tilemap_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_tilemap_t* tilemaps) {
+        spk_trace();
+
+        auto renderer = (sprite_renderer_t*)render_context().renderers[RENDERER_TYPE_SPRITE];
+
+        for(auto i : iter) {
+            comp_rigid_body_t&  body    = bodies[i];
+            comp_tilemap_t&     tilemap = tilemaps[i];
+
+            for(auto& pair : tilemap.tile_groups) {
+                glm::uvec2   coords = tilemap.tiles.get_2D_from_1D(pair.first);
+                tile_group_t tile   = pair.second;
+                auto&        sprite = resources().tile_dictionary[tilemap.tiles.get(coords.x, coords.y).id].sprite;
+                glm::vec2    offset = {};
+                float        half_width  = tile.x / 2.0f, 
+                             half_height = tile.y / 2.0f;
+
+                if(tilemap.tiles.get(coords.x, coords.y).id == 0)
+                    continue;
+
+                offset.x = (coords.x + SPK_TILE_HALF_SIZE) - (float)tile.x  / 2.0f - tilemap.center.x;
+                offset.y = (coords.y + SPK_TILE_HALF_SIZE) - (float)tile.y  / 2.0f - tilemap.center.y; 
+
+                vertex_t vertices[] = {
+                    { get_world_point(body, (glm::vec3){ glm::vec2(-half_width, -half_height) + offset, sprite.z}), 
+                        glm::vec3(0.0f, 0.0f, sprite.index) },
+
+                    { get_world_point(body, (glm::vec3){ glm::vec2(half_width, -half_height) + offset, sprite.z}),
+                        glm::vec3(1.0f * tile.x, 0.0f, sprite.index) },
+
+                    { get_world_point(body, (glm::vec3){ glm::vec2(half_width, half_height) + offset, sprite.z}),  
+                        glm::vec3(1.0f * tile.x, 1.0f * tile.y, sprite.index) },
+
+                    { get_world_point(body, (glm::vec3){ glm::vec2(-half_width, half_height) + offset, sprite.z}),  
+                        glm::vec3(0.0f, 1.0f * tile.y, sprite.index)}
+                };
+
+                renderer->add_mesh(sprite, vertices);
+            }
+        }
+    }
+
+    void sprite_renderer_t::sprite_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_sprite_t* sprites) {
+        spk_trace();
+
+        auto renderer = (sprite_renderer_t*)render_context().renderers[RENDERER_TYPE_SPRITE];
         
-        const uint32_t           atlas_id   = sprite.atlas_id;
-        sprite_atlas_t*          atlas      = internal->resources.sprite_atlases.get_atlas(atlas_id);
-        uint32_t                 index      = meshes[atlas_id].sprites * indexes_per_sprite;
-        std::array<glm::vec2, 4> tex_coords = atlas->gen_tex_coords(sprite.tax, sprite.tay);
+        for(auto i : iter) {
+            b2Body* body         = bodies[i];
+            comp_sprite_t sprite = sprites[i];
+            
+            vertex_t vertices[] = {
+                {get_world_point(body, glm::vec3(glm::vec2(-sprite.size.x, -sprite.size.y) + sprite.offset, sprite.z)), 
+                    glm::vec3(0.0f, 0.0f, sprite.index)},
+                {get_world_point(body, glm::vec3(glm::vec2( sprite.size.x, -sprite.size.y) + sprite.offset, sprite.z)), 
+                    glm::vec3(1.0f, 0.0f, sprite.index)},
+                {get_world_point(body, glm::vec3(glm::vec2( sprite.size.x,  sprite.size.y) + sprite.offset, sprite.z)), 
+                    glm::vec3(1.0f, 1.0f, sprite.index)},
+                {get_world_point(body, glm::vec3(glm::vec2(-sprite.size.x,  sprite.size.y) + sprite.offset, sprite.z)), 
+                    glm::vec3(0.0f, 1.0f, sprite.index)}
+            };
 
-        meshes[atlas_id].sprites += 1;
-        resize_mesh_if_need(atlas_id);
+            renderer->add_mesh(sprite, vertices);
+        }        
+    }
 
-        meshes[atlas_id].mesh[index + 0] = {glm::vec3(_1, sprite.z),  tex_coords[0]};
-        meshes[atlas_id].mesh[index + 1] = {glm::vec3(_2, sprite.z),  tex_coords[1]};
-        meshes[atlas_id].mesh[index + 2] = {glm::vec3(_3, sprite.z),  tex_coords[2]};
-        meshes[atlas_id].mesh[index + 3] = {glm::vec3(_4, sprite.z),  tex_coords[3]};
+    void sprite_renderer_t::render() {
+        spk_trace();
+
+        auto& shader = render_context().shaders[SHADER_TYPE_SPRITE];
+        auto& vao    = render_context().common.array;
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        for(uint32_t i = 0; i < SPK_MAX_SPRITE_ARRAYS; i++) {
+            if(!resources().sprite_arrays.is_in_use(i))
+                continue;
+
+            auto&           mesh = meshes[i];
+            sprite_array_t* array      = resources().sprite_arrays.get(i);
+
+            if(mesh.vertexes_on_buffer > 0) {
+                vao.bind();
+                mesh.buffer.bind();
+                glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), nullptr);
+                glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (void*)sizeof(glm::vec3));
+                glEnableVertexAttribArray(0);
+                glEnableVertexAttribArray(1);
+
+                render_context().common.quad_indexes.bind();
+                shader.use();
+                shader.set_mat4("u_vp", render_context().world_camera);
+
+                shader.set_int("array", 0);
+                array->texture_array.bind();
+                glActiveTexture(GL_TEXTURE0);
+
+                glDrawElements(GL_TRIANGLES, mesh.vertexes_to_render, GL_UNSIGNED_INT, nullptr);   
+                
+                mesh.vertexes_on_buffer = 0;
+                mesh.vertexes_to_render = 0;
+            }
+        }
+
+        glDisable(GL_BLEND);
     }
 }

@@ -1,6 +1,5 @@
 #include "particles.hpp"
 #include "utility/ui.hpp"
-#include "render/sprite_renderer.hpp"
 #include "core/internal.hpp"
 #include "components/rigid_body.hpp"
 #include <glm/gtx/vector_angle.hpp>
@@ -19,7 +18,7 @@ namespace spk {
         return randomf;         
     };
 
-    void process_particle_system(b2Body* body, float delta_time, comp_particles_t& ps) {
+    void process_particle_system(b2Body* body, double delta_time, comp_particles_t& ps) {
         if(!(ps.flags & PARTICLES_FLAGS_ACTIVE))
             return;
 
@@ -42,7 +41,7 @@ namespace spk {
                     erase = true;
                 }
             } else { // found particle with valid lifetime
-                ps.particles[i].pos += ps.particles[i].dir * (ps.particles[i].speed * delta_time);
+                ps.particles[i].pos += ps.particles[i].dir * (ps.particles[i].speed * (float)delta_time);
 
                 ps.particles[i].speed += ps.speed_step;
 
@@ -79,7 +78,7 @@ namespace spk {
                 cycles_to_do = 1;
 
             for(; cycles_to_do >= 1.0f; cycles_to_do--) {
-                const float angle = glm::angle(ps.dir, glm::normalize((glm::vec2){0.0f, 1.0f}));
+                const float angle = glm::orientedAngle(ps.dir, glm::normalize((glm::vec2){0.0f, 1.0f}));
                 float y = 0.0f; 
 
                 while(y <= ps.length && ps.particles.size() < ps.max) {
@@ -121,49 +120,17 @@ namespace spk {
         }
     }
 
-    void add_particles(sprite_arrayd_batch_mesh_t* ctx, b2Body* body, comp_particles_t& ps) {
-        tile_metadata_t& tmd = internal->resources.tile_dictionary[ps.particle.id];
-       
-        for(uint32_t j = 0; j < ps.particles.size(); j++) {
-            particle_t& particle = ps.particles[j];
-
-            std::array<glm::vec2, 4> vertexes = { 
-                (glm::vec2){particle.pos - tmd.sprite.size}, // bl
-                (glm::vec2){particle.pos.x + tmd.sprite.size.x, particle.pos.y - tmd.sprite.size.y}, // br
-                (glm::vec2){particle.pos + tmd.sprite.size}, // tr
-                (glm::vec2){particle.pos.x - tmd.sprite.size.x, particle.pos.y + tmd.sprite.size.y} // tl
-            };
-            
-            if(!(ps.flags & PARTICLES_FLAGS_WORLD_POSITION)) {
-                for(glm::vec2& v : vertexes) {
-                    v = ps.get_point(body, v);
-                }
-            }
-
-            ctx->add_sprite_mesh(tmd.sprite, vertexes[0], vertexes[1], vertexes[2], vertexes[3]);
-        }         
-    }
-
     void particles_system_tick(flecs::iter& iter, comp_rigid_body_t* bodies, comp_particles_t* particles) {
         for(auto i : iter) {
             process_particle_system(bodies[i], iter.delta_time(), particles[i]);
         }
     }
 
-    void particles_system_update(flecs::iter& iter, comp_rigid_body_t* bodies, comp_particles_t* particles) {
-        auto ctx = get_ctx<sprite_arrayd_batch_mesh_t>(iter);
-
-        for(auto i : iter) {
-            add_particles(ctx, bodies[i], particles[i]);            
-        }
-    }
-
-    void _particles_cs_init(mesh_t* ctx, flecs::world& world) {
+    void particles_cs_init(flecs::world& world) {
         spk_trace();
         
         particles_comp_init(world);
 
         world.system<comp_rigid_body_t, comp_particles_t>().iter(particles_system_tick);
-        world.system<comp_rigid_body_t, comp_particles_t>().kind(on_mesh_id).ctx(ctx).iter(particles_system_update);  
     } 
 }

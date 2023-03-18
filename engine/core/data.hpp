@@ -10,12 +10,11 @@
 #include "sprite_array.hpp"
 #include "tiles.hpp"
 
+#include "render/renderer.hpp"
+
 #include "utility/stack_allocator.hpp"
     
 namespace spk {
-    class render_system_t;
-    class window_t;
-    class ui_canvas_t;
 
     typedef std::function<void()> user_tick_t;
     typedef std::function<void()> user_update_t;
@@ -65,9 +64,9 @@ namespace spk {
     // note: this will be accessed the most often
     // What the engine should be currently writing and reading to (AKA working on)
     struct scene_t {
-        flecs::world     ecs_world; // has constructor, no need to set
-        render_system_t* renderer        = nullptr;
-        b2World*         physics_world   = nullptr;
+        flecs::world      ecs_world; // has constructor, no need to set
+        render_context_t* render_context = nullptr;
+        b2World*          physics_world  = nullptr;
 
         // user callbacks for tick and frame
         user_data_t user_data;
@@ -79,7 +78,7 @@ namespace spk {
         // entities must be owned by ecs_world
         flecs::entity event_system    = flecs::entity(UINT64_MAX);
         flecs::entity camera          = flecs::entity(UINT64_MAX);
-        ui_canvas_t*  canvas          = nullptr;
+        canvas_t*     canvas          = nullptr;
         window_t*     window          = nullptr;
     };
 
@@ -95,7 +94,7 @@ namespace spk {
     // allocators for canvases, windows, etc. and stack allocators
     struct allocators_t {
         object_pool_t<window_t>    window_pool;
-        object_pool_t<ui_canvas_t> canvas_pool;
+        object_pool_t<canvas_t> canvas_pool;
         stack_allocator_t          stack{4096 * 4};
     };
 
@@ -109,5 +108,13 @@ namespace spk {
     window_t& window();
 
     // gets the current canvas
-    ui_canvas_t& canvas();
+    canvas_t& canvas();
+    
+    // all self explanatory
+
+    settings_t&   settings();
+    statistics_t& statistics();
+    scene_t&      scene();
+    resources_t&  resources();
+    allocators_t& allocators();
 }

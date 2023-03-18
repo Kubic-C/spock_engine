@@ -7,9 +7,7 @@ namespace spk {
         z = 10.0f;
         pos  = { 0.0f, 0.0f };
         size = { 0.0f, 0.0f };
-        scale = 1.0f;
-        view = glm::identity<glm::mat4>();
-        proj = glm::identity<glm::mat4>();        
+        scale = 1.0f; 
     }
 
     void comp_camera_t::free(flecs::entity entity) {
@@ -38,6 +36,8 @@ namespace spk {
     }
 
     void comp_camera_t::recalculate() {
+        glm::mat4 view, proj;
+
         const float width  = size.x / 2.0f;
         const float height = size.y / 2.0f;
 
@@ -48,7 +48,7 @@ namespace spk {
 
         proj = glm::ortho(-width, width, -height, height, 0.001f, 300.0f);
 
-        vp = proj * view;
+        render_context().world_camera = proj * view;
     }
 
     void tag_current_camera_on_add(flecs::entity e, comp_camera_t& camera, tag_current_camera_t) {

@@ -57,16 +57,12 @@ target_sources(spock_engine PRIVATE
 target_sources(spock_engine PRIVATE)
 
 target_sources(spock_engine PRIVATE
+    "render/sprite_renderer.hpp" "render/sprite_renderer.cpp"
+    "render/common.hpp" "render/default_shaders.hpp"
     "render/opengl.hpp" "render/opengl.cpp"
     "render/texture_array.hpp" "render/texture_array.cpp"
-    "render/render_system.hpp" "render/render_system.cpp"
-    "render/meshes.hpp" "render/meshes.cpp"
-    "render/base_renderer.hpp" "render/base_renderer.cpp"
-    "render/button_renderer.hpp" "render/button_renderer.cpp"
-    "render/font_renderer.hpp" "render/font_renderer.cpp"
-    "render/sprite_renderer.hpp" "render/sprite_renderer.cpp"
-    "render/primitive_renderer.hpp" "render/primitive_renderer.cpp"
-    "render/ui_fb_renderer.hpp" "render/ui_fb_renderer.cpp")
+    "render/renderer.hpp" "render/renderer.cpp"
+    "render/body_renderer.hpp" "render/body_renderer.cpp")
     
 target_sources(spock_engine PRIVATE
     "core/sound.hpp" "core/sound.cpp"

@@ -27,22 +27,24 @@ namespace spk {
     struct comp_particles_t : component_t {
         uint8_t flags;
 
-        tile_t particle;
-        particles_funnel_e funnel;
-        float chance;
-        float step;
-        float base_speed;
-        float speed_step;
-        float base_lifetime;
-        float current_cycle;
-        float base_cycle;
+        tile_t particle; // used to get sprite information and physics info.
+        particles_funnel_e funnel; // funnel of the particle systems, affects the direction and initial speed of particles
+        float chance; // chance of a particle spawning, range is 0.0 to 1.0. Set to 1.0 to always spawn
+        float base_speed; // the initial speed of a particle
+        float speed_step; // how much to increase a particle's speed every tick, can be negative
+        float base_lifetime; // the lifetime of a particle, higher lifetimes the longer they stay one screen
+        float current_cycle; // do not touch
+        float base_cycle; // how often to try and create a particle (in seconds)
 
-        glm::vec2 pos;
-        glm::vec2 dir;
-        float length;
-        float width;
+        // the increment between spawning of particles on the spawn line, starts at 0 and stops once past length
+        // shorter steps essentially mean more particles per cycle
+        float step; 
+        glm::vec2 pos; // position of the spawn line (relative to body)
+        glm::vec2 dir; // direction of the spawn line
+        float length; // length of the spawn line
+        float width; // width of the spawn line
 
-        uint32_t max;
+        uint32_t max; // the maximum amount of particles allowed
         std::deque<particle_t> particles;
         
         glm::vec2 get_point(b2Body* body, glm::vec2 point);

@@ -56,7 +56,9 @@ namespace spk {
         void init(uint32_t type);
         void free();
     
+        int size();
         void bind();
+        void resize(size_t new_size);
         void buffer_data(size_t size, void* data, size_t usage);
         void buffer_sub_data(size_t offset, size_t size, const void* data);
 
@@ -81,12 +83,12 @@ namespace spk {
     class texture2D_t {
     public:
         bool init();
+        void free();
         void allocate(uint32_t type, uint32_t internal_format, uint32_t format, int width, int height, void* pixels);
         void subdata(uint32_t type, uint32_t xoffset, uint32_t yoffset, uint32_t format, int width, int height, void* pixels);
         bool load_image(const char* path, int desired_channels, bool flip, bool gen_mipmap = false);
         void active_texture(uint32_t slot);
         void bind();
-        void free();
 
         glm::ivec2 get_size() {
             int width, height;
@@ -113,12 +115,13 @@ namespace spk {
 
     class program_t {
     public:
-        bool init();
+        program_t();
+        ~program_t();
+
         bool load_shader_files(const char* vsh, const char* fsh);
         bool load_shader_str(const char* vs, const char* fs);
         bool load_shader_modules(uint32_t vsh, uint32_t fsh, bool delete_shaders = true);
         void use();
-        void free();
 
         void set_bool(const std::string &name, bool value) const
         {         

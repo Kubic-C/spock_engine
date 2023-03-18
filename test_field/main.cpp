@@ -28,9 +28,7 @@ MAIN {
 
     b2World* world = scene.physics_world;
 
-    {
-        spk::canvas().
-    }
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     {
         smells_blood_id = spk::music_load("smells_blood.mp3");
@@ -60,6 +58,7 @@ MAIN {
         td[1].restitution = 1.1f;
         td[1].friction = 0.0f;
 
+        td[2].sprite.array_id = 0;
         td[2].sprite.index = 1;
         td[2].density = 50.0f;
         td[2].friction = 0.0f;
@@ -71,22 +70,38 @@ MAIN {
     }
 
     for(size_t i = 0; i < 10; i++) {
-        scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb) {
+        scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_sprite_t& sprite, spk::comp_particles_t& ps) {
             float random = rand();
             random *= 0.01f;
 
             rb->SetType(b2_dynamicBody);
+            rb->SetBullet(true);
             rb->SetTransform((glm::vec2){fmod(random, 10.0f) - 5.0f, fmod(random, 10.0f) - 5.0f}, 0.0f);
 
-            b2CircleShape shape;
-
-            shape.m_radius = fmod(random, 1.9f) + 0.1f;
+            b2PolygonShape shape;
+            float hl = fmod(random, 5.0f) + 0.1f;
+            shape.SetAsBox(hl, hl);
 
             b2FixtureDef fdef;
             fdef.shape = &shape;
-            fdef.density = 0.1f;
-            fdef.restitution = 1.0f;
+            fdef.density = 0.5f;
+            fdef.restitution = 0.1f;
             rb->CreateFixture(&fdef);
+
+            sprite.size = {hl, hl};
+            sprite.array_id = 0;
+            sprite.index = 1;
+            sprite.z = 0.0f;
+
+            ps.funnel = spk::PARTICLES_FUNNEL_FUNNEL;
+            ps.step   = 0.2f; // fun :)
+            ps.length = 1.0f;
+            ps.base_speed = 9.0f;
+            ps.particle.id = 4;
+            ps.base_cycle = 0.1f;
+            ps.base_lifetime = 0.5f;
+            ps.max = UINT32_MAX;
+            ps.flags  = spk::PARTICLES_FLAGS_WORLD_DIRECTION | spk::PARTICLES_FLAGS_WORLD_POSITION | spk::PARTICLES_FLAGS_ACTIVE;
         });
     }
     
@@ -117,18 +132,31 @@ MAIN {
         rb->SetType(b2_dynamicBody);
         rb->SetBullet(true);
 
-        tilemap.tiles.get(0, 0) = 2;
+        tilemap.tiles.get(1, 0) = 2;
         tilemap.tiles.get(1, 1) = 2;
         tilemap.tiles.get(1, 2) = 2;
         tilemap.tiles.get(1, 3) = 2;
         tilemap.tiles.get(1, 4) = 2;
-        tilemap.tiles.get(1, 0) = 2;
+        tilemap.tiles.get(1, 5) = 2;
+        tilemap.tiles.get(1, 6) = 2;
+        tilemap.tiles.get(1, 7) = 2;
+        tilemap.tiles.get(1, 8) = 2;
+        tilemap.tiles.get(1, 9) = 2;
+        tilemap.tiles.get(1, 10) = 2;
+        tilemap.tiles.get(1, 11) = 2;
 
         tilemap.add_fixtures(rb);
 
         cc.speed = 100.0f;
+
+        b2CircleShape shape;
+        shape.m_radius = 15.0f;
+        b2FixtureDef fixture;
+        fixture.shape = &shape;
+        fixture.isSensor = true;
+        rb->CreateFixture(&fixture);
     
-       callbacks.end = [&](flecs::entity self, flecs::entity other, b2Contact* contact) {
+        callbacks.end = [&](flecs::entity self, flecs::entity other, b2Contact* contact) {
             spk::chunk_play(coin_sound_id, 0);
 
             if(other == wall)
@@ -152,18 +180,20 @@ MAIN {
                 glm::vec2 dir_away = 
                     glm::normalize((glm::vec2)other_fixture->GetBody()->GetPosition() - (glm::vec2)self_fixture->GetBody()->GetPosition());
 
-                float strength = 100.0f;
+                float strength = 10.0f;
 
-                other_fixture->GetBody()->ApplyLinearImpulseToCenter(dir_away * strength, true);
+                other_fixture->GetBody()->ApplyLinearImpulseToCenter(-dir_away * strength, true);
             }
         };
-    });
+    }).add<spk::tag_body_render_t>();
 
     scene.camera.get_ref<spk::comp_camera_t>()->scale = 1.5f;
 
     scene.user_data.update = [&](){
         character.set([&](spk::comp_rigid_body_t& rb){
             scene.camera.get_ref<spk::comp_camera_t>()->pos = rb->GetPosition();
+
+            rb->ApplyTorque(10000, true);
         });
     };  
 
