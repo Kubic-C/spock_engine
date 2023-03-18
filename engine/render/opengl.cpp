@@ -107,6 +107,40 @@ namespace spk {
         glGenBuffers(1, &id);
     }
 
+    int vertex_buffer_t::size() {
+        int      size;
+
+        // 1) copy data over to the copy buffer
+        glGetNamedBufferParameteriv(id, GL_BUFFER_SIZE, &size);
+
+        return size;
+    }
+
+    void vertex_buffer_t::resize(size_t new_size) {
+        uint32_t copy_buffer;
+        int      old_size;
+
+        // 1) copy data over to the copy buffer
+        glBindBuffer(GL_COPY_READ_BUFFER, id);
+        glGetBufferParameteriv(GL_COPY_READ_BUFFER, GL_BUFFER_SIZE, &old_size);
+
+        glCreateBuffers(1, &copy_buffer);
+
+        glBindBuffer(GL_COPY_WRITE_BUFFER, copy_buffer);
+        glBufferData(GL_COPY_WRITE_BUFFER, old_size, nullptr, GL_STATIC_COPY);
+
+        glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, old_size);
+
+        // 1) resize the main buffer
+        glBindBuffer(GL_COPY_WRITE_BUFFER, id);
+        glBindBuffer(GL_COPY_READ_BUFFER, copy_buffer);
+        glBufferData(GL_COPY_WRITE_BUFFER, new_size, nullptr, GL_DYNAMIC_DRAW);
+
+        // 2) then write back to the main buffer and cleanup
+        glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, old_size);
+        glDeleteBuffers(1, &copy_buffer);
+    }
+
     void vertex_buffer_t::buffer_data(size_t size, void* data, size_t usage) {
         bind();
         glBufferData(type, size, data, usage);
@@ -201,10 +235,12 @@ namespace spk {
         glDeleteTextures(1, &id);
     }
 
-    bool program_t::init() {
+    program_t::program_t() {
         id = glCreateProgram();
+    }
 
-        return true;
+    program_t::~program_t() {
+        glDeleteProgram(id);
     }
 
     bool program_t::load_shader_files(const char* vsh_path, const char* fsh_path) {
@@ -276,10 +312,6 @@ namespace spk {
 
     void program_t::use() {
         glUseProgram(id);    
-    }
-
-    void program_t::free() {
-        glDeleteProgram(id);
     }
 
     void tex_param_nearest(uint32_t target) {

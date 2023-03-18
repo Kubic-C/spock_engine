@@ -15,9 +15,6 @@
 #include "utility/stack_allocator.hpp"
     
 namespace spk {
-    class render_system_t;
-    class window_t;
-    class canvas_t;
 
     typedef std::function<void()> user_tick_t;
     typedef std::function<void()> user_update_t;
@@ -112,4 +109,12 @@ namespace spk {
 
     // gets the current canvas
     canvas_t& canvas();
+    
+    // all self explanatory
+
+    settings_t&   settings();
+    statistics_t& statistics();
+    scene_t&      scene();
+    resources_t&  resources();
+    allocators_t& allocators();
 }

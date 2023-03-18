@@ -8,28 +8,28 @@ namespace spk {
 
         event_window_size_t* resize = iter.param<event_window_size_t>();
 
-        render_system().resize(resize->width, resize->height); 
+        render_context().frame_resize(resize->width, resize->height); 
     }
 
     void render_system_begin_render(flecs::iter& iter) {
         spk_trace();
         spk_assert(iter.count() == 0);
 
-        render_system().begin_frame();
+        render_context().frame_begin();
     }
 
     void render_system_render(flecs::iter& iter) {
         spk_trace();
         spk_assert(iter.count() == 0);
 
-        render_system().draw_frame();
+        render_context().frame_render();
     }
 
     void render_system_end_render(flecs::iter& iter) {
         spk_trace();
         spk_assert(iter.count() == 0);
 
-        render_system().end_frame(window().window);
+        render_context().frame_end();
     }
 
     void render_system_init(flecs::world& world) {

@@ -47,12 +47,4 @@ namespace spk {
      * 
      */
     void print_deps_versions();
-
-    // all self explanatory
-
-    settings_t&   settings();
-    statistics_t& statistics();
-    scene_t&      scene();
-    resources_t&  resources();
-    allocators_t& allocators();
 }

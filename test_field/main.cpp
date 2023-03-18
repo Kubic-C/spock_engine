@@ -75,13 +75,13 @@ MAIN {
             rb->SetTransform((glm::vec2){fmod(random, 10.0f) - 5.0f, fmod(random, 10.0f) - 5.0f}, 0.0f);
 
             b2PolygonShape shape;
-            float hl = fmod(random, 1.9f) + 0.1f;
+            float hl = fmod(random, 5.0f) + 0.1f;
             shape.SetAsBox(hl, hl);
 
             b2FixtureDef fdef;
             fdef.shape = &shape;
             fdef.density = 0.1f;
-            fdef.restitution = 1.0f;
+            fdef.restitution = 0.1f;
             rb->CreateFixture(&fdef);
         });
     }
@@ -118,7 +118,13 @@ MAIN {
         tilemap.tiles.get(1, 2) = 2;
         tilemap.tiles.get(1, 3) = 2;
         tilemap.tiles.get(1, 4) = 2;
-        tilemap.tiles.get(1, 0) = 2;
+        tilemap.tiles.get(1, 5) = 2;
+        tilemap.tiles.get(1, 6) = 2;
+        tilemap.tiles.get(1, 7) = 2;
+        tilemap.tiles.get(1, 8) = 2;
+        tilemap.tiles.get(1, 9) = 2;
+        tilemap.tiles.get(1, 10) = 2;
+        tilemap.tiles.get(1, 11) = 2;
 
         tilemap.add_fixtures(rb);
 

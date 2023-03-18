@@ -57,7 +57,8 @@ target_sources(spock_engine PRIVATE
 target_sources(spock_engine PRIVATE)
 
 target_sources(spock_engine PRIVATE
-    "render/common.hpp"
+    "render/sprite_renderer.hpp" "render/sprite_renderer.cpp"
+    "render/common.hpp" "render/default_shaders.hpp"
     "render/opengl.hpp" "render/opengl.cpp"
     "render/texture_array.hpp" "render/texture_array.cpp"
     "render/renderer.hpp" "render/renderer.cpp"

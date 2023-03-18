@@ -67,17 +67,17 @@ namespace spk {
         init_defualt_ecs_pipelines();
 
         { // creating default scene
-            window_t*        window   = internal->allocators.stack.push<window_t>();
-            canvas_t*     canvas   = internal->allocators.stack.push<canvas_t>();
-            render_system_t* renderer = nullptr;
+            window_t*         window   = internal->allocators.stack.push<window_t>();
+            canvas_t*         canvas   = internal->allocators.stack.push<canvas_t>();
+            render_context_t* renderer = nullptr;
 
             window_make_current(*window);
             canvas_make_current(*canvas);
 
             // creating the renderer, MUST come after creating and making a window
             // current. As we must need a valid OpenGL context
-            renderer = internal->allocators.stack.push<render_system_t>(); 
-            render_system_make_current(*renderer);
+            renderer = allocators().stack.push<render_context_t>(); 
+            render_context_make_current(*renderer);
         }
 
         { // engine setup and state setup            
@@ -92,10 +92,10 @@ namespace spk {
             character_controller_cs_init(ecs_world);
             camera_cs_init(ecs_world);
             physics_cs_init(ecs_world);
+            tilemap_cs_init(ecs_world);
 
             // render systems
             render_system_init(ecs_world);
-            sprite_render_init(ecs_world);
             primitive_render_init(ecs_world);
             ui_cs_init(ecs_world);
         }
@@ -195,25 +195,5 @@ namespace spk {
         log.log("OGL Version: %s", ogl_ver); 
         log.log("SDL Version: %u.%u.%u", sdl_version.major, sdl_version.minor, sdl_version.patch);
         log.log("SDL_mixer Version: %u.%u.%u", mixer_version.major, mixer_version.minor, mixer_version.patch);
-    }
-
-    settings_t& settings() {
-        return internal->settings;
-    }
-
-    statistics_t& statistics() {
-        return internal->statistics;
-    }
-
-    scene_t& scene() {
-        return internal->scene;
-    }
-
-    resources_t& resources() {
-        return internal->resources;
-    }
-
-    allocators_t& allocators() {
-        return internal->allocators;
     }
 }

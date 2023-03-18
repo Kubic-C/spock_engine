@@ -6,5 +6,4 @@
 #include "systems/tilemap.hpp"
 
 namespace spk {
-    void sprite_render_init(flecs::world& world);
 }
