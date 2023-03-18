@@ -1,10 +1,6 @@
 # Spock
 
-this game engine uses (almost) entirely flecs for handling data and reading/writing data.
-
-spock is a game engine being developed for a game called synther, it's specifically tailored for it, some code inside the engine may include code that you will not use.
-
-***This engine is still undergoing many changes, and it will take while to develop a stable and non changing API. ENUMs, class names, struct names, the internal structure of the engine as a whole all could change so please keep that in mind when using***
+spock is a game engine being developed for a game called synther, it's specifically tailored for it, you may find some features ... unconventional.
 
 Current feature list:
 - basic sound, can play mp3 and wav files
@@ -25,6 +21,9 @@ Use GCC or CLANG, or a MinGW build if your on windows
 note: if your going to use Clang, you will have problems
 using valgrind as for whatever reason valgrind has problems with 
 the debugging symbols that Clang generates.
+
+You will not be able to use MSVC due to their incredible ignorance
+of keeping only one standard of C: C89.
 
 ## Dependencies
 All the libraries that spock engine is dependent on are all built within
