@@ -55,3 +55,6 @@ dkms.conf
 /build/*
 /lib/*
 /out/*
+
+#logs
+log.txt
