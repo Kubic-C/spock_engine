@@ -1,8 +1,7 @@
-|SPOCK: 0.001377> [32m INFO [0m running..
-|SPOCK: 0.001706> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
-|SPOCK: 1.160181> [32m INFO [0m FreeType Version: 2.12.1
-|SPOCK: 1.160355> [32m INFO [0m OGL Version: 4.3.14761 Core Profile/Debug Context 21.30.02 30.0.13002.23
-|SPOCK: 1.160468> [32m INFO [0m SDL Version: 2.26.4
-|SPOCK: 1.160556> [32m INFO [0m SDL_mixer Version: 2.6.3
-|SPOCK: 6.235043> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
-|SPOCK: 161.165485> [32m INFO [0m [1m #===# [0m[31m ENGINE FREE [0m[1m #===# [0m
+|SPOCK: 0.000024> [32m INFO [0m running..
+|SPOCK: 5.648413> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 5.648927> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 5.649178> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 5.649285> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 5.649470> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 12.266758> [32m INFO [0m could not play chunk: No free channels available

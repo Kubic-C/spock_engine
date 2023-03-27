@@ -30,10 +30,10 @@ namespace spk {
         texture2D_t texture;
     };
 
-    class sprite_atlas_manager_t {
+    class sprite_atlas_dictionary_t {
     public:
-        sprite_atlas_manager_t();
-        ~sprite_atlas_manager_t();
+        sprite_atlas_dictionary_t();
+        ~sprite_atlas_dictionary_t();
 
         bool is_in_use(uint32_t index); // returns true if the sprite atlas at index is IN USE
         void in_use(uint32_t index); // marks the sprite atlas at index as IN USE

@@ -9,13 +9,14 @@
 
 #include "sprite_array.hpp"
 #include "utility/image_loader.hpp"
+#include "internal.hpp"
 
 namespace spk {
-    void sprite_array_t::init() {
+    sprite_array_t::sprite_array_t() {
         texture_array.init();
     }
 
-    void sprite_array_t::free() {
+    sprite_array_t::~sprite_array_t() {
         texture_array.free();
     }
 
@@ -27,6 +28,9 @@ namespace spk {
     }
 
     bool sprite_array_t::image(const char* path, uint32_t layer) {
+        if(layer >= sprites) // access outside of array
+            return false;
+
         image_loader_t il;
         if(!il.load(path, true, STBI_rgb_alpha))
             return false;
@@ -45,58 +49,53 @@ namespace spk {
         glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
     }
 
-    sprite_array_manager_t::sprite_array_manager_t() {
+    sprite_array_dictionary_t::sprite_array_dictionary_t() {
         spk_trace();    
     }
 
-    sprite_array_manager_t::~sprite_array_manager_t() {
+    sprite_array_dictionary_t::~sprite_array_dictionary_t() {
         spk_trace();
-
-        for(uint32_t i = 0; i < SPK_MAX_SPRITE_ARRAYS; i++) {
-            if(in_use_bits[i]) {
-                sprite_arrays[i].free();
-            }
-        }
     }
 
-
-    void sprite_array_manager_t::init(uint32_t index) {
-        spk_assert(!is_in_use(index));
-
-        sprite_arrays[index].init();
-        in_use(index);
+    bool sprite_array_dictionary_t::is_valid(uint32_t id) {
+        return sprite_arrays.find(id) != sprite_arrays.end();
     }
 
-    bool sprite_array_manager_t::is_in_use(uint32_t index) {
-        return in_use_bits[index];
+    sprite_array_t& sprite_array_dictionary_t::get(uint32_t id) {
+        return sprite_arrays[id];
     }
 
-    void sprite_array_manager_t::in_use(uint32_t index) {
-        if(!in_use_bits[index])
-            in_use_bits.set(index, true);
-    }
-    
-    sprite_array_t* sprite_array_manager_t::get(uint32_t index) {
-        spk_assert(is_in_use(index));
+    uint32_t sprite_array_dictionary_t::add() {
+        sprite_arrays[++counter];
 
-        return &sprite_arrays[index];
+        return counter;
     }
 
-    void sprite_array_manager_t::start(uint32_t index, uint32_t width, uint32_t height, uint32_t sprites) {
-        spk_assert(is_in_use(index));
-
-        sprite_arrays[index].storage(width, height, sprites);
+    hashmap_t<uint32_t, sprite_array_t>& sprite_array_dictionary_t::map() {
+        return sprite_arrays;
     }
 
-    bool sprite_array_manager_t::load(uint32_t index, const char* path, uint32_t sprite_index) {
-        spk_assert(is_in_use(index));
-        
-        return sprite_arrays[index].image(path, sprite_index);
+    sprite_array_dictionary_t& sprite_arrays() {
+        return resources().sprite_arrays;
     }
 
-    void sprite_array_manager_t::finish(uint32_t index) {
-        spk_assert(is_in_use(index));      
+    uint32_t sprite_array_init(uint32_t width, uint32_t height, uint32_t sprites) {
+        uint32_t id = sprite_arrays().add();
 
-        sprite_arrays[index].tex_params();
+        sprite_arrays().get(id).storage(width, height, sprites);
+
+        return id;
+    }
+
+    bool sprite_array_load(uint32_t id, const char* path, uint32_t index) {
+        auto& array   = sprite_arrays().get(id);
+        bool  success = array.image(path, index);
+
+        if(!success)
+            return false;
+
+        array.tex_params();
+
+        return true;
     }
 }

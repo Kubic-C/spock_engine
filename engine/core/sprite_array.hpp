@@ -10,16 +10,18 @@
 #pragma once
 
 #include "render/opengl.hpp"
+#include "utility/structures.hpp"
 
 #define SPK_MAX_SPRITE_ARRAYS 8
 
 namespace spk {
     struct sprite_array_t {
-        void init();
+        sprite_array_t();
+        ~sprite_array_t();
+
         void storage(uint32_t width, uint32_t height, uint32_t sprites);
         bool image(const char* path, uint32_t layer);
         void tex_params();
-        void free();
 
         uint32_t          width;
         uint32_t          height;
@@ -27,21 +29,43 @@ namespace spk {
         texture_array2D_t texture_array;
     };  
 
-    class sprite_array_manager_t {
+    class sprite_array_dictionary_t {
     public:
-        sprite_array_manager_t();
-        ~sprite_array_manager_t();
+        sprite_array_dictionary_t();
+        ~sprite_array_dictionary_t();
 
-        bool            is_in_use(uint32_t index);
-        void            in_use(uint32_t index);
-        void            init(uint32_t index);
-        void            start(uint32_t index, uint32_t width, uint32_t height, uint32_t sprites);
-        bool            load(uint32_t index, const char* path, uint32_t sprite_index);
-        void            finish(uint32_t index);
-        sprite_array_t* get(uint32_t index);
+        uint32_t                             add();
+        bool                                 is_valid(uint32_t id);
+        sprite_array_t&                      get(uint32_t id);
+        hashmap_t<uint32_t, sprite_array_t>& map();
 
     private:
-        std::bitset<SPK_MAX_SPRITE_ARRAYS> in_use_bits;
-        std::array<sprite_array_t, SPK_MAX_SPRITE_ARRAYS> sprite_arrays;
+        hashmap_t<uint32_t, sprite_array_t> sprite_arrays;
+
+        uint32_t counter = 0; // use for creating IDs
     };
+
+    sprite_array_dictionary_t& sprite_arrays();
+
+    /**
+     * @brief initializes a new sprite array
+     * 
+     * @param width: the width of the sprites in sprite array
+     * @param height: the height of the sprites in sprite array
+     * @param sprites: the number of sprites within the sprite array
+     * 
+     * @return an ID assigned with the sprite array
+     */
+    uint32_t sprite_array_init(uint32_t width, uint32_t height, uint32_t sprites);       
+
+    /**
+     * @brief gets sprite data from path and sets it into sprite array index
+     * 
+     * @param id: the ID of the sprite array to change
+     * @param path: the path of an image file to load into the sprite array
+     * @param index: the index within the sprite array which refers to the sprite slot to set
+     * 
+     * @param true for successful path load. 
+     */
+    bool sprite_array_load(uint32_t id, const char* path, uint32_t index);
 }

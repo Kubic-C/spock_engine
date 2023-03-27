@@ -16,14 +16,20 @@ namespace spk {
     }
 
     b2World* physics_world() {
+        spk_assert(internal->scene.physics_world);
+
         return internal->scene.physics_world;
     }
 
     window_t& window() {
+        spk_assert(internal->scene.window);
+
         return *internal->scene.window;
     }
 
     canvas_t& canvas() {
+        spk_assert(internal->scene.canvas);
+
         return *internal->scene.canvas;
     }
 

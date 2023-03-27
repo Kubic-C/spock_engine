@@ -59,11 +59,11 @@ namespace spk {
         texture.free();
     }
 
-    sprite_atlas_manager_t::sprite_atlas_manager_t() {
+    sprite_atlas_dictionary_t::sprite_atlas_dictionary_t() {
         spk_trace();
     }
 
-    sprite_atlas_manager_t::~sprite_atlas_manager_t() {
+    sprite_atlas_dictionary_t::~sprite_atlas_dictionary_t() {
         spk_trace();
         
         for(uint32_t i = 0; i < SPK_MAX_ATLAS; i++) {
@@ -73,16 +73,16 @@ namespace spk {
         }
     }
 
-    bool sprite_atlas_manager_t::is_in_use(uint32_t index) {
+    bool sprite_atlas_dictionary_t::is_in_use(uint32_t index) {
         return in_use_bits[index];        
     }
 
-    void sprite_atlas_manager_t::in_use(uint32_t index) {
+    void sprite_atlas_dictionary_t::in_use(uint32_t index) {
         if(!in_use_bits[index])
             in_use_bits.set(index, true);
     }
 
-    sprite_atlas_t* sprite_atlas_manager_t::get_atlas(uint32_t index) {
+    sprite_atlas_t* sprite_atlas_dictionary_t::get_atlas(uint32_t index) {
         spk_assert(is_in_use(index));
 
         return &sprite_atlases[index];

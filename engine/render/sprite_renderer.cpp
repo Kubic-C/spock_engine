@@ -15,15 +15,24 @@ namespace spk {
         glm::vec3 pos;
         glm::vec3 tex;
     };
-    
+
     glm::vec3 get_world_point(b2Body* body, glm::vec3 local_point) {
         return glm::vec3{(glm::vec2)body->GetWorldPoint(b2Vec2(local_point.x, local_point.y)), local_point.z};
     }
 
+
+    sprite_renderer_t::mesh_t::mesh_t() {
+        buffer.init(GL_ARRAY_BUFFER);
+    }
+
+    sprite_renderer_t::mesh_t::~mesh_t() {
+        buffer.free();
+    }
+
     void sprite_renderer_t::add_mesh(const sprite_arrayd_t& sprite, void* vertices) {
-        auto& buffer             = meshes[sprite.array_id].buffer; 
-        auto& vertexes_on_buffer = meshes[sprite.array_id].vertexes_on_buffer;
-        auto& vertexes_to_render = meshes[sprite.array_id].vertexes_to_render;
+        auto& buffer             = meshes[sprite.id].buffer; 
+        auto& vertexes_on_buffer = meshes[sprite.id].vertexes_on_buffer;
+        auto& vertexes_to_render = meshes[sprite.id].vertexes_to_render;
 
         if(buffer.size() < (vertexes_on_buffer + 4) * sizeof(vertex_t)) 
             buffer.resize((vertexes_on_buffer + 4) * sizeof(vertex_t));
@@ -117,7 +126,7 @@ namespace spk {
         auto renderer = (sprite_renderer_t*)render_context().renderers[RENDERER_TYPE_SPRITE];
         
         for(auto i : iter) {
-            b2Body* body         = bodies[i];
+            b2Body*       body   = bodies[i];
             comp_sprite_t sprite = sprites[i];
             
             vertex_t vertices[] = {
@@ -144,12 +153,9 @@ namespace spk {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        for(uint32_t i = 0; i < SPK_MAX_SPRITE_ARRAYS; i++) {
-            if(!resources().sprite_arrays.is_in_use(i))
-                continue;
-
-            auto&           mesh = meshes[i];
-            sprite_array_t* array      = resources().sprite_arrays.get(i);
+        for(auto& pair : sprite_arrays().map()) {
+            auto&           mesh  = meshes[pair.first];
+            sprite_array_t& array = pair.second;
 
             if(mesh.vertexes_on_buffer > 0) {
                 vao.bind();
@@ -164,7 +170,7 @@ namespace spk {
                 shader.set_mat4("u_vp", render_context().world_camera);
 
                 shader.set_int("array", 0);
-                array->texture_array.bind();
+                array.texture_array.bind();
                 glActiveTexture(GL_TEXTURE0);
 
                 glDrawElements(GL_TRIANGLES, mesh.vertexes_to_render, GL_UNSIGNED_INT, nullptr);   

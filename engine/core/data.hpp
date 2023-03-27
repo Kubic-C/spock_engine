@@ -94,8 +94,8 @@ namespace spk {
     // loading and management of resources like external files or prefabs
     struct resources_t {
         font_manager_t         fonts;
-        sprite_atlas_manager_t sprite_atlases;
-        sprite_array_manager_t sprite_arrays;
+        sprite_atlas_dictionary_t sprite_atlases;
+        sprite_array_dictionary_t sprite_arrays;
         tile_dictionary_t      tile_dictionary;
         sound_dictionary_t     sounds;
     };

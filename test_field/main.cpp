@@ -35,36 +35,28 @@ MAIN {
         coin_sound_id   = spk::chunk_load("coin_sound.wav");
 
         resources.fonts.load_ascii("./Anonymous.ttf");
-        resources.sprite_atlases.init(0, 16, 16);
-        if(!resources.sprite_atlases.load_from_path(0, "./test_atlas.png")) {
-            spk::log.log("failed to load atlas");
-            return -100;
-        }
-        
-        resources.sprite_arrays.init(0);
-        resources.sprite_arrays.start(0, 32, 32, 5);
-        resources.sprite_arrays.load(0, "./texture_array/image1.png", 0);
-        resources.sprite_arrays.load(0, "./texture_array/image2.png", 1);
-        resources.sprite_arrays.finish(0);
 
-        resources.sprite_arrays.init(1);
-        resources.sprite_arrays.start(1, 32, 32, 5);
-        resources.sprite_arrays.load(1, "./texture_array/image3.png", 0);
-        resources.sprite_arrays.finish(1);
+        uint32_t s1 = spk::sprite_array_init(32, 32, 5);
+        spk::sprite_array_load(s1, "./texture_array/image1.png", 0);
+        spk::sprite_array_load(s1, "./texture_array/image2.png", 1);
+
+        uint32_t s2 = spk::sprite_array_init(32, 32, 5);
+        spk::sprite_array_load(s2, "./texture_array/image3.png", 0);
 
         spk::tile_dictionary_t& td = resources.tile_dictionary;
         
-        td[1].sprite.z      = -5.0f;
+        td[1].sprite.id   = s1;
+        td[1].sprite.z    = -5.0f;
         td[1].restitution = 1.1f;
         td[1].friction = 0.0f;
 
-        td[2].sprite.array_id = 0;
+        td[2].sprite.id = s1;
         td[2].sprite.index = 1;
         td[2].density = 50.0f;
         td[2].friction = 0.0f;
         td[2].restitution = 0.0f;
 
-        td[4].sprite.array_id = 1;
+        td[4].sprite.id = s2;
         td[4].sprite.index = 0;
         td[4].density = -5.0f;
     }
@@ -89,7 +81,7 @@ MAIN {
             rb->CreateFixture(&fdef);
 
             sprite.size = {hl, hl};
-            sprite.array_id = 0;
+            sprite.id = 1;
             sprite.index = 1;
             sprite.z = 0.0f;
 
