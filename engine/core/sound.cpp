@@ -60,7 +60,7 @@ namespace spk {
         Mix_CloseAudio();
     }
 
-    uint32_t music_load(const char* file) {
+    uint32_t music_create(const char* file) {
         Mix_Music* music = Mix_LoadMUS(file);
         if(music == nullptr) {
             return UINT32_MAX;
@@ -69,7 +69,7 @@ namespace spk {
         return sound_dictionary().music_add(music);
     }
 
-    uint32_t chunk_load(const char* file) {
+    uint32_t chunk_create(const char* file) {
         Mix_Chunk* chunk = Mix_LoadWAV(file);
         if(chunk == nullptr) {
             return UINT32_MAX;
@@ -80,25 +80,19 @@ namespace spk {
 
     void music_play(uint32_t sound_id, int loops) {
         Mix_Music* music = sound_dictionary().music_get(sound_id);
-        int code;
-        
+
         if(music == nullptr)
             return;
 
-        code = Mix_PlayMusic(music, loops);
-        if(code == -1)
-            spk::log.log(LOG_TYPE_INFO, "could not play music: %s",  Mix_GetError());
+        Mix_PlayMusic(music, loops);
     }
 
     void chunk_play(uint32_t chunk_id, int loops, int channel) {
         Mix_Chunk* chunk = sound_dictionary().chunk_get(chunk_id);
-        int code;
         
         if(chunk == nullptr)
             return;
 
-        code = Mix_PlayChannel(channel, chunk, loops);
-        if(code == -1)
-            spk::log.log(LOG_TYPE_INFO, "could not play chunk: %s",  Mix_GetError());
+        Mix_PlayChannel(channel, chunk, loops);
     }
 }

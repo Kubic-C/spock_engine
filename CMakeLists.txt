@@ -19,7 +19,7 @@ message(STATUS "Spock Engine --\n")
 
 if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wfatal-errors")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -static-libgcc -static-libstdc++ -std=c++17 -Wfatal-errors")
 
 	if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg -no-pie -gdwarf-4 -O0")
@@ -27,7 +27,7 @@ if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	else()
         # --static: allows the outputted executable to be ran
         # on other machines without the C++/C Libraries being installed
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 --static")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
     endif()
 	
     message("In ${CMAKE_BUILD_TYPE}, in ${CMAKE_CXX_COMPILER_ID}")
@@ -35,6 +35,18 @@ if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     message("CXX OPTIONS: ${CMAKE_CXX_FLAGS}")
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     message(FATAL_ERROR "MSVC Build enviroments are not supported")
+endif()
+
+# compiler specific stuff
+
+# MinGW
+if(WIN32)
+    get_filename_component(PARENT_DIR ${CMAKE_CXX_COMPILER} PATH)
+    
+    file(COPY "${PARENT_DIR}/zlib1.dll" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/")
+    file(COPY "${PARENT_DIR}/libbz2-1.dll" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/")
+    file(COPY "${PARENT_DIR}/libbrotlidec.dll" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/")
+    file(COPY "${PARENT_DIR}/libbrotlicommon.dll" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/")
 endif()
 
 message("\n-- End --")

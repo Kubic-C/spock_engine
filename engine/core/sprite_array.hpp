@@ -56,16 +56,16 @@ namespace spk {
      * 
      * @return an ID assigned with the sprite array
      */
-    uint32_t sprite_array_init(uint32_t width, uint32_t height, uint32_t sprites);       
+    uint32_t sprite_array_create(uint32_t width, uint32_t height, uint32_t sprites);       
 
     /**
      * @brief gets sprite data from path and sets it into sprite array index
      * 
      * @param id: the ID of the sprite array to change
      * @param path: the path of an image file to load into the sprite array
-     * @param index: the index within the sprite array which refers to the sprite slot to set
+     * @param index: the index of the sprite within the sprite array to set
      * 
      * @param true for successful path load. 
      */
-    bool sprite_array_load(uint32_t id, const char* path, uint32_t index);
+    bool sprite_array_set(uint32_t id, const char* path, uint32_t index);
 }

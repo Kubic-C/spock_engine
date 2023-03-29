@@ -8,14 +8,15 @@
 */
 
 #include "text.hpp"
+#include "internal.hpp"
 
 namespace spk {
-      bool font_t::init() {
-        if(!texture.init()) {
-            return false;
-        }
+    font_t::font_t() {
+        texture.init();
+    }
 
-        return true;
+    font_t::~font_t() {
+        texture.free();
     }
 
     bool font_t::load_ascii_font(FT_Library lib, int f_width, int f_height, const char* file_path) {
@@ -95,40 +96,61 @@ namespace spk {
         return true;
     }
 
-    void font_t::free() {
-        texture.free();
+    uint32_t font_dictionary_t::add() {
+        counter += 1;
+
+        fonts[counter];
+
+        return counter;
     }
 
-    font_manager_t::font_manager_t() {
+    void font_dictionary_t::remove(uint32_t id) {
+        spk_assert(is_valid(id));
+
+        fonts.erase(id);
+    }
+
+    bool font_dictionary_t::is_valid(uint32_t id) {
+        return fonts.find(id) != fonts.end();
+    }
+
+    font_t& font_dictionary_t::get(uint32_t id) {
+        spk_assert(is_valid(id));
+
+        return fonts[id];
+    }
+
+    hashmap_t<uint32_t, font_t>& font_dictionary_t::map() {
+        return fonts;
+    }
+
+    bool font_library_init() {
         spk_trace();
 
-        if(FT_Init_FreeType(&ft_lib)) {
-            log.log(LOG_TYPE_ERROR, "could not load freetype");   
+        // FT_Init will return non-zero if an error
+        if(FT_Init_FreeType(&resources().ft_lib)) {
+            return false;
         }
+
+        return true;
     }
 
-    font_manager_t::~font_manager_t() {
+    void font_library_free() {
         spk_trace();
         
-        FT_Done_FreeType(ft_lib);
+        FT_Done_FreeType(resources().ft_lib);
     }
 
-    font_t* font_manager_t::load_ascii(const char* file_path, int f_width, int f_height) {
-        font_t* font = &fonts.emplace_back();
+    uint32_t font_create(const char* file_path, int f_width, int f_height) {
+        uint32_t id   = resources().fonts.add();
+        font_t&  font = resources().fonts.get(id);
 
-        if(!font->init()) {
-            fonts.pop_back();
-            return nullptr;
+        if(!font.load_ascii_font(resources().ft_lib, f_width, f_height, file_path)) {
+            resources().fonts.remove(id);
+            return UINT32_MAX;
         } else {
-            if(!font->load_ascii_font(ft_lib, f_width, f_height, file_path)) {
-                return nullptr;
-            } else {
-                return font;
-            }
+            return id;
         }
     }
 
-    font_t* font_manager_t::get_first_font() {
-        return &fonts.front();
-    }
 }

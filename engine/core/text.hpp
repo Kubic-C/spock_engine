@@ -32,9 +32,9 @@ namespace spk {
 
     class font_t {
     public:
-        bool init(); 
+        font_t(); 
+        ~font_t();
         bool load_ascii_font(FT_Library lib, int f_width, int f_height, const char* file_path);
-        void free();
 
     public:
         std::string name;
@@ -49,45 +49,45 @@ namespace spk {
         hashmap_t<u_char, character_t> char_map;
     };
 
-    class font_manager_t {
-    public:
-        font_manager_t();
-        ~font_manager_t();
-        
-        font_t* load_ascii(const char* file_path, int f_width = 0, int f_height = 32);
-        font_t* get_first_font();
-
-        FT_Library get_freetype_library() const { return ft_lib; }
+    class font_dictionary_t {
+    public:        
+        uint32_t                     add();
+        void                         remove(uint32_t id);
+        bool                         is_valid(uint32_t id);
+        font_t&                      get(uint32_t id);
+        hashmap_t<uint32_t, font_t>& map();
 
     private:
-        std::list<font_t, memory_pool_t<font_t>> fonts;
+        hashmap_t<uint32_t, font_t> fonts;
 
-        FT_Library ft_lib; 
+        uint32_t counter = 0; // id creation
     };
 
-    struct text_t {
-        std::string str;
-        float scalar = 1.0f;
-        glm::vec3 color = { 1.0f, 0.0f, 0.0f };
+    /**
+     * @brief initializes the FT_lib object, essentially allows fonts to be 
+     * loaded from files. should be called in engine init
+     * 
+     * @return true if the library could be initialized successfully, false
+     * if the library could not be initialized for whatever reason, e.g. 
+     * not enough memory.
+     */
+    bool font_library_init();
 
-        void set(const char* _s, float scalar, glm::vec3 color, font_t* font = nullptr) {
-            str = _s;
-            this->scalar = scalar;
-            this->color = color;
-        }
+    /**
+     * @brief cleans up any font resources, should be called in engine free
+     * 
+     */
+    void font_library_free();
 
-        void set(const std::string _s, float scalar, glm::vec3 color, font_t* font = nullptr) {
-            set(_s.c_str(), scalar, color, font);
-        }
-
-        void operator=(const char* _s) {
-            str = _s;
-        }
-
-        void operator=(const std::string& _s) {
-            str = _s;
-        }
-
-        size_t ssize() { return str.size(); }
-    };
+    /**
+     * @brief creates a new font by loading a font from file_path, f_width and
+     * f_height changes the size of a font
+     * 
+     * @param file_path: font to load path from
+     * @param f_width: font width 
+     * @param f_height: font height
+     * @return and ID assigned with the font. will return UINT32_MAX if the font 
+     * could not be loaded or some error occurred 
+     */
+    uint32_t font_create(const char* file_path, int f_width, int f_height = 32);
 }

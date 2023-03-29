@@ -42,6 +42,15 @@ void noun_verb();
 void tile_get();
 void music_play();
 
+// creation of a structure via a function thats not a method (procedual creation)
+
+void font_create();
+void font_destroy();
+
+// avoid using:
+void font_make();
+void font_init(); // init word is only used with in classes
+
 ```
 
 *Do not's*:

@@ -1,7 +1,17 @@
-|SPOCK: 0.000024> [32m INFO [0m running..
-|SPOCK: 5.648413> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 5.648927> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 5.649178> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 5.649285> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 5.649470> [32m INFO [0m could not play chunk: No free channels available
-|SPOCK: 12.266758> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.001198> [32m INFO [0m running..
+|SPOCK: 0.001428> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
+|SPOCK: 0.451438> [32m INFO [0m FreeType Version: 2.12.1
+|SPOCK: 0.451654> [32m INFO [0m OGL Version: 4.3.0 Core Profile Context 22.20.27.07.221020
+|SPOCK: 0.451780> [32m INFO [0m SDL Version: 2.26.4
+|SPOCK: 0.451897> [32m INFO [0m SDL_mixer Version: 2.6.3
+|SPOCK: 0.490171> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
+|SPOCK: 0.580578> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.583019> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.583218> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.584190> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.585783> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.586966> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.593657> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 0.658408> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 1.916746> [32m INFO [0m could not play chunk: No free channels available
+|SPOCK: 2.499878> [32m INFO [0m [1m #===# [0m[31m ENGINE FREE [0m[1m #===# [0m

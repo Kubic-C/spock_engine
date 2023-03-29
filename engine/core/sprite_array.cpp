@@ -57,18 +57,20 @@ namespace spk {
         spk_trace();
     }
 
+    uint32_t sprite_array_dictionary_t::add() {
+        sprite_arrays[++counter];
+
+        return counter;
+    }
+
     bool sprite_array_dictionary_t::is_valid(uint32_t id) {
         return sprite_arrays.find(id) != sprite_arrays.end();
     }
 
     sprite_array_t& sprite_array_dictionary_t::get(uint32_t id) {
+        spk_assert(is_valid(id));
+
         return sprite_arrays[id];
-    }
-
-    uint32_t sprite_array_dictionary_t::add() {
-        sprite_arrays[++counter];
-
-        return counter;
     }
 
     hashmap_t<uint32_t, sprite_array_t>& sprite_array_dictionary_t::map() {
@@ -79,7 +81,7 @@ namespace spk {
         return resources().sprite_arrays;
     }
 
-    uint32_t sprite_array_init(uint32_t width, uint32_t height, uint32_t sprites) {
+    uint32_t sprite_array_create(uint32_t width, uint32_t height, uint32_t sprites) {
         uint32_t id = sprite_arrays().add();
 
         sprite_arrays().get(id).storage(width, height, sprites);
@@ -87,7 +89,7 @@ namespace spk {
         return id;
     }
 
-    bool sprite_array_load(uint32_t id, const char* path, uint32_t index) {
+    bool sprite_array_set(uint32_t id, const char* path, uint32_t index) {
         auto& array   = sprite_arrays().get(id);
         bool  success = array.image(path, index);
 

@@ -67,11 +67,11 @@ namespace spk {
         spk_trace();
         SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "[emt][red] ENGINE INIT [reset][emt]");
 
-        internal = new internal_t;
-
-        flecs::world& ecs_world = internal->scene.ecs_world;
-
         init_SDL2();
+
+        internal = new internal_t;
+        
+        font_library_init();
         init_defualt_ecs_pipelines();
 
         { // creating default scene
@@ -89,27 +89,25 @@ namespace spk {
         }
 
         { // engine setup and state setup            
-            internal->scene.event_system = ecs_world.entity().add<tag_events_t>();
+            internal->scene.event_system = ecs_world().entity().add<tag_events_t>();
 
             // misc
-            component_cs_init(ecs_world);
-            window_cs_init(ecs_world);
-            ps_tracker_system_init(ecs_world);
+            component_cs_init(ecs_world());
+            window_cs_init(ecs_world());
+            ps_tracker_system_init(ecs_world());
 
             // game components
-            character_controller_cs_init(ecs_world);
-            camera_cs_init(ecs_world);
-            physics_cs_init(ecs_world);
-            tilemap_cs_init(ecs_world);
-            particles_cs_init(ecs_world);
+            character_controller_cs_init(ecs_world());
+            camera_cs_init(ecs_world());
+            physics_cs_init(ecs_world());
+            tilemap_cs_init(ecs_world());
+            particles_cs_init(ecs_world());
 
             // render systems
-            render_system_init(ecs_world);
-            primitive_render_init(ecs_world);
-            ui_cs_init(ecs_world);
+            render_system_init(ecs_world());
+            primitive_render_init(ecs_world());
+            ui_cs_init(ecs_world());
         }
-
-        SPK_DEBUG_EXPR(print_deps_versions());
     }
 
     int run() {
@@ -183,6 +181,8 @@ namespace spk {
 
         SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "[emt, red] ENGINE FREE [reset, emt]");  
 
+        font_library_free();
+
         delete internal;
 
         Mix_Quit();
@@ -195,7 +195,7 @@ namespace spk {
         SDL_version mixer_version;
         const unsigned char* ogl_ver;
 
-        FT_Library_Version(internal->resources.fonts.get_freetype_library(), &ft_major, &ft_minor, &ft_patch);
+        FT_Library_Version(resources().ft_lib, &ft_major, &ft_minor, &ft_patch);
         SDL_GetVersion(&sdl_version);
         MIX_VERSION(&mixer_version);
         ogl_ver = glGetString(GL_VERSION);

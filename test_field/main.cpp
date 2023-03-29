@@ -19,29 +19,28 @@ MAIN {
 
     spk::init();
 
+    spk::print_deps_versions();
+
     spk::settings_t&  settings  = spk::settings();
     spk::resources_t& resources = spk::resources();
     spk::scene_t&     scene     = spk::scene();
-    uint32_t smells_blood_id, coin_sound_id;
-
-    settings.box2d_draw_flags = b2Draw::e_shapeBit;
+    uint32_t smells_blood_id, coin_sound_id, font_id;
 
     b2World* world = scene.physics_world;
 
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-
     {
-        smells_blood_id = spk::music_load("smells_blood.mp3");
-        coin_sound_id   = spk::chunk_load("coin_sound.wav");
+        smells_blood_id = spk::music_create("smells_blood.mp3");
+        coin_sound_id   = spk::chunk_create("coin_sound.wav");
+        // spk::music_play(smells_blood_id, 1);
 
-        resources.fonts.load_ascii("./Anonymous.ttf");
+        font_id = spk::font_create("./Anonymous.ttf", 16);
 
-        uint32_t s1 = spk::sprite_array_init(32, 32, 5);
-        spk::sprite_array_load(s1, "./texture_array/image1.png", 0);
-        spk::sprite_array_load(s1, "./texture_array/image2.png", 1);
+        uint32_t s1 = spk::sprite_array_create(32, 32, 5);
+        spk::sprite_array_set(s1, "./texture_array/image1.png", 0);
+        spk::sprite_array_set(s1, "./texture_array/image2.png", 1);
 
-        uint32_t s2 = spk::sprite_array_init(32, 32, 5);
-        spk::sprite_array_load(s2, "./texture_array/image3.png", 0);
+        uint32_t s2 = spk::sprite_array_create(32, 32, 5);
+        spk::sprite_array_set(s2, "./texture_array/image3.png", 0);
 
         spk::tile_dictionary_t& td = resources.tile_dictionary;
         

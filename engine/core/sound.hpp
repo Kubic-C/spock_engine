@@ -64,7 +64,7 @@ namespace spk {
      * @return returns an ID number; if this number is UINT32_MAX the file could not be
      * loaded or the music could not be created.
      */
-    uint32_t music_load(const char* file);
+    uint32_t music_create(const char* file);
 
     /**
      * @brief plays music that music_id is assigned to
@@ -82,7 +82,7 @@ namespace spk {
      * @return returns an ID number; if this number is UINT32_MAX the file could not be
      * loaded or the chunk could not be created.
      */
-    uint32_t chunk_load(const char* file);
+    uint32_t chunk_create(const char* file);
 
     /**
      * @brief plays a sound chunk that chunk_id is assigned to

@@ -186,6 +186,7 @@ namespace spk {
                 log(LOG_TYPE_TRACE, str.c_str());
             }
 
+            log_file.close();
             throw error_t();
         }
     }
