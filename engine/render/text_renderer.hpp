@@ -26,7 +26,7 @@ namespace spk {
 
         std::map<uint32_t, mesh_t> meshes; 
 
-        void text_mesh(glm::vec3 pos, glm::vec2 size, const text_t& text);
+        void text_mesh(const text_t& text);
         void render() override;
 
     private: // utility functions

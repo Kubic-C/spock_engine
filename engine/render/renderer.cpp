@@ -79,7 +79,7 @@ namespace spk {
     void render_context_t::_framebuffer_ops_init() {
         auto& overlay = framebuffer_ops.overlay;
 
-        framebuffer_ops.one_to_one_vp = glm::ortho(-1.0f, 1.0f, 1.0f, -1.0f);
+        framebuffer_ops.one_to_one_vp = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f);
 
         overlay.array.init();
         overlay.buffer.init(GL_ARRAY_BUFFER);

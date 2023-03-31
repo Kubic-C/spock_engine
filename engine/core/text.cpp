@@ -157,4 +157,13 @@ namespace spk {
         }
     }
 
+    void text_info_t::calculate(const std::string& string, font_t& font, float scale) {
+        width  = 0.0f;
+        height = 0.0f;
+
+        for(uint8_t c : string) {
+            height = std::max(height, (float)font.char_map[c].size.y * scale);
+            width += font.char_map[c].advance.x * scale;
+        }
+    }
 }

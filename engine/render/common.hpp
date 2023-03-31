@@ -59,10 +59,10 @@ namespace spk {
             }
         }
 
-        flecs::system mesh_system_add(const flecs::system& system) {
+        flecs::system mesh_system_add(flecs::entity system) {
             // adding the tag_render_system, stops it from being called during ticks
-            mesh_systems.push_back(system);
-            ((flecs::entity)system).add<tag_render_system_t>();
+            mesh_systems.push_back(flecs::system(system.world(), system.id()));
+            system.add<tag_mesh_t>();
 
             return mesh_systems.back();
         }

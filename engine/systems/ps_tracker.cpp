@@ -52,7 +52,7 @@ namespace spk {
         spk_trace();
 
         world.system().iter(ps_tracker_system_tick);
-        world.system().kind(on_render_id).iter(ps_tracker_system_update).add<tag_render_system_t>();
+        world.system().kind(on_render_id).iter(ps_tracker_system_update).add<tag_renderer_t>();
         world.system().interval(1.0).iter(ps_tracker_system_update_sec);
     }
 }

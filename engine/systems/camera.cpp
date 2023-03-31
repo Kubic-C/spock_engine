@@ -30,7 +30,7 @@ namespace spk {
         world.entity().add<comp_camera_t>().add<tag_current_camera_t>(); // the default camera
 
         world.system<comp_camera_t>().term<tag_current_camera_t>().kind(on_render_begin_id)
-            .each(camera_system_update).add<tag_render_system_t>();
+            .each(camera_system_update).add<tag_renderer_t>();
 
         world.observer().term<tag_events_t>().event<event_window_size_t>().iter(camera_resize);
     }

@@ -2,14 +2,15 @@
 #include "core/internal.hpp"
 
 namespace spk {
-    void container_renderer_t::container_mesh(glm::vec3 pos, glm::vec2 size, const container_t& container) {
+    void container_renderer_t::container_mesh(const container_t& container) {
+        auto& dim  = container.dimensions_get();
         auto& mesh = meshes[container.sprite_array_id];
 
         vertex_t vertices[] = {
-            {{pos.x - size.x, pos.y - size.y, pos.z}, {0.0f, 0.0f, container.sprite_index}, container.color},
-            {{pos.x + size.x, pos.y - size.y, pos.z}, {1.0f, 0.0f, container.sprite_index}, container.color},
-            {{pos.x + size.x, pos.y + size.y, pos.z}, {1.0f, 1.0f, container.sprite_index}, container.color},
-            {{pos.x - size.x, pos.y + size.y, pos.z}, {0.0f, 1.0f, container.sprite_index}, container.color}
+            {{dim.pos.x - dim.size.x, dim.pos.y - dim.size.y, dim.pos.z}, {0.0f, 0.0f, container.sprite_index}, container.color},
+            {{dim.pos.x + dim.size.x, dim.pos.y - dim.size.y, dim.pos.z}, {1.0f, 0.0f, container.sprite_index}, container.color},
+            {{dim.pos.x + dim.size.x, dim.pos.y + dim.size.y, dim.pos.z}, {1.0f, 1.0f, container.sprite_index}, container.color},
+            {{dim.pos.x - dim.size.x, dim.pos.y + dim.size.y, dim.pos.z}, {0.0f, 1.0f, container.sprite_index}, container.color}
         };
 
         mesh.add_mesh(vertices);

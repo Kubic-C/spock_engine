@@ -58,7 +58,7 @@ namespace spk {
         proj = glm::ortho(-width, width, -height, height, 0.001f, 300.0f);
 
         render_context().world_camera = proj * view;
-        render_context().ui_camera    = glm::ortho(0.0f, (float)size.x, (float)size.y, 0.0f, 0.00001f, 200.0f);
+        render_context().ui_camera    = glm::ortho(0.0f, (float)size.x, 0.0f, (float)size.y, 0.01f, 100.0f);;
         render_context().ui_camera    = glm::translate(render_context().ui_camera, glm::vec3(0.0f, 0.0f, -100.0f));
     }
 

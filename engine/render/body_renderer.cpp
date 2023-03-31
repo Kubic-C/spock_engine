@@ -119,7 +119,7 @@ namespace spk {
     }
 
     void body_renderer_t::mesh(flecs::iter& iter, comp_rigid_body_t* bodies) {
-        auto   renderer     = (body_renderer_t*)render_context().renderers[RENDERER_TYPE_BODY];
+        auto renderer = (body_renderer_t*)render_context().renderers[RENDERER_TYPE_BODY];
 
         render_context().common.buffer.bind();
 
@@ -145,6 +145,10 @@ namespace spk {
         render_context().common.buffer.bind();
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr); // we bound the VBO earlier when meshing
         glEnableVertexAttribArray(0);
+
+        if(vertex_count == 12) {
+            log.log(":(");
+        }
 
         // render
         glDrawArrays(GL_TRIANGLES, 0, vertex_count);

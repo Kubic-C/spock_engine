@@ -48,7 +48,7 @@ namespace spk {
                 .with(flecs::Phase).cascade(flecs::DependsOn)
                 .without(flecs::Disabled).up(flecs::DependsOn)
                 .without(flecs::Disabled).up(flecs::ChildOf)
-            .with<tag_render_system_t>().build();
+            .with<tag_renderer_t>().build();
 
         internal->scene.render_pipeline = render_pipeline;
 
@@ -57,7 +57,7 @@ namespace spk {
                 .with(flecs::Phase).cascade(flecs::DependsOn)
                 .without(flecs::Disabled).up(flecs::DependsOn)
                 .without(flecs::Disabled).up(flecs::ChildOf) 
-            .without<tag_render_system_t>()
+            .without<tag_mesh_t>()
             .without<tag_renderer_t>().build();
 
         internal->scene.game_pipeline = game_pipeline;

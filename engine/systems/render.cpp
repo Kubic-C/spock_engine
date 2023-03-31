@@ -44,9 +44,9 @@ namespace spk {
     void render_system_init(flecs::world& world) {
         spk_trace();
 
-        world.system().kind(on_render_begin_id).iter(render_system_begin_render).add<tag_render_system_t>();
-        world.system().kind(on_render_id).iter(render_system_render).add<tag_render_system_t>(); 
-        world.system().kind(on_render_end_id).iter(render_system_end_render).add<tag_render_system_t>();
+        world.system().kind(on_render_begin_id).iter(render_system_begin_render).add<tag_renderer_t>();
+        world.system().kind(on_render_id).iter(render_system_render).add<tag_renderer_t>(); 
+        world.system().kind(on_render_end_id).iter(render_system_end_render).add<tag_renderer_t>();
 
         world.observer().event<event_window_size_t>().term<tag_events_t>().iter(render_system_resize);
     }

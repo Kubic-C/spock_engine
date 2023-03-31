@@ -11,33 +11,6 @@
 #include "core/data.hpp"
 
 namespace spk {
-    struct vertex_t {
-        glm::vec3 pos;
-        glm::vec3 tex;
-    };
-
-    sprite_renderer_t::mesh_t::mesh_t() {
-        buffer.init(GL_ARRAY_BUFFER);
-    }
-
-    sprite_renderer_t::mesh_t::~mesh_t() {
-        buffer.free();
-    }
-
-    void sprite_renderer_t::add_mesh(const sprite_arrayd_t& sprite, void* vertices) {
-        auto& buffer             = meshes[sprite.id].buffer; 
-        auto& vertexes_on_buffer = meshes[sprite.id].vertexes_on_buffer;
-        auto& vertexes_to_render = meshes[sprite.id].vertexes_to_render;
-
-        if(buffer.size() < (vertexes_on_buffer + 4) * sizeof(vertex_t)) 
-            buffer.resize((vertexes_on_buffer + 4) * sizeof(vertex_t));
-
-        buffer.bind();
-        buffer.buffer_sub_data(vertexes_on_buffer * sizeof(vertex_t), sizeof(vertex_t) * 4, vertices);
-        vertexes_on_buffer += 4;
-        vertexes_to_render += 6;
-    }
-
     void sprite_renderer_t::particles_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_particles_t* particles) {
         spk_trace();
 
@@ -68,7 +41,7 @@ namespace spk {
                     }
                 }
 
-                renderer->add_mesh(sprite, vertices);
+                renderer->meshes[sprite.id].add_mesh(vertices);
             }   
         }  
     }
@@ -110,7 +83,7 @@ namespace spk {
                         glm::vec3(0.0f, 1.0f * tile.y, sprite.index)}
                 };
 
-                renderer->add_mesh(sprite, vertices);
+                renderer->meshes[sprite.id].add_mesh(vertices);
             }
         }
     }
@@ -135,7 +108,7 @@ namespace spk {
                     glm::vec3(0.0f, 1.0f, sprite.index)}
             };
 
-            renderer->add_mesh(sprite, vertices);
+            renderer->meshes[sprite.id].add_mesh(vertices);
         }        
     }
 
@@ -152,7 +125,7 @@ namespace spk {
             auto&           mesh  = meshes[pair.first];
             sprite_array_t& array = pair.second;
 
-            if(mesh.vertexes_on_buffer > 0) {
+            if(mesh.vertices_on_buffer > 0) {
                 vao.bind();
                 mesh.buffer.bind();
                 glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), nullptr);
@@ -168,10 +141,10 @@ namespace spk {
                 array.texture_array.bind();
                 glActiveTexture(GL_TEXTURE0);
 
-                glDrawElements(GL_TRIANGLES, mesh.vertexes_to_render, GL_UNSIGNED_INT, nullptr);   
+                glDrawElements(GL_TRIANGLES, mesh.vertices_to_render, GL_UNSIGNED_INT, nullptr);   
                 
-                mesh.vertexes_on_buffer = 0;
-                mesh.vertexes_to_render = 0;
+                mesh.vertices_on_buffer = 0;
+                mesh.vertices_to_render = 0;
             }
         }
 

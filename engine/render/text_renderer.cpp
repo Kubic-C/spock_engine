@@ -39,46 +39,42 @@ namespace spk {
         vertexes_to_render += 6;
     }
 
-    void text_renderer_t::text_mesh(glm::vec3 pos, glm::vec2 size, const text_t& text) {
+    void text_renderer_t::text_mesh(const text_t& text) {
         spk_trace();
 
-        font_t& font = fonts().get(text.canvas->font);
-
-        // this prevents the container from being rendered over text
-        const float z = pos.z + 0.01f;
-        float scalar  = 1.0f;
-        float xoffset = 0.0f;
-        float yoffset = 0.0f;
-        float x = pos.x; // x cursor
-        float y = pos.y;
-
-        for(uint8_t c : text.text) {
-            character_t* ch = &font.char_map[c];
-
-            xoffset += ch->advance[0] * scalar;
-            yoffset = std::max(yoffset, ch->size.y * scalar);
-        }
-
-        xoffset /= 2.0f;
-        yoffset /= 2.0f;
+        font_t&                  font = fonts().get(text.canvas->font);
+        const text_dimensions_t& dim  = text.text_dimensions_get(); // this prevents the container from being rendered over text
+        const float z      = text.dimensions_get().pos.z + 0.01f;
+        glm::vec2   cursor = dim.cursor;
 
         for(uint8_t c : text.text) {
             character_t& ch = font.char_map[c];
 
-            float x2 = x + ch.offset[0] * scalar;
-            float y2 = y - ch.offset[1] * scalar;
-            float w = ch.size.x * scalar;
-            float h = ch.size.y * scalar;    
+            const float xadvance = (float)ch.advance[0] * dim.scale;
+            const float yadvance = (float)ch.advance[1] * dim.scale;
+
+            if(dim.xright < cursor.x + xadvance) {
+                cursor.x = dim.xreset;
+                cursor.y -= dim.ysub;
+            }
+
+            if(cursor.y < dim.ybottom)
+                break;
+
+            const float x2 = cursor.x + ch.offset[0] * dim.scale;
+            const float y2 = cursor.y - ch.offset[1] * dim.scale;
+            const float w  = ch.size.x * dim.scale;
+            const float h  = ch.size.y * dim.scale;    
 
             vertex_t letter[] = {
-                { .pos = {(x2    ) - xoffset, (y2    ) - yoffset, z}, .tex = ch.tex_indices[0], .color = text.text_color},
-                { .pos = {(x2 + w) - xoffset, (y2    ) - yoffset, z}, .tex = ch.tex_indices[1], .color = text.text_color},
-                { .pos = {(x2 + w) - xoffset, (y2 + h) - yoffset, z}, .tex = ch.tex_indices[2], .color = text.text_color},
-                { .pos = {(x2    ) - xoffset, (y2 + h) - yoffset, z}, .tex = ch.tex_indices[3], .color = text.text_color}
+                { .pos = {(x2    ), (y2    ), z}, .tex = ch.tex_indices[0], .color = text.text_color},
+                { .pos = {(x2 + w), (y2    ), z}, .tex = ch.tex_indices[1], .color = text.text_color},
+                { .pos = {(x2 + w), (y2 + h), z}, .tex = ch.tex_indices[2], .color = text.text_color},
+                { .pos = {(x2    ), (y2 + h), z}, .tex = ch.tex_indices[3], .color = text.text_color}
             };
 
-            x += (float)ch.advance[0] * scalar;
-            y += (float)ch.advance[1] * scalar;
+            cursor.x += xadvance;
+            cursor.y += yadvance;
 
             add_mesh(text.canvas->font, letter);
         }

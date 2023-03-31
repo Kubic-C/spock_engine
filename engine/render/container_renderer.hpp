@@ -13,7 +13,7 @@ namespace spk {
 
         std::map<uint32_t, mesh_t<vertex_t, 6, 4>> meshes;
 
-        void container_mesh(glm::vec3 pos, glm::vec2 size, const container_t& container);
+        void container_mesh(const container_t& container);
         void render() override;
     };
 }

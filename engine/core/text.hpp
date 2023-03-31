@@ -61,6 +61,13 @@ namespace spk {
         uint32_t counter = 0; // id creation
     };
 
+    struct text_info_t {
+        float width;
+        float height;
+
+        void calculate(const std::string& string, font_t& font, float scale);
+    };
+
     // gets the font dictionary
     font_dictionary_t& fonts();
 

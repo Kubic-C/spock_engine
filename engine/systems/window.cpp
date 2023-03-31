@@ -92,6 +92,6 @@ namespace spk {
     void window_cs_init(flecs::world& world) {
         spk_trace();
         
-        world.system().kind(on_render_begin_id).iter(window_system_update).add<tag_render_system_t>();
+        world.system().kind(on_render_begin_id).iter(window_system_update).add<tag_renderer_t>();
     }
 }
