@@ -41,6 +41,7 @@
 #include <bitset>
 #include <algorithm> 
 #include <limits>
+#include <variant>
 
 // engine
 #include "logger.hpp"

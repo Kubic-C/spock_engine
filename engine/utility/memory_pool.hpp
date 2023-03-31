@@ -8,9 +8,7 @@
 
 #pragma once
 
-#include "base.hpp"
-#include "static_list.hpp"
-#include "allocator.hpp"
+#include "ubase.hpp"
 
 #define _SPK_QUICK_MEASURE(scope, name) \
     {float start = spk::time.get_time(); scope; float end = spk::time.get_time(); spk::log.log("time: %f " name, end - start);}
@@ -444,7 +442,7 @@ namespace spk {
 
     /* destroys and creates objects upon creating and destroying */
     template<typename T>
-    class object_pool_t : protected memory_pool_t<T> {
+    class object_pool_t : private memory_pool_t<T> {
     public:
         object_pool_t() {
             this->initial_size = this->_initial_size;

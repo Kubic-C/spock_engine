@@ -12,8 +12,9 @@
 #include "internal.hpp"
 
 namespace spk {
-    sprite_array_t::sprite_array_t() {
-        texture_array.init();
+    sprite_array_t::sprite_array_t(bool init) {
+        if(init)
+            texture_array.init();
     }
 
     sprite_array_t::~sprite_array_t() {
@@ -51,6 +52,8 @@ namespace spk {
 
     sprite_array_dictionary_t::sprite_array_dictionary_t() {
         spk_trace();    
+
+        sprite_arrays.emplace((uint32_t)UINT32_MAX, false);
     }
 
     sprite_array_dictionary_t::~sprite_array_dictionary_t() {

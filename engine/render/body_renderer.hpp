@@ -17,7 +17,7 @@ namespace spk {
 
     };
 
-    struct body_renderer_t : base_renderer_t {
+    struct body_renderer_t : component_renderer_t {
         body_renderer_t(flecs::world& world) {
             mesh_system_add(
                 world.system<comp_rigid_body_t>().term<tag_body_render_t>().iter(mesh));

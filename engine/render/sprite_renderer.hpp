@@ -16,7 +16,7 @@
 #include "components/particles.hpp"
 
 namespace spk {
-    struct sprite_renderer_t : base_renderer_t {
+    struct sprite_renderer_t : component_renderer_t {
     public:
         sprite_renderer_t(flecs::world& world) {
             mesh_system_add(world.system<comp_rigid_body_t, comp_sprite_t>().iter(sprite_mesh));
@@ -35,11 +35,12 @@ namespace spk {
 
         std::map<uint32_t, mesh_t> meshes; 
 
-        void add_mesh(const sprite_arrayd_t& sprite, void* vertices);
-
         static void particles_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_particles_t* particles);
         static void tilemap_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_tilemap_t* tilemap);
         static void sprite_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_sprite_t* sprites);
         void render() override;
+
+    private:
+        void add_mesh(const sprite_arrayd_t& sprite, void* vertices);
     };
 }

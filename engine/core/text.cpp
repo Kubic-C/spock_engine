@@ -124,6 +124,10 @@ namespace spk {
         return fonts;
     }
 
+    font_dictionary_t& fonts() {
+        return internal->resources.fonts;
+    }
+
     bool font_library_init() {
         spk_trace();
 

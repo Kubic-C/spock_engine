@@ -16,11 +16,6 @@ namespace spk {
         glm::vec3 tex;
     };
 
-    glm::vec3 get_world_point(b2Body* body, glm::vec3 local_point) {
-        return glm::vec3{(glm::vec2)body->GetWorldPoint(b2Vec2(local_point.x, local_point.y)), local_point.z};
-    }
-
-
     sprite_renderer_t::mesh_t::mesh_t() {
         buffer.init(GL_ARRAY_BUFFER);
     }
@@ -51,7 +46,7 @@ namespace spk {
         for(auto i : iter) {
             comp_rigid_body_t& body            = bodies[i];
             comp_particles_t&  particle_system = particles[i];
-            sprite_arrayd_t&   sprite = resources().tile_dictionary[particle_system.particle.id].sprite;
+            sprite_arrayd_t&   sprite = resources().tile_dictionary[particle_system.sprite].sprite;
         
             for(uint32_t j = 0; j < particle_system.particles.size(); j++) {
                 particle_t& particle = particle_system.particles[j];

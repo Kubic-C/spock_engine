@@ -49,26 +49,29 @@ target_sources(spock_engine PRIVATE
     "systems/character_controller.hpp" "systems/character_controller.cpp")
 
 target_sources(spock_engine PRIVATE
+    "utility/ubase.hpp"    
+    "utility/common.hpp"
     "utility/stack_allocator.hpp" "utility/stack_allocator.cpp"
     "utility/ui.hpp" "utility/ui.cpp"
-    "utility/entity.hpp" "utility/entity.cpp"
-    "utility/structures.hpp" "utility/structures.cpp"
     "utility/static_list.hpp" "utility/static_list.cpp"
     "utility/array2D.hpp" "utility/array2D.cpp"
     "utility/memory_pool.hpp" "utility/memory_pool.cpp"
     "utility/hashmap.hpp" "utility/hashmap.cpp"
-    "utility/image_loader.hpp" "utility/image_loader.cpp"
-    "utility/allocator.hpp" "utility/allocator.cpp")
-
+    "utility/image_loader.hpp" "utility/image_loader.cpp")
+    
 target_sources(spock_engine PRIVATE)
 
 target_sources(spock_engine PRIVATE
+    "render/container_renderer.hpp" "render/container_renderer.cpp"
+    "render/canvas_renderer.hpp" "render/canvas_renderer.cpp"
     "render/sprite_renderer.hpp" "render/sprite_renderer.cpp"
     "render/common.hpp" "render/default_shaders.hpp"
     "render/opengl.hpp" "render/opengl.cpp"
     "render/texture_array.hpp" "render/texture_array.cpp"
     "render/renderer.hpp" "render/renderer.cpp"
-    "render/body_renderer.hpp" "render/body_renderer.cpp")
+    "render/body_renderer.hpp" "render/body_renderer.cpp"
+    "render/text_renderer.hpp" "render/text_renderer.cpp"
+    "render/render_pass.hpp" "render/render_pass.cpp")
     
 target_sources(spock_engine PRIVATE
     "core/sound.hpp" "core/sound.cpp"

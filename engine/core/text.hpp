@@ -11,7 +11,7 @@
 
 #include "base.hpp"
 #include "render/opengl.hpp"
-#include "utility/structures.hpp"
+#include "utility/common.hpp"
 
 /*
 
@@ -62,6 +62,9 @@ namespace spk {
 
         uint32_t counter = 0; // id creation
     };
+
+    // gets the font dictionary
+    font_dictionary_t& fonts();
 
     /**
      * @brief initializes the FT_lib object, essentially allows fonts to be 

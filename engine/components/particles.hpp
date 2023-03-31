@@ -36,7 +36,7 @@ namespace spk {
     struct comp_particles_t : component_t {
         uint8_t flags;
 
-        tile_t particle; // used to get sprite information and physics info.
+        uint32_t sprite; // used to get sprite information and physics info.
         particles_funnel_e funnel; // funnel of the particle systems, affects the direction and initial speed of particles
         float chance; // chance of a particle spawning, range is 0.0 to 1.0. Set to 1.0 to always spawn
         float base_speed; // the initial speed of a particle

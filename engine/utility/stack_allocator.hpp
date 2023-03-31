@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "base.hpp"
+#include "ubase.hpp"
 
 namespace spk {
     struct stack_block_info_t {
@@ -30,7 +30,7 @@ namespace spk {
         }
 
         template<typename T, typename ... params> 
-        T* push(params&& ... args) {
+        ptr_t<T> push(params&& ... args) {
             using block_t =  std::pair<stack_block_info_t, T>;
             const size_t total_size = sizeof(block_t);
             block_t*     block      = nullptr;
@@ -54,7 +54,7 @@ namespace spk {
 
             new(&block->second)T(args...);
 
-            return &block->second;
+            return ptr_t(&block->second);
         }
 
         // if an element could be popped returns true

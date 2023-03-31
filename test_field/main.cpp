@@ -24,9 +24,9 @@ MAIN {
     spk::settings_t&  settings  = spk::settings();
     spk::resources_t& resources = spk::resources();
     spk::scene_t&     scene     = spk::scene();
-    uint32_t smells_blood_id, coin_sound_id, font_id;
-
-    b2World* world = scene.physics_world;
+    spk::canvas_t&    canvas    = spk::canvas();
+    b2World*          world = scene.physics_world;
+    uint32_t          smells_blood_id, coin_sound_id, font_id;
 
     {
         smells_blood_id = spk::music_create("smells_blood.mp3");
@@ -51,26 +51,42 @@ MAIN {
 
         td[2].sprite.id = s1;
         td[2].sprite.index = 1;
+        td[2].sprite.z = 1.0f;
         td[2].density = 50.0f;
         td[2].friction = 0.0f;
         td[2].restitution = 0.0f;
 
         td[4].sprite.id = s2;
+        td[2].sprite.z = 1.0f;
         td[4].sprite.index = 0;
         td[4].density = -5.0f;
     }
 
-    for(size_t i = 0; i < 10; i++) {
+    { // canvas 
+        canvas.font = font_id;
+
+        spk::ptr_t<spk::text_t> text = canvas.element<spk::text_t>();
+
+        text->text = "hello world";
+        text->sprite_array_id = 1;
+        text->sprite_index    = 0;
+        text->pos  = {250.0f, 250.0f, 0.0f};
+        text->text_color = {1.0f, 0.0f, 0.0f};
+        text->color = {1.0f, 1.0f, 1.0f, 1.0f};
+        text->size = {100, 50};
+    }
+
+    for(size_t i = 0; i < 50; i++) {
         scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_sprite_t& sprite, spk::comp_particles_t& ps) {
             float random = rand();
             random *= 0.01f;
 
             rb->SetType(b2_dynamicBody);
             rb->SetBullet(true);
-            rb->SetTransform((glm::vec2){fmod(random, 10.0f) - 5.0f, fmod(random, 10.0f) - 5.0f}, 0.0f);
+            rb->SetTransform((glm::vec2){fmod(random, 20.0f) - 10.0f, fmod(random, 20.0f) - 10.0f}, 0.0f);
 
             b2PolygonShape shape;
-            float hl = fmod(random, 5.0f) + 0.1f;
+            float hl = fmod(random, 2.5f) + 0.4f;
             shape.SetAsBox(hl, hl);
 
             b2FixtureDef fdef;
@@ -82,15 +98,15 @@ MAIN {
             sprite.size = {hl, hl};
             sprite.id = 1;
             sprite.index = 1;
-            sprite.z = 0.0f;
+            sprite.z = 1.0f;
 
             ps.funnel = spk::PARTICLES_FUNNEL_FUNNEL;
             ps.step   = 0.2f; // fun :)
             ps.length = 1.0f;
             ps.base_speed = 9.0f;
-            ps.particle.id = 4;
-            ps.base_cycle = 0.1f;
-            ps.base_lifetime = 0.5f;
+            ps.sprite = 4;
+            ps.base_cycle = 0.5f;
+            ps.base_lifetime = 1.0f;
             ps.max = UINT32_MAX;
             ps.flags  = spk::PARTICLES_FLAGS_WORLD_DIRECTION | spk::PARTICLES_FLAGS_WORLD_POSITION | spk::PARTICLES_FLAGS_ACTIVE;
         });
@@ -184,7 +200,7 @@ MAIN {
         character.set([&](spk::comp_rigid_body_t& rb){
             scene.camera.get_ref<spk::comp_camera_t>()->pos = rb->GetPosition();
 
-            rb->ApplyTorque(10000, true);
+            rb->ApplyTorque(100000, true);
         });
     };  
 

@@ -10,13 +10,13 @@
 #pragma once
 
 #include "render/opengl.hpp"
-#include "utility/structures.hpp"
+#include "utility/common.hpp"
 
 #define SPK_MAX_SPRITE_ARRAYS 8
 
 namespace spk {
     struct sprite_array_t {
-        sprite_array_t();
+        sprite_array_t(bool init = true);
         ~sprite_array_t();
 
         void storage(uint32_t width, uint32_t height, uint32_t sprites);

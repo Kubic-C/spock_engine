@@ -16,10 +16,12 @@ namespace spk {
     }
 
     void texture_array2D_t::free() {
-        glDeleteTextures(1, &id);
+        if(id != UINT32_MAX)
+            glDeleteTextures(1, &id);
     }
 
     void texture_array2D_t::bind() {
+        spk_assert(id != UINT32_MAX);
         glBindTexture(GL_TEXTURE_2D_ARRAY, id);
     }
 

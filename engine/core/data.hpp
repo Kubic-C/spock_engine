@@ -102,10 +102,11 @@ namespace spk {
     };
 
     // allocators for canvases, windows, etc. and stack allocators
+    // FOR BIG things
     struct allocators_t {
-        object_pool_t<window_t>    window_pool;
+        object_pool_t<window_t> window_pool;
         object_pool_t<canvas_t> canvas_pool;
-        stack_allocator_t          stack{4096 * 4};
+        stack_allocator_t       stack{4096 * 4};
     };
 
     // gets the current ecs_world

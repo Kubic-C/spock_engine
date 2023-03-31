@@ -29,7 +29,7 @@ namespace spk {
 
         max = 100;
 
-        particle.id = 0;
+        sprite = 0;
     }   
 
     void comp_particles_t::free(flecs::entity entity) {

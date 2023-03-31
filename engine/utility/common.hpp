@@ -6,8 +6,13 @@
     refer to license: https://github.com/Kubic-C/spock_engine/blob/master/LICENSE.md
 */
 
-#include "structures.hpp"
+#pragma once
+
+#include "static_list.hpp"
+#include "array2D.hpp"
+#include "memory_pool.hpp"
+#include "stack_allocator.hpp"
+#include "hashmap.hpp"
 
 namespace spk {
-
 }
