@@ -23,7 +23,7 @@ text utilities:
 namespace spk {
     struct character_t {
         glm::vec2 tex_indices[4];
-        glm::ivec2 size;
+        glm::vec2 size;
         glm::vec2 offset;
         glm::vec2 advance;
     };
@@ -32,11 +32,12 @@ namespace spk {
     public:
         font_t(); 
         ~font_t();
-        bool load_ascii_font(FT_Library lib, int f_width, int f_height, const char* file_path);
+        bool load_ascii_font(FT_Library lib, int f_width, int render_width, const char* file_path);
 
     public:
         std::string name;
 
+        float    render_scale;
         uint32_t widest_glyph;
         uint32_t tallest_glyph;
         uint32_t width, height;
@@ -97,5 +98,5 @@ namespace spk {
      * @return and ID assigned with the font. will return UINT32_MAX if the font 
      * could not be loaded or some error occurred 
      */
-    uint32_t font_create(const char* file_path, int f_width, int f_height = 32);
+    uint32_t font_create(const char* file_path, int f_width, int render_width);
 }

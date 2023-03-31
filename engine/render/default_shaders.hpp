@@ -115,14 +115,9 @@ namespace spk {
 
     void main() {    
         float blend = texture(font, v_tex_coords).r;
-        // if a pixel's alpha is too transparent
-        // dont render it all. this will result in
-        // a more consistent look throughout the font
-        if(blend < 0.2f) {
-            discard;
-        }
+
         // multiplying it will give a more clear look
-        color = vec4(v_color, 1.0f);
+        color = vec4(v_color, blend);
     })###";
 
     const char* container_vs = R"###(

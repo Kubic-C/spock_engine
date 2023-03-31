@@ -27,7 +27,7 @@ MAIN {
     spk::canvas_t&    canvas    = spk::canvas();
     b2World*          world = scene.physics_world;
     uint32_t          smells_blood_id, coin_sound_id, font_id;
-    uint32_t          sprite_array_id;
+    uint32_t          sprite_array_id, high_def_array;
     spk::ptr_t<spk::text_t> text;
 
     {
@@ -35,13 +35,15 @@ MAIN {
         coin_sound_id   = spk::chunk_create("coin_sound.wav");
         // spk::music_play(smells_blood_id, 1);
 
-        font_id = spk::font_create("./Anonymous.ttf", 16);
+        font_id = spk::font_create("./Raleway-Regular.ttf", 128, 22);
 
         sprite_array_id = spk::sprite_array_create(32, 32, 5);
         spk::sprite_array_set(sprite_array_id, "./texture_array/image1.png", 0);
         spk::sprite_array_set(sprite_array_id, "./texture_array/image2.png", 1);
         spk::sprite_array_set(sprite_array_id, "./texture_array/image3.png", 2);
-        spk::sprite_array_set(sprite_array_id, "./texture_array/windows_logo.png", 3);
+
+        high_def_array = spk::sprite_array_create(1000, 1000, 2);
+        spk::sprite_array_set(high_def_array, "./texture_array/windows_logo.png", 0);
 
         spk::tile_dictionary_t& td = resources.tile_dictionary;
         
@@ -68,27 +70,20 @@ MAIN {
 
         text = canvas.element<spk::text_t>();
 
-        text->x_set(spk::constraint_relative(0.5f));
-        text->y_set(spk::constraint_relative(0.5f));
+        text->x_set(spk::constraint_relative(0.2f));
+        text->y_set(spk::constraint_relative(0.95f));
         text->width_set(spk::constraint_relative(0.2f));
-        text->height_set(spk::constraint_relative(0.2f));
+        text->height_set(spk::constraint_relative(0.05f));
+        text->text       = "loading..";
+        text->text_color = {1.0f, 1.0f, 1.0f};
+        text->color      = {0.0f, 0.0f, 0.0f, 0.0f};
 
-        auto child = text->element<spk::text_t>();
-        child->x_set(spk::constraint_relative(0.5f));
-        child->y_set(spk::constraint_relative(0.1f));
-        child->width_set(spk::constraint_relative(0.5f));
-        child->height_set(spk::constraint_relative(0.1f));
-        child->text = "MUHAHAHHAHAH";
+        spk::settings().target_tps = 60;
+        spk::settings().target_fps = 120;
 
-        text->text = "hello world BRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR";
-        text->wrap_set(true);
-        text->sprite_array_id = sprite_array_id;
-        text->sprite_index    = 3;
-        text->text_color = {1.0f, 0.0f, 0.0f};
-        text->color = {1.0f, 1.0f, 1.0f, 1.0f};
     }
 
-    for(size_t i = 0; i < 1; i++) {
+    for(size_t i = 0; i < 100; i++) {
         scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_sprite_t& sprite, spk::comp_particles_t& ps) {
             float random = rand();
             random *= 0.01f;
@@ -214,6 +209,8 @@ MAIN {
 
             rb->ApplyTorque(100000, true);
         });
+
+        text->text = std::string(spk::build_name()) + " | FPS:" + std::to_string(spk::statistics().fps) + " | TPS:"  + std::to_string(spk::statistics().tps);
     };  
 
     code = spk::run();

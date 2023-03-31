@@ -7,6 +7,8 @@
 
 add_library(spock_engine STATIC "spock.hpp")
 
+target_compile_definitions(spock_engine PUBLIC SPK_MAJOR=0 SPK_MINOR=0 SPK_PATCH=3)
+
 target_compile_definitions(flecs_static PUBLIC ecs_ftime_t=double)
 
 glad_add_library(glad_gl4_4 STATIC API gl:core=4.4)

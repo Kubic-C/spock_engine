@@ -76,6 +76,7 @@ _In_ int nShowCmd \
 #define null NULL
 
 namespace spk {
+
     template<typename T>
     T* get_ctx(flecs::iter& iter) {
         return static_cast<T*>(iter.ctx());

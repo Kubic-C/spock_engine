@@ -22,6 +22,13 @@
 
 namespace spk {
     /**
+     * @brief returns the name of the current build
+     * 
+     * @return name
+     */
+    const char* build_name();
+
+    /**
      * @brief initializes the engine. Creates a default window, camera, rendering system,
      * opens the default audio channel, etc. . Should only be called once in the entire
      * lifetime of the application.

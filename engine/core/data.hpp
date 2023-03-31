@@ -49,7 +49,7 @@ namespace spk {
         bool            log_statistics   = false;
         bool            should_exit      = false;
         double          target_fps       = 120.0;
-        double          target_tps       = 120.0;
+        double          target_tps       = 60.0;
         uint32_t        box2d_draw_flags = 0;
         vsync_setting_e vsync_opt        = VSYNC_DISABLED; 
         float           ppm              = 8.0f;

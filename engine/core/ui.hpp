@@ -131,9 +131,6 @@ namespace spk {
     public:
         virtual ui_types_t type() override { return ui_types_t::TEXT; }
 
-        void wrap_set(bool value) { flags[WRAP] = value; }
-        bool wrap_get() const { return flags[WRAP]; }
-
         void text_alignment_set(text_align_t align) { alignment = align; }
         text_align_t text_alignment_get() const { return alignment; }
 
@@ -149,10 +146,6 @@ namespace spk {
     private:
         text_dimensions_t text_dimensions;
         text_align_t      alignment = text_align_t::LEFT;
-
-        enum {
-            WRAP = BASE_FLAGS_END
-        };
     };
 
     class button_t : public container_t {

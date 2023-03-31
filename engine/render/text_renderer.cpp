@@ -72,7 +72,7 @@ namespace spk {
                 { .pos = {(x2 + w), (y2 + h), z}, .tex = ch.tex_indices[2], .color = text.text_color},
                 { .pos = {(x2    ), (y2 + h), z}, .tex = ch.tex_indices[3], .color = text.text_color}
             };
-
+            
             cursor.x += xadvance;
             cursor.y += yadvance;
 

@@ -9,7 +9,20 @@
 #include "spock.hpp"
 #include "core/internal.hpp"
 
+#ifdef NDEBUG
+#define MODE "RELEASE"
+#else 
+#define MODE "DEBUG"
+#endif 
+
+#define STR(x) #x
+#define XSTR(x) STR(x)
+
 namespace spk {
+    const char* build_name() {
+        return MODE " build " XSTR(SPK_MAJOR) "." XSTR(SPK_MINOR) "." XSTR(SPK_PATCH);
+    }
+
     void init_SDL2() {
         const int audio_flags = MIX_INIT_MP3;
 

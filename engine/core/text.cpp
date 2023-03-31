@@ -19,19 +19,26 @@ namespace spk {
         texture.free();
     }
 
-    bool font_t::load_ascii_font(FT_Library lib, int f_width, int f_height, const char* file_path) {
+    void character_scale_down(character_t& character, float scale) {
+        character.size    *= scale;
+        character.advance *= scale;
+        character.offset  *= scale;
+    }
+
+    bool font_t::load_ascii_font(FT_Library lib, int f_width, int _render_width, const char* file_path) {
         const float x_padding = 3.0f;
         float x = 0; // cursor within this->texture's data, used for writing
         tallest_glyph = 0;
-        widest_glyph = 0;
-        width = 0;
+        widest_glyph  = 0;
+        width  = 0;
         height = 0;
+        render_scale  = (float)_render_width / (float)f_width;
 
         if(FT_New_Face(lib, file_path, 0, &face)) {
             return false;
         }
 
-        FT_Set_Pixel_Sizes(face, f_width, f_height);
+        FT_Set_Pixel_Sizes(face, f_width, 0);
 
         for(u_char c = 0; c < UCHAR_MAX; c++) {
             character_t* ch = nullptr;
@@ -64,7 +71,7 @@ namespace spk {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         for(u_char c = 0; c < UCHAR_MAX; c++) {
-            character_t* c_data = nullptr;
+            character_t* ch = nullptr;
             float gx, gwidth, gheight; // g for glyph
             
             if(FT_Load_Char(face, c, FT_LOAD_RENDER)) {
@@ -74,19 +81,21 @@ namespace spk {
             texture.subdata(GL_UNSIGNED_BYTE, x, 0, GL_RED, face->glyph->bitmap.width, 
                 face->glyph->bitmap.rows, face->glyph->bitmap.buffer);
 
-            c_data = &char_map[c];
+            ch = &char_map[c];
 
-            gx = x / (float)width;
-            gwidth = (float)c_data->size.x / (float)width;
-            gheight = (float)c_data->size.y / (float)height;
+            gx      = x / (float)width;
+            gwidth  = ch->size.x / (float)width;
+            gheight = ch->size.y / (float)height;
 
             // ccw indexing, keep that in mind
-            c_data->tex_indices[0] = { gx         , gheight };
-            c_data->tex_indices[1] = { gx + gwidth, gheight };
-            c_data->tex_indices[2] = { gx + gwidth, 0       };
-            c_data->tex_indices[3] = { gx         , 0       };
+            ch->tex_indices[0] = { gx         , gheight };
+            ch->tex_indices[1] = { gx + gwidth, gheight };
+            ch->tex_indices[2] = { gx + gwidth, 0       };
+            ch->tex_indices[3] = { gx         , 0       };
 
-            x += (float)c_data->size.x + x_padding;
+            x += ch->size.x + x_padding;
+
+            character_scale_down(*ch, render_scale);
         }
 
         // texture still bound
@@ -145,11 +154,11 @@ namespace spk {
         FT_Done_FreeType(resources().ft_lib);
     }
 
-    uint32_t font_create(const char* file_path, int f_width, int f_height) {
+    uint32_t font_create(const char* file_path, int f_width, int render_width) {
         uint32_t id   = resources().fonts.add();
         font_t&  font = resources().fonts.get(id);
 
-        if(!font.load_ascii_font(resources().ft_lib, f_width, f_height, file_path)) {
+        if(!font.load_ascii_font(resources().ft_lib, f_width, render_width, file_path)) {
             resources().fonts.remove(id);
             return UINT32_MAX;
         } else {

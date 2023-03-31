@@ -38,7 +38,7 @@ namespace spk {
     void physics_system_tick(flecs::iter iter) {
         auto physics_world = internal->scene.physics_world;
     
-        physics_world->Step(internal->statistics.delta_time, 8, 3);
+        physics_world->Step(iter.delta_time(), 8, 3);
     }
 
     void physics_cs_init(flecs::world& world) {
