@@ -23,11 +23,31 @@ namespace spk {
 
     class canvas_t;
 
+    struct dimensions_t {
+        glm::vec3 pos  = {0.0f, 0.0f, 0.0f};
+        glm::vec2 size = {0.0f, 0.0f};
+    };
+
     enum class ui_types_t {
         CANVAS,
         CONTAINER,
         TEXT,
         BUTTON
+    };
+
+    typedef std::function<float(float parent)> constraint_t;
+
+    constraint_t constraint_pixel(float pixels);
+    constraint_t constraint_relative(float relative);
+    constraint_t constraint_center();
+
+    struct constraints_t {
+        constraint_t xpos_constraint   = constraint_pixel(0.0f);
+        constraint_t ypos_constraint   = constraint_pixel(0.0f);
+        constraint_t zpos_constraint   = constraint_pixel(0.0f);
+
+        constraint_t width_constraint  = constraint_pixel(0.0);
+        constraint_t height_constraint = constraint_pixel(0.0);
     };
 
     class container_t {
@@ -52,12 +72,22 @@ namespace spk {
         template<typename T, bool is_base = std::is_base_of_v<container_t, T>>
         ptr_t<T> element();
 
+        virtual void  dimensions_calculate();
+        dimensions_t& dimensions_get() { return dimensions; }
+
+        // constraints
+
+        void x_set(constraint_t constraint);
+        void y_set(constraint_t constraint);
+        void z_set(constraint_t constraint);
+        void width_set(constraint_t constraint);
+        void height_set(constraint_t constraint);
+
+    public:
         uint32_t sprite_array_id = UINT32_MAX;
         int32_t  sprite_index    = -1;
 
         glm::vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
-        glm::vec3 pos   = {0.0f, 0.0f, 0.0f};
-        glm::vec2 size  = {0.0f, 0.0f};
 
         std::list<ptr_t<container_t>> children;
         ptr_t<container_t>            parent;
@@ -68,6 +98,8 @@ namespace spk {
             VISIBLE = 0,  
         };
 
+        dimensions_t   dimensions;
+        constraints_t  constraints;
         std::bitset<8> flags;
     };
 

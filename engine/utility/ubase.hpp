@@ -136,3 +136,24 @@ namespace spk {
         }
     };
 }
+
+
+template<typename T, typename U>
+bool operator==(spk::ptr_t<T> _1, spk::ptr_t<U> _2) {
+    return (uint8_t*)_1.get() == (uint8_t*)_2.get();
+}
+
+template<typename T, typename U>
+bool operator!=(spk::ptr_t<T> _1, spk::ptr_t<U> _2) {
+    return (uint8_t*)_1.get() != (uint8_t*)_2.get();
+}
+
+template<typename T, typename U>
+bool operator==(spk::ptr_t<T> _1, U _2) {
+    return (uint8_t*)_1.get() == (uint8_t*)_2;
+}
+
+template<typename T, typename U>
+bool operator!=(spk::ptr_t<T> _1, U _2) {
+    return (uint8_t*)_1.get() != (uint8_t*)_2;
+}

@@ -13,8 +13,16 @@
 #include "core/internal.hpp"
 
 namespace spk {
-    void ui_render_system_update(flecs::iter& iter) {
+    void dimensions_update(ptr_t<container_t> container) {
+        container->dimensions_calculate();
 
+        for(auto child : container->children) {
+            dimensions_update(child);
+        }
+    }
+
+    void ui_render_system_pre_update(flecs::iter& iter) {
+        dimensions_update(ptr_t(&canvas()));
     }
 
     void ui_render_system_resize(flecs::iter& iter) {
@@ -28,6 +36,8 @@ namespace spk {
 
     void ui_cs_init(flecs::world& world) {
         spk_trace();
+
+        world.system().kind(on_pre_update_id).iter(ui_render_system_pre_update);
         
         world.observer().event<event_window_size_t>().term<tag_events_t>()
             .iter(ui_render_system_resize);

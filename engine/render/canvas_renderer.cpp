@@ -10,8 +10,8 @@ namespace spk {
         auto  text_renderer      = renderers[RENDERER_TYPE_TEXT].cast<text_renderer_t>();
         auto  container_renderer = renderers[RENDERER_TYPE_CONTAINER].cast<container_renderer_t>();
 
-        glm::vec3 pos  = container->pos;
-        glm::vec2 size = container->size;
+        container->dimensions_calculate();
+        dimensions_t& dimensions = container->dimensions_get();
 
         switch(container->type()) {
         case ui_types_t::CANVAS:
@@ -21,11 +21,11 @@ namespace spk {
             goto container_mesh;
         
         case ui_types_t::TEXT:
-            text_renderer->text_mesh(pos, size, *container.cast<text_t>());
+            text_renderer->text_mesh(dimensions.pos, dimensions.size, *container.cast<text_t>());
             goto container_mesh;
 
         container_mesh:
-            container_renderer->container_mesh(pos, size, *container.cast<container_t>());
+            container_renderer->container_mesh(dimensions.pos, dimensions.size, *container.cast<container_t>());
         };
 
         for(auto child : container->children) {

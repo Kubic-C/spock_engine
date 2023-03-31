@@ -27,6 +27,7 @@ MAIN {
     spk::canvas_t&    canvas    = spk::canvas();
     b2World*          world = scene.physics_world;
     uint32_t          smells_blood_id, coin_sound_id, font_id;
+    spk::ptr_t<spk::text_t> text;
 
     {
         smells_blood_id = spk::music_create("smells_blood.mp3");
@@ -65,15 +66,18 @@ MAIN {
     { // canvas 
         canvas.font = font_id;
 
-        spk::ptr_t<spk::text_t> text = canvas.element<spk::text_t>();
+        text = canvas.element<spk::text_t>();
+
+        text->x_set(spk::constraint_relative(0.5f));
+        text->y_set(spk::constraint_relative(0.8f));
+        text->width_set(spk::constraint_relative(0.2f));
+        text->height_set(spk::constraint_relative(0.2f));
 
         text->text = "hello world";
         text->sprite_array_id = 1;
-        text->sprite_index    = 0;
-        text->pos  = {250.0f, 250.0f, 0.0f};
+        text->sprite_index    = 1;
         text->text_color = {1.0f, 0.0f, 0.0f};
         text->color = {1.0f, 1.0f, 1.0f, 1.0f};
-        text->size = {100, 50};
     }
 
     for(size_t i = 0; i < 50; i++) {

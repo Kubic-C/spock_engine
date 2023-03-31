@@ -16,9 +16,7 @@
 /*
 
 text utilities:
-- rendering
 - font loading and managing
-- ui text
 
 */
 
