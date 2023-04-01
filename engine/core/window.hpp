@@ -25,8 +25,15 @@ namespace spk {
         void title_set(const std::string& title);
         glm::ivec2 size();
   
-        uint32_t       id(); // the SDL Window ID
-        bool           key_state_get(SDL_Scancode scancode);
+        uint32_t  id(); // the SDL Window ID
+        bool      key_get(SDL_Scancode scancode);
+        uint32_t  mouse_get_cur(glm::vec2& pos, bool y_flip = false);
+
+        glm::vec2  mouse_position;
+
+        glm::vec2  mouse_click_pos;
+        uint32_t   mouse_click_btn;
+        bool       mouse_click_down;
 
         uint8_t*      keyboard;
         SDL_Window*   window;

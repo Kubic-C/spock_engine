@@ -20,8 +20,17 @@ namespace spk {
         }
     }
 
+    void ui_update(ptr_t<container_t> container) {
+        container->update();
+
+        for(auto child : container->children) {
+            ui_update(child);
+        }    
+    }
+
     void ui_render_system_pre_update(flecs::iter& iter) {
         dimensions_update(ptr_t(&canvas()));
+        ui_update(ptr_t(&canvas()));
     }
 
     void ui_render_system_resize(flecs::iter& iter) {

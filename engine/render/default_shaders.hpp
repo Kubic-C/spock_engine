@@ -124,10 +124,10 @@ namespace spk {
     #version 330 core
     layout(location = 0) in vec3 a_pos;
     layout(location = 1) in vec3 a_tex_coords;
-    layout(location = 2) in vec3 a_color;
+    layout(location = 2) in vec4 a_color;
 
     out vec3 v_tex_coords;
-    out vec3 v_color;
+    out vec4 v_color;
 
     uniform mat4 u_vp;
 
@@ -141,7 +141,7 @@ namespace spk {
     const char* container_fs = R"###(
     #version 330 core
     in vec3 v_tex_coords;
-    in vec3 v_color;
+    in vec4 v_color;
 
     uniform sampler2DArray array;
 
@@ -149,9 +149,9 @@ namespace spk {
 
     void main() {    
         if(v_tex_coords.z == -1.0f)
-            color = vec4(v_color, 1.0f);
+            color = v_color;
         else {
-            color = texture(array, v_tex_coords) * vec4(v_color, 1.0f);
+            color = texture(array, v_tex_coords) * v_color;
         }
     })###";
 }

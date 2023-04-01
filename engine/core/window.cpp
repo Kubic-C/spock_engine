@@ -60,7 +60,7 @@ namespace spk {
         return SDL_GetWindowID(window);
     }
 
-    bool window_t::key_state_get(SDL_Scancode scancode) {
+    bool window_t::key_get(SDL_Scancode scancode) {
         spk_assert(scancode < SDL_NUM_SCANCODES, "invalid key scancode");
 
         if(SDL_GetKeyboardFocus() == this->window) {
@@ -68,6 +68,20 @@ namespace spk {
         }
 
         return false;
+    }
+
+    uint32_t window_t::mouse_get_cur(glm::vec2& pos, bool y_flip) {
+        glm::ivec2 pos_;
+        uint32_t   button;
+
+        button = SDL_GetMouseState(&pos_.x, &pos_.y);
+        pos    = pos_;
+
+        if(y_flip) {
+            pos.y = size().y - pos.y;
+        }
+
+        return button;
     }
 
     result_e window_make_current(window_t& window) {

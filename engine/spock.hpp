@@ -57,4 +57,10 @@ namespace spk {
      * 
      */
     void print_deps_versions();
+
+    /**
+     * @brief signals spock to exit.
+     * 
+     */
+    void exit();
 }

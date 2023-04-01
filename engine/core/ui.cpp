@@ -31,7 +31,7 @@ namespace spk {
 
     constraint_t constraint_center() {
         auto constraint = [](float parent) -> float {
-            return parent / 2.0f;
+            return 0.0f;
         };
 
         return constraint;
@@ -50,34 +50,20 @@ namespace spk {
     };
 
     glm::vec2 container_t::bottom_left() const {
-        if(parent.is_null())
-            return {0.0f, 0.0f};
-        
-        return (glm::vec2)dimensions.pos - dimensions.size;
+        return glm::vec2(dimensions.pos.x, dimensions.pos.y);
     }
 
     glm::vec2 container_t::top_left() const {
-        glm::vec2 top_left_pos = (glm::vec2)dimensions.pos;
-
-        if(parent.is_null())
-            return {0.0f, dimensions.size.y};
-
-        top_left_pos.x -= dimensions.size.x;
-        top_left_pos.y += dimensions.size.y;
-
-        return top_left_pos;
+        return glm::vec2(dimensions.pos.x, dimensions.pos.y + dimensions.size.y);
     }
 
     glm::vec2 container_t::top_right() const {
-        if(parent.is_null())
-            return {0.0f, dimensions.size.y};
-
-        return (glm::vec2)dimensions.pos + dimensions.size;
+        return glm::vec2(dimensions.pos.x + dimensions.size.x, dimensions.pos.y + dimensions.size.y);
     }
 
     glm::vec3 container_t::canvas_position() const {
         if(parent.is_null())
-            return {0.0f, 0.0f, 0.0f};
+            return canvas->dimensions.pos;
 
         glm::vec3 current_pos = {0.0f, 0.0f, 0.0f};
         ptr_t     cur_parent  = this->parent;
@@ -92,20 +78,17 @@ namespace spk {
         return current_pos;
     }
 
-    b2AABB container_t::aabb() const {
-        b2AABB bounds;
-        glm::vec2 pos = (glm::vec2)canvas_position();
+    ui_aabb_t container_t::aabb() const {
+        ui_aabb_t bounds;
 
-        bounds.lowerBound = pos - dimensions.size;
-        bounds.upperBound = pos + dimensions.size;
+        bounds.lower = bottom_left();
+        bounds.upper = top_right();
 
         return bounds;
     }
 
     bool container_t::contains(glm::vec2 pos_) {
-        b2AABB bounds = aabb();
-
-        return bounds.Contains(pos_);
+        return aabb().contains(pos_);
     }
 
     void container_t::x_set(constraint_t constraint) {
@@ -123,7 +106,6 @@ namespace spk {
     void container_t::height_set(constraint_t constraint) {
         constraints.height_constraint = constraint;
     }
-
 
     void container_t::dimensions_calculate() {
         if(parent.is_null()) { // only in the case if its a canvas
@@ -190,6 +172,32 @@ namespace spk {
         }
 
         return fonts().get(font);
+    }
+
+    void button_t::_handle_click() {
+        if(callback)
+            callback(*this);
+    }
+
+    void button_t::update() {
+        glm::vec2 pos = window().mouse_click_pos;
+
+        window().mouse_get_cur(pos, true);
+
+        if(aabb().contains(pos)) {
+            if(!window().mouse_click_down && clicked) { // forces the button to be clicked only once
+                clicked = false;
+            }
+
+            if(window().mouse_click_btn == SDL_BUTTON_LEFT && window().mouse_click_down && !clicked) { // left click
+                _handle_click();
+                clicked = true;
+            } else {
+                hovering = true;
+            }
+        } else {
+            hovering = false;
+        }
     }
 
     canvas_t::canvas_t() {

@@ -1,8 +1,8 @@
-|SPOCK: 0.001295> [32m INFO [0m running..
-|SPOCK: 0.001486> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
-|SPOCK: 0.613369> [32m INFO [0m FreeType Version: 2.12.1
-|SPOCK: 0.613550> [32m INFO [0m OGL Version: 4.3.0 Core Profile Context 22.20.27.07.221020
-|SPOCK: 0.613640> [32m INFO [0m SDL Version: 2.26.4
-|SPOCK: 0.613759> [32m INFO [0m SDL_mixer Version: 2.6.3
-|SPOCK: 0.709026> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
-|SPOCK: 48.049854> [32m INFO [0m [1m #===# [0m[31m ENGINE FREE [0m[1m #===# [0m
+|SPOCK: 0.001573> [32m INFO [0m running..
+|SPOCK: 0.001923> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
+|SPOCK: 0.552065> [32m INFO [0m FreeType Version: 2.12.1
+|SPOCK: 0.552296> [32m INFO [0m OGL Version: 4.3.0 Core Profile Context 22.20.27.07.221020
+|SPOCK: 0.552463> [32m INFO [0m SDL Version: 2.26.4
+|SPOCK: 0.552618> [32m INFO [0m SDL_mixer Version: 2.6.3
+|SPOCK: 0.650262> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
+|SPOCK: 19.107612> [32m INFO [0m [1m #===# [0m[31m ENGINE FREE [0m[1m #===# [0m

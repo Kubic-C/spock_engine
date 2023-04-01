@@ -11,9 +11,9 @@
 #include "base.hpp"
 
 namespace spk {
-    struct tag_mesh_t        {};
-    struct tag_renderer_t    {};
-    struct tag_game_system_t {};
+    struct tag_mesh_t          {};
+    struct tag_renderer_t      {};
+    struct tag_game_system_t   {};
 
     inline flecs::entity   renderer_id        = flecs::entity(UINT64_MAX);
     inline flecs::entity_t on_render_begin_id = UINT64_MAX;
@@ -27,11 +27,11 @@ namespace spk {
 
     inline void init_phases(flecs::world& world) {
         renderer_id      = world.component<tag_renderer_t>();
+        game_system_id   = world.component<tag_game_system_t>();
 
-        on_render_begin_id = world.entity().add(flecs::Phase); //.depends_on(flecs::OnUpdate);
+        on_render_begin_id = world.entity().add(flecs::Phase).depends_on(flecs::OnUpdate);
         on_render_id       = world.entity().add(flecs::Phase).depends_on(on_render_begin_id);
         on_render_end_id   = world.entity().add(flecs::Phase).depends_on(on_render_id); 
 
-        game_system_id = world.component<tag_game_system_t>();
     }
 }

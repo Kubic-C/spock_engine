@@ -46,7 +46,15 @@ namespace spk {
                     internal->settings.should_exit = true;
                     break;
 
+                case SDL_MOUSEMOTION: {
+                    window().mouse_position = glm::vec2(event.motion.x, event.motion.y);
+                } break;
+
                 case SDL_MOUSEBUTTONDOWN: {
+                    window().mouse_click_pos  = glm::vec2(event.button.x, event.button.y);
+                    window().mouse_click_btn  = event.button.button;
+                    window().mouse_click_down = event.button.state;
+
                     iter.world().event<event_window_mouse_click_t>()
                         .id<tag_events_t>()
                         .entity(internal->scene.event_system)
@@ -54,6 +62,10 @@ namespace spk {
                         .emit();
                     break;
                 }
+
+                case SDL_MOUSEBUTTONUP:
+                    window().mouse_click_down = event.button.state;
+                    break;
 
                 case SDL_MOUSEWHEEL:
                     iter.world().event<event_mouse_wheel_t>()

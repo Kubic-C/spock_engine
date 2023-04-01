@@ -20,6 +20,7 @@ namespace spk {
     // idea: use constraints with lambdas
 
     class canvas_t;
+    class button_t;
 
     struct dimensions_t {
         glm::vec3 pos  = {0.0f, 0.0f, 0.0f};
@@ -50,10 +51,22 @@ namespace spk {
     };
 
     typedef std::function<float(float parent)> constraint_t;
+    typedef std::function<void(button_t& self)> button_callback_t;
 
     constraint_t constraint_pixel(float pixels);
     constraint_t constraint_relative(float relative);
     constraint_t constraint_center();
+
+    struct ui_aabb_t {
+        glm::vec2 lower, upper;
+
+        bool contains(glm::vec2 point) {
+            return lower.x <= point.x &&
+                   lower.y <= point.y &&
+                   upper.x >= point.x &&
+                   upper.y >= point.y;
+        }
+    };
 
     struct constraints_t {
         constraint_t xpos_constraint   = constraint_pixel(0.0f);
@@ -66,6 +79,8 @@ namespace spk {
     class container_t {
     public:
         container_t() {}
+
+        virtual void update() {}
 
         virtual ui_types_t type() { return ui_types_t::CONTAINER; }
 
@@ -85,7 +100,7 @@ namespace spk {
         glm::vec3 canvas_position() const;
 
         // aabb of the container in screen coordinates
-        b2AABB aabb() const;
+        ui_aabb_t aabb() const;
 
         // checks if the position is inside of the container
         bool contains(glm::vec2 pos);
@@ -150,11 +165,21 @@ namespace spk {
     public:
         virtual ui_types_t type() override { return ui_types_t::BUTTON; }
 
-        glm::vec3 click_color      = {0.0f, 0.0f, 0.f};
+        virtual void update() override;
+
+
+        bool clicked_get() const { return clicked; }
+        bool hovering_get() const { return hovering; };
+
+        button_callback_t callback    = nullptr;
+        glm::vec3         hover_color = {0.0f, 0.0f, 0.f};
+        glm::vec3         click_color = {0.0f, 0.0f, 0.f};
 
     private:
-        bool  is_clicked;
-        float time_since_click = 0.0f;
+        void _handle_click();
+
+        bool clicked = false;
+        bool hovering        = false;
     };
 
     class canvas_t : public container_t {

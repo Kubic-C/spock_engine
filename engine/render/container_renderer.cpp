@@ -2,15 +2,40 @@
 #include "core/internal.hpp"
 
 namespace spk {
-    void container_renderer_t::container_mesh(const container_t& container) {
-        auto& dim  = container.dimensions_get();
-        auto& mesh = meshes[container.sprite_array_id];
+
+    void container_renderer_t::button_mesh(const button_t& button) {
+        auto& dim  = button.dimensions_get();
+        auto& mesh = meshes[button.sprite_array_id];
+        glm::vec4 color;
+
+        if(button.clicked_get()) {
+            color = glm::vec4(button.click_color, button.color.a);
+        } else if(button.hovering_get()) {
+            color = glm::vec4(button.hover_color, button.color.a);
+        } else {
+            color = button.color;
+        }
 
         vertex_t vertices[] = {
-            {{dim.pos.x - dim.size.x, dim.pos.y - dim.size.y, dim.pos.z}, {0.0f, 0.0f, container.sprite_index}, container.color},
-            {{dim.pos.x + dim.size.x, dim.pos.y - dim.size.y, dim.pos.z}, {1.0f, 0.0f, container.sprite_index}, container.color},
-            {{dim.pos.x + dim.size.x, dim.pos.y + dim.size.y, dim.pos.z}, {1.0f, 1.0f, container.sprite_index}, container.color},
-            {{dim.pos.x - dim.size.x, dim.pos.y + dim.size.y, dim.pos.z}, {0.0f, 1.0f, container.sprite_index}, container.color}
+            {{dim.pos.x             , dim.pos.y             , dim.pos.z}, {0.0f, 0.0f, button.sprite_index}, color},
+            {{dim.pos.x + dim.size.x, dim.pos.y             , dim.pos.z}, {1.0f, 0.0f, button.sprite_index}, color},
+            {{dim.pos.x + dim.size.x, dim.pos.y + dim.size.y, dim.pos.z}, {1.0f, 1.0f, button.sprite_index}, color},
+            {{dim.pos.x             , dim.pos.y + dim.size.y, dim.pos.z}, {0.0f, 1.0f, button.sprite_index}, color}
+        };
+
+        mesh.add_mesh(vertices);
+    }
+
+    void container_renderer_t::container_mesh(const container_t& container) {
+        auto&            dim   = container.dimensions_get();
+        auto&            mesh  = meshes[container.sprite_array_id];
+        const glm::vec4& color = container.color;
+
+        vertex_t vertices[] = {
+            {{dim.pos.x             , dim.pos.y             , dim.pos.z}, {0.0f, 0.0f, container.sprite_index}, color},
+            {{dim.pos.x + dim.size.x, dim.pos.y             , dim.pos.z}, {1.0f, 0.0f, container.sprite_index}, color},
+            {{dim.pos.x + dim.size.x, dim.pos.y + dim.size.y, dim.pos.z}, {1.0f, 1.0f, container.sprite_index}, color},
+            {{dim.pos.x             , dim.pos.y + dim.size.y, dim.pos.z}, {0.0f, 1.0f, container.sprite_index}, color}
         };
 
         mesh.add_mesh(vertices);
@@ -34,7 +59,7 @@ namespace spk {
                 mesh.buffer.bind();
                 glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), nullptr);
                 glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (void*)offsetof(vertex_t, tex));
-                glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (void*)offsetof(vertex_t, color));
+                glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (void*)offsetof(vertex_t, color));
                 glEnableVertexAttribArray(0);
                 glEnableVertexAttribArray(1);
                 glEnableVertexAttribArray(2);

@@ -39,7 +39,7 @@ MAIN {
         spk::audio_music_volume(1);
         world->SetGravity(b2Vec2(0.0f, 0.0f));
 
-        font_id = spk::font_create("./FiraCode-Bold.ttf");
+        font_id = spk::font_create("./FiraCode-Bold.ttf", 100, 20);
 
         sprite_array_id = spk::sprite_array_create(32, 32, 5);
         spk::sprite_array_set(sprite_array_id, "./texture_array/image1.png", 0);
@@ -74,13 +74,33 @@ MAIN {
 
         text = canvas.element<spk::text_t>();
 
-        text->x_set(spk::constraint_relative(0.2f));
-        text->y_set(spk::constraint_relative(0.95f));
-        text->width_set(spk::constraint_relative(0.2f));
-        text->height_set(spk::constraint_relative(0.05f));
+        text->x_set(spk::constraint_relative(0.0f));
+        text->y_set(spk::constraint_relative(0.9f));
+        text->width_set(spk::constraint_relative(1.0f));
+        text->height_set(spk::constraint_relative(0.1f));
         text->text       = "loading..";
         text->text_color = {1.0f, 1.0f, 1.0f};
         text->color      = {0.0f, 0.0f, 0.0f, 0.0f};
+
+        spk::ptr_t button = text->element<spk::button_t>();
+        button->x_set(spk::constraint_center());
+        button->y_set(spk::constraint_relative(0.0f));
+        button->width_set(spk::constraint_relative(0.3f));
+        button->height_set(spk::constraint_relative(0.2f));
+        button->color       = {1.0f, 0.0f, 0.0f, 1.0f};        
+        button->hover_color = {1.0f, 0.2f, 0.2f};
+        button->click_color = {1.0f, 0.5f, 0.5f};    
+        button->callback = [&](spk::button_t& button) {
+            spk::exit();
+        };
+
+        spk::ptr_t button_text = button->element<spk::text_t>();
+        button_text->x_set(spk::constraint_center());
+        button_text->y_set(spk::constraint_relative(0.0f));
+        button_text->width_set(spk::constraint_relative(1.0f));
+        button_text->height_set(spk::constraint_relative(1.0f));
+        button_text->color = {0.0f, 0.0f, 0.0f, 0.0f};
+        button_text->text  = "click button to exit";
 
         spk::settings().target_tps = 60;
         spk::settings().target_fps = 120;
@@ -202,7 +222,7 @@ MAIN {
             text->text = std::string(spk::build_name()) + " | FPS:" + std::to_string(spk::statistics().fps) + " | TPS:"  + std::to_string(spk::statistics().tps);
             text->text += "\nvelocity.xy:" + std::to_string(rb->GetLinearVelocity().x) + " / " + std::to_string(rb->GetLinearVelocity().y);
         
-            if(spk::window().key_state_get(SDL_SCANCODE_1)) {
+            if(spk::window().key_get(SDL_SCANCODE_1)) {
                 rb->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
             }
         });

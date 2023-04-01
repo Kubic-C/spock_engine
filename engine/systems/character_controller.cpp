@@ -18,16 +18,16 @@ namespace spk {
             comp_character_controller_t* cc    = &ccs[i];
             glm::vec2                    force = {0.0f, 0.0f};
 
-            if(window().key_state_get(cc->left)) {
+            if(window().key_get(cc->left)) {
                 force.x -= cc->speed;
             }    
-            if(window().key_state_get(cc->right)) {
+            if(window().key_get(cc->right)) {
                 force.x += cc->speed;
             }    
-            if(window().key_state_get(cc->up)) {
+            if(window().key_get(cc->up)) {
                 force.y += cc->speed;
             }    
-            if(window().key_state_get(cc->down)) {
+            if(window().key_get(cc->down)) {
                 force.y -= cc->speed;
             }    
 

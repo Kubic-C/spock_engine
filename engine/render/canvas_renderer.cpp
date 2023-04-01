@@ -17,8 +17,9 @@ namespace spk {
         case ui_types_t::CANVAS:
             break;
 
-        case ui_types_t::BUTTON:
-            goto container_mesh;
+        case ui_types_t::BUTTON: // buttons are containers with a callback essentially
+            container_renderer->button_mesh(*container.cast<button_t>());
+            break;
         
         case ui_types_t::TEXT:
             text_renderer->text_mesh(*container.cast<text_t>());

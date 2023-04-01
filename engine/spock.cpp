@@ -218,4 +218,8 @@ namespace spk {
         log.log("SDL Version: %u.%u.%u", sdl_version.major, sdl_version.minor, sdl_version.patch);
         log.log("SDL_mixer Version: %u.%u.%u", mixer_version.major, mixer_version.minor, mixer_version.patch);
     }
+
+    void exit() {
+        internal->settings.should_exit = true;
+    }
 }
