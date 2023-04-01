@@ -89,10 +89,10 @@ namespace spk {
     const char* text_vs = R"###(
     #version 330 core
     layout(location = 0) in vec3 a_pos;
-    layout(location = 1) in vec2 a_tex_coords;
+    layout(location = 1) in vec3 a_tex_coords;
     layout(location = 2) in vec3 a_color;
 
-    out vec2 v_tex_coords;
+    out vec3 v_tex_coords;
     out vec3 v_color;
 
     uniform mat4 u_vp;
@@ -106,10 +106,10 @@ namespace spk {
 
     const char* text_fs = R"###(
     #version 330 core
-    in vec2 v_tex_coords;
+    in vec3 v_tex_coords;
     in vec3 v_color;
 
-    uniform sampler2D font;
+    uniform sampler2DArray font;
 
     out vec4 color;
 

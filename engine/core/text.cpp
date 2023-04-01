@@ -12,11 +12,22 @@
 
 namespace spk {
     font_t::font_t() {
-        texture.init();
+        character_array.init();
     }
 
     font_t::~font_t() {
-        texture.free();
+        character_array.free();
+    }
+
+    void character_tex_coords(character_t& character, float zcursor, float texture_width, float texture_height) {
+        // g is for glyph
+        float gwidth  = character.size.x / texture_width;
+        float gheight = character.size.y / texture_height;
+
+        character.tex_indices[0] = {0      ,gheight, zcursor};
+        character.tex_indices[1] = {gwidth, gheight, zcursor};
+        character.tex_indices[2] = {gwidth ,0      , zcursor};
+        character.tex_indices[3] = {0      ,0      , zcursor};
     }
 
     void character_scale_down(character_t& character, float scale) {
@@ -25,82 +36,76 @@ namespace spk {
         character.offset  *= scale;
     }
 
-    bool font_t::load_ascii_font(FT_Library lib, int f_width, int _render_width, const char* file_path) {
-        const float x_padding = 3.0f;
-        float x = 0; // cursor within this->texture's data, used for writing
-        tallest_glyph = 0;
-        widest_glyph  = 0;
-        width  = 0;
-        height = 0;
-        render_scale  = (float)_render_width / (float)f_width;
+    void character_load(character_t& character, FT_GlyphSlot glyph) {
+        character.flags[CHARACTER_FLAG_VALID] = true;
+        character.advance[0] = glyph->advance.x >> 6;
+        character.advance[1] = glyph->advance.y >> 6;
+        character.size       = {glyph->bitmap.width, glyph->bitmap.rows};
+        character.offset[0]  = glyph->bitmap_left; 
+        character.offset[1]  = character.size.y - glyph->bitmap_top;
+    }
 
-        if(FT_New_Face(lib, file_path, 0, &face)) {
+    void font_t::prepare_for_load(float render_scale) {
+        widest_glyph  = 0;
+        tallest_glyph = 0;
+        this->render_scale  = render_scale;
+    }
+
+    bool font_t::load_ascii_font(FT_Library lib, int font_size, int render_size, const char* file_path) {
+        uint32_t       zcursor = 0; // cursor within this->texture's data, used for writing
+        FT_Face        face; 
+
+        prepare_for_load((float)render_size / (float)font_size);
+
+        if(!face_load(&face, file_path, font_size)) {
             return false;
         }
 
-        FT_Set_Pixel_Sizes(face, f_width, 0);
-
         for(u_char c = 0; c < UCHAR_MAX; c++) {
-            character_t* ch = nullptr;
+            if(FT_Get_Char_Index(face, c) == 0) {
+                // undefined face
+                char_map[c].flags[CHARACTER_FLAG_VALID] = false;
+                continue;
+            }
 
             if(FT_Load_Char(face, c, FT_LOAD_RENDER)) {
                 continue;
             }
 
-            width += face->glyph->bitmap.width + x_padding;
-            widest_glyph = std::max(widest_glyph, face->glyph->bitmap.width);
+            widest_glyph  = std::max(widest_glyph, face->glyph->bitmap.width);
             tallest_glyph = std::max(tallest_glyph, face->glyph->bitmap.rows);
 
-            ch = &char_map[c];
-            ch->advance[0] = face->glyph->advance.x >> 6;
-            ch->advance[1] = face->glyph->advance.y >> 6;
-            ch->size       = {face->glyph->bitmap.width, face->glyph->bitmap.rows};
-
-            ch->offset[0] = face->glyph->bitmap_left; 
-            ch->offset[1] = ch->size.y - face->glyph->bitmap_top;
+            character_load(char_map[c], face->glyph);
         }
 
-        height = tallest_glyph;
 
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        texture.allocate(GL_UNSIGNED_BYTE, GL_RED, GL_RED, width, height, nullptr);
-        texture.bind();
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        character_array.storage(GL_R8, widest_glyph, tallest_glyph, UCHAR_MAX);
+        tex_param_wrap_clamp_to_edge(GL_TEXTURE_2D_ARRAY);
+        tex_param_linear(GL_TEXTURE_2D_ARRAY);
 
         for(u_char c = 0; c < UCHAR_MAX; c++) {
-            character_t* ch = nullptr;
-            float gx, gwidth, gheight; // g for glyph
-            
-            if(FT_Load_Char(face, c, FT_LOAD_RENDER)) {
+            if(FT_Load_Char(face, c, FT_LOAD_RENDER) || !char_map[c].flags[CHARACTER_FLAG_VALID]) {
                 continue;
             }
 
-            texture.subdata(GL_UNSIGNED_BYTE, x, 0, GL_RED, face->glyph->bitmap.width, 
-                face->glyph->bitmap.rows, face->glyph->bitmap.buffer);
+            character_array.subimage(0, 0, zcursor, face->glyph->bitmap.width, face->glyph->bitmap.rows, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
 
-            ch = &char_map[c];
+            character_tex_coords(char_map[c], zcursor, widest_glyph, tallest_glyph);
+            
+            zcursor += 1;
 
-            gx      = x / (float)width;
-            gwidth  = ch->size.x / (float)width;
-            gheight = ch->size.y / (float)height;
-
-            // ccw indexing, keep that in mind
-            ch->tex_indices[0] = { gx         , gheight };
-            ch->tex_indices[1] = { gx + gwidth, gheight };
-            ch->tex_indices[2] = { gx + gwidth, 0       };
-            ch->tex_indices[3] = { gx         , 0       };
-
-            x += ch->size.x + x_padding;
-
-            character_scale_down(*ch, render_scale);
+            // texture coord calculations need the real size within the texture
+            // so we must scale down all advances, size, and offsets AFTER we calculate
+            // texture coords, otherwise we'd get scaled down texture coords
+            character_scale_down(char_map[c], render_scale);
         }
 
         // texture still bound
-        glGenerateMipmap(GL_TEXTURE_2D);
+        glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // restore previous alignment
+        
+        FT_Done_Face(face);
 
         return true;
     }
@@ -154,11 +159,11 @@ namespace spk {
         FT_Done_FreeType(resources().ft_lib);
     }
 
-    uint32_t font_create(const char* file_path, int f_width, int render_width) {
+    uint32_t font_create(const char* file_path, int font_size, int render_size) {
         uint32_t id   = resources().fonts.add();
         font_t&  font = resources().fonts.get(id);
 
-        if(!font.load_ascii_font(resources().ft_lib, f_width, render_width, file_path)) {
+        if(!font.load_ascii_font(resources().ft_lib, font_size, render_size, file_path)) {
             resources().fonts.remove(id);
             return UINT32_MAX;
         } else {

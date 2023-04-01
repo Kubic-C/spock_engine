@@ -60,6 +60,14 @@ namespace spk {
         Mix_CloseAudio();
     }
 
+    void audio_chunk_volume(int volume) {
+        Mix_MasterVolume(volume);
+    }
+
+    void audio_music_volume(int volume) {
+        Mix_VolumeMusic(volume);
+    }
+
     uint32_t music_create(const char* file) {
         Mix_Music* music = Mix_LoadMUS(file);
         if(music == nullptr) {

@@ -186,10 +186,10 @@ namespace spk {
 
     font_t& text_t::font_get() const {
         if(font == UINT32_MAX) {
-            return fonts().map()[canvas->font];
+            return fonts().get(canvas->font);
         }
 
-        return fonts().map()[font];
+        return fonts().get(font);
     }
 
     canvas_t::canvas_t() {

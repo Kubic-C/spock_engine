@@ -8,7 +8,6 @@
 */
 
 #include "ui.hpp"
-#include "utility/ui.hpp"
 #include "window.hpp"
 #include "core/internal.hpp"
 

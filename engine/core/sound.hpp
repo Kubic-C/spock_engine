@@ -57,6 +57,24 @@ namespace spk {
     void audio_close();
 
     /**
+     * @brief control the master volume of all chunks
+     * 
+     * @param volume a value between 0 - MIX_MAX_VOLUME. The closer the value is
+     * to zero, the qiueter it is.
+     * 
+     */
+    void audio_chunk_volume(int volume);
+
+    /**
+     * @brief control the master volume of all music
+     * 
+     * @param volume a value between 0 - MIX_MAX_VOLUME. The closer the value is
+     * to zero, the qiueter it is.
+     * 
+     */
+    void audio_music_volume(int volume);
+
+    /**
      * @brief load music from a file and returns the ID of the music loaded
      * 
      * @param file the sound file to load

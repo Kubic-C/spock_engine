@@ -13,7 +13,7 @@
 namespace spk {
     struct vertex_t {
         glm::vec3 pos;
-        glm::vec2 tex;
+        glm::vec3 tex;
         glm::vec3 color;
     };
 
@@ -53,10 +53,14 @@ namespace spk {
             const float xadvance = (float)ch.advance[0] * dim.scale;
             const float yadvance = (float)ch.advance[1] * dim.scale;
 
-            if(dim.xright < cursor.x + xadvance) {
+            if(dim.xright < cursor.x + xadvance || c == '\n') {
                 cursor.x = dim.xreset;
                 cursor.y -= dim.ysub;
             }
+
+            if(!ch.flags[CHARACTER_FLAG_VALID]) {
+                continue;
+            } 
 
             if(cursor.y < dim.ybottom)
                 break;
@@ -97,7 +101,7 @@ namespace spk {
                 vao.bind();
                 mesh.buffer.bind();
                 glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), nullptr);
-                glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (void*)offsetof(vertex_t, tex));
+                glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (void*)offsetof(vertex_t, tex));
                 glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(vertex_t), (void*)offsetof(vertex_t, color));
                 glEnableVertexAttribArray(0);
                 glEnableVertexAttribArray(1);
@@ -106,7 +110,7 @@ namespace spk {
                 shader.use();
                 shader.set_mat4("u_vp", render_context().ui_camera);
                 shader.set_int("font", 0);
-                font.texture.bind();
+                font.character_array.bind();
                 glActiveTexture(GL_TEXTURE0);
 
                 render_context().common.quad_indexes.bind();

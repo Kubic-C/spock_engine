@@ -10,11 +10,9 @@
 #pragma once
 
 #include "text.hpp"
-#include "utility/ui.hpp"
-#include "utility/stack_allocator.hpp"
 
 /**
- * @brief A UI with tree repersentation
+ * @brief A UI system implemented via UI tree
  * 
  */
 

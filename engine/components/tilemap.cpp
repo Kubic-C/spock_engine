@@ -13,13 +13,6 @@
 namespace spk {
     void comp_tilemap_t::init(flecs::entity entity) {
         tiles.size(100, 100);
-
-        for(uint32_t x = 0; x < tiles.get_width(); x++) {
-            for(uint32_t y = 0; y < tiles.get_height(); y++) {
-                tiles.get(x, y).id = 0;
-                tiles.get(x, y).flags = TILE_FLAGS_COLLIADABLE;
-            }
-        }
     }
 
     void comp_tilemap_t::free(flecs::entity entity) {

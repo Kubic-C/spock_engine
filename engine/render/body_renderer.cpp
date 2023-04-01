@@ -146,10 +146,6 @@ namespace spk {
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr); // we bound the VBO earlier when meshing
         glEnableVertexAttribArray(0);
 
-        if(vertex_count == 12) {
-            log.log(":(");
-        }
-
         // render
         glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 

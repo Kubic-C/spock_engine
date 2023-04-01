@@ -8,12 +8,22 @@
 */
 
 #include "particles.hpp"
-#include "utility/ui.hpp"
 #include "core/internal.hpp"
 #include "components/rigid_body.hpp"
 #include <glm/gtx/vector_angle.hpp>
 
 namespace spk {
+    float map_value(float value, glm::vec2 start, glm::vec2 end) {
+        const float start1 = start.x;
+        const float start2 = start.y;
+        const float stop1   = end.x;
+        const float stop2   = end.y;
+
+        float ret = stop1 + (value - start1) * (stop2 - stop1) / (start2 - start1);
+
+        return ret;
+    }
+
     float random_positive_float(float min, float max) {
         const float precision = 1000.0f;
 

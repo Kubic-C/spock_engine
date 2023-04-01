@@ -12,17 +12,16 @@
 #include "base.hpp"
 #include "render/opengl.hpp"
 #include "utility/common.hpp"
-
-/*
-
-text utilities:
-- font loading and managing
-
-*/
+#include "utility/font.hpp"
 
 namespace spk {
+    enum { // goes by the index of bits 
+        CHARACTER_FLAG_VALID = 0
+    };
+
     struct character_t {
-        glm::vec2 tex_indices[4];
+        std::bitset<8> flags = {0b0};
+        glm::vec3 tex_indices[4];
         glm::vec2 size;
         glm::vec2 offset;
         glm::vec2 advance;
@@ -37,15 +36,15 @@ namespace spk {
     public:
         std::string name;
 
-        float    render_scale;
-        uint32_t widest_glyph;
-        uint32_t tallest_glyph;
-        uint32_t width, height;
-        texture2D_t texture;
-
-        FT_Face face; 
+        float             render_scale  = 0.0f;
+        uint32_t          widest_glyph  = 0.0f;
+        uint32_t          tallest_glyph = 0;
+        texture_array2D_t character_array;
 
         hashmap_t<u_char, character_t> char_map;
+
+    private:
+        void prepare_for_load(float render_scale);
     };
 
     class font_dictionary_t {
@@ -92,11 +91,14 @@ namespace spk {
      * @brief creates a new font by loading a font from file_path, f_width and
      * f_height changes the size of a font
      * 
+     * @note a higher font_size with a lower render_size will lead to better
+     * readability. it is reccomended this be done.
+     * 
      * @param file_path: font to load path from
-     * @param f_width: font width 
-     * @param f_height: font height
+     * @param font_size: the actual font size (in pixels) loaded into memory 
+     * @param render_size: the size of the font when rendering
      * @return and ID assigned with the font. will return UINT32_MAX if the font 
      * could not be loaded or some error occurred 
      */
-    uint32_t font_create(const char* file_path, int f_width, int render_width);
+    uint32_t font_create(const char* file_path, int font_size = 128, int render_size = 20);
 }
