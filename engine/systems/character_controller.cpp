@@ -31,7 +31,7 @@ namespace spk {
                 force.y -= cc->speed;
             }    
 
-            body->ApplyLinearImpulseToCenter(force, false);
+            body->ApplyLinearImpulseToCenter(force, true);
         }
     }
 

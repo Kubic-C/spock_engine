@@ -6,6 +6,7 @@ set(BUILD_SHARED_LIBS OFF)
 add_subdirectory(flecs)
 add_subdirectory(SDL)
 
+set(SDL2MIXER_SAMPLES OFF)
 set(SDL2MIXER_CMD OFF)
 set(SDL2MIXER_MOD_MODPLUG OFF)
 set(SDL2MIXER_OPUS OFF)

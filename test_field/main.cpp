@@ -26,7 +26,8 @@ MAIN {
     spk::scene_t&     scene     = spk::scene();
     spk::canvas_t&    canvas    = spk::canvas();
     b2World*          world = scene.physics_world;
-    uint32_t          smells_blood_id, coin_sound_id, font_id;
+    uint32_t          smells_blood_id, coin_sound_id;
+    std::array<uint32_t, 5> fonts;
     uint32_t          sprite_array_id, high_def_array;
     spk::ptr_t<spk::text_t> text;
 
@@ -39,7 +40,11 @@ MAIN {
         spk::audio_music_volume(1);
         world->SetGravity(b2Vec2(0.0f, 0.0f));
 
-        font_id = spk::font_create("./FiraCode-Bold.ttf", 100, 20);
+        fonts[0] = spk::font_create("./fonts/DotGothic16-Regular.ttf", 128, 20);
+        fonts[1] = spk::font_create("./fonts/eater.regular.ttf", 128, 20);
+        fonts[2] = spk::font_create("./fonts/FiraCode-Bold.ttf", 128, 20);
+        fonts[3] = spk::font_create("./fonts/GajrajOne-Regular.ttf", 128, 20);
+        fonts[4] = spk::font_create("./fonts/PressStart2P.ttf", 128, 20);
 
         sprite_array_id = spk::sprite_array_create(32, 32, 5);
         spk::sprite_array_set(sprite_array_id, "./texture_array/image1.png", 0);
@@ -63,24 +68,24 @@ MAIN {
         td[2].friction = 0.0f;
         td[2].restitution = 0.0f;
 
-        td[4].sprite.id = sprite_array_id;
-        td[2].sprite.z = 1.0f;
-        td[4].sprite.index = 2;
-        td[4].density = 500.0f;
+        td[3].sprite.id = sprite_array_id;
+        td[3].sprite.z = 1.0f;
+        td[3].sprite.index = 2;
+        td[3].density = 500.0f;
     }
 
     { // canvas 
-        canvas.font = font_id;
+        canvas.font = fonts[0];
 
         text = canvas.element<spk::text_t>();
 
-        text->x_set(spk::constraint_relative(0.0f));
-        text->y_set(spk::constraint_relative(0.9f));
-        text->width_set(spk::constraint_relative(1.0f));
+        text->x_set(spk::constraint_relative(0.05f));
+        text->y_set(spk::constraint_relative(0.85f));
+        text->width_set(spk::constraint_relative(0.5f));
         text->height_set(spk::constraint_relative(0.1f));
         text->text       = "loading..";
         text->text_color = {1.0f, 1.0f, 1.0f};
-        text->color      = {0.0f, 0.0f, 0.0f, 0.0f};
+        text->color      = {1.0f, 1.0f, 1.0f, 0.0f};
 
         spk::ptr_t button = text->element<spk::button_t>();
         button->x_set(spk::constraint_center());
@@ -88,7 +93,7 @@ MAIN {
         button->width_set(spk::constraint_relative(0.3f));
         button->height_set(spk::constraint_relative(0.2f));
         button->color       = {1.0f, 0.0f, 0.0f, 1.0f};        
-        button->hover_color = {1.0f, 0.2f, 0.2f};
+        button->hover_color = {1.0f, 0.4f, 0.4f};
         button->click_color = {1.0f, 0.5f, 0.5f};    
         button->callback = [&](spk::button_t& button) {
             spk::exit();
@@ -106,14 +111,14 @@ MAIN {
         spk::settings().target_fps = 120;
     }
 
-    for(size_t i = 0; i < 100; i++) {
+    for(size_t i = 0; i < 10; i++) {
         scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_sprite_t& sprite, spk::comp_particles_t& ps) {
             float random = rand();
             random *= 0.01f;
 
             rb->SetType(b2_dynamicBody);
             rb->SetBullet(true);
-            rb->SetTransform((glm::vec2){fmod(random, 20.0f) - 10.0f, fmod(random, 20.0f) - 10.0f}, 0.0f);
+            rb->SetTransform((glm::vec2){fmod(random, 100.0f) - 50.0f, 100.0f}, 0.0f);
 
             b2PolygonShape shape;
             float hl = fmod(random, 2.5f) + 0.4f;
@@ -134,7 +139,7 @@ MAIN {
             ps.step   = 0.2f; // fun :)
             ps.length = 1.0f;
             ps.base_speed = 9.0f;
-            ps.sprite = 4;
+            ps.sprite = 3;
             ps.base_cycle = 0.5f;
             ps.base_lifetime = 1.0f;
             ps.max = UINT32_MAX;
@@ -142,13 +147,33 @@ MAIN {
         });
     }
     
-    flecs::entity wall = scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_tilemap_t& tm){
+    scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_tilemap_t& tm){
         rb->SetType(b2_dynamicBody);
-        tm.tiles.size(1000, 30);
+        tm.tiles.size(500, 20);
 
         for(uint32_t x = 0; x < tm.tiles.get_width(); x++) {
             for(uint32_t y = 0; y < tm.tiles.get_height(); y++) {
-                if(10 < y && y < 20) {
+                if(5 < y && y < 15) {
+                    tm.tiles.get(x, y).id = 2 + (rand() % 2);
+                    tm.tiles.get(x, y).flags = spk::TILE_FLAGS_COLLIADABLE;
+                }
+            }
+        }
+
+        tm.add_fixtures(rb);
+    });
+
+    scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_tilemap_t& tm){
+        rb->SetType(b2_staticBody);
+        tm.tiles.size(1000, 1000);
+
+        for(uint32_t x = 0; x < tm.tiles.get_width(); x++) {
+            for(uint32_t y = 0; y < tm.tiles.get_height(); y++) {
+                if(x != 0 && x != (tm.tiles.get_width() - 1) &&
+                    y != 0 && y != (tm.tiles.get_height() - 1)) {
+                    tm.tiles.get(x, y).id = 1;
+                    tm.tiles.get(x, y).flags = 0;
+                } else {
                     tm.tiles.get(x, y).id = 2;
                     tm.tiles.get(x, y).flags = spk::TILE_FLAGS_COLLIADABLE;
                 }
@@ -167,12 +192,13 @@ MAIN {
         rb->SetType(b2_dynamicBody);
         rb->SetBullet(true);
 
-        tilemap.tiles.get(1, 0) = 4;
-        tilemap.tiles.get(1, 1) = 4;
-        tilemap.tiles.get(1, 2) = 4;
-        tilemap.tiles.get(2, 1) = 4;
+        tilemap.tiles.get(1, 0) = 3;
+        tilemap.tiles.get(1, 1) = 3;
+        tilemap.tiles.get(1, 2) = 3;
+        tilemap.tiles.get(2, 1) = 3;
 
         tilemap.add_fixtures(rb);
+        rb->SetTransform(b2Vec2(0.0f, 40.0f), 0.0f);
 
         cc.speed = 10000.0f;
 
@@ -183,10 +209,7 @@ MAIN {
         fixture.isSensor = true;
         rb->CreateFixture(&fixture);
     
-        callbacks.begin =[&](flecs::entity self, flecs::entity other, b2Contact* contact) {
-            if(other == wall)
-                return;
-            
+        callbacks.begin =[&](flecs::entity self, flecs::entity other, b2Contact* contact) {            
             b2Fixture* self_fixture;
             b2Fixture* other_fixture;
 
@@ -216,6 +239,22 @@ MAIN {
     scene.camera.get_ref<spk::comp_camera_t>()->scale = 1.5f;
 
     scene.user_data.update = [&](){
+        if(spk::window().key_get(SDL_SCANCODE_2)) {
+            canvas.font = fonts[0];
+        }
+        else if(spk::window().key_get(SDL_SCANCODE_3)) {
+            canvas.font = fonts[1];
+        }
+        else if(spk::window().key_get(SDL_SCANCODE_4)) {
+            canvas.font = fonts[2];
+        }
+        else if(spk::window().key_get(SDL_SCANCODE_5)) {
+            canvas.font = fonts[3];
+        }
+        else if(spk::window().key_get(SDL_SCANCODE_6)) {
+            canvas.font = fonts[4];
+        }
+
         character.set([&](spk::comp_rigid_body_t& rb, spk::comp_camera_t& camera){
             camera.pos = rb->GetPosition();
 

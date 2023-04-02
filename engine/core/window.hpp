@@ -29,6 +29,8 @@ namespace spk {
         bool      key_get(SDL_Scancode scancode);
         uint32_t  mouse_get_cur(glm::vec2& pos, bool y_flip = false);
 
+        // struct 
+
         glm::vec2  mouse_position;
 
         glm::vec2  mouse_click_pos;
