@@ -13,5 +13,5 @@
 #include "physics/collision_listener.hpp"
 
 namespace spk {
-    void physics_cs_init(flecs::world& world);
+    void physics_cs_init(const flecs::world& world);
 }

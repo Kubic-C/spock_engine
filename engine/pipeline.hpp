@@ -25,7 +25,7 @@ namespace spk {
     inline flecs::entity_t on_update_id      = flecs::OnUpdate;
     inline flecs::entity_t on_post_update_id = flecs::PostUpdate; 
 
-    inline void init_phases(flecs::world& world) {
+    inline void init_phases(const flecs::world& world) {
         renderer_id      = world.component<tag_renderer_t>();
         game_system_id   = world.component<tag_game_system_t>();
 

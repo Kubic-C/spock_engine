@@ -23,14 +23,12 @@ namespace spk {
             glm::vec3 tex;
         };
 
-        sprite_renderer_t(flecs::world& world) {
+        sprite_renderer_t(const flecs::world& world) {
             mesh_system_add(world.system<comp_rigid_body_t, comp_sprite_t>().iter(sprite_mesh));
-            mesh_system_add(world.system<comp_rigid_body_t, comp_tilemap_t>().iter(tilemap_mesh));
             mesh_system_add(world.system<comp_rigid_body_t, comp_particles_t>().iter(particles_mesh));
         }
 
         static void particles_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_particles_t* particles);
-        static void tilemap_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_tilemap_t* tilemap);
         static void sprite_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_sprite_t* sprites);
         void render() override;
 

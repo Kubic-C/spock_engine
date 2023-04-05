@@ -35,7 +35,7 @@ namespace spk {
         }
     }
 
-    void character_controller_cs_init(flecs::world& world) {
+    void character_controller_cs_init(const flecs::world& world) {
         spk_trace();
         
         character_controller_comp_init(world);

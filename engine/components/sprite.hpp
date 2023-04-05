@@ -42,5 +42,5 @@ namespace spk {
         void free(flecs::entity entity) {}
     };
 
-    void sprite_comp_init(flecs::world& world);
+    void sprite_comp_init(const flecs::world& world);
 }

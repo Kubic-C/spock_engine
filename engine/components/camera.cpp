@@ -9,7 +9,6 @@
 
 #include "camera.hpp"
 #include "core/internal.hpp"
-#include <glm/gtc/matrix_transform.hpp>
 
 namespace spk { 
     void comp_camera_t::init(flecs::entity entity) {
@@ -75,7 +74,7 @@ namespace spk {
         window_force_resize_event();
     } 
 
-    void camera_comp_init(flecs::world& world) {
+    void camera_comp_init(const flecs::world& world) {
         spk_trace();
         
         spk_register_component(world, comp_camera_t);

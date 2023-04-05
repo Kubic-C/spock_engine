@@ -44,7 +44,7 @@ namespace spk {
         }
     }
 
-    void particles_comp_init(flecs::world& world) {
+    void particles_comp_init(const flecs::world& world) {
         spk_register_component(world, comp_particles_t);
     }
 }

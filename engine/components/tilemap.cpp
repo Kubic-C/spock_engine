@@ -11,233 +11,132 @@
 #include "core/internal.hpp"
 
 namespace spk {
+    tile_group_t::~tile_group_t() {
+        if(fixture && !settings().should_exit) {
+            fixture->GetBody()->DestroyFixture(fixture);
+        }
+    }
+    
     void comp_tilemap_t::init(flecs::entity entity) {
-        tiles.size(100, 100);
+        chunks = allocators().chunks_pool.create(1);
+        mesh   = allocators().chunk_mesh_pool.create(1);
     }
 
     void comp_tilemap_t::free(flecs::entity entity) {
+        allocators().chunk_mesh_pool.destruct(mesh, 1);
+        allocators().chunks_pool.destruct(chunks, 1);
     }
-    
-    void comp_tilemap_t::compute_greedy_mesh() {
-        tile_groups.clear();
 
-        // find tiles that have the same ID and adjacent on the Y-axis
-        for(uint32_t x = 0; x < tiles.get_width(); x++) {
-            for(uint32_t y = 0; y < tiles.get_height(); y++) {
-                uint32_t last_index = tiles.get_1D_from_2D(x, y - 1);
-                uint32_t cur_index = tiles.get_1D_from_2D(x, y);
+    void chunk_column_mesh_update(tile_chunk_t& chunk, tile_chunk_mesh_t& mesh, size_t column) {
+        size_t contigous_amount = 0;
+        tile_t contigous_tile   = UINT32_MAX;        
 
-                // We have to do this becuase,
-                // if a tile has no adjacent tiles on the y axis
-                // it will not be added to the map at all
-                if(tile_groups.find(cur_index) == tile_groups.end())
-                    tile_groups[cur_index] = { 1, 1 };
-
-                // continue because, y - 1 (a few lines below) will be 
-                // y - 1 [->] 0 - 1 [->] UINT32_MAX, which will surely cause 
-                // a read well outside the buffers length
-                if(y == 0)
-                    continue;
-
-                if(tiles.get(x, y - 1).id == tiles.get(x, y).id) {
-                    tile_groups[cur_index].y += tile_groups[last_index].y;
-
-                    tile_groups.erase(last_index);
+        size_t y = 0;
+        for(; y < tile_chunk_height; y++) {
+        check:
+            if(chunk[column][y] == contigous_tile) {
+                contigous_amount++;
+            } else if(contigous_tile == UINT32_MAX) {
+                contigous_tile = chunk[column][y];
+                contigous_amount++;
+            } else if(chunk[column][y] != contigous_tile) {
+                if(contigous_tile != 0U) {
+                    mesh.groups.emplace_back((tile_group_t){
+                        .tile   = contigous_tile,
+                        .total  = 1 * contigous_amount,
+                        .size   = {1, contigous_amount},
+                        .offset = {column * SPK_TILE_FULL_SIZE, (y - contigous_amount) * SPK_TILE_FULL_SIZE}
+                    });      
                 }
+
+                contigous_amount = 0;
+                contigous_tile     = UINT32_MAX;
+                goto check; // have to check the current tile
             }
         }
 
-        // find tiles adjacent on the X-axis, this is the final step
-        // to form the tile groups
-        for(auto i = tile_groups.begin(); i != tile_groups.end(); i++) {
-            glm::uvec2 coords       = tiles.get_2D_from_1D(i->first);
-            uint32_t   current_tile = i->first;
+        // for loop does not add the last tile group
+        if(contigous_tile != 0 && contigous_tile != UINT32_MAX) {
+            mesh.groups.emplace_back((tile_group_t){
+                .tile   = contigous_tile,
+                .total  = 1 * contigous_amount,
+                .size   = {1, contigous_amount},
+                .offset = {column * SPK_TILE_FULL_SIZE, (y - contigous_amount) * SPK_TILE_FULL_SIZE}
+            });     
+        }
+    }
 
-            // We may iterate multiple times to combine groups 
-            uint32_t   last_tile    = tiles.get_1D_from_2D(coords.x - tile_groups[current_tile].x, coords.y);
+    void chunk_mesh_update(b2Body* body, comp_tilemap_t& tilemap, size_t xchunk, size_t ychunk) {
+        tile_chunk_t&      chunk = (*tilemap.chunks)[xchunk][ychunk];
+        tile_chunk_mesh_t& mesh  = (*tilemap.mesh)[xchunk][ychunk]; 
 
-            if(tile_groups.find(last_tile) == tile_groups.end())
-                continue;
+        if(!mesh.dirty)
+            return;
 
-            // if a tile has a different tile group height, the cant be added
-            // the group wont be rectangular or sqaure, this will both
-            // mess up the map, and cause it to render/ over other tiles
-            if(tile_groups[last_tile].y != tile_groups[current_tile].y)
-                continue;
+        mesh.dirty = false;
+        mesh.groups.clear();
+                        
+        for(auto& pair : mesh.buffer) {
+            pair.second.vertices_on_buffer = 0;
+            pair.second.vertices_to_render = 0;
+        }
 
-            // self explantory; but if a tile group has a diff ID, it does not belong
-            // to this tile group. A tile group must have tiles of the same ID
-            if(tiles.get_from_1D(current_tile)->id != tiles.get_from_1D(last_tile)->id)
-                continue;
+        for(size_t xtile = 0; xtile < tile_chunk_width; xtile++) {
+            chunk_column_mesh_update(chunk, mesh, xtile);
+        }
 
-            tile_groups[current_tile].x += tile_groups[last_tile].x;
-            tile_groups.erase(last_tile);
+        for(tile_group_t& group : mesh.groups) {
+            const float id    = tile_dictionary()[group.tile.id].sprite.id;
+            const float index = tile_dictionary()[group.tile.id].sprite.index;
+            const float z     = tile_dictionary()[group.tile.id].sprite.z;
+            const float xbase = (xchunk * tile_chunk_width * SPK_TILE_FULL_SIZE) + group.offset.x;
+            const float ybase = (ychunk * tile_chunk_height * SPK_TILE_FULL_SIZE) + group.offset.y;
+            const float xsize = group.size.x * SPK_TILE_FULL_SIZE;
+            const float ysize = group.size.y * SPK_TILE_FULL_SIZE;
             
-            // the map may resize or move data around. 
-            // var 'i' could be pointing towards bad data
-            // so we 'reset'
-            i = tile_groups.begin();
-        }
-    }
+            // render vertices
+            tilemap_vertex_t vertices[] = {
+                (glm::vec3){xbase        , ybase        , z}, (glm::vec3){0.0f        , 0.0f        , index},
+                (glm::vec3){xbase + xsize, ybase        , z}, (glm::vec3){group.size.x, 0.0f        , index},
+                (glm::vec3){xbase + xsize, ybase + ysize, z}, (glm::vec3){group.size.x, group.size.y, index},
+                (glm::vec3){xbase        , ybase + ysize, z}, (glm::vec3){0.0f        , group.size.y, index}
+            };
 
-    void comp_tilemap_t::iterate_all(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
-        for(uint32_t x = 0; x < tiles.get_width(); x++) {
-            for(uint32_t y = 0; y < tiles.get_height(); y++) {
-                clbk(x, y);
-            }
-        }
-    }
+            mesh.buffer[(uint32_t)id].add_mesh(vertices);
 
-    void comp_tilemap_t::iterate_colliadable(std::function<void(uint32_t x, uint32_t y, tile_is_coll_info_t&)>&& clbk) {
-        iterate_all([&](uint32_t x, uint32_t y) {
-            tile_is_coll_info_t tile_info = tile_is_colliadable(x, y);
-            
-            if(tile_info.is_colliadable()) {
-                clbk(x, y, tile_info);
-            }
-         });
-    }
-    
-    void comp_tilemap_t::iterate_non_zero(std::function<void(uint32_t x, uint32_t y)>&& clbk) {
-        iterate_all([&](uint32_t x, uint32_t y) {
-            if(!is_tile_empty(tiles.get(x, y))) {
-                clbk(x, y);
-            }
-        });
-    }
-
-    tile_is_coll_info_t comp_tilemap_t::tile_is_colliadable(uint32_t x, uint32_t y) {
-        tile_is_coll_info_t info;
-
-        if(spk::is_tile_empty(tiles.get(x, y))) // if its empty it can't collide
-            return info;
-
-       //  check left tile
-        if(x - 1 != UINT32_MAX) {
-            if(spk::is_tile_empty(tiles.get(x - 1, y))) {
-                info.left = true;
-            }
-        } else { // edge tiles are colliadable
-            info.left = true;
-        }
-
-        // check right tile
-        if(x + 1 != tiles.get_width()) {
-            if(spk::is_tile_empty(tiles.get(x  + 1, y))) {
-                info.right = true;
-            }
-        } else { // edge tiles are colliadable
-            info.right = true;
-        }
-
-        // check top tiles
-        if(y - 1 != UINT32_MAX) {
-            if(spk::is_tile_empty(tiles.get(x, y - 1))) {
-                info.top = true;
-            }
-        } else { // edge tiles are colliadable
-            info.top = true;
-        }
-
-        // check bottom tiles
-        if(y + 1 != tiles.get_height()) {
-            if(spk::is_tile_empty(tiles.get(x, y + 1))) {
-                info.bottom = true;
-            }
-        } else { // edge tiles are colliadable
-            info.bottom = true;
-        }
-
-        return info;
-    }
-
-    
-    void comp_tilemap_t::compute_colliders() {
-        compute_greedy_mesh();
-        compute_centroid();
-        colliding_tiles.clear();
-
-        for(auto& pair : tile_groups) {
-            glm::uvec2   coords = tiles.get_2D_from_1D(pair.first);
-            tile_group_t tile   = pair.second;
-            uint32_t     id     = tiles.get(coords.x, coords.y).id;
-
-            if(is_tile_empty(tiles.get(coords.x, coords.y)))
-               continue;
-
-            {
-                float  half_width    = tile.x / 2.0f;
-                float  half_height   = tile.y / 2.0f;
-                float  offset_width  = (coords.x + SPK_TILE_HALF_SIZE) - (float)tile.x  / 2.0f - center.x;
-                float  offset_height = (coords.y + SPK_TILE_HALF_SIZE) - (float)tile.y  / 2.0f - center.y; 
-                b2Vec2 offset        = { offset_width, offset_height };
-
-                colliding_tiles.emplace_back();
-                tile_collider_t& tile = colliding_tiles.back();
-
-                b2Vec2 vertices[4] = {
-                    b2Vec2(-half_width, -half_height) + offset,
-                    b2Vec2(half_width, -half_height) + offset,
-                    b2Vec2(half_width, half_height) + offset,
-                    b2Vec2(-half_width, half_height) + offset
+            // physic vertices
+            if(group.tile.flags & TILE_FLAGS_COLLIADABLE) {
+                b2Vec2 physic_vertices[] = {
+                    (glm::vec2)vertices[0].pos,
+                    (glm::vec2)vertices[1].pos,
+                    (glm::vec2)vertices[2].pos,
+                    (glm::vec2)vertices[3].pos
                 };
 
-                tile.shape.Set(vertices, 4);
-                tile.id = id;
+                b2PolygonShape shape;
+                shape.Set(physic_vertices, 4);
+
+                b2FixtureDef def;
+                def.shape       = &shape;
+                def.density     = tile_dictionary()[group.tile.id].density * group.total;
+                def.restitution = tile_dictionary()[group.tile.id].restitution;
+                def.friction    = tile_dictionary()[group.tile.id].friction;
+                group.fixture   = body->CreateFixture(&def);
             }
         }
     }
 
-    void comp_tilemap_t::compute_centroid() {
-        float left_most   = std::numeric_limits<float>().max(), 
-              right_most  = 0, 
-              top_most    = 0, 
-              bottom_most = std::numeric_limits<float>().max();
+    void _tilemap_mesh_update(b2Body* body, comp_tilemap_t& tilemap) {
+        tilemap_mesh_t& mesh = *tilemap.mesh;
 
-        iterate_colliadable([&](uint32_t x, uint32_t y, tile_is_coll_info_t&){
-            if(x < left_most) { // x is more left
-                left_most = x;
-            } else if(x > right_most) { // x is more right
-                right_most = x;
+        for(size_t xchunk = 0; xchunk < mesh.width_get(); xchunk++) {
+            for(size_t ychunk = 0; ychunk < mesh.height_get(); ychunk++) {
+                chunk_mesh_update(body, tilemap, xchunk, ychunk);
             }
-
-            if(y > top_most) { // y is higher
-                top_most = y;
-            } else if(y < bottom_most) { // y is less
-                bottom_most = y;
-            }
-        });
-
-        width  = (right_most - left_most);
-        height = (top_most - bottom_most);
-
-        // adding by the half distance to find the center
-        center.x = left_most   + width / 2.0f; 
-        center.y = bottom_most + height / 2.0f; 
-    }
-
-    void comp_tilemap_t::update_tilemap() {
-        void compute_greedy_mesh();
-        void compute_centroid();
-    }
-
-    void comp_tilemap_t::add_fixtures(b2Body* body) {
-        auto& dictionary = internal->resources.tile_dictionary;
-
-        update_tilemap();
-        compute_colliders();
-
-        for(auto& tile_collider : colliding_tiles) {
-            b2FixtureDef def;
-            def.density     = dictionary[tile_collider.id].density;
-            def.friction    = dictionary[tile_collider.id].friction;
-            def.restitution = dictionary[tile_collider.id].restitution;
-            def.shape       = &tile_collider.shape;
-            body->CreateFixture(&def);
         }
     }
 
-    void tile_comp_init(flecs::world& world) {
+    void tile_comp_init(const flecs::world& world) {
         spk_register_component(world, comp_tilemap_t);
     }
 }

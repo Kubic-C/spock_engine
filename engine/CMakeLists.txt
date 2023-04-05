@@ -18,16 +18,22 @@ target_link_libraries(spock_engine PUBLIC
 
 target_include_directories(spock_engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/")
 
+set(PCH_HEADERS
+    "debug.hpp"
+    "logger.hpp"
+    "base.hpp")
+
 add_subdirectory("spox2d")
 
-target_sources(spock_engine PRIVATE
-    "base.hpp"
-    "spock.cpp"
-    "pipeline.hpp"
-    "debug.hpp" "debug.cpp"
-    "logger.hpp" "logger.cpp")
+target_sources(spock_engine PRIVATE 
+    ${PCH_HEADERS}
+    "spock.hpp" "spock.cpp"
+    "debug.cpp" 
+    "logger.cpp"     
+    "pipeline.hpp")
 
 target_sources(spock_engine PRIVATE
+    "components/common.hpp"
     "components/components.hpp" "components/components.cpp"
     "components/sprite.hpp" "components/sprite.cpp"
     "components/tilemap.hpp" "components/tilemap.cpp"
@@ -73,7 +79,8 @@ target_sources(spock_engine PRIVATE
     "render/renderer.hpp" "render/renderer.cpp"
     "render/body_renderer.hpp" "render/body_renderer.cpp"
     "render/text_renderer.hpp" "render/text_renderer.cpp"
-    "render/render_pass.hpp" "render/render_pass.cpp")
+    "render/render_pass.hpp" "render/render_pass.cpp"
+    "render/tilemap_renderer.hpp" "render/tilemap_renderer.cpp")
     
 target_sources(spock_engine PRIVATE
     "core/sound.hpp" "core/sound.cpp"

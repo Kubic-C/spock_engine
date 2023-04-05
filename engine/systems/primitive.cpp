@@ -13,7 +13,7 @@
 #include "render/renderer.hpp"
 
 namespace spk {
-    void primitive_render_init(flecs::world& world) {
+    void primitive_render_init(const flecs::world& world) {
         spk_trace();
     }
 }

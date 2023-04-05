@@ -42,7 +42,7 @@ namespace spk {
 
     }
 
-    void ui_cs_init(flecs::world& world) {
+    void ui_cs_init(const flecs::world& world) {
         spk_trace();
 
         world.system().kind(on_pre_update_id).iter(ui_render_system_pre_update);

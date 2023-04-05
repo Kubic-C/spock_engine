@@ -11,7 +11,7 @@
 #include "core/internal.hpp"
 
 namespace spk {
-    flecs::world& ecs_world() {
+    const flecs::world& ecs_world() {
         return internal->scene.ecs_world;
     }
 
@@ -31,6 +31,10 @@ namespace spk {
         spk_assert(internal->scene.canvas);
 
         return *internal->scene.canvas;
+    }
+
+    tile_dictionary_t& tile_dictionary() {
+        return internal->resources.tile_dictionary;
     }
 
     settings_t& settings() {

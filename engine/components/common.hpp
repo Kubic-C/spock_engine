@@ -9,9 +9,15 @@
 
 #pragma once
 
-#include "components/tilemap.hpp"
+#include "base.hpp"
+
+#include "camera.hpp"
+#include "character_controller.hpp"
+#include "particles.hpp"
+#include "rigid_body.hpp"
+#include "sprite.hpp"
+#include "tilemap.hpp"
 
 namespace spk {
-    // tilemap cs init will be called by sprite cs init
-    void tilemap_cs_init(const flecs::world& world);
+
 }

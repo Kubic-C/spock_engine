@@ -13,5 +13,5 @@
 
 namespace spk {
     // component Component System initialization
-    void component_cs_init(flecs::world& world);
+    void component_cs_init(const flecs::world& world);
 }

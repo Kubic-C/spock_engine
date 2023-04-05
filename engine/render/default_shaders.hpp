@@ -34,6 +34,21 @@ namespace spk {
         fragment_color = vec4(v_color.rgb, v_color.a);
     })###";
 
+    const char* tilemap_vs = R"###(
+    #version 330 core
+    layout(location = 0) in vec3 a_pos;
+    layout(location = 1) in vec3 a_tex_coords;
+
+    out vec3 v_tex_coords;
+
+    uniform mat4 u_vp;
+    uniform mat4 u_model;
+
+    void main() {
+        gl_Position = u_vp * u_model * vec4(a_pos, 1.0);
+        v_tex_coords = a_tex_coords;
+    })###";
+
     const char* sprite_vs = R"###(
     #version 330 core
     layout(location = 0) in vec3 a_pos;

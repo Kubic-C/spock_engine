@@ -62,5 +62,5 @@ namespace spk {
         void free(flecs::entity entity);
     };
 
-    void particles_comp_init(flecs::world& world); 
+    void particles_comp_init(const flecs::world& world); 
 }

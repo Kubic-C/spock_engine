@@ -24,12 +24,16 @@ namespace spk {
      * 
      */
     struct internal_t {
-        settings_t   settings;
+        // important to note: the order of the members DO matter.
+        // It affects in which order each member's constructor and deconstructor
+        // is called, so it necessary that they must be in this order
+
+        allocators_t allocators;
+        resources_t  resources;
         exit_info_t  exit_info;
+        settings_t   settings;
         statistics_t statistics;
         scene_t      scene;
-        resources_t  resources;
-        allocators_t allocators;
     };
 
     extern internal_t* internal;

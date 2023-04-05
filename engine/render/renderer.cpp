@@ -32,6 +32,7 @@ namespace spk {
             break;
 
         default:
+            log.log("opengl message ommited; check log");
             log.flags &= ~spk::LOG_FLAGS_ENABLE_STD_PIPE;
             log.log(spk::LOG_TYPE_INFO, message); 
             log.flags |= spk::LOG_FLAGS_ENABLE_STD_PIPE;
@@ -122,6 +123,7 @@ namespace spk {
         shaders[SHADER_TYPE_TEXT].load_shader_str(text_vs, text_fs);
         shaders[SHADER_TYPE_TEXTURE].load_shader_str(texture_vs, texture_fs);
         shaders[SHADER_TYPE_CONTAINER].load_shader_str(container_vs, container_fs);
+        shaders[SHADER_TYPE_TILEMAP].load_shader_str(tilemap_vs, sprite_fs);
         
         // default renderers
         renderers[RENDERER_TYPE_BODY]      = renderer_stack.push<body_renderer_t>(ecs_world());
@@ -129,6 +131,7 @@ namespace spk {
         renderers[RENDERER_TYPE_TEXT]      = renderer_stack.push<text_renderer_t>();
         renderers[RENDERER_TYPE_CANVAS]    = renderer_stack.push<canvas_renderer_t>();
         renderers[RENDERER_TYPE_CONTAINER] = renderer_stack.push<container_renderer_t>();
+        renderers[RENDERER_TYPE_TILEMAP]   = renderer_stack.push<tilemap_renderer_t>(ecs_world());
 
         // setting up the render info
         {
@@ -136,7 +139,7 @@ namespace spk {
             render_pass_t& world_pass = render.render_passes.emplace_back();
             world_pass.framebuffer = framebuffers[FRAMEBUFFER_TYPE_DEFAULT];
             world_pass.clear_mask  = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
-            world_pass.renderers   = {RENDERER_TYPE_BODY, RENDERER_TYPE_SPRITE};
+            world_pass.renderers   = {RENDERER_TYPE_BODY, RENDERER_TYPE_SPRITE, RENDERER_TYPE_TILEMAP};
         }
 
         {    

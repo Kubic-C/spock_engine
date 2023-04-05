@@ -12,5 +12,5 @@
 #include "core/window.hpp"
 
 namespace spk {
-    void window_cs_init(flecs::world& world);
+    void window_cs_init(const flecs::world& world);
 }

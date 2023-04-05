@@ -48,7 +48,7 @@ namespace spk {
         stats_counter.average_delta_time = 0;
     }
 
-    void ps_tracker_system_init(flecs::world& world) {
+    void ps_tracker_system_init(const flecs::world& world) {
         spk_trace();
 
         world.system().iter(ps_tracker_system_tick);

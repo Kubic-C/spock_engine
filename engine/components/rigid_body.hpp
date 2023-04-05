@@ -42,5 +42,5 @@ namespace spk {
         }
     };
 
-    void rigid_body_comp_init(flecs::world& world);
+    void rigid_body_comp_init(const flecs::world& world);
 }

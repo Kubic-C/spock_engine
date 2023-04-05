@@ -14,7 +14,7 @@
 
 namespace spk {
 
-    void tilemap_cs_init(flecs::world& world) {
+    void tilemap_cs_init(const flecs::world& world) {
         spk_trace();
         
         tile_comp_init(world);

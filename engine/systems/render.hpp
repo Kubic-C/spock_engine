@@ -13,5 +13,5 @@
 #include "components/camera.hpp"
 
 namespace spk {
-    void render_system_init(flecs::world& world); 
+    void render_system_init(const flecs::world& world); 
 }

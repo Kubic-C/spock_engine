@@ -135,6 +135,8 @@ namespace spk {
         // setup state
         auto& shader = render_context().shaders[SHADER_TYPE_BASIC];
 
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
         shader.use();
         shader.set_mat4("u_vp", render_context().world_camera);
 
@@ -148,6 +150,8 @@ namespace spk {
 
         // render
         glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         vertex_count = 0;
     }   

@@ -52,11 +52,9 @@ namespace spk {
     }
 
     void init_defualt_ecs_pipelines() {
-        flecs::world& ecs_world = internal->scene.ecs_world;
+        init_phases(ecs_world());
 
-        init_phases(ecs_world);
-
-        flecs::entity render_pipeline = ecs_world.pipeline()
+        flecs::entity render_pipeline = ecs_world().pipeline()
             .with(flecs::System)
                 .with(flecs::Phase).cascade(flecs::DependsOn)
                 .without(flecs::Disabled).up(flecs::DependsOn)
@@ -65,7 +63,7 @@ namespace spk {
 
         internal->scene.render_pipeline = render_pipeline;
 
-        flecs::entity game_pipeline = ecs_world.pipeline()
+        flecs::entity game_pipeline = ecs_world().pipeline()
             .with(flecs::System)
                 .with(flecs::Phase).cascade(flecs::DependsOn)
                 .without(flecs::Disabled).up(flecs::DependsOn)
@@ -83,13 +81,13 @@ namespace spk {
         init_SDL2();
 
         internal = new internal_t;
-        
+
         font_library_init();
         init_defualt_ecs_pipelines();
 
         { // creating default scene
-            window_t*         window   = internal->allocators.stack.push<window_t>();
-            canvas_t*         canvas   = internal->allocators.stack.push<canvas_t>();
+            window_t*         window   = scene().stack.push<window_t>();
+            canvas_t*         canvas   = scene().stack.push<canvas_t>();
             render_context_t* renderer = nullptr;
 
             window_make_current(*window);
@@ -97,7 +95,7 @@ namespace spk {
 
             // creating the renderer, MUST come after creating and making a window
             // current. As we must need a valid OpenGL context
-            renderer = allocators().stack.push<render_context_t>(); 
+            renderer = scene().stack.push<render_context_t>(); 
             render_context_make_current(*renderer);
         }
 
@@ -128,8 +126,6 @@ namespace spk {
 
         SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "[emt, red] ENGINE RUN [reset, emt]");
 
-        flecs::world& ecs_world = internal->scene.ecs_world;
-
         double delta_time = 0.0;   // time between ticks
         double last_tick    = 0.0; // time of last tick
         double ticks_to_do  = 0.0; // the amount of ticks to do
@@ -139,8 +135,8 @@ namespace spk {
         double frames_to_do = 0.0; // the amount of frames to do
 
         // render pipeline contains Window events 
-        ecs_world.run_pipeline(internal->scene.render_pipeline, frame_time);
-        ecs_world.run_pipeline(internal->scene.game_pipeline, delta_time);
+        ecs_world().run_pipeline(internal->scene.render_pipeline, frame_time);
+        ecs_world().run_pipeline(internal->scene.game_pipeline, delta_time);
 
         while(!internal->settings.should_exit) {
             double current_frame = spk::time.get_time();
@@ -158,11 +154,11 @@ namespace spk {
                 internal->statistics.delta_time = delta_time;
 
                 // one tick
-               ecs_world.frame_begin(0.0);
+               ecs_world().frame_begin(0.0);
                 if(internal->scene.user_data.tick)
                     internal->scene.user_data.tick();
-                ecs_world.run_pipeline(internal->scene.game_pipeline, delta_time);
-                ecs_world.frame_end();
+                ecs_world().run_pipeline(internal->scene.game_pipeline, delta_time);
+                ecs_world().frame_end();
             }
 
             // when there is tps lag, frame_time will be longer as well
@@ -177,12 +173,12 @@ namespace spk {
                 if(internal->scene.user_data.update)
                     internal->scene.user_data.update();
 
-                ecs_world.run_pipeline(internal->scene.render_pipeline, frame_time);
+                ecs_world().run_pipeline(internal->scene.render_pipeline, frame_time);
                 internal->statistics.frame_time = frame_time;
             }
 
             // exit conditions:
-            if(ecs_world.should_quit())
+            if(ecs_world().should_quit())
                 internal->settings.should_exit = true;
         }
 
@@ -195,7 +191,6 @@ namespace spk {
         SPK_DEBUG_LOG_IF(DEBUG_FLAGS_ENABLE_ENGINE_LIFETIME, "[emt, red] ENGINE FREE [reset, emt]");  
 
         font_library_free();
-
         delete internal;
 
         Mix_Quit();

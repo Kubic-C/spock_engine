@@ -12,5 +12,5 @@
 #include "core/data.hpp"
 
 namespace spk {
-    void ui_cs_init(flecs::world& world);
+    void ui_cs_init(const flecs::world& world);
 }

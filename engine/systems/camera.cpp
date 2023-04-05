@@ -22,7 +22,7 @@ namespace spk {
         camera.recalculate();
     }
 
-    void camera_cs_init(flecs::world& world) {
+    void camera_cs_init(const flecs::world& world) {
         spk_trace();
         
         camera_comp_init(world);

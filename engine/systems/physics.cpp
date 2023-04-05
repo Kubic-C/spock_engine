@@ -24,7 +24,7 @@ namespace spk {
             // set all rigid body components to nullptr as they have ptrs
             // and upon deletion of a rigid body component, if their ptr is set to something other
             // then nullptr they will try to delete them in the deconstructor
-            internal->scene.ecs_world.each([&](spk::comp_rigid_body_t& rb){
+            ecs_world().each([&](spk::comp_rigid_body_t& rb){
                 rb = nullptr;
             });
 
@@ -41,12 +41,12 @@ namespace spk {
         physics_world->Step(iter.delta_time(), 8, 3);
     }
 
-    void physics_cs_init(flecs::world& world) {
+    void physics_cs_init(const flecs::world& world) {
         spk_trace();        
 
         rigid_body_comp_init(world);
 
-        auto physics_system = internal->allocators.stack.push<physics_system_t>();        
+        auto physics_system = scene().stack.push<physics_system_t>();        
         
         internal->scene.physics_world = physics_system->world;
 

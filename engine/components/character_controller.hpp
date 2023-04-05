@@ -22,5 +22,5 @@ namespace spk {
         void free(flecs::entity entity);
     }; 
 
-    void character_controller_comp_init(flecs::world& world);
+    void character_controller_comp_init(const flecs::world& world);
 }

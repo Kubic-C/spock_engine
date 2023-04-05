@@ -23,6 +23,9 @@
 
 #include "utility/stack_allocator.hpp"
     
+// well need this to define the allocators
+#include "components/tilemap.hpp"
+
 namespace spk {
 
     typedef std::function<void()> user_tick_t;
@@ -89,6 +92,8 @@ namespace spk {
         flecs::entity camera          = flecs::entity(UINT64_MAX);
         canvas_t*     canvas          = nullptr;
         window_t*     window          = nullptr;
+        
+        stack_allocator_t stack{4096 * 4}; // scenes stack allocator, for quick large allocations
     };
 
     // loading and management of resources like external files or prefabs
@@ -104,13 +109,12 @@ namespace spk {
     // allocators for canvases, windows, etc. and stack allocators
     // FOR BIG things
     struct allocators_t {
-        object_pool_t<window_t> window_pool;
-        object_pool_t<canvas_t> canvas_pool;
-        stack_allocator_t       stack{4096 * 4};
+        object_pool_t<tilemap_mesh_t>   chunk_mesh_pool;
+        object_pool_t<tilemap_chunks_t> chunks_pool;
     };
 
     // gets the current ecs_world
-    flecs::world& ecs_world();
+    const flecs::world& ecs_world();
 
     // gets the current physics world
     b2World* physics_world();
@@ -120,6 +124,9 @@ namespace spk {
 
     // gets the current canvas
     canvas_t& canvas();
+
+    // gets the tile dictionary
+    tile_dictionary_t& tile_dictionary();
     
     // all self explanatory
 

@@ -13,6 +13,7 @@
 
 // in meters
 #define SPK_TILE_HALF_SIZE 0.5f
+#define SPK_TILE_FULL_SIZE (SPK_TILE_HALF_SIZE + SPK_TILE_HALF_SIZE) 
 
 namespace spk {
     enum tile_flags_t {
@@ -32,17 +33,31 @@ namespace spk {
     };
 
     struct tile_t {
-        uint32_t id    = 0;
-        uint8_t  flags = TILE_FLAGS_COLLIADABLE;
-        float    hp    = 100.0f;  
-
         tile_t() {
         }
 
         tile_t(uint32_t id)
-            : id(id) {
-            
+            : id(id) {   
         }
+
+        bool operator==(tile_t& other) {
+            return id == other.id;
+        }
+
+        bool operator!=(tile_t& other) {
+            return id != other.id;
+        }
+
+        bool operator==(uint32_t id) {
+            return this->id == id;
+        }
+
+        bool operator!=(uint32_t id) {
+            return this->id != id;
+        }
+
+        uint32_t id    = 0;
+        uint8_t  flags = TILE_FLAGS_COLLIADABLE;
     };
 
     typedef std::unordered_map<uint32_t, tile_metadata_t> tile_dictionary_t;

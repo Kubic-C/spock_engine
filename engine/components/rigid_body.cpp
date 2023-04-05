@@ -21,7 +21,7 @@ namespace spk {
         ud.pointer = 0;
     }
 
-    void rigid_body_comp_init(flecs::world& world) {
+    void rigid_body_comp_init(const flecs::world& world) {
         spk_register_component(world, comp_rigid_body_t);
     }
 }

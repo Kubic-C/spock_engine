@@ -145,7 +145,7 @@ namespace spk {
         }
     }
 
-    void particles_cs_init(flecs::world& world) {
+    void particles_cs_init(const flecs::world& world) {
         spk_trace();
         
         particles_comp_init(world);

@@ -22,6 +22,7 @@ namespace spk {
         SHADER_TYPE_TEXTURE   = 3,
         SHADER_TYPE_BUTTON    = 4,
         SHADER_TYPE_CONTAINER = 5,
+        SHADER_TYPE_TILEMAP   = 6,
         SHADER_TYPE_END       = 0xFF // 255
     };
 
@@ -32,6 +33,7 @@ namespace spk {
         RENDERER_TYPE_TEXT      = 3,
         RENDERER_TYPE_BUTTON    = 4,
         RENDERER_TYPE_CONTAINER = 5,
+        RENDERER_TYPE_TILEMAP   = 6,
         RENDERER_TYPE_END       = 0xFF // 255
     };
 
@@ -81,6 +83,12 @@ namespace spk {
             buffer.init(GL_ARRAY_BUFFER);
         }
 
+        mesh_t(const mesh_t<vertex_type, vertices_per_render_T, vertices_per_subdata_T>& other) {
+            buffer             = other.buffer;
+            vertices_to_render = other.vertices_to_render;
+            vertices_on_buffer = other.vertices_on_buffer;
+        }
+
         ~mesh_t() {
             buffer.free();
         }
@@ -99,3 +107,6 @@ namespace spk {
         return glm::vec3{(glm::vec2)body->GetWorldPoint(b2Vec2(local_point.x, local_point.y)), local_point.z};
     }
 }
+
+/* this is on purpose, some of them need access to the above listed elements ^^^ */
+#include "components/common.hpp"

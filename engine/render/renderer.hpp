@@ -9,10 +9,13 @@
 
 #pragma once
 
+#include "common.hpp"
+#include "render_pass.hpp"
 #include "render_pass.hpp"
 #include "body_renderer.hpp"
 #include "sprite_renderer.hpp"
 #include "canvas_renderer.hpp"
+#include "tilemap_renderer.hpp"
 
 namespace spk {
     constexpr size_t _render_default_buffer_size = 4096 * sizeof(float);

@@ -27,5 +27,5 @@ namespace spk {
         void recalculate();
    }; 
 
-   void camera_comp_init(flecs::world& world);
+   void camera_comp_init(const flecs::world& world);
 }

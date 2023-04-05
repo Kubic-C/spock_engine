@@ -13,5 +13,5 @@
 
 namespace spk {
     // character controller cs init will be called in sprite cs init
-    void character_controller_cs_init(flecs::world& world);
+    void character_controller_cs_init(const flecs::world& world);
 }

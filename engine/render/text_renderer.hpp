@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "render/common.hpp"
+#include "common.hpp"
 #include "core/ui.hpp"
 
 namespace spk {
