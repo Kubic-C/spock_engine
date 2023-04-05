@@ -16,10 +16,10 @@ void create_usless_box() {
 
         rb->SetType(b2_dynamicBody);
         rb->SetBullet(true);
-        rb->SetTransform((glm::vec2){fmod(random, 100.0f) - 50.0f, 100.0f}, 0.0f);
+        rb->SetTransform((glm::vec2){fmod(random, 250.0f) - 125.0f, 100.0f}, 0.0f);
 
         b2PolygonShape shape;
-        float hl = fmod(random, 2.5f) + 0.4f;
+        float hl = fmod(random, 1.f) + 0.4f;
         shape.SetAsBox(hl, hl);
 
         b2FixtureDef fdef;
@@ -40,7 +40,7 @@ void create_usless_box() {
         ps.sprite = 3;
         ps.base_cycle = 0.5f;
         ps.base_lifetime = 1.0f;
-        ps.max = UINT32_MAX;
+        ps.max = 5;
         ps.flags  = spk::PARTICLES_FLAGS_WORLD_DIRECTION | spk::PARTICLES_FLAGS_WORLD_POSITION | spk::PARTICLES_FLAGS_ACTIVE;
     });
 }
@@ -143,11 +143,11 @@ MAIN {
         button_text->color = {0.0f, 0.0f, 0.0f, 0.0f};
         button_text->text  = "click button to exit";
 
-        spk::settings().target_tps = 60;
+        spk::settings().target_tps = 45;
         spk::settings().target_fps = 120;
     }
 
-    for(size_t i = 0; i < 10; i++) {
+    for(size_t i = 0; i < 250; i++) {
         create_usless_box();
     }
 
@@ -155,26 +155,73 @@ MAIN {
             spk::comp_rigid_body_t& rb, 
             spk::comp_character_controller_t& cc,
             spk::comp_tilemap_t& tilemap,
-            spk::comp_camera_t& camera) {
+            spk::comp_camera_t& camera,
+            spk::comp_contact_callback_t& callback) {
         rb->SetType(b2_dynamicBody);
         rb->SetBullet(true);
         rb->SetTransform(b2Vec2(0.0f, 0.0f), 0.0f);
         rb->SetAngularVelocity(5.0f);
 
-        for(size_t x = 0; x < 128; x++) {       
-            for(size_t y = 0; y < 128; y++) {
-                if(x != 0 && x != 127 && y != 0 && y != 127) {
-                    tilemap.set(1, x, y, 0);
-                } else {
-                    tilemap.set(2, x, y);
-                }
-            }
-        }
+        b2CircleShape shape;
+        shape.m_radius = 1000.0f;
+
+        b2FixtureDef def;
+        def.shape = &shape;
+        def.isSensor = true;
+        b2Fixture* character_fixture = rb->CreateFixture(&def);
+
+        tilemap.set(2, 0, 5);
+        tilemap.set(2, 0, 3);
+        tilemap.set(2, 0, 4);
+        tilemap.set(2, 1, 4);
+        tilemap.set(2, 2, 4);
+        tilemap.set(2, 3, 4);
+        tilemap.set(2, 4, 4);
+        tilemap.set(2, 5, 4);
+        tilemap.set(2, 6, 4);
+        tilemap.set(2, 7, 4);
+        tilemap.set(2, 8, 4);
+        tilemap.set(2, 9, 4);
+        tilemap.set(2, 10, 4);
+        tilemap.set(2, 11, 4);
+        tilemap.set(2, 12, 4);
+        tilemap.set(2, 13, 4);
+        tilemap.set(2, 15, 4);
+        tilemap.set(2, 15, 5);
+        tilemap.set(2, 15, 3);
 
         cc.speed = 10000;
     });
 
     character.add<spk::tag_current_camera_t>();
+
+    scene.user_data.tick = [&]() {
+        character.set([&](spk::comp_rigid_body_t& rb, spk::comp_tilemap_t& tilemap){
+            for(b2ContactEdge* i = rb->GetContactList(); i != nullptr; i = i->next) {
+                b2Contact* cnt = i->contact;
+                b2Fixture* b_fixture, *a_fixture;
+
+                if(cnt->GetEntityB() != character) {
+                    b_fixture = cnt->GetFixtureB();
+                    a_fixture = cnt->GetFixtureA();
+                } else {
+                    b_fixture = cnt->GetFixtureA();
+                    a_fixture = cnt->GetFixtureB();
+                }
+
+                if(a_fixture->IsSensor()) {
+                    glm::vec2 dir_away = 
+                        glm::normalize((glm::vec2)b_fixture->GetBody()->GetPosition() - (glm::vec2)a_fixture->GetBody()->GetPosition());
+
+                    float strength = 75.0f * spk::statistics().delta_time;
+
+                    b_fixture->GetBody()->ApplyLinearImpulseToCenter(-dir_away * strength, true);
+                } else {
+                    spk::chunk_play(coin_sound_id, 1);
+                }
+            }
+        });
+    };
 
     scene.user_data.update = [&](){
         if(spk::window().key_get(SDL_SCANCODE_2)) {
@@ -198,8 +245,6 @@ MAIN {
 
             text->text = std::string(spk::build_name()) + " | FPS:" + std::to_string(spk::statistics().fps) + " | TPS:"  + std::to_string(spk::statistics().tps);
             text->text += "\nvelocity.xy:" + std::to_string(rb->GetLinearVelocity().x) + " / " + std::to_string(rb->GetLinearVelocity().y);
-
-            tilemap.set(2, rand() % 128, rand() % 128);
         
             if(spk::window().key_get(SDL_SCANCODE_1)) {
                 rb->SetLinearVelocity(b2Vec2(0.0f, 0.0f));

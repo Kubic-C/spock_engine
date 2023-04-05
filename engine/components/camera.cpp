@@ -12,9 +12,9 @@
 
 namespace spk { 
     void comp_camera_t::init(flecs::entity entity) {
-        z = 10.0f;
-        pos  = { 0.0f, 0.0f };
-        size = { 0.0f, 0.0f };
+        z     = 10.0f;
+        pos   = { 0.0f, 0.0f };
+        size  = { 0.0f, 0.0f };
         scale = 1.0f; 
     }
 

@@ -19,7 +19,7 @@
 
 namespace spk {
     constexpr size_t _render_default_buffer_size = 4096 * sizeof(float);
-    constexpr size_t _render_max_quad_indexes    = 25000;
+    constexpr size_t _render_max_quad_indexes    = 1000;
 
     struct render_context_t {
         render_context_t();

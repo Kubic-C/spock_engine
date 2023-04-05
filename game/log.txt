@@ -1,0 +1,5 @@
+|SPOCK: 0.000021> [32m INFO [0m running..
+|SPOCK: 0.442255> [32m INFO [0m FreeType Version: 2.12.1
+|SPOCK: 0.442478> [32m INFO [0m OGL Version: 4.3.0 Core Profile Context 22.20.27.07.221020
+|SPOCK: 0.442620> [32m INFO [0m SDL Version: 2.26.4
+|SPOCK: 0.442782> [32m INFO [0m SDL_mixer Version: 2.6.3
