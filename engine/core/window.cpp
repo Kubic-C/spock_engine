@@ -84,13 +84,112 @@ namespace spk {
         return button;
     }
 
+    SDL_Window* window_t::window_get() const {
+        return window;
+    }
+
+    SDL_GLContext window_t::opengl_context_get() const {
+        return opengl_context;
+    }
+
+    void handle_window_event(flecs::iter& iter, SDL_WindowEvent& event) {
+        switch(event.event) {
+            case SDL_WINDOWEVENT_SIZE_CHANGED: {
+                if(event.windowID != window().id()) {
+                    return;
+                } 
+
+                event_window_size_t resize;
+                glm::ivec2 size = window().size();
+
+                resize.width = size.x;
+                resize.height = size.y;
+
+                iter.world().event<event_window_size_t>()
+                    .id<tag_events_t>()
+                    .entity(internal->scene.event_system)
+                    .ctx(resize)                            
+                    .emit();
+                
+                break;
+            }
+        }
+    }
+
+    void window_t::update(flecs::iter& iter) {
+        spk_trace();
+
+        SDL_Event event;
+        window_t& window = spk::window();
+
+        while(SDL_PollEvent(&event)) {
+            switch(event.type) {
+                case SDL_QUIT:
+                    internal->settings.should_exit = true;
+                    break;
+
+                case SDL_MOUSEMOTION: {
+                    window.mouse_position = glm::vec2(event.motion.x, event.motion.y);
+                } break;
+
+                case SDL_MOUSEBUTTONDOWN: {
+                    window.mouse_click_pos  = glm::vec2(event.button.x, event.button.y);
+                    window.mouse_click_btn  = event.button.button;
+                    window.mouse_click_down = event.button.state;
+
+                    iter.world().event<event_window_mouse_click_t>()
+                        .id<tag_events_t>()
+                        .entity(internal->scene.event_system)
+                        .ctx(event.button)                            
+                        .emit();
+                    break;
+                }
+
+                case SDL_MOUSEBUTTONUP:
+                    window.mouse_click_down = event.button.state;
+                    break;
+
+                case SDL_MOUSEWHEEL:
+                    iter.world().event<event_mouse_wheel_t>()
+                        .id<tag_events_t>()
+                        .entity(internal->scene.event_system)
+                        .ctx(event.wheel) 
+                        .emit();
+                    break;
+
+                case SDL_KEYDOWN: 
+                    iter.world().event<event_keyboard_t>()
+                        .id<tag_events_t>()
+                        .entity(internal->scene.event_system)
+                        .ctx(event.key)
+                        .emit();
+                    break;
+
+                case SDL_KEYUP:
+                    iter.world().event<event_keyboard_t>()
+                        .id<tag_events_t>()
+                        .entity(internal->scene.event_system)
+                        .ctx(event.key)
+                        .emit();
+                    break;
+
+                case SDL_WINDOWEVENT:
+                    handle_window_event(iter, event.window);
+                    break;
+
+                default:
+                    break;
+            } // switch
+        }
+    }
+
     result_e window_make_current(window_t& window) {
         if(internal->scene.window != nullptr) {
             SDL_GL_MakeCurrent(nullptr, nullptr);
             internal->scene.window = nullptr;
         }
 
-        if(SDL_GL_MakeCurrent(window.window, window.opengl_context) < 0) {
+        if(SDL_GL_MakeCurrent(window.window_get(), window.opengl_context_get()) < 0) {
             log.log(spk::LOG_TYPE_ERROR, "failed to make the window context current: %s", SDL_GetError());
             return ERROR_EXTERNAL_LIBRARY_FAILED;
         }
@@ -123,5 +222,21 @@ namespace spk {
         }
 
         return SUCCESS;
+    }
+
+    glm::vec2 window_t::mouse_get_pos() const {
+        return mouse_position;
+    }
+
+    glm::vec2 window_t::mouse_get_click_pos() const {
+        return mouse_click_pos;
+    }
+
+    uint32_t  window_t::mouse_get_click_btn() const {
+        return mouse_click_btn;
+    }
+
+    bool window_t::mouse_get_click_down() const {
+        return mouse_click_down;
     }
 }

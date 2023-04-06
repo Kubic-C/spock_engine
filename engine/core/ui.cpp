@@ -180,16 +180,13 @@ namespace spk {
     }
 
     void button_t::update() {
-        glm::vec2 pos = window().mouse_click_pos;
-
-        window().mouse_get_cur(pos, true);
-
-        if(aabb().contains(pos)) {
-            if(!window().mouse_click_down && clicked) { // forces the button to be clicked only once
+        if(aabb().contains(window().mouse_get_click_pos())) {
+            if(!window().mouse_get_click_down() && clicked) { // forces the button to be clicked only once
                 clicked = false;
             }
 
-            if(window().mouse_click_btn == SDL_BUTTON_LEFT && window().mouse_click_down && !clicked) { // left click
+            if(window().mouse_get_click_btn() == SDL_BUTTON_LEFT && 
+               window().mouse_get_click_down() && !clicked) { // left click
                 _handle_click();
                 clicked = true;
             } else {

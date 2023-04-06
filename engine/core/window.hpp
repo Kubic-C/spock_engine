@@ -13,7 +13,7 @@
 #include "utility/stack_allocator.hpp"
 
 namespace spk {
-    struct window_t {
+    class window_t {
     public:
 
         window_t();
@@ -26,20 +26,31 @@ namespace spk {
         glm::ivec2 size();
   
         uint32_t  id(); // the SDL Window ID
+
+        // input functions
         bool      key_get(SDL_Scancode scancode);
         uint32_t  mouse_get_cur(glm::vec2& pos, bool y_flip = false);
+        glm::vec2 mouse_get_pos() const;
+        glm::vec2 mouse_get_click_pos() const;
+        uint32_t  mouse_get_click_btn() const;
+        bool      mouse_get_click_down() const;
+        
+        SDL_Window* window_get() const;
+        SDL_GLContext opengl_context_get() const;
 
-        // struct 
+        static void update(flecs::iter& iter);
 
+    private:
+        SDL_Window*   window;
+        SDL_GLContext opengl_context;
+        
+        // mouse
         glm::vec2  mouse_position;
 
+        // click
         glm::vec2  mouse_click_pos;
         uint32_t   mouse_click_btn;
         bool       mouse_click_down;
-
-        uint8_t*      keyboard;
-        SDL_Window*   window;
-        SDL_GLContext opengl_context;
     };
 
     /**

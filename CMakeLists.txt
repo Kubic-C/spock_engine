@@ -21,7 +21,7 @@ if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     # -static: allows the outputted executable to be ran
     # on other machines without the C++/C Libraries being installed
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wfatal-errors")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -std=c++17 -Wfatal-errors")
 
 	if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg -no-pie -gdwarf-4 -O0")

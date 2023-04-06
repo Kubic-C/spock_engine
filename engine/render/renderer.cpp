@@ -221,6 +221,6 @@ namespace spk {
     void render_context_t::frame_end() {
         spk_trace();
 
-        SDL_GL_SwapWindow(window().window);
+        SDL_GL_SwapWindow(window().window_get());
     }
 }

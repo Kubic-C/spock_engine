@@ -171,24 +171,9 @@ MAIN {
         b2Fixture* character_fixture = rb->CreateFixture(&def);
 
         tilemap.set(2, 0, 5);
-        tilemap.set(2, 0, 3);
+        tilemap.set(2, 1, 5);
         tilemap.set(2, 0, 4);
         tilemap.set(2, 1, 4);
-        tilemap.set(2, 2, 4);
-        tilemap.set(2, 3, 4);
-        tilemap.set(2, 4, 4);
-        tilemap.set(2, 5, 4);
-        tilemap.set(2, 6, 4);
-        tilemap.set(2, 7, 4);
-        tilemap.set(2, 8, 4);
-        tilemap.set(2, 9, 4);
-        tilemap.set(2, 10, 4);
-        tilemap.set(2, 11, 4);
-        tilemap.set(2, 12, 4);
-        tilemap.set(2, 13, 4);
-        tilemap.set(2, 15, 4);
-        tilemap.set(2, 15, 5);
-        tilemap.set(2, 15, 3);
 
         cc.speed = 10000;
     });
@@ -222,6 +207,19 @@ MAIN {
             }
         });
     };
+
+    spk::ecs_world().observer().event<spk::event_mouse_wheel_t>().term<spk::tag_events_t>()
+        .iter([&](flecs::iter& iter){
+            auto event = iter.param<spk::event_mouse_wheel_t>();
+            auto camera = scene.camera.get_ref<spk::comp_camera_t>();
+            float scale = 0.1f;
+
+            if(event->y < 0) {
+                camera->scale -= scale;
+            } else if(event->y > 0) {
+                camera->scale += scale;
+            }
+        });
 
     scene.user_data.update = [&](){
         if(spk::window().key_get(SDL_SCANCODE_2)) {
