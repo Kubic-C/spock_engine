@@ -34,8 +34,9 @@ namespace spk {
         glm::vec2 mouse_get_click_pos() const;
         uint32_t  mouse_get_click_btn() const;
         bool      mouse_get_click_down() const;
+        float     mouse_get_scrollwheel() const;
         
-        SDL_Window* window_get() const;
+        SDL_Window*   window_get() const;
         SDL_GLContext opengl_context_get() const;
 
         static void update(flecs::iter& iter);
@@ -51,6 +52,7 @@ namespace spk {
         glm::vec2  mouse_click_pos;
         uint32_t   mouse_click_btn;
         bool       mouse_click_down;
+        float      mouse_scrollwheel;
     };
 
     /**

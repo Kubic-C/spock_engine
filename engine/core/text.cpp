@@ -61,7 +61,7 @@ namespace spk {
             return false;
         }
 
-        for(u_char c = 0; c < UCHAR_MAX; c++) {
+        for(uint8_t c = 0; c < UCHAR_MAX; c++) {
             if(FT_Get_Char_Index(face, c) == 0) {
                 // undefined face
                 char_map[c].flags[CHARACTER_FLAG_VALID] = false;
@@ -84,7 +84,7 @@ namespace spk {
         tex_param_wrap_clamp_to_edge(GL_TEXTURE_2D_ARRAY);
         tex_param_linear(GL_TEXTURE_2D_ARRAY);
 
-        for(u_char c = 0; c < UCHAR_MAX; c++) {
+        for(uint8_t c = 0; c < UCHAR_MAX; c++) {
             if(FT_Load_Char(face, c, FT_LOAD_RENDER) || !char_map[c].flags[CHARACTER_FLAG_VALID]) {
                 continue;
             }

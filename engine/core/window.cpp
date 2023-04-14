@@ -92,6 +92,10 @@ namespace spk {
         return opengl_context;
     }
 
+    float window_t::mouse_get_scrollwheel() const {
+        return mouse_scrollwheel;
+    }
+
     void handle_window_event(flecs::iter& iter, SDL_WindowEvent& event) {
         switch(event.event) {
             case SDL_WINDOWEVENT_SIZE_CHANGED: {
@@ -150,6 +154,8 @@ namespace spk {
                     break;
 
                 case SDL_MOUSEWHEEL:
+                    window.mouse_scrollwheel = (float)event.wheel.y;
+
                     iter.world().event<event_mouse_wheel_t>()
                         .id<tag_events_t>()
                         .entity(internal->scene.event_system)

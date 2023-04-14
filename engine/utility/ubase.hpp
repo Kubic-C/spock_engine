@@ -81,6 +81,10 @@ namespace spk {
             return static_cast<U*>(object);    
         }
 
+        bool operator==(const ptr_t<T>& other) {
+            return (uint8_t*)object == (uint8_t*)other.get();
+        }
+
     private:
         T* object; 
     }; 
@@ -139,21 +143,21 @@ namespace spk {
 
 
 template<typename T, typename U>
-bool operator==(spk::ptr_t<T> _1, spk::ptr_t<U> _2) {
+bool operator==(const spk::ptr_t<T>& _1, const spk::ptr_t<T>& _2) {
     return (uint8_t*)_1.get() == (uint8_t*)_2.get();
 }
 
 template<typename T, typename U>
-bool operator!=(spk::ptr_t<T> _1, spk::ptr_t<U> _2) {
+bool operator!=(const spk::ptr_t<T>& _1, const spk::ptr_t<T>& _2) {
     return (uint8_t*)_1.get() != (uint8_t*)_2.get();
 }
 
 template<typename T, typename U>
-bool operator==(spk::ptr_t<T> _1, U _2) {
+bool operator==(const spk::ptr_t<T>& _1, U _2) {
     return (uint8_t*)_1.get() == (uint8_t*)_2;
 }
 
 template<typename T, typename U>
-bool operator!=(spk::ptr_t<T> _1, U _2) {
+bool operator!=(const spk::ptr_t<T>& _1, U _2) {
     return (uint8_t*)_1.get() != (uint8_t*)_2;
 }

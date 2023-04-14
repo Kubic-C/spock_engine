@@ -10,9 +10,6 @@
 
 #include "ubase.hpp"
 
-#define _SPK_QUICK_MEASURE(scope, name) \
-    {float start = spk::time.get_time(); scope; float end = spk::time.get_time(); spk::log.log("time: %f " name, end - start);}
-
 namespace spk {
     template<typename T>
     T* inc_by_byte(T* ptr, size_t byte) {
@@ -86,24 +83,25 @@ namespace spk {
         }
 
         void free() {
-            if(real_ptr != nullptr) {
-                ::free(real_ptr);
-                return;
-            }
+            spk_assert(real_ptr);            
+            
+            ::free(real_ptr);
+            real_ptr = nullptr;
 
-            if(total_blocks != freed_blocks)
+            if(freed_blocks != total_blocks)
                 log.log("some blocks were not free'd, %s", typeid(block_allocator_t<T>).name());
         }
 
         // size is the amount of elements you want allocated
         T* allocate(size_t size) {
-            block_header_t<T>* header = get_block_with(size);
+            size_t             byte_size = aligned_space_needed(size * sizeof(T));
+            block_header_t<T>* header    = get_block_with(byte_size);
 
             if(header == nullptr) {
                 return nullptr;
             }
  
-            bisect_block(header, size);
+            block_try_bisect(header, byte_size);
             set_block_as_allocated(header);
 
             return header->elements();
@@ -153,7 +151,7 @@ namespace spk {
 
         block_header_t<T>* find_header_with_at_least(size_t size) {
             for(block_header_t<T>* cur = first; cur != nullptr; cur = cur->prev) {
-                if(cur->block_count_max() >= size) {
+                if(cur->total_bytes >= size) {
                     return cur;
                 }
             }
@@ -191,7 +189,7 @@ namespace spk {
                 }
 
                 usable_user_memory = total_contigous_bytes - block_header_size;
-                if(usable_user_memory >= sizeof(T) * size) {
+                if(usable_user_memory >= size - block_header_size) {
                     block_end = (block_header_t<T>*)((uint8_t*)header + header->total_bytes);
                     break;
                 }
@@ -211,28 +209,28 @@ namespace spk {
         }
 
         /**
-         * @brief bisects a free block into two differently sized blocks
+         * @brief attempts to bisects a free block into two differently sized blocks
          * 
          * @param header the header of the block to bisect
-         * @param size the number of elements to preserve in the block
+         * @param size the number of bytes to preserve in the block (must include header size)
          * @return the front block
          */
-        block_header_t<T>* bisect_block(block_header_t<T>* header, size_t size) {
-            const size_t       back_block_new_size     = block_header_size + sizeof(T) * size;         
-            int32_t            front_block_total_bytes = 0;
+        block_header_t<T>* block_try_bisect(block_header_t<T>* header, size_t size) {
+            spk_assert(header->total_bytes > size && header->flags[BLOCK_FLAGS_FREE]);
+
+            int32_t            left_over_block_total_bytes = 0;
             block_header_t<T>* next       = nullptr;
 
-            if(!header->flags[BLOCK_FLAGS_FREE])
-                return nullptr;
+            left_over_block_total_bytes = (int32_t)header->total_bytes - (int32_t)size;
+            if(left_over_block_total_bytes > block_header_size) {
+                next = inc_by_byte(header, size);
+                create_block_header((uint8_t*)next, left_over_block_total_bytes);
+            }
 
-            front_block_total_bytes = (int32_t)header->total_bytes - (int32_t)back_block_new_size;
-            if(front_block_total_bytes < block_header_size)
-                return nullptr;
+            if(next != nullptr)
+                header->total_bytes = size;
 
-            header->total_bytes = back_block_new_size;
-            next = inc_by_byte(header, header->total_bytes);
-
-            return create_block_header((uint8_t*)next, front_block_total_bytes);
+            return next;
         }
 
         void set_block_as_allocated(block_header_t<T>* header) {
@@ -248,7 +246,7 @@ namespace spk {
 
         // size is in bytes
         block_header_t<T>* create_block_header(uint8_t* addr, size_t size) {
-            spk_assert(((size_t)addr % 2) == 0, "address given was not aligned by 2");
+            spk_assert(((size_t)addr % alignment) == 0, "address given was not aligned by 2");
             spk_assert((int32_t)size - block_header_size >= 0);
 
             if(addr + size > (aligned_ptr + capacity_) || size < block_header_size) {
@@ -273,6 +271,13 @@ namespace spk {
             return header;
         }
 
+        size_t aligned_space_needed(size_t byte_size) {
+            size_t total_space      = block_header_size + byte_size;
+            size_t alignment_offset = total_space % alignment; 
+
+            return total_space + (alignment - alignment_offset);
+        }
+ 
     private:
         size_t capacity_ = 0; // in bytes
 

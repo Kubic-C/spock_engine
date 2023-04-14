@@ -24,7 +24,8 @@ if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -std=c++17 -Wfatal-errors")
 
 	if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg -no-pie -gdwarf-4 -O0")
+        # no-pie is specfic to debugging, 
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -pg -O0")
         # set(SPK_DEBUG_LIBS profiler_static) couldn't get it to work on windows :(
 	else()
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")

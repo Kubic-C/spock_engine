@@ -134,6 +134,20 @@ namespace spk {
         }
     }
 
+    void container_t::destroy() {
+        spk_assert(this != this->canvas, "a canvas cannot be destroyed");
+
+        while(children.size() != 0) {
+            children.front()->destroy();    
+        }
+
+        ptr_t<container_t> parent = this->parent;
+
+        parent->children.remove(ptr_t(this));
+
+        this->canvas->element_pool.destruct((element_union_t*)this, 1);
+    }
+
     void text_t::text_dimensions_calculate() {
         font_t&     font            = font_get();
         glm::vec2   bottom_left_pos = bottom_left();
@@ -180,7 +194,10 @@ namespace spk {
     }
 
     void button_t::update() {
-        if(aabb().contains(window().mouse_get_click_pos())) {
+        glm::vec2 coords = window().mouse_get_pos();
+        coords.y = window().size().y - coords.y;
+
+        if(aabb().contains(coords)) {
             if(!window().mouse_get_click_down() && clicked) { // forces the button to be clicked only once
                 clicked = false;
             }
@@ -200,5 +217,11 @@ namespace spk {
     canvas_t::canvas_t() {
         parent = nullptr;
         canvas = this;
+    }
+
+    canvas_t::~canvas_t() {
+        while(children.size() != 0) {
+            children.front()->destroy();
+        }
     }
 }

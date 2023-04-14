@@ -41,7 +41,7 @@ namespace spk {
         uint32_t          tallest_glyph = 0;
         texture_array2D_t character_array;
 
-        hashmap_t<u_char, character_t> char_map;
+        hashmap_t<uint8_t, character_t> char_map;
 
     private:
         void prepare_for_load(float render_scale);

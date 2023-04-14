@@ -45,7 +45,7 @@ void create_usless_box() {
     });
 }
 
-MAIN {
+int main(int argc, char* argv[]) {
     spk_trace();
 
     spk::log.log("running..");
@@ -144,10 +144,10 @@ MAIN {
         button_text->text  = "click button to exit";
 
         spk::settings().target_tps = 45;
-        spk::settings().target_fps = 120;
+        spk::settings().target_fps = 10000;
     }
 
-    for(size_t i = 0; i < 250; i++) {
+    for(size_t i = 0; i < 10; i++) {
         create_usless_box();
     }
 
@@ -174,6 +174,8 @@ MAIN {
         tilemap.set(2, 1, 5);
         tilemap.set(2, 0, 4);
         tilemap.set(2, 1, 4);
+        tilemap.set(2, 2, 4);
+        tilemap.set(2, 3, 4);
 
         cc.speed = 10000;
     });

@@ -13,6 +13,7 @@
 // dependencies 
 #include <box2d/box2d.h>
 #include <flecs.h>
+#define SDL_MAIN_HANDLED
 #include <SDL.h>
 #include <SDL_mixer.h>
 #include <glm/glm.hpp>
@@ -51,20 +52,6 @@
 
 #define FLOAT_MAX std::numeric_limits<float>::max()
 #define FLOAT_MIN std::numeric_limits<float>::min() 
-
-#ifdef _WIN32 
-#include <Windows.h>
-
-#define  MAIN \
-WINAPI int WinMain( \
-_In_ HINSTANCE hInstance, \
-_In_opt_ HINSTANCE hPrevInstance, \
-_In_ LPSTR lpCmdLine, \
-_In_ int nShowCmd \
-)
-#else // linux or mac
-#define MAIN int main(int argc, char** argv)
-#endif  // _WIN32
 
 #ifndef NDEBUG
 #define SPK_DEBUG_EXPR(expr) expr

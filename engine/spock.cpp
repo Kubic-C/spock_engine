@@ -26,6 +26,8 @@ namespace spk {
     void init_SDL2() {
         const int audio_flags = MIX_INIT_MP3;
 
+        SDL_SetMainReady();
+
         if(SDL_Init(SDL_INIT_EVENTS | SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
             log.log(LOG_TYPE_ERROR, "could not load SDL2 video. %s", SDL_GetError());
         }

@@ -108,6 +108,7 @@ namespace spk {
         // adds a new child
         template<typename T, bool is_base = std::is_base_of_v<container_t, T>>
         ptr_t<T> element();
+        void destroy();
 
         void dimensions_calculate();
         const dimensions_t& dimensions_get() const { return dimensions; }
@@ -182,6 +183,8 @@ namespace spk {
         bool hovering        = false;
     };
 
+    using element_union_t = std::variant<container_t, text_t, button_t>;
+
     class canvas_t : public container_t {
         friend class container_t;
 
@@ -189,12 +192,13 @@ namespace spk {
         virtual ui_types_t type() override { return ui_types_t::CANVAS; }
 
         canvas_t();
+        ~canvas_t();
 
         // font to use for texts, set to your desired font ID
         uint32_t font = UINT32_MAX;
 
     private:
-        object_pool_t<std::variant<container_t, text_t, button_t>> element_pool;
+        object_pool_t<element_union_t> element_pool;
     };
 
     /**
