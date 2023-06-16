@@ -21,7 +21,7 @@ void create_usless_box() {
         b2PolygonShape shape;
         float hl = 1.0f;
         shape.SetAsBox(hl, hl);
-
+        
         b2FixtureDef fdef;
         fdef.shape = &shape;
         fdef.density = 0.01f;

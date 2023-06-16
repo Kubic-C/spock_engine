@@ -11,24 +11,28 @@
 cmake_minimum_required(VERSION "3.16")
 project(SPOCK_ENGINE LANGUAGES "CXX" "C")
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/game")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib")
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/game")
+option(SPK_CUSTOM_DIR OFF)
+
+if(${SPK_CUSTOM_DIR} STREQUAL "")
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/game")
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/game")
+endif()
 
 message(STATUS "Spock Engine --\n")
 
 if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     # -static: allows the outputted executable to be ran
     # on other machines without the C++/C Libraries being installed
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -std=c++17 -Wfatal-errors")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99" PARENT_SCOPE)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -std=c++17 -Wfatal-errors" PARENT_SCOPE)
 
 	if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
         # no-pie is specfic to debugging, 
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -pg -O0")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -pg -O0" PARENT_SCOPE)
         # set(SPK_DEBUG_LIBS profiler_static) couldn't get it to work on windows :(
 	else()
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3" PARENT_SCOPE)
     endif()
 	
     message("In ${CMAKE_BUILD_TYPE}, in ${CMAKE_CXX_COMPILER_ID}")
