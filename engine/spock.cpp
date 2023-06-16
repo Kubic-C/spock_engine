@@ -83,6 +83,7 @@ namespace spk {
         init_SDL2();
 
         internal = new internal_t;
+        internal->settings.log_statistics = true;
 
         font_library_init();
         init_defualt_ecs_pipelines();

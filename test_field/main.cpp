@@ -19,12 +19,12 @@ void create_usless_box() {
         rb->SetTransform((glm::vec2){fmod(random, 250.0f) - 125.0f, 100.0f}, 0.0f);
 
         b2PolygonShape shape;
-        float hl = fmod(random, 1.f) + 0.4f;
+        float hl = 1.0f;
         shape.SetAsBox(hl, hl);
 
         b2FixtureDef fdef;
         fdef.shape = &shape;
-        fdef.density = 0.5f;
+        fdef.density = 0.01f;
         fdef.restitution = 0.1f;
         rb->CreateFixture(&fdef);
 
@@ -143,11 +143,11 @@ int main(int argc, char* argv[]) {
         button_text->color = {0.0f, 0.0f, 0.0f, 0.0f};
         button_text->text  = "click button to exit";
 
-        spk::settings().target_tps = 45;
+        spk::settings().target_tps = 60;
         spk::settings().target_fps = 10000;
     }
 
-    for(size_t i = 0; i < 10; i++) {
+    for(size_t i = 0; i < 200; i++) {
         create_usless_box();
     }
 
@@ -159,8 +159,10 @@ int main(int argc, char* argv[]) {
             spk::comp_contact_callback_t& callback) {
         rb->SetType(b2_dynamicBody);
         rb->SetBullet(true);
-        rb->SetTransform(b2Vec2(0.0f, 0.0f), 0.0f);
+        rb->SetTransform(b2Vec2(10.0f, 10.0f), 0.0f);
         rb->SetAngularVelocity(5.0f);
+
+        rb->ApplyForce({0.0f, 10.0f}, {0.0f, 0.0f}, true);
 
         b2CircleShape shape;
         shape.m_radius = 1000.0f;
@@ -170,12 +172,7 @@ int main(int argc, char* argv[]) {
         def.isSensor = true;
         b2Fixture* character_fixture = rb->CreateFixture(&def);
 
-        tilemap.set(2, 0, 5);
-        tilemap.set(2, 1, 5);
-        tilemap.set(2, 0, 4);
-        tilemap.set(2, 1, 4);
-        tilemap.set(2, 2, 4);
-        tilemap.set(2, 3, 4);
+        tilemap.set(2, 0, 0);
 
         cc.speed = 10000;
     });

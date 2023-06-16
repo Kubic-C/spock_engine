@@ -1,8 +1,13 @@
-|SPOCK: 0.001377> [32m INFO [0m running..
-|SPOCK: 0.001611> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
-|SPOCK: 0.561340> [32m INFO [0m FreeType Version: 2.12.1
-|SPOCK: 0.561594> [32m INFO [0m OGL Version: 4.3.0 Core Profile Context 22.20.27.07.221020
-|SPOCK: 0.561806> [32m INFO [0m SDL Version: 2.26.4
-|SPOCK: 0.561981> [32m INFO [0m SDL_mixer Version: 2.6.3
-|SPOCK: 0.643026> [32m INFO [0m [1m #===# [0m[31m ENGINE RUN [0m[1m #===# [0m
-|SPOCK: 13.913273> [32m INFO [0m [1m #===# [0m[31m ENGINE FREE [0m[1m #===# [0m
+|SPOCK: 0.000030> [32m INFO [0m running..
+|SPOCK: 1.900388> [32m INFO [0m FreeType Version: 2.12.1
+|SPOCK: 1.900611> [32m INFO [0m OGL Version: 4.3.0 Core Profile Context 22.20.27.09.230330
+|SPOCK: 1.900762> [32m INFO [0m SDL Version: 2.26.4
+|SPOCK: 1.900940> [32m INFO [0m SDL_mixer Version: 2.6.3
+|SPOCK: 3.028496> [32m INFO [0m FPS: 208 | TPS: 173 | DELTA-TIME: 0.017506
+|SPOCK: 4.066697> [32m INFO [0m FPS: 1 | TPS: 12 | DELTA-TIME: 0.086517
+|SPOCK: 5.038239> [32m INFO [0m FPS: 1 | TPS: 12 | DELTA-TIME: 0.080962
+|SPOCK: 6.043603> [32m INFO [0m FPS: 0 | TPS: 16 | DELTA-TIME: 0.062835
+|SPOCK: 7.052178> [32m INFO [0m FPS: 0 | TPS: 17 | DELTA-TIME: 0.059328
+|SPOCK: 8.063017> [32m INFO [0m FPS: 0 | TPS: 11 | DELTA-TIME: 0.091894
+|SPOCK: 9.035284> [32m INFO [0m FPS: 0 | TPS: 15 | DELTA-TIME: 0.064818
+|SPOCK: 10.069887> [32m INFO [0m FPS: 0 | TPS: 19 | DELTA-TIME: 0.054453
