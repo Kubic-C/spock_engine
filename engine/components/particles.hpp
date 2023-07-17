@@ -56,7 +56,7 @@ namespace spk {
         uint32_t max; // the maximum amount of particles allowed
         std::deque<particle_t> particles;
         
-        glm::vec2 get_point(b2Body* body, glm::vec2 point);
+        glm::vec2 get_point(kin::transform_t* transform, glm::vec2 point);
         
         void init(flecs::entity entity);
         void free(flecs::entity entity);

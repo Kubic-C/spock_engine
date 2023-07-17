@@ -13,8 +13,10 @@ target_compile_definitions(flecs_static PUBLIC ecs_ftime_t=double)
 
 glad_add_library(glad_gl4_4 STATIC API gl:core=4.4)
 
+add_subdirectory("kin2d")
+
 target_link_libraries(spock_engine PUBLIC 
-    SDL2-static SDL2_mixer glad_gl4_4 flecs_static glm freetype ${SPK_DEBUG_LIBS})
+    SDL2-static SDL2_mixer glad_gl4_4 flecs_static glm freetype kin2d ${SPK_DEBUG_LIBS})
 
 target_include_directories(spock_engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/")
 
@@ -22,8 +24,6 @@ set(PCH_HEADERS
     "debug.hpp"
     "logger.hpp"
     "base.hpp")
-
-add_subdirectory("spox2d")
 
 target_sources(spock_engine PRIVATE 
     ${PCH_HEADERS}
@@ -93,9 +93,6 @@ target_sources(spock_engine PRIVATE
     "core/sprite_atlas.hpp" "core/sprite_atlas.cpp"
     "core/sprite_array.hpp" "core/sprite_array.cpp"
     "core/tiles.hpp" "core/tiles.cpp")
-
-target_sources(spock_engine PRIVATE
-    "physics/collision_listener.hpp" "physics/collision_listener.cpp")
-
+    
 target_sources(spock_engine PRIVATE
     "external/stb_image.h" "external/stb_image.c")

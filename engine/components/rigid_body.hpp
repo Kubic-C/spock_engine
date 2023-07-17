@@ -13,31 +13,25 @@
 
 namespace spk {
     struct comp_rigid_body_t : component_t {
-        b2Body* body;
+        kin::rigid_body_t* body = nullptr;
 
         void init(flecs::entity entity);
 
-        void free(flecs::entity entity) {
-            if(body) {
-                b2World* world = body->GetWorld();
+        void free(flecs::entity entity);
 
-                world->DestroyBody(body);
-            }
-        }
-
-        b2Body* operator->() {
+        kin::rigid_body_t* operator->() {
             return body;
         }
 
-        b2Body& operator*() {
+        kin::rigid_body_t& operator*() {
             return *body;
         }
 
-        operator b2Body*() {
+        operator kin::rigid_body_t*() {
             return body;
         }
 
-        void operator=(b2Body* other) {
+        void operator=(kin::rigid_body_t* other) {
             body = other;
         }
     };

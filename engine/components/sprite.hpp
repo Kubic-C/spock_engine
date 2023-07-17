@@ -23,7 +23,7 @@ namespace spk {
         float     z        = 0.0f; // z coordinate, positive z is towards the camera
     };
 
-    // sprite_arrayd image info is stored within a Texture Array rather then a Texture atlas.
+    // sprite_arrayd image info is stored within a Texture Array rather then a Texture atlas. 
     struct sprite_arrayd_t : component_t {
         uint32_t  id       = 0; // the sprite texture array to get sprite data from
         uint32_t  index    = 0; // the level within in the the texture array
@@ -40,6 +40,20 @@ namespace spk {
     struct comp_sprite_t : sprite_arrayd_t {
         void init(flecs::entity entity) {}
         void free(flecs::entity entity) {}
+    };
+
+    // used with a entity that also has a sprite component, allows simple 2D
+    // animations to be played by switch through sprites by a set amount of time.
+    // It will iterate through every sprite, starting at id_begin, and ending id_end
+    struct comp_animate_t {
+        void init(flecs::entity entity) {}
+        void free(flecs::entity entity) {}
+
+        bool     on = true;
+        float    last_switch = 0.0f;
+        float    switch_time = 0.0f; // the amount of time to wait before switching to the next sprite
+        uint32_t index_begin = 0; // the starting sprite 
+        uint32_t index_end   = 0; // the ending sprite
     };
 
     void sprite_comp_init(const flecs::world& world);

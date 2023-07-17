@@ -20,7 +20,7 @@ namespace spk {
     uniform vec4 color;
 
     void main() {
-        gl_Position = u_vp * vec4(a_pos, 0.0f, 1.0);
+        gl_Position = u_vp * vec4(a_pos, 6.0f, 1.0);
         v_color = color;
     })###";
 

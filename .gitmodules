@@ -1,6 +1,3 @@
-[submodule "dep/glm"]
-	path = dep/glm
-	url = https://github.com/g-truc/glm
 [submodule "dep/flecs"]
 	path = dep/flecs
 	url = https://github.com/SanderMertens/flecs
@@ -13,9 +10,9 @@
 [submodule "dep/glad"]
 	path = dep/glad
 	url = https://github.com/Dav1dde/glad
-[submodule "engine/spox2d"]
-	path = engine/spox2d
-	url = https://github.com/Kubic-C/spox2d
 [submodule "dep/SDL_mixer"]
 	path = dep/SDL_mixer
 	url = https://github.com/libsdl-org/SDL_mixer
+[submodule "engine/kin2d"]
+	path = engine/kin2d
+	url = https://github.com/Kubic-C/kin2d

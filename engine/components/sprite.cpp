@@ -13,6 +13,7 @@ namespace spk {
     void sprite_comp_init(const flecs::world& world) {
         spk_trace();
         
+        spk_register_component(world, comp_animate_t);
         spk_register_component(world, comp_sprite_t);
     }
 }

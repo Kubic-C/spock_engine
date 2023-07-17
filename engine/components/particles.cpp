@@ -36,11 +36,11 @@ namespace spk {
     }
 
 
-    glm::vec2 comp_particles_t::get_point(b2Body* body, glm::vec2 point) {
+    glm::vec2 comp_particles_t::get_point(kin::transform_t* transform, glm::vec2 point) {
         if(flags & PARTICLES_FLAGS_WORLD_POSITION) {
-            return body->GetPosition() + pos + point;
+            return transform->pos + pos + point;
         } else {
-            return body->GetWorldPoint(pos + point);
+            return transform->get_world_point(pos + point);
         }
     }
 

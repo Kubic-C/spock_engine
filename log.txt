@@ -1,7 +1,0 @@
-|SPOCK: 0.001336> [32m INFO [0m running..
-|SPOCK: 0.001672> [32m INFO [0m [1m #===# [0m[31m ENGINE INIT [0m[1m #===# [0m
-|SPOCK: 0.656568> [32m INFO [0m FreeType Version: 2.12.1
-|SPOCK: 0.656830> [32m INFO [0m OGL Version: 4.3.14761 Core Profile/Debug Context 21.30.02 30.0.13002.23
-|SPOCK: 0.656979> [32m INFO [0m SDL Version: 2.26.4
-|SPOCK: 0.657162> [32m INFO [0m SDL_mixer Version: 2.6.3
-|SPOCK: 0.657597> [32m INFO [0m failed to load atlas

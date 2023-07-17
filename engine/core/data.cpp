@@ -15,10 +15,10 @@ namespace spk {
         return internal->scene.ecs_world;
     }
 
-    b2World* physics_world() {
+    kin::world_t& physics_world() {
         spk_assert(internal->scene.physics_world);
 
-        return internal->scene.physics_world;
+        return *internal->scene.physics_world;
     }
 
     window_t& window() {

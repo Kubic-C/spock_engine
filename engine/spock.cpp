@@ -119,6 +119,7 @@ namespace spk {
 
             // render systems
             render_system_init(ecs_world());
+            sprite_cs_init(ecs_world());
             primitive_render_init(ecs_world());
             ui_cs_init(ecs_world());
         }

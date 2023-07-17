@@ -10,25 +10,39 @@ enum current_state_e: uint32_t {
 };
 
 void create_usless_box() {
-    spk::ecs_world().entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_sprite_t& sprite, spk::comp_particles_t& ps) {
+    auto box = spk::ecs_world().entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_sprite_t& sprite, spk::comp_particles_t& ps) {
         float random = rand();
         random *= 0.01f;
 
-        rb->SetType(b2_dynamicBody);
-        rb->SetBullet(true);
-        rb->SetTransform((glm::vec2){fmod(random, 250.0f) - 125.0f, 100.0f}, 0.0f);
+        rb->pos = {100.0f, 100.0f};
 
-        b2PolygonShape shape;
-        float hl = 1.0f;
-        shape.SetAsBox(hl, hl);
-        
-        b2FixtureDef fdef;
-        fdef.shape = &shape;
-        fdef.density = 0.01f;
-        fdef.restitution = 0.1f;
-        rb->CreateFixture(&fdef);
+        const float h = 1.0f;
+        const float w = 1.0f;
+        const float u = 1.0f;
+        uint32_t s = 0;
+        for(uint32_t i = 0; i < 1; i++) {
+            kin::rigid_body_t* body = rb;
 
-        sprite.size = {hl, hl};
+            glm::vec2 pos = { -w, -h };
+            while(pos.y < h) {
+                s++;
+                kin::fixture_def_t def;
+                def.density = 1.0f;
+                def.hw = u;
+                def.hh = u;
+                def.restitution = 1.0f;
+                def.rel_pos = pos;
+                body->create_fixture(def);
+
+                pos.x += u * 2.0f;
+                if(pos.x >= w) {
+                    pos.x = -w;
+                    pos.y += u * 2.0f;
+                }
+            }
+        }
+
+        sprite.size = {2.0f, 2.0f};
         sprite.id = 1;
         sprite.index = 1;
         sprite.z = 1.0f;
@@ -43,6 +57,16 @@ void create_usless_box() {
         ps.max = 5;
         ps.flags  = spk::PARTICLES_FLAGS_WORLD_DIRECTION | spk::PARTICLES_FLAGS_WORLD_POSITION | spk::PARTICLES_FLAGS_ACTIVE;
     });
+
+    if(rand() % 10 < 3) {
+        box.set([](spk::comp_sprite_t& sprite, spk::comp_animate_t& animate) {
+            sprite.index = 3;
+            animate.index_begin = 3;
+            animate.index_end   = 5;
+            animate.on = true;
+            animate.switch_time = 0.05f;
+        });
+    }
 }
 
 int main(int argc, char* argv[]) {
@@ -57,24 +81,24 @@ int main(int argc, char* argv[]) {
 
     spk::print_deps_versions();
 
-    spk::settings_t&  settings  = spk::settings();
-    spk::resources_t& resources = spk::resources();
-    spk::scene_t&     scene     = spk::scene();
-    spk::canvas_t&    canvas    = spk::canvas();
-    b2World*          world = scene.physics_world;
-    uint32_t          smells_blood_id, coin_sound_id;
+    spk::settings_t&   settings  = spk::settings();
+    spk::resources_t&  resources = spk::resources();
+    spk::scene_t&      scene     = spk::scene();
+    spk::canvas_t&     canvas    = spk::canvas();
+    kin::world_t*      world     = scene.physics_world;
+    uint32_t           smells_blood_id, coin_sound_id;
+    uint32_t           sprite_array_id, high_def_array;
     std::array<uint32_t, 5> fonts;
-    uint32_t          sprite_array_id, high_def_array;
     spk::ptr_t<spk::text_t> text;
 
     {
         smells_blood_id = spk::music_create("smells_blood.mp3");
         coin_sound_id   = spk::chunk_create("coin_sound.wav");
-        // spk::music_play(smells_blood_id, 1);
+        spk::music_play(smells_blood_id, 1);
 
         spk::audio_chunk_volume(1);
         spk::audio_music_volume(1);
-        world->SetGravity(b2Vec2(0.0f, 0.0f));
+        world->set_gravity({0.0f, -9.0f});
 
         fonts[0] = spk::font_create("./fonts/DotGothic16-Regular.ttf", 128, 20);
         fonts[1] = spk::font_create("./fonts/eater.regular.ttf", 128, 20);
@@ -82,10 +106,13 @@ int main(int argc, char* argv[]) {
         fonts[3] = spk::font_create("./fonts/GajrajOne-Regular.ttf", 128, 20);
         fonts[4] = spk::font_create("./fonts/PressStart2P.ttf", 128, 20);
 
-        sprite_array_id = spk::sprite_array_create(32, 32, 5);
+        sprite_array_id = spk::sprite_array_create(32, 32, 6);
         spk::sprite_array_set(sprite_array_id, "./texture_array/image1.png", 0);
         spk::sprite_array_set(sprite_array_id, "./texture_array/image2.png", 1);
         spk::sprite_array_set(sprite_array_id, "./texture_array/image3.png", 2);
+        spk::sprite_array_set(sprite_array_id, "./texture_array/anim1.png", 3);
+        spk::sprite_array_set(sprite_array_id, "./texture_array/anim2.png", 4);
+        spk::sprite_array_set(sprite_array_id, "./texture_array/anim3.png", 5);
 
         high_def_array = spk::sprite_array_create(1000, 1000, 2);
         spk::sprite_array_set(high_def_array, "./texture_array/windows_logo.png", 0);
@@ -94,14 +121,14 @@ int main(int argc, char* argv[]) {
         
         td[1].sprite.id   = sprite_array_id;
         td[1].sprite.z    = -5.0f;
-        td[1].restitution = 1.1f;
-        td[1].friction    = 0.0f;
+        td[1].restitution = 0.0f;
+        td[1].friction    = 1.0f;
 
         td[2].sprite.id = sprite_array_id;
         td[2].sprite.index = 1;
         td[2].sprite.z = 1.0f;
-        td[2].density = 5.0f;
-        td[2].friction = 0.0f;
+        td[2].density = 1.0f;
+        td[2].friction = 1.0f;
         td[2].restitution = 0.0f;
 
         td[3].sprite.id = sprite_array_id;
@@ -147,65 +174,46 @@ int main(int argc, char* argv[]) {
         spk::settings().target_fps = 10000;
     }
 
-    for(size_t i = 0; i < 200; i++) {
+    for(size_t i = 0; i < 300; i++) {
         create_usless_box();
     }
+
+    flecs::entity wall = scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_tilemap_t& tm){
+        rb->type = kin::body_type_static;
+        rb->pos  = {0.0f, 0.0f};
+
+        const int width  = 200;
+        const int height = 200;
+
+        for(uint32_t x = 0; x < width; x++) {
+            for(uint32_t y = 0; y < height; y++) {
+                if(x != 0 && x != (width - 1) &&
+                    y != 0 && y != (height - 1)) {
+                    tm.set(1, x, y, 0);
+                } else {
+                    tm.set(2, x, y, spk::TILE_FLAGS_COLLIADABLE);
+                }
+            }
+        }
+    });
 
     flecs::entity character = spk::ecs_world().entity().set([&](
             spk::comp_rigid_body_t& rb, 
             spk::comp_character_controller_t& cc,
             spk::comp_tilemap_t& tilemap,
-            spk::comp_camera_t& camera,
-            spk::comp_contact_callback_t& callback) {
-        rb->SetType(b2_dynamicBody);
-        rb->SetBullet(true);
-        rb->SetTransform(b2Vec2(10.0f, 10.0f), 0.0f);
-        rb->SetAngularVelocity(5.0f);
-
-        rb->ApplyForce({0.0f, 10.0f}, {0.0f, 0.0f}, true);
-
-        b2CircleShape shape;
-        shape.m_radius = 1000.0f;
-
-        b2FixtureDef def;
-        def.shape = &shape;
-        def.isSensor = true;
-        b2Fixture* character_fixture = rb->CreateFixture(&def);
+            spk::comp_camera_t& camera) {
+        rb->pos = {10.0f, 10.0f};
+        rb->apply_angular_velocity(1.0f);
 
         tilemap.set(2, 0, 0);
+        tilemap.set(2, 0, 1);
+        tilemap.set(2, 1, 1);
+        tilemap.set(2, 1, 0);
 
-        cc.speed = 10000;
-    });
+        cc.speed = 1;
+    }).add<spk::tag_body_render_t>();
 
     character.add<spk::tag_current_camera_t>();
-
-    scene.user_data.tick = [&]() {
-        character.set([&](spk::comp_rigid_body_t& rb, spk::comp_tilemap_t& tilemap){
-            for(b2ContactEdge* i = rb->GetContactList(); i != nullptr; i = i->next) {
-                b2Contact* cnt = i->contact;
-                b2Fixture* b_fixture, *a_fixture;
-
-                if(cnt->GetEntityB() != character) {
-                    b_fixture = cnt->GetFixtureB();
-                    a_fixture = cnt->GetFixtureA();
-                } else {
-                    b_fixture = cnt->GetFixtureA();
-                    a_fixture = cnt->GetFixtureB();
-                }
-
-                if(a_fixture->IsSensor()) {
-                    glm::vec2 dir_away = 
-                        glm::normalize((glm::vec2)b_fixture->GetBody()->GetPosition() - (glm::vec2)a_fixture->GetBody()->GetPosition());
-
-                    float strength = 75.0f * spk::statistics().delta_time;
-
-                    b_fixture->GetBody()->ApplyLinearImpulseToCenter(-dir_away * strength, true);
-                } else {
-                    spk::chunk_play(coin_sound_id, 1);
-                }
-            }
-        });
-    };
 
     spk::ecs_world().observer().event<spk::event_mouse_wheel_t>().term<spk::tag_events_t>()
         .iter([&](flecs::iter& iter){
@@ -238,13 +246,13 @@ int main(int argc, char* argv[]) {
         }
 
         character.set([&](spk::comp_rigid_body_t& rb, spk::comp_tilemap_t& tilemap, spk::comp_camera_t& camera){
-            camera.pos = rb->GetWorldCenter();
+            camera.pos = rb->get_world_pos();
 
             text->text = std::string(spk::build_name()) + " | FPS:" + std::to_string(spk::statistics().fps) + " | TPS:"  + std::to_string(spk::statistics().tps);
-            text->text += "\nvelocity.xy:" + std::to_string(rb->GetLinearVelocity().x) + " / " + std::to_string(rb->GetLinearVelocity().y);
+            text->text += "\nvelocity.xy:" + std::to_string(rb->linear_vel.x) + " / " + std::to_string(rb->linear_vel.y);
         
             if(spk::window().key_get(SDL_SCANCODE_1)) {
-                rb->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+                rb->linear_vel = {0.0f, 0.0f};
             }
         });
     };  

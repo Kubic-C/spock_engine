@@ -25,7 +25,7 @@ namespace spk {
             const GLchar *message,
             const void *userParam) {
         spk_trace();
-
+        
         switch(type) {
         case GL_DEBUG_TYPE_ERROR:
             log.log(spk::LOG_TYPE_ERROR, message);

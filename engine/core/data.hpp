@@ -78,7 +78,7 @@ namespace spk {
     struct scene_t {
         flecs::world      ecs_world; // has constructor, no need to set
         render_context_t* render_context = nullptr;
-        b2World*          physics_world  = nullptr;
+        kin::world_t*     physics_world  = nullptr;
 
         // user callbacks for tick and frame
         user_data_t user_data;
@@ -117,7 +117,7 @@ namespace spk {
     const flecs::world& ecs_world();
 
     // gets the current physics world
-    b2World* physics_world();
+    kin::world_t& physics_world();
 
      // gets the current window
     window_t& window();

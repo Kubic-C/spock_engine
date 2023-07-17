@@ -34,7 +34,7 @@ namespace spk {
         size_t     total;
         glm::vec2  size;
         glm::vec2  offset;
-        b2Fixture* fixture = nullptr;
+        kin::fixture_t* fixture = nullptr;
     };
 
     struct tile_chunk_mesh_t {
@@ -78,5 +78,5 @@ namespace spk {
     };
 
     void tile_comp_init(const flecs::world& world);
-    void _tilemap_mesh_update(b2Body* body, comp_tilemap_t& tilemap);
+    void _tilemap_mesh_update(comp_rigid_body_t* body, comp_tilemap_t& tilemap);
 }

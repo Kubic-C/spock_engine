@@ -37,7 +37,7 @@ namespace spk {
         return randomf;         
     };
 
-    void process_particle_system(b2Body* body, double delta_time, comp_particles_t& ps) {
+    void process_particle_system(kin::rigid_body_t* body, double delta_time, comp_particles_t& ps) {
         if(!(ps.flags & PARTICLES_FLAGS_ACTIVE))
             return;
 

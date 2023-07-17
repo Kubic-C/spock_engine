@@ -29,6 +29,6 @@ namespace spk {
         static void tilemap_render(flecs::iter& iter, comp_rigid_body_t* bodies, comp_tilemap_t* tilemap);
         void render() override {};
 
-        void _chunk_render(b2Body* body, tile_chunk_mesh_t& mesh);
+        void _chunk_render(kin::rigid_body_t* body, tile_chunk_mesh_t& mesh);
     };
 }

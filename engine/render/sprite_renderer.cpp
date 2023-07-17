@@ -46,13 +46,17 @@ namespace spk {
         }  
     }
 
+    glm::vec3 get_world_point(kin::rigid_body_t* body, glm::vec3 v3) {
+        return {body->get_world_point((glm::vec2){v3.x, v3.y} + body->center_of_mass), v3.z};
+    }
+
     void sprite_renderer_t::sprite_mesh(flecs::iter& iter, comp_rigid_body_t* bodies, comp_sprite_t* sprites) {
         spk_trace();
 
         auto renderer = (sprite_renderer_t*)render_context().renderers[RENDERER_TYPE_SPRITE];
         
         for(auto i : iter) {
-            b2Body*       body   = bodies[i];
+            kin::rigid_body_t*     body   = bodies[i];
             comp_sprite_t sprite = sprites[i];
             
             vertex_t vertices[] = {

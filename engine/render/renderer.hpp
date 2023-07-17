@@ -18,8 +18,8 @@
 #include "tilemap_renderer.hpp"
 
 namespace spk {
-    constexpr size_t _render_default_buffer_size = 4096 * sizeof(float);
-    constexpr size_t _render_max_quad_indexes    = 1000;
+    constexpr size_t _render_default_buffer_size = 6000 * sizeof(float);
+    constexpr size_t _render_max_quad_indexes    = 4000;
 
     struct render_context_t {
         render_context_t();
@@ -45,9 +45,6 @@ namespace spk {
         // cameras
         glm::mat4 world_camera; 
         glm::mat4 ui_camera;
-
-        // clear coloring
-        glm::vec3 clear_color = {0.1f, 0.1f, 0.1f};
 
         // buffer: allocated with an initial size of _render_default_buffer_size
         // array: vertex array with no bound attributes or buffers, must be set before use

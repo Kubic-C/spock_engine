@@ -11,7 +11,6 @@
 #define SPOCK_ENGINE 1
 
 // dependencies 
-#include <box2d/box2d.h>
 #include <flecs.h>
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
@@ -21,6 +20,7 @@
 #include <glad/gl.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include <kin2d/kin2d.hpp>
 
 // STL
 #include <cassert>

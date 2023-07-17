@@ -102,10 +102,6 @@ namespace spk {
             vertices_to_render += vertices_per_render;
         }
     };
-
-    inline glm::vec3 get_world_point(b2Body* body, glm::vec3 local_point) {
-        return glm::vec3{(glm::vec2)body->GetWorldPoint(b2Vec2(local_point.x, local_point.y)), local_point.z};
-    }
 }
 
 /* this is on purpose, some of them need access to the above listed elements ^^^ */

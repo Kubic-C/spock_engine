@@ -12,13 +12,13 @@
 
 namespace spk { 
     void comp_rigid_body_t::init(flecs::entity entity) {
-        b2BodyDef def;
-        
-        body = internal->scene.physics_world->CreateBody(&def);
+        this->body = physics_world().create_rigid_body({0.0f, 0.0f}, 0.0f, kin::body_type_dynamic);
+    }
 
-        auto& ud = body->GetUserData();
-        ud.entity = entity;
-        ud.pointer = 0;
+    void comp_rigid_body_t::free(flecs::entity entity) {
+        if(body) {
+            physics_world().destroy_rigid_body(body);
+        }
     }
 
     void rigid_body_comp_init(const flecs::world& world) {

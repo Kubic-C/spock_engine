@@ -12,9 +12,8 @@
 
 namespace spk {
     tile_group_t::~tile_group_t() {
-        if(fixture && !settings().should_exit) {
-            fixture->GetBody()->DestroyFixture(fixture);
-        }
+        if(fixture)
+            fixture->body->destroy_fixture(fixture);
     }
     
     void comp_tilemap_t::init(flecs::entity entity) {
@@ -23,8 +22,16 @@ namespace spk {
     }
 
     void comp_tilemap_t::free(flecs::entity entity) {
-        allocators().chunk_mesh_pool.destruct(mesh, 1);
-        allocators().chunks_pool.destruct(chunks, 1);
+        for(int x = 0; x < mesh->width_get(); x++) {
+            for(int y = 0; y < mesh->height_get(); y++) {
+                for(auto& group : (*mesh)[x][y].groups) {
+                    group.fixture = nullptr;
+                }
+            }
+        }
+
+        allocators().chunk_mesh_pool.destruct(mesh.get(), 1);
+        allocators().chunks_pool.destruct(chunks.get(), 1);
     }
 
     void chunk_column_mesh_update(tile_chunk_t& chunk, tile_chunk_mesh_t& mesh, size_t column) {
@@ -66,7 +73,7 @@ namespace spk {
         }
     }
 
-    void chunk_mesh_update(b2Body* body, comp_tilemap_t& tilemap, size_t xchunk, size_t ychunk) {
+    void chunk_mesh_update(kin::rigid_body_t* body, comp_tilemap_t& tilemap, size_t xchunk, size_t ychunk) {
         tile_chunk_t&      chunk = (*tilemap.chunks)[xchunk][ychunk];
         tile_chunk_mesh_t& mesh  = (*tilemap.mesh)[xchunk][ychunk]; 
 
@@ -96,8 +103,8 @@ namespace spk {
             
             // render vertices
             tilemap_vertex_t vertices[] = {
-                (glm::vec3){xbase        , ybase        , z}, (glm::vec3){0.0f        , 0.0f        , index},
-                (glm::vec3){xbase + xsize, ybase        , z}, (glm::vec3){group.size.x, 0.0f        , index},
+                (glm::vec3){xbase        , ybase, z}, (glm::vec3){0.0f        , 0.0f        , index},
+                (glm::vec3){xbase + xsize, ybase, z}, (glm::vec3){group.size.x, 0.0f        , index},
                 (glm::vec3){xbase + xsize, ybase + ysize, z}, (glm::vec3){group.size.x, group.size.y, index},
                 (glm::vec3){xbase        , ybase + ysize, z}, (glm::vec3){0.0f        , group.size.y, index}
             };
@@ -106,32 +113,25 @@ namespace spk {
 
             // physic vertices
             if(group.tile.flags & TILE_FLAGS_COLLIADABLE) {
-                b2Vec2 physic_vertices[] = {
-                    (glm::vec2)vertices[0].pos,
-                    (glm::vec2)vertices[1].pos,
-                    (glm::vec2)vertices[2].pos,
-                    (glm::vec2)vertices[3].pos
-                };
-
-                b2PolygonShape shape;
-                shape.Set(physic_vertices, 4);
-
-                b2FixtureDef def;
-                def.shape       = &shape;
+                kin::fixture_def_t def;
+                def.hw      = xsize * 0.5f;
+                def.hh      = ysize * 0.5f;
+                def.rel_pos = (glm::vec2){xbase + def.hw, ybase + def.hh};
                 def.density     = tile_dictionary()[group.tile.id].density * group.total;
                 def.restitution = tile_dictionary()[group.tile.id].restitution;
-                def.friction    = tile_dictionary()[group.tile.id].friction;
-                group.fixture   = body->CreateFixture(&def);
+                def.static_friction = tile_dictionary()[group.tile.id].friction;
+                def.dynamic_friction = tile_dictionary()[group.tile.id].friction;
+                group.fixture = body->create_fixture(def);
             }
         }
     }
 
-    void _tilemap_mesh_update(b2Body* body, comp_tilemap_t& tilemap) {
+    void _tilemap_mesh_update(comp_rigid_body_t* body, comp_tilemap_t& tilemap) {
         tilemap_mesh_t& mesh = *tilemap.mesh;
 
         for(size_t xchunk = 0; xchunk < mesh.width_get(); xchunk++) {
             for(size_t ychunk = 0; ychunk < mesh.height_get(); ychunk++) {
-                chunk_mesh_update(body, tilemap, xchunk, ychunk);
+                chunk_mesh_update(body->body, tilemap, xchunk, ychunk);
             }
         }
     }

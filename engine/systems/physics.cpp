@@ -14,8 +14,7 @@ namespace spk {
     class physics_system_t {
     public:
         physics_system_t() {
-            world = new b2World(glm::vec2(0.0f, -9.81f));
-            world->SetContactListener(&collision_listener);
+            world = new kin::world_t(glm::vec2(0.0f, -9.81f));
         }
 
         ~physics_system_t() {
@@ -31,14 +30,13 @@ namespace spk {
             delete world;
         }
 
-        b2World* world;
-        collision_listener_t collision_listener;
+        kin::world_t* world;
     };
 
     void physics_system_tick(flecs::iter iter) {
         auto physics_world = internal->scene.physics_world;
     
-        physics_world->Step(iter.delta_time(), 8, 3);
+        physics_world->update(iter.delta_time(), 6);
     }
 
     void physics_cs_init(const flecs::world& world) {

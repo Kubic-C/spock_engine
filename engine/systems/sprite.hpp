@@ -15,4 +15,5 @@
 #include "systems/tilemap.hpp"
 
 namespace spk {
+    void sprite_cs_init(const flecs::world& world);
 }

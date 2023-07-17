@@ -1,6 +1,6 @@
 
-add_executable(test_field)
+add_executable(spock_engine_test)
 
-target_link_libraries(test_field PUBLIC spock_engine)
+target_link_libraries(spock_engine_test PUBLIC spock_engine)
 
-target_sources(test_field PUBLIC main.cpp)
+target_sources(spock_engine_test PUBLIC main.cpp)
