@@ -20,11 +20,11 @@ namespace spk {
             comp_rigid_body_t&  body    = bodies[i];
             comp_tilemap_t&     tilemap = tilemaps[i];
 
-            _tilemap_mesh_update(&body, tilemap);
+            tilemap.mesh();
         }
     }
 
-    void tilemap_renderer_t::_chunk_render(kin::rigid_body_t* body, tile_chunk_mesh_t& mesh) {
+    void tilemap_renderer_t::_chunk_render(kin::rigid_body_t* body, tile_chunk_info_t& mesh) {
 
         for(auto& pair : mesh.buffer) {
             sprite_array_t& array = sprite_arrays().get(pair.first);
@@ -75,7 +75,7 @@ namespace spk {
 
             for(size_t x = 0; x < tilemap_max_width; x++) {
                 for(size_t y = 0; y < tilemap_max_height; y++) {
-                    tile_chunk_mesh_t& mesh = (*tilemap.mesh)[x][y];
+                    tile_chunk_info_t& mesh = (*tilemap.infos)[x][y];
 
                     renderer->_chunk_render(body, mesh);
                 }   

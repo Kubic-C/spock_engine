@@ -15,8 +15,8 @@
 #include "render/common.hpp"
 
 namespace spk {
-    constexpr size_t tile_chunk_width  = 16;
-    constexpr size_t tile_chunk_height = 16;
+    constexpr size_t tile_chunk_width  = 8;
+    constexpr size_t tile_chunk_height = 8;
     constexpr size_t tilemap_max_width    = 16;
     constexpr size_t tilemap_max_height   = 16;
     constexpr size_t tilemap_tile_width   = tile_chunk_width * tilemap_max_width;
@@ -37,46 +37,43 @@ namespace spk {
         kin::fixture_t* fixture = nullptr;
     };
 
-    struct tile_chunk_mesh_t {
-        bool                                               dirty = true;
-        std::vector<tile_group_t>                          groups;
+    struct tile_chunk_info_t {
+        bool empty          = false;
+        bool mesh_dirty     = true;
+        bool fixtures_dirty = true;
         std::map<uint32_t, mesh_t<tilemap_vertex_t, 6, 4>> buffer;
     };
 
     typedef array2D_t<tile_t, tile_chunk_width, tile_chunk_height> tile_chunk_t;
     typedef array2D_t<tile_chunk_t, tilemap_max_width, tilemap_max_height> tilemap_chunks_t;
-    typedef array2D_t<tile_chunk_mesh_t, tilemap_max_width, tilemap_max_height> tilemap_mesh_t;
+    typedef array2D_t<tile_chunk_info_t, tilemap_max_width, tilemap_max_height> tilemap_chunk_info_t;
 
     struct comp_tilemap_t : component_t {
+        ptr_t<tilemap_chunk_info_t> infos;
+        ptr_t<tilemap_chunks_t>     chunks;
+
         void init(flecs::entity entity);
         void free(flecs::entity entity);
 
-        void set(uint32_t id, size_t x, size_t y, uint8_t flags = TILE_FLAGS_COLLIADABLE) {
-            spk_assert(x < tilemap_tile_width && y < tilemap_tile_height);
-            spk_assert(!chunks.is_null());
-
+        tile_t& get(size_t x, size_t y, bool tile_change = true) {
             const size_t xtile  = x % tile_chunk_width;
             const size_t ytile  = y % tile_chunk_height;
             const size_t xchunk = (x - xtile) / tile_chunk_width;
             const size_t ychunk = (y - ytile) / tile_chunk_height;
+        
+            (*infos)[xchunk][ychunk].fixtures_dirty = true;
+            (*infos)[xchunk][ychunk].mesh_dirty = true;
 
-            set(id, xchunk, ychunk, xtile, ytile, flags);
+            return (*chunks)[xchunk][ychunk][xtile][ytile];
         }
 
-        void set(uint32_t id, size_t xchunk, size_t ychunk, size_t xtile, size_t ytile, uint8_t flags) {
-            spk_assert(xchunk < tilemap_max_width && ychunk < tilemap_max_height);
-            spk_assert(xtile < tile_chunk_width && ytile < tile_chunk_height);
-            spk_assert(!chunks.is_null());
+        void mesh();
+        void add_fixtures(kin::rigid_body_t* body);
 
-            (*mesh)[xchunk][ychunk].dirty = true;
-            (*chunks)[xchunk][ychunk][xtile][ytile].id = id;
-            (*chunks)[xchunk][ychunk][xtile][ytile].flags = flags;
-        }
-
-        ptr_t<tilemap_mesh_t>   mesh;
-        ptr_t<tilemap_chunks_t> chunks;
+    private:
+        void mesh_tiles(uint32_t xc, uint32_t yc);
+        void add_tile_fixtures(kin::rigid_body_t* body, uint32_t xc, uint32_t yc);
     };
 
     void tile_comp_init(const flecs::world& world);
-    void _tilemap_mesh_update(comp_rigid_body_t* body, comp_tilemap_t& tilemap);
 }

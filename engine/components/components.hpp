@@ -31,4 +31,6 @@ namespace spk {
         virtual void init(flecs::entity entity) {}
         virtual void free(flecs::entity entity) {}
     };
+
+    typedef kin::transform_t comp_transform_t;
 }

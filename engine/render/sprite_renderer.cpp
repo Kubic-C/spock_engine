@@ -19,19 +19,19 @@ namespace spk {
         for(auto i : iter) {
             comp_rigid_body_t& body            = bodies[i];
             comp_particles_t&  particle_system = particles[i];
-            sprite_arrayd_t&   sprite = resources().tile_dictionary[particle_system.sprite].sprite;
+            tile_sprite_t&     sprite = particle_system.sprite;
         
             for(uint32_t j = 0; j < particle_system.particles.size(); j++) {
                 particle_t& particle = particle_system.particles[j];
 
                 vertex_t vertices[] = { 
-                    {glm::vec3(particle.pos - sprite.size, sprite.z),
+                    {glm::vec3(particle.pos - SPK_TILE_HALF_SIZE, sprite.z),
                         glm::vec3(0.0f, 0.0f, sprite.index)}, // bl
-                    {glm::vec3((glm::vec2){particle.pos.x + sprite.size.x, particle.pos.y - sprite.size.y}, sprite.z),
+                    {glm::vec3((glm::vec2){particle.pos.x + SPK_TILE_HALF_SIZE, particle.pos.y - SPK_TILE_HALF_SIZE}, sprite.z),
                         glm::vec3(1.0f, 0.0f, sprite.index)}, // br
-                    {glm::vec3(particle.pos + sprite.size, sprite.z),
+                    {glm::vec3(particle.pos + SPK_TILE_HALF_SIZE, sprite.z),
                         glm::vec3(1.0f, 1.0f, sprite.index)}, // tr
-                    {glm::vec3((glm::vec2){particle.pos.x - sprite.size.x, particle.pos.y + sprite.size.y}, sprite.z),
+                    {glm::vec3((glm::vec2){particle.pos.x - SPK_TILE_HALF_SIZE, particle.pos.y + SPK_TILE_HALF_SIZE}, sprite.z),
                         glm::vec3(0.0f, 1.0f, sprite.index)} // tl
                 };
 

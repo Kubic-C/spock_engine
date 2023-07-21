@@ -49,7 +49,7 @@ namespace spk {
         void init(flecs::entity entity) {}
         void free(flecs::entity entity) {}
 
-        bool     on = true;
+        bool     on = false;
         float    last_switch = 0.0f;
         float    switch_time = 0.0f; // the amount of time to wait before switching to the next sprite
         uint32_t index_begin = 0; // the starting sprite 

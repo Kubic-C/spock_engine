@@ -21,6 +21,11 @@ namespace spk {
         size_t width_get() const { return width; }
         size_t height_get() const { return height; }
 
+        T* begin() { return data.begin(); }
+        T* end() { return data.end(); }
+        T* begin() const { return data.cbegin(); }
+        T* end() const { return data.cend(); }
+
     private:
         std::array<T, width * height> data;
     };

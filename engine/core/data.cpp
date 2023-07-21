@@ -33,10 +33,6 @@ namespace spk {
         return *internal->scene.canvas;
     }
 
-    tile_dictionary_t& tile_dictionary() {
-        return internal->resources.tile_dictionary;
-    }
-
     settings_t& settings() {
         return internal->settings;
     }

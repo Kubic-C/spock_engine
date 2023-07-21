@@ -20,49 +20,26 @@ namespace spk {
         TILE_FLAGS_COLLIADABLE = 1 << 0
     };
 
-    struct tile_metadata_t {
-        tile_metadata_t() {
-            sprite.size = {SPK_TILE_HALF_SIZE, SPK_TILE_HALF_SIZE};
-        }
-
-        sprite_arrayd_t sprite;
-        
-        float density     = 1.0f;
-        float friction    = 0.2f;
-		float restitution = 0.0f;
+    struct tile_sprite_t {
+        uint32_t id    = 0;
+        uint32_t index = 0;
+        float    z     = 0.0f;
     };
 
     struct tile_t {
-        tile_t() {
-        }
+        tile_t() {}
+                
+        bool empty() { return !fixture && sprite.id == 0; }
+        bool is_renderable() { return sprite.id != 0; }
 
-        tile_t(uint32_t id)
-            : id(id) {   
-        }
+        float           density     = 1.0f;
+        float           friction    = 0.2f;
+		float           restitution = 0.0f;
+        kin::fixture_t* fixture     = nullptr;
 
-        bool operator==(tile_t& other) {
-            return id == other.id;
-        }
+        comp_animate_t animation;
+        tile_sprite_t  sprite;
 
-        bool operator!=(tile_t& other) {
-            return id != other.id;
-        }
-
-        bool operator==(uint32_t id) {
-            return this->id == id;
-        }
-
-        bool operator!=(uint32_t id) {
-            return this->id != id;
-        }
-
-        uint32_t id    = 0;
-        uint8_t  flags = TILE_FLAGS_COLLIADABLE;
+        uint8_t        flags      = 0;
     };
-
-    typedef std::unordered_map<uint32_t, tile_metadata_t> tile_dictionary_t;
-
-    inline bool is_tile_empty(const tile_t& tile) {
-        return (tile.id == 0 ||  !(tile.flags & TILE_FLAGS_COLLIADABLE));
-    }
 }

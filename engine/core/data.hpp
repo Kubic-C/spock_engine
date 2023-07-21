@@ -102,14 +102,13 @@ namespace spk {
         font_dictionary_t         fonts;
         sprite_atlas_dictionary_t sprite_atlases;
         sprite_array_dictionary_t sprite_arrays;
-        tile_dictionary_t         tile_dictionary;
         sound_dictionary_t        sounds;
     };
 
     // allocators for canvases, windows, etc. and stack allocators
     // FOR BIG things
     struct allocators_t {
-        object_pool_t<tilemap_mesh_t>   chunk_mesh_pool;
+        object_pool_t<tilemap_chunk_info_t>   chunk_info_pool;
         object_pool_t<tilemap_chunks_t> chunks_pool;
     };
 
@@ -125,9 +124,6 @@ namespace spk {
     // gets the current canvas
     canvas_t& canvas();
 
-    // gets the tile dictionary
-    tile_dictionary_t& tile_dictionary();
-    
     // all self explanatory
 
     settings_t&   settings();

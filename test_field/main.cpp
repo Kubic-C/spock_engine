@@ -10,11 +10,11 @@ enum current_state_e: uint32_t {
 };
 
 void create_usless_box() {
-    auto box = spk::ecs_world().entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_sprite_t& sprite, spk::comp_particles_t& ps) {
+    auto box = spk::ecs_world().entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_sprite_t& sprite) {
         float random = rand();
         random *= 0.01f;
 
-        rb->pos = {100.0f, 100.0f};
+        rb->pos = {5.0f, 20.0f};
 
         const float h = 1.0f;
         const float w = 1.0f;
@@ -42,21 +42,11 @@ void create_usless_box() {
             }
         }
 
-        sprite.size = {2.0f, 2.0f};
+        sprite.size = {1.0f, 1.0f};
         sprite.id = 1;
         sprite.index = 1;
         sprite.z = 1.0f;
-
-        ps.funnel = spk::PARTICLES_FUNNEL_FUNNEL;
-        ps.step   = 0.2f; // fun :)
-        ps.length = 1.0f;
-        ps.base_speed = 9.0f;
-        ps.sprite = 3;
-        ps.base_cycle = 0.5f;
-        ps.base_lifetime = 1.0f;
-        ps.max = 5;
-        ps.flags  = spk::PARTICLES_FLAGS_WORLD_DIRECTION | spk::PARTICLES_FLAGS_WORLD_POSITION | spk::PARTICLES_FLAGS_ACTIVE;
-    });
+    }).add<spk::tag_body_render_t>();
 
     if(rand() % 10 < 3) {
         box.set([](spk::comp_sprite_t& sprite, spk::comp_animate_t& animate) {
@@ -98,7 +88,7 @@ int main(int argc, char* argv[]) {
 
         spk::audio_chunk_volume(1);
         spk::audio_music_volume(1);
-        world->set_gravity({0.0f, -9.0f});
+        world->set_gravity({0.0f, -10.0f});
 
         fonts[0] = spk::font_create("./fonts/DotGothic16-Regular.ttf", 128, 20);
         fonts[1] = spk::font_create("./fonts/eater.regular.ttf", 128, 20);
@@ -116,25 +106,6 @@ int main(int argc, char* argv[]) {
 
         high_def_array = spk::sprite_array_create(1000, 1000, 2);
         spk::sprite_array_set(high_def_array, "./texture_array/windows_logo.png", 0);
-
-        spk::tile_dictionary_t& td = resources.tile_dictionary;
-        
-        td[1].sprite.id   = sprite_array_id;
-        td[1].sprite.z    = -5.0f;
-        td[1].restitution = 0.0f;
-        td[1].friction    = 1.0f;
-
-        td[2].sprite.id = sprite_array_id;
-        td[2].sprite.index = 1;
-        td[2].sprite.z = 1.0f;
-        td[2].density = 1.0f;
-        td[2].friction = 1.0f;
-        td[2].restitution = 0.0f;
-
-        td[3].sprite.id = sprite_array_id;
-        td[3].sprite.z = 1.0f;
-        td[3].sprite.index = 2;
-        td[3].density = 500.0f;
     }
 
     { // canvas 
@@ -174,44 +145,70 @@ int main(int argc, char* argv[]) {
         spk::settings().target_fps = 10000;
     }
 
-    for(size_t i = 0; i < 300; i++) {
+    for(size_t i = 0; i < 2; i++) {
         create_usless_box();
     }
+
+    spk::tile_t stone;
+    stone.density = 1.0f;
+    stone.flags = spk::TILE_FLAGS_COLLIADABLE;
+    stone.friction = 1.0f;
+    stone.restitution = 0.0f;
+    stone.sprite.id    = sprite_array_id;
+    stone.sprite.index = 1;
+
+    spk::tile_t bg_wood = stone;
+    bg_wood.sprite.id    = sprite_array_id;
+    bg_wood.sprite.z     = -5.0f;
+    bg_wood.flags        = 0;
+    bg_wood.sprite.index = 0;
+
+    spk::tile_t p_block = stone;
+    p_block.sprite.id    = sprite_array_id;
+    p_block.sprite.index = 3;
+    p_block.animation.on = true;
+    p_block.animation.index_begin = 3;
+    p_block.animation.index_end = 5;
+    p_block.animation.switch_time = 1.0f;
 
     flecs::entity wall = scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_tilemap_t& tm){
         rb->type = kin::body_type_static;
         rb->pos  = {0.0f, 0.0f};
 
-        const int width  = 200;
-        const int height = 200;
+        const int width  = 10;
+        const int height = 10;
 
         for(uint32_t x = 0; x < width; x++) {
             for(uint32_t y = 0; y < height; y++) {
                 if(x != 0 && x != (width - 1) &&
-                    y != 0 && y != (height - 1)) {
-                    tm.set(1, x, y, 0);
+                    y != 0) {
+                    tm.get(x, y) = bg_wood;
                 } else {
-                    tm.set(2, x, y, spk::TILE_FLAGS_COLLIADABLE);
+                    tm.get(x, y) = stone;
                 }
             }
         }
-    });
-
-    flecs::entity character = spk::ecs_world().entity().set([&](
-            spk::comp_rigid_body_t& rb, 
-            spk::comp_character_controller_t& cc,
-            spk::comp_tilemap_t& tilemap,
-            spk::comp_camera_t& camera) {
-        rb->pos = {10.0f, 10.0f};
-        rb->apply_angular_velocity(1.0f);
-
-        tilemap.set(2, 0, 0);
-        tilemap.set(2, 0, 1);
-        tilemap.set(2, 1, 1);
-        tilemap.set(2, 1, 0);
-
-        cc.speed = 1;
     }).add<spk::tag_body_render_t>();
+
+    flecs::entity character;
+
+    for(size_t i = 0; i < 2; i++)
+        character = spk::ecs_world().entity().set([&](
+                spk::comp_rigid_body_t& rb, 
+                spk::comp_character_controller_t& cc,
+                spk::comp_tilemap_t& tilemap,
+                spk::comp_camera_t& camera) {
+            rb->pos = {5.0f, 10.0f};
+
+            tilemap.get(2, 0) = stone;
+            tilemap.get(2, 1) = stone;
+            tilemap.get(2, 2) = stone;
+            tilemap.get(2, 3) = stone;
+            tilemap.get(2, 4) = stone;
+            tilemap.get(2, 5) = p_block;
+
+            cc.speed = 1;
+        }).add<spk::tag_body_render_t>();
 
     character.add<spk::tag_current_camera_t>();
 
@@ -245,10 +242,11 @@ int main(int argc, char* argv[]) {
             canvas.font = fonts[4];
         }
 
+        text->text = std::string(spk::build_name()) + " | FPS:" + std::to_string(spk::statistics().fps) + " | TPS:"  + std::to_string(spk::statistics().tps);
+
         character.set([&](spk::comp_rigid_body_t& rb, spk::comp_tilemap_t& tilemap, spk::comp_camera_t& camera){
             camera.pos = rb->get_world_pos();
 
-            text->text = std::string(spk::build_name()) + " | FPS:" + std::to_string(spk::statistics().fps) + " | TPS:"  + std::to_string(spk::statistics().tps);
             text->text += "\nvelocity.xy:" + std::to_string(rb->linear_vel.x) + " / " + std::to_string(rb->linear_vel.y);
         
             if(spk::window().key_get(SDL_SCANCODE_1)) {

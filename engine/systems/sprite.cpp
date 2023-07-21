@@ -17,7 +17,8 @@ namespace spk {
             comp_sprite_t&  sprite = sprites[i];
             comp_animate_t& animation = animations[i];
 
-            if(animation.last_switch + animation.switch_time < spk::time.get_time()) {
+            if(animation.last_switch + animation.switch_time < spk::time.get_time() &&
+               animation.on) {
                 if(sprite.index == animation.index_end) {
                     sprite.index = animation.index_begin;
                 } else {

@@ -28,8 +28,6 @@ namespace spk {
         dir = {0.0f, 1.0f};
 
         max = 100;
-
-        sprite = 0;
     }   
 
     void comp_particles_t::free(flecs::entity entity) {
