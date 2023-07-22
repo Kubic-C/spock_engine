@@ -14,7 +14,8 @@ void create_usless_box() {
         float random = rand();
         random *= 0.01f;
 
-        rb->pos = {5.0f, 20.0f};
+        rb->set_position({50.0f, 100.0f});
+        rb->apply_angular_velocity(100.0f);
 
         const float h = 1.0f;
         const float w = 1.0f;
@@ -46,7 +47,7 @@ void create_usless_box() {
         sprite.id = 1;
         sprite.index = 1;
         sprite.z = 1.0f;
-    }).add<spk::tag_body_render_t>();
+    });
 
     if(rand() % 10 < 3) {
         box.set([](spk::comp_sprite_t& sprite, spk::comp_animate_t& animate) {
@@ -80,6 +81,8 @@ int main(int argc, char* argv[]) {
     uint32_t           sprite_array_id, high_def_array;
     std::array<uint32_t, 5> fonts;
     spk::ptr_t<spk::text_t> text;
+
+    scene.window->size_set(1000, 600);
 
     {
         smells_blood_id = spk::music_create("smells_blood.mp3");
@@ -142,15 +145,16 @@ int main(int argc, char* argv[]) {
         button_text->text  = "click button to exit";
 
         spk::settings().target_tps = 60;
-        spk::settings().target_fps = 10000;
+        spk::settings().target_fps = 75;
     }
 
-    for(size_t i = 0; i < 2; i++) {
+    for(size_t i = 0; i < 10; i++) {
         create_usless_box();
     }
 
     spk::tile_t stone;
     stone.density = 1.0f;
+    stone.friction = 10.0f;
     stone.flags = spk::TILE_FLAGS_COLLIADABLE;
     stone.friction = 1.0f;
     stone.restitution = 0.0f;
@@ -170,35 +174,37 @@ int main(int argc, char* argv[]) {
     p_block.animation.index_begin = 3;
     p_block.animation.index_end = 5;
     p_block.animation.switch_time = 1.0f;
+    p_block.density = 2.0f;
 
     flecs::entity wall = scene.ecs_world.entity().set([&](spk::comp_rigid_body_t& rb, spk::comp_tilemap_t& tm){
         rb->type = kin::body_type_static;
-        rb->pos  = {0.0f, 0.0f};
+        rb->set_position({0.0f, 0.0f});
 
-        const int width  = 10;
-        const int height = 10;
+        const int width  = 100;
+        const int height = 100;
 
         for(uint32_t x = 0; x < width; x++) {
             for(uint32_t y = 0; y < height; y++) {
                 if(x != 0 && x != (width - 1) &&
-                    y != 0) {
-                    tm.get(x, y) = bg_wood;
+                    y != 0 && y != (height - 1)) {
+                    tm.get (x, y) = bg_wood;
                 } else {
                     tm.get(x, y) = stone;
                 }
             }
         }
-    }).add<spk::tag_body_render_t>();
+    });
 
     flecs::entity character;
 
-    for(size_t i = 0; i < 2; i++)
+    for(size_t i = 0; i < 1; i++)
         character = spk::ecs_world().entity().set([&](
                 spk::comp_rigid_body_t& rb, 
                 spk::comp_character_controller_t& cc,
                 spk::comp_tilemap_t& tilemap,
                 spk::comp_camera_t& camera) {
-            rb->pos = {5.0f, 10.0f};
+            rb->set_position({5.0f + i * 5.0f, 50.0f});
+            rb->apply_linear_velocity({0.0f, -40.0f});
 
             tilemap.get(2, 0) = stone;
             tilemap.get(2, 1) = stone;
@@ -207,8 +213,8 @@ int main(int argc, char* argv[]) {
             tilemap.get(2, 4) = stone;
             tilemap.get(2, 5) = p_block;
 
-            cc.speed = 1;
-        }).add<spk::tag_body_render_t>();
+            cc.speed = 10;
+        });
 
     character.add<spk::tag_current_camera_t>();
 
