@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "ubase.hpp"
-
 namespace spk {
     struct image_loader_t {
         void* pixels;

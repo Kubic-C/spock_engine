@@ -93,7 +93,7 @@ namespace spk {
             buffer.free();
         }
 
-        void add_mesh(ptr_t<vertex_type> mesh) {
+        void add_mesh(ptm::ptr_t<vertex_type> mesh) {
             if(buffer.size() < (vertices_on_buffer + vertices_per_subdata) * sizeof(vertex_type)) 
                 buffer.resize((vertices_on_buffer + vertices_per_subdata) * sizeof(vertex_type));
 

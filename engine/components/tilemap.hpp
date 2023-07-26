@@ -49,8 +49,8 @@ namespace spk {
     typedef array2D_t<tile_chunk_info_t, tilemap_max_width, tilemap_max_height> tilemap_chunk_info_t;
 
     struct comp_tilemap_t : component_t {
-        ptr_t<tilemap_chunk_info_t> infos;
-        ptr_t<tilemap_chunks_t>     chunks;
+        ptm::ptr_t<tilemap_chunk_info_t> infos;
+        ptm::ptr_t<tilemap_chunks_t>     chunks;
 
         void init(flecs::entity entity);
         void free(flecs::entity entity);

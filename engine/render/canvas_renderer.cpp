@@ -5,7 +5,7 @@ namespace spk {
     canvas_renderer_t::canvas_renderer_t() {}
     canvas_renderer_t::~canvas_renderer_t() {}
 
-    void canvas_renderer_t::add_mesh(ptr_t<container_t> container) {
+    void canvas_renderer_t::add_mesh(ptm::ptr_t<container_t> container) {
         auto& renderers          = render_context().renderers;
         auto  text_renderer      = renderers[RENDERER_TYPE_TEXT].cast<text_renderer_t>();
         auto  container_renderer = renderers[RENDERER_TYPE_CONTAINER].cast<container_renderer_t>();

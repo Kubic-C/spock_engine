@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "ubase.hpp"
+#include "base.hpp"
 
 namespace spk {
-    bool face_load(ptr_t<FT_Face> face, const char* path, int size);
+    bool face_load(ptm::ptr_t<FT_Face> face, const char* path, int size);
 }

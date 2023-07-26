@@ -107,7 +107,7 @@ namespace spk {
 
         // adds a new child
         template<typename T, bool is_base = std::is_base_of_v<container_t, T>>
-        ptr_t<T> element();
+        ptm::ptr_t<T> element();
         void destroy();
 
         void dimensions_calculate();
@@ -126,9 +126,9 @@ namespace spk {
 
         glm::vec4 color = {1.0f, 1.0f, 1.0f, 1.0f};
 
-        std::list<ptr_t<container_t>> children;
-        ptr_t<container_t>            parent;
-        ptr_t<canvas_t>               canvas;
+        std::list<ptm::ptr_t<container_t>> children;
+        ptm::ptr_t<container_t>            parent;
+        ptm::ptr_t<canvas_t>               canvas;
 
     protected:
         enum {
@@ -198,7 +198,7 @@ namespace spk {
         uint32_t font = UINT32_MAX;
 
     private:
-        object_pool_t<element_union_t> element_pool;
+        ptm::object_pool_t<element_union_t> element_pool;
     };
 
     /**
@@ -211,16 +211,16 @@ namespace spk {
 
 namespace spk {
     template<typename T, bool is_base>
-    ptr_t<T> container_t::element() {
+    ptm::ptr_t<T> container_t::element() {
         spk_assert(is_base == true);
 
         auto     variant = canvas->element_pool.create(1);
-        ptr_t<T> element = &variant->emplace<T>();
+        ptm::ptr_t<T> element = &variant->emplace<T>();
 
-        element->parent = ptr_t(this);
+        element->parent = ptm::ptr_t(this);
         element->canvas = canvas;
 
-        children.push_back(ptr_t<container_t>(element));
+        children.push_back(ptm::ptr_t<container_t>(element));
 
         return element;
     }

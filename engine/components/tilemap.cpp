@@ -28,8 +28,8 @@ namespace spk {
             }
         }
 
-        allocators().chunk_info_pool.destruct(infos.get(), 1);
-        allocators().chunks_pool.destruct(chunks.get(), 1);
+        allocators().chunk_info_pool.destroy(infos.get(), 1);
+        allocators().chunks_pool.destroy(chunks.get(), 1);
     }
 
     void comp_tilemap_t::mesh_tiles(uint32_t xc, uint32_t yc) {

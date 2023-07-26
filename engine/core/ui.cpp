@@ -66,7 +66,7 @@ namespace spk {
             return canvas->dimensions.pos;
 
         glm::vec3 current_pos = {0.0f, 0.0f, 0.0f};
-        ptr_t     cur_parent  = this->parent;
+        ptm::ptr_t     cur_parent  = this->parent;
 
         while(!cur_parent.is_null()) {
             current_pos.x += cur_parent->dimensions.pos.x;
@@ -141,11 +141,11 @@ namespace spk {
             children.front()->destroy();    
         }
 
-        ptr_t<container_t> parent = this->parent;
+        ptm::ptr_t<container_t> parent = this->parent;
 
-        parent->children.remove(ptr_t(this));
+        parent->children.remove(ptm::ptr_t(this));
 
-        this->canvas->element_pool.destruct((element_union_t*)this, 1);
+        this->canvas->element_pool.destroy((element_union_t*)this, 1);
     }
 
     void text_t::text_dimensions_calculate() {

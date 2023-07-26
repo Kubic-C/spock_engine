@@ -57,13 +57,9 @@ target_sources(spock_engine PRIVATE
     "systems/character_controller.hpp" "systems/character_controller.cpp")
 
 target_sources(spock_engine PRIVATE
-    "utility/ubase.hpp"    
     "utility/common.hpp"
-    "utility/stack_allocator.hpp" "utility/stack_allocator.cpp"
     "utility/font.hpp" "utility/font.cpp"
-    "utility/static_list.hpp" "utility/static_list.cpp"
     "utility/array2D.hpp" "utility/array2D.cpp"
-    "utility/memory_pool.hpp" "utility/memory_pool.cpp"
     "utility/hashmap.hpp" "utility/hashmap.cpp"
     "utility/image_loader.hpp" "utility/image_loader.cpp")
     

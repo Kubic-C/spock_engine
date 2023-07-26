@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
     uint32_t           smells_blood_id, coin_sound_id;
     uint32_t           sprite_array_id, high_def_array;
     std::array<uint32_t, 5> fonts;
-    spk::ptr_t<spk::text_t> text;
+    ptm::ptr_t<spk::text_t> text;
 
     scene.window->size_set(1000, 600);
 
@@ -124,7 +124,7 @@ int main(int argc, char* argv[]) {
         text->text_color = {1.0f, 1.0f, 1.0f};
         text->color      = {1.0f, 1.0f, 1.0f, 0.0f};
 
-        spk::ptr_t button = text->element<spk::button_t>();
+        ptm::ptr_t button = text->element<spk::button_t>();
         button->x_set(spk::constraint_center());
         button->y_set(spk::constraint_relative(0.0f));
         button->width_set(spk::constraint_relative(0.3f));
@@ -136,7 +136,7 @@ int main(int argc, char* argv[]) {
             spk::exit();
         };
 
-        spk::ptr_t button_text = button->element<spk::text_t>();
+        ptm::ptr_t button_text = button->element<spk::text_t>();
         button_text->x_set(spk::constraint_center());
         button_text->y_set(spk::constraint_relative(0.0f));
         button_text->width_set(spk::constraint_relative(1.0f));

@@ -21,8 +21,6 @@
 
 #include "render/renderer.hpp"
 
-#include "utility/stack_allocator.hpp"
-    
 // well need this to define the allocators
 #include "components/tilemap.hpp"
 
@@ -93,7 +91,7 @@ namespace spk {
         canvas_t*     canvas          = nullptr;
         window_t*     window          = nullptr;
         
-        stack_allocator_t stack{4096 * 4}; // scenes stack allocator, for quick large allocations
+        ptm::stack_allocator_t stack{4096 * 4}; // scenes stack allocator, for quick large allocations
     };
 
     // loading and management of resources like external files or prefabs
@@ -108,8 +106,8 @@ namespace spk {
     // allocators for canvases, windows, etc. and stack allocators
     // FOR BIG things
     struct allocators_t {
-        object_pool_t<tilemap_chunk_info_t>   chunk_info_pool;
-        object_pool_t<tilemap_chunks_t> chunks_pool;
+        ptm::object_pool_t<tilemap_chunk_info_t>   chunk_info_pool;
+        ptm::object_pool_t<tilemap_chunks_t> chunks_pool;
     };
 
     // gets the current ecs_world

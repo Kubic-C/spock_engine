@@ -10,7 +10,7 @@
 #include "core/internal.hpp"
 
 namespace spk {
-    bool face_load(ptr_t<FT_Face> face, const char* path, int size) {
+    bool face_load(ptm::ptr_t<FT_Face> face, const char* path, int size) {
         if(FT_New_Face(resources().ft_lib, path, 0, face)) {
             return false;
         }

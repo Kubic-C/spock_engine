@@ -32,15 +32,15 @@ namespace spk {
         render_info_t render;
 
         // framebuffers
-        std::list<attachment_t, memory_pool_t<attachment_t>> attachments;
+        std::list<attachment_t, ptm::memory_pool_t<attachment_t>> attachments;
         hashmap_t<framebuffer_type_e, framebuffer_t>         framebuffers;
 
         // shader programs
         hashmap_t<shader_type_e, program_t> shaders;
 
         // renderers
-        hashmap_t<renderer_type_e, ptr_t<base_renderer_t>> renderers;
-        stack_allocator_t renderer_stack; // used ONLY for renderers
+        hashmap_t<renderer_type_e, ptm::ptr_t<base_renderer_t>> renderers;
+        ptm::stack_allocator_t renderer_stack; // used ONLY for renderers
 
         // cameras
         glm::mat4 world_camera; 

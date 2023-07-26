@@ -10,7 +10,6 @@
 #pragma once
 
 #include "base.hpp"
-#include "utility/stack_allocator.hpp"
 
 namespace spk {
     class window_t {

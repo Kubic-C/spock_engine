@@ -12,6 +12,6 @@ namespace spk {
         void render() override;
     
     private:
-        void add_mesh(ptr_t<container_t> container);
+        void add_mesh(ptm::ptr_t<container_t> container);
     };
 }

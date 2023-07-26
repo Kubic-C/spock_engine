@@ -202,7 +202,7 @@ namespace spk {
 
             // call all renderers
             for(auto& renderer_id : render_pass.renderers) {
-                ptr_t renderer = renderers[renderer_id];
+                ptm::ptr_t renderer = renderers[renderer_id];
 
                 renderer->pre_render();
                 renderer->render();
