@@ -15,7 +15,6 @@ void create_usless_box() {
         random *= 0.01f;
 
         rb->set_position({50.0f, 100.0f});
-        rb->apply_angular_velocity(100.0f);
 
         const float h = 1.0f;
         const float w = 1.0f;
@@ -55,7 +54,7 @@ void create_usless_box() {
             animate.index_begin = 3;
             animate.index_end   = 5;
             animate.on = true;
-            animate.switch_time = 0.05f;
+            animate.switch_time = 0.5f;
         });
     }
 }
@@ -112,23 +111,22 @@ int main(int argc, char* argv[]) {
     }
 
     { // canvas 
-        canvas.font = fonts[0];
+        canvas.font = fonts[2];
 
         text = canvas.element<spk::text_t>();
-
-        text->x_set(spk::constraint_relative(0.05f));
-        text->y_set(spk::constraint_relative(0.85f));
-        text->width_set(spk::constraint_relative(0.5f));
-        text->height_set(spk::constraint_relative(0.1f));
+        text->x_set(spk::constraint_relative(0.05f))
+             .y_set(spk::constraint_relative(0.85f))
+             .width_set(spk::constraint_relative(0.5f))
+             .height_set(spk::constraint_relative(0.1f));
         text->text       = "loading..";
         text->text_color = {1.0f, 1.0f, 1.0f};
         text->color      = {1.0f, 1.0f, 1.0f, 0.0f};
 
         ptm::ptr_t button = text->element<spk::button_t>();
-        button->x_set(spk::constraint_center());
-        button->y_set(spk::constraint_relative(0.0f));
-        button->width_set(spk::constraint_relative(0.3f));
-        button->height_set(spk::constraint_relative(0.2f));
+        button->x_set(spk::constraint_center())
+               .y_set(spk::constraint_relative(0.0f))
+               .width_set(spk::constraint_relative(0.3f))
+               .height_set(spk::constraint_relative(0.2f));
         button->color       = {1.0f, 0.0f, 0.0f, 1.0f};        
         button->hover_color = {1.0f, 0.4f, 0.4f};
         button->click_color = {1.0f, 0.5f, 0.5f};    
@@ -137,10 +135,10 @@ int main(int argc, char* argv[]) {
         };
 
         ptm::ptr_t button_text = button->element<spk::text_t>();
-        button_text->x_set(spk::constraint_center());
-        button_text->y_set(spk::constraint_relative(0.0f));
-        button_text->width_set(spk::constraint_relative(1.0f));
-        button_text->height_set(spk::constraint_relative(1.0f));
+        button_text->x_set(spk::constraint_center())
+                    .y_set(spk::constraint_relative(0.0f))
+                    .width_set(spk::constraint_relative(1.0f))
+                    .height_set(spk::constraint_relative(1.0f));
         button_text->color = {0.0f, 0.0f, 0.0f, 0.0f};
         button_text->text  = "click button to exit";
 

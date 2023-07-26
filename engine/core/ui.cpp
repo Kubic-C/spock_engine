@@ -91,20 +91,28 @@ namespace spk {
         return aabb().contains(pos_);
     }
 
-    void container_t::x_set(constraint_t constraint) {
+    container_t& container_t::x_set(constraint_t constraint) {
         constraints.xpos_constraint = constraint;
+
+        return *this;
     }
 
-    void container_t::y_set(constraint_t constraint) {
+    container_t& container_t::y_set(constraint_t constraint) {
         constraints.ypos_constraint = constraint;
+    
+        return *this;
     }
 
-    void container_t::width_set(constraint_t constraint) {
+    container_t& container_t::width_set(constraint_t constraint) {
         constraints.width_constraint = constraint;
+    
+        return *this;
     }
 
-    void container_t::height_set(constraint_t constraint) {
+    container_t& container_t::height_set(constraint_t constraint) {
         constraints.height_constraint = constraint;
+    
+        return *this;
     }
 
     void container_t::dimensions_calculate() {

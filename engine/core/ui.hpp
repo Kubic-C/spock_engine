@@ -115,10 +115,10 @@ namespace spk {
 
         // constraints
 
-        void x_set(constraint_t constraint);
-        void y_set(constraint_t constraint);
-        void width_set(constraint_t constraint);
-        void height_set(constraint_t constraint);
+        container_t& x_set(constraint_t constraint);
+        container_t& y_set(constraint_t constraint);
+        container_t& width_set(constraint_t constraint);
+        container_t& height_set(constraint_t constraint);
 
     public:
         uint32_t sprite_array_id = UINT32_MAX;
