@@ -20,15 +20,15 @@ message(STATUS "Spock Engine --\n")
 if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     # -static: allows the outputted executable to be ran
     # on other machines without the C++/C Libraries being installed
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99" PARENT_SCOPE)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -std=c++17 -Wfatal-errors" PARENT_SCOPE)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -std=c++17 -Wfatal-errors")
 
 	if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
         # no-pie is specfic to debugging, 
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -pg -O0" PARENT_SCOPE)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -no-pie -pg -O0")
         # set(SPK_DEBUG_LIBS profiler_static) couldn't get it to work on windows :(
 	else()
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3" PARENT_SCOPE)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
     endif()
 	
     message("In ${CMAKE_BUILD_TYPE}, in ${CMAKE_CXX_COMPILER_ID}")
@@ -48,6 +48,8 @@ if(WIN32)
     file(COPY "${PARENT_DIR}/libbz2-1.dll" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/")
     file(COPY "${PARENT_DIR}/libbrotlidec.dll" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/")
     file(COPY "${PARENT_DIR}/libbrotlicommon.dll" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/")
+    file(COPY "${PARENT_DIR}/zlib1.dll" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/")
+
 endif()
 
 message("\n-- End --")

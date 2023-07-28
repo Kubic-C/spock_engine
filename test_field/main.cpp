@@ -81,12 +81,18 @@ int main(int argc, char* argv[]) {
     std::array<uint32_t, 5> fonts;
     ptm::ptr_t<spk::text_t> text;
 
-    scene.window->size_set(1000, 600);
+    scene.window->size_set(1000, 800);
 
     {
         smells_blood_id = spk::music_create("smells_blood.mp3");
         coin_sound_id   = spk::chunk_create("coin_sound.wav");
         spk::music_play(smells_blood_id, 1);
+
+        if(smells_blood_id == UINT32_MAX) {
+            spk::log.log(spk::LOG_TYPE_INFO, "insure your in the right working directory");
+            spk::log.log(spk::LOG_TYPE_ERROR, "cannot load resources for testing, exiting..");
+            exit(EXIT_FAILURE);
+        }
 
         spk::audio_chunk_volume(1);
         spk::audio_music_volume(1);
@@ -146,7 +152,7 @@ int main(int argc, char* argv[]) {
         spk::settings().target_fps = 7500;
     }
 
-    for(size_t i = 0; i < 700; i++) {
+    for(size_t i = 0; i < 600; i++) {
         create_usless_box();
     }
 
@@ -195,7 +201,7 @@ int main(int argc, char* argv[]) {
 
     flecs::entity character;
 
-    for(size_t i = 0; i < 1; i++)
+    for(size_t i = 0; i < 10; i++)
         character = spk::ecs_world().entity().set([&](
                 spk::comp_rigid_body_t& rb, 
                 spk::comp_character_controller_t& cc,

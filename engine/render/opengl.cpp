@@ -140,6 +140,8 @@ namespace spk {
             return;
         }
 
+        printf("resizeing buffer\n");
+
         glCreateBuffers(1, &copy_buffer);
 
         glBindBuffer(GL_COPY_WRITE_BUFFER, copy_buffer);
@@ -155,6 +157,11 @@ namespace spk {
         // 2) then write back to the main buffer and cleanup
         glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, old_size);
         glDeleteBuffers(1, &copy_buffer);
+
+        // reset the state
+        glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
+        glBindBuffer(GL_COPY_READ_BUFFER, 0);
+
     }
 
     void vertex_buffer_t::buffer_data(size_t size, void* data, size_t usage) {
