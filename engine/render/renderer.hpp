@@ -18,8 +18,8 @@
 #include "tilemap_renderer.hpp"
 
 namespace spk {
-    constexpr size_t _render_default_buffer_size = 6000 * sizeof(float);
-    constexpr size_t _render_max_quad_indexes    = 4000;
+    constexpr size_t _render_default_buffer_size = 8000 * sizeof(float);
+    constexpr size_t _render_max_quad_indexes    = 6000;
 
     struct render_context_t {
         render_context_t();

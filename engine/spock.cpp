@@ -19,6 +19,11 @@
 #define XSTR(x) STR(x)
 
 namespace spk {
+    void vsync_set(vsync_setting_e vsync_opt) {
+        spk::settings().vsync_opt = vsync_opt;
+        SDL_GL_SetSwapInterval(vsync_opt);
+    }
+
     const char* build_name() {
         return MODE " build " XSTR(SPK_MAJOR) "." XSTR(SPK_MINOR) "." XSTR(SPK_PATCH);
     }

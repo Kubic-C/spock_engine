@@ -14,7 +14,7 @@ void create_usless_box() {
         float random = rand();
         random *= 0.01f;
 
-        rb->set_position({50.0f, 100.0f});
+        rb->set_position({75.0f, 100.0f});
 
         const float h = 1.0f;
         const float w = 1.0f;
@@ -143,10 +143,10 @@ int main(int argc, char* argv[]) {
         button_text->text  = "click button to exit";
 
         spk::settings().target_tps = 60;
-        spk::settings().target_fps = 75;
+        spk::settings().target_fps = 7500;
     }
 
-    for(size_t i = 0; i < 10; i++) {
+    for(size_t i = 0; i < 700; i++) {
         create_usless_box();
     }
 
@@ -178,8 +178,8 @@ int main(int argc, char* argv[]) {
         rb->type = kin::body_type_static;
         rb->set_position({0.0f, 0.0f});
 
-        const int width  = 100;
-        const int height = 100;
+        const int width  = 125;
+        const int height = 125;
 
         for(uint32_t x = 0; x < width; x++) {
             for(uint32_t y = 0; y < height; y++) {

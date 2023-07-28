@@ -22,6 +22,13 @@
 
 namespace spk {
     /**
+     * @brief set the vsync of window's buffer 
+     * 
+     * @param vsync the type of vsync to apply 
+     */
+    void vsync_set(vsync_setting_e vsync_opt);
+
+    /**
      * @brief returns the name of the current build
      * 
      * @return name
