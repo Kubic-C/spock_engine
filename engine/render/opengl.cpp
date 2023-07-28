@@ -140,8 +140,6 @@ namespace spk {
             return;
         }
 
-        printf("resizeing buffer\n");
-
         glCreateBuffers(1, &copy_buffer);
 
         glBindBuffer(GL_COPY_WRITE_BUFFER, copy_buffer);
