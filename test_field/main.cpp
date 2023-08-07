@@ -116,10 +116,7 @@ int main(int argc, char* argv[]) {
         spk::sprite_array_set(high_def_array, "./texture_array/windows_logo.png", 0);
     }
 
-    { // canvas 
-        canvas.font = fonts[2];
-
-        text = canvas.element<spk::text_t>();
+    { // canvas         text = canvas.element<spk::text_t>();
         text->x_set(spk::constraint_relative(0.05f))
              .y_set(spk::constraint_relative(0.85f))
              .width_set(spk::constraint_relative(0.5f))
@@ -127,6 +124,7 @@ int main(int argc, char* argv[]) {
         text->text       = "loading..";
         text->text_color = {1.0f, 1.0f, 1.0f};
         text->color      = {1.0f, 1.0f, 1.0f, 0.0f};
+        canvas.font = fonts[2];
 
         ptm::ptr_t button = text->element<spk::button_t>();
         button->x_set(spk::constraint_center())

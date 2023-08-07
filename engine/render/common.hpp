@@ -90,7 +90,6 @@ namespace spk {
         }
 
         ~mesh_t() {
-            printf("freeing %lu\n", (uint32_t)buffer);
             buffer.free();
         }
 

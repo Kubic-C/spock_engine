@@ -13,8 +13,6 @@
 #include "texture_array.hpp"
 #include "external/stb_image.h"
 
-#define BGFX_HANDLE_VALID(handle) (handle.idx != bgfx::kInvalidHandle)
-
 #define SFK_MAX_VERTEX_LAYOUT_ATTRIBUTES 8
 
 namespace spk {
